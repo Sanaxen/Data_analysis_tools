@@ -1,0 +1,2 @@
+##APPPATH#=C:\Users\bccat\Desktop\DDS_github—p\src\bin\Release\
+##WRKPATH#=
