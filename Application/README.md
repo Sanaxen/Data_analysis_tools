@@ -13,9 +13,9 @@ requirements
 
 
 
-###セッティング手順
+### セッティング手順
 
-Application・setup_ini.batの修正
+Application/setup_ini.batの修正
 インストールしたパスに書き換え。
 ```
 set R_INSTALL_PATH=C:\Program Files\R\R-3.6.1
@@ -24,10 +24,10 @@ set GRAPHVIZ_PATH=C:\Program Files (x86)\Graphviz2.38\bin
 set RTOOL_PATH=C:\Rtools
 
 ```
-必要なパッケージなどのインストール
-Application/app_setup.bat  
+必要なパッケージなどのインストール  
+Application/app_setup.bat の実行
 
-DDS2.bat で起動する事が出来るはずです。
+DDS2.bat で実行可能になります。
 
 展開した場所に以下のファイルを作成して追加  
 **backend.txt**  
