@@ -341,7 +341,7 @@ namespace WindowsFormsApplication1
         public Causal_relationship_search _Causal_relationship_search = null;
         public missing_value _missing_value = null;
         public select_col _select_col = null;
-        public ざっくり _ざっくり = null;
+        public Roughly _Roughly = null;
         public sarima _sarima = null;
         public melt _melt = null;
         public barplot _barplot = null;
@@ -462,7 +462,7 @@ namespace WindowsFormsApplication1
                     sw.Write("因果探索,");
                     sw.Write("欠損値可視化,");
                     sw.Write("列削除,");
-                    sw.Write("ざっくり可視化,");
+                    sw.Write("Roughly可視化,");
                     sw.Write("_sarima,");
                     sw.Write("展開,");
                     sw.Write("_barplot,");
@@ -600,8 +600,8 @@ namespace WindowsFormsApplication1
                 if (_select_col != null) sw.Write(s.ToString() + ",");
                 else sw.Write("0,");
 
-                if (_ざっくり != null) s = _ざっくり.execute_count;
-                if (_ざっくり != null) sw.Write(s.ToString() + ",");
+                if (_Roughly != null) s = _Roughly.execute_count;
+                if (_Roughly != null) sw.Write(s.ToString() + ",");
                 else sw.Write("0,");
 
                 if (_sarima != null) s = _sarima.execute_count;
@@ -1168,10 +1168,10 @@ namespace WindowsFormsApplication1
                 _select_col.pictureBox1.Image = null;
                 _select_col.textBox6.Text = "";
             }
-            if (_ざっくり != null)
+            if (_Roughly != null)
             {
-                _ざっくり.Hide();
-                _ざっくり.pictureBox1.Image = null;
+                _Roughly.Hide();
+                _Roughly.pictureBox1.Image = null;
             }
             if (_sarima != null)
             {
@@ -1702,7 +1702,10 @@ namespace WindowsFormsApplication1
 
             //RProcess.StandardInput.Write("options(show.error.messages=FALSE)\r\n");
             //RProcess.StandardInput.Write("options(warn=-1)\r\n");
-            SendCommand("load(\".RData\")\r\n");
+            if (File.Exists(".RData"))
+            {
+                SendCommand("load(\".RData\")\r\n");
+            }
             ChecklibraryAll();
             if (R_string_op == 1) SendCommand(R_string_op_def);
             SendCommand("gc(reset = TRUE)\r\n");
@@ -6154,10 +6157,10 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("データフレーム(df)が未定義です", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (_ざっくり == null) _ざっくり = new ざっくり();
-            _ざっくり.form1 = this;
-            _ざっくり.BackColor = BackColor;
-            _ざっくり.execute_count += 1;
+            if (_Roughly == null) _Roughly = new Roughly();
+            _Roughly.form1 = this;
+            _Roughly.BackColor = BackColor;
+            _Roughly.execute_count += 1;
 
 
             string file = targetCSV + ".csv";
@@ -6169,9 +6172,9 @@ namespace WindowsFormsApplication1
             }
 
 
-            if (t > ざっくり.fileTime)
+            if (t > Roughly.fileTime)
             {
-                ざっくり.fileTime = t;
+                Roughly.fileTime = t;
             }
 
             if ( NA_Count("df") > 0)
@@ -6179,15 +6182,15 @@ namespace WindowsFormsApplication1
                 return;
             }
             string cmd = "";
-            file = "tmp_ざっくり.R";
+            file = "tmp__Roughly.R";
 
             cmd = "chart.Correlation(df)\r\n";
-            if (System.IO.File.Exists("tmp_ざっくり.png")) form1.FileDelete("tmp_ざっくり.png");
+            if (System.IO.File.Exists("tmp_Roughly.png")) form1.FileDelete("tmp_Roughly.png");
             try
             {
                 using (System.IO.StreamWriter sw = new System.IO.StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
                 {
-                    sw.Write("png(\"tmp_ざっくり.png\", height = 960*" + _setting.numericUpDown4.Value.ToString()+", width = 960*" + _setting.numericUpDown4.Value.ToString() + ")\r\n");
+                    sw.Write("png(\"tmp_Roughly.png\", height = 960*" + _setting.numericUpDown4.Value.ToString()+", width = 960*" + _setting.numericUpDown4.Value.ToString() + ")\r\n");
                     sw.Write(cmd);
                     sw.Write("dev.off()\r\n");
                     sw.Write("\r\n");
@@ -6219,13 +6222,13 @@ namespace WindowsFormsApplication1
 
             try
             {
-                _ざっくり.pictureBox1.Image = Form1.CreateImage("tmp_ざっくり.png");
+                _Roughly.pictureBox1.Image = Form1.CreateImage("tmp_Roughly.png");
             }
             catch { }
 
-            _ざっくり.Show();
-            _ざっくり.TopMost = true;
-            _ざっくり.TopMost = false;
+            _Roughly.Show();
+            _Roughly.TopMost = true;
+            _Roughly.TopMost = false;
         }
 
         private void button44_Click(object sender, EventArgs e)
@@ -6640,8 +6643,16 @@ namespace WindowsFormsApplication1
                 if (sw != null) sw.Close();
             }
 
-            string history_r = MyPath + "../script/resume.r";
-            System.IO.File.Copy(history, history_r, true);
+            try
+            {
+                string history_r = MyPath + "../script/resume.r";
+                System.IO.File.Copy(history, history_r, true);
+            }catch(IOException e)
+            {
+                MessageBox.Show(e.ToString());
+            }finally
+            {
+            }
         }
 
         private void button53_Click(object sender, EventArgs e)

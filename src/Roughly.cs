@@ -10,24 +10,24 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
-    public partial class ざっくり : Form
+    public partial class Roughly : Form
     {
         int running = 0;
         public int execute_count = 0;
         public static DateTime fileTime = DateTime.Now.AddHours(-1);
         public ImageView _ImageView;
         public Form1 form1;
-        public ざっくり()
+        public Roughly()
         {
             InitializeComponent();
         }
 
-        private void ざっくり_Load(object sender, EventArgs e)
+        private void Roughly_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void ざっくり_FormClosing(object sender, FormClosingEventArgs e)
+        private void Roughly_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
             e.Cancel = true;
@@ -95,9 +95,9 @@ namespace WindowsFormsApplication1
             {
                 if (_ImageView == null) _ImageView = new ImageView();
                 _ImageView.form1 = this.form1;
-                if (System.IO.File.Exists("tmp_ざっくり.png"))
+                if (System.IO.File.Exists("tmp_Roughly.png"))
                 {
-                    _ImageView.pictureBox1.ImageLocation = "tmp_ざっくり.png";
+                    _ImageView.pictureBox1.ImageLocation = "tmp_Roughly.png";
                     _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     _ImageView.pictureBox1.Dock = DockStyle.Fill;
                     _ImageView.Show();
@@ -141,7 +141,7 @@ namespace WindowsFormsApplication1
             button1_Click(sender, e);
         }
 
-        private void ざっくり_Shown(object sender, EventArgs e)
+        private void Roughly_Shown(object sender, EventArgs e)
         {
 
         }

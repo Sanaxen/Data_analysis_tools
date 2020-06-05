@@ -1653,7 +1653,7 @@
             this.button43.Name = "button43";
             this.button43.Size = new System.Drawing.Size(229, 50);
             this.button43.TabIndex = 60;
-            this.button43.Text = "ざっくり";
+            this.button43.Text = "Roughly";
             this.toolTip1.SetToolTip(this.button43, "データフレームの大雑把に概要をグラフ化します");
             this.button43.UseVisualStyleBackColor = false;
             this.button43.Click += new System.EventHandler(this.button43_Click_1);
