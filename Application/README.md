@@ -30,16 +30,6 @@ Application/app_setup.bat の実行
 DDS2.bat で実行可能になります。
 
 展開した場所に以下のファイルを作成して追加  
-**backend.txt**  
-内容はRをインストールした場所の絶対パス（配下にbinフォルダーがある場所）  
-
-binフォルダーに以下のファイルを作成して追加  
-**gnuplot_path.txt**  
-内容はgnuplotをインストールした場所のbinフォルダーの絶対パス  
-
-**graphviz_path.txt**  
-内容はgraphvizをインストールした場所のbinフォルダーの絶対パス  
-
 **prophet_option.txt**  
 内容は1を記述  
 
