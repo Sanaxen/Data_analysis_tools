@@ -16,7 +16,7 @@ requirements
 ### セッティング手順
 
 Application/setup_ini.batの修正
-インストールしたパスに書き換え。
+requirementsをインストールしたパスに書き換え。
 ```
 set R_INSTALL_PATH=C:\Program Files\R\R-3.6.1
 set GNUPLOT_PATH=C:\Program Files\gnuplot\bin
@@ -29,8 +29,5 @@ Application/app_setup.bat の実行
 
 DDS2.bat で実行可能になります。
 
-展開した場所に以下のファイルを作成して追加  
-**prophet_option.txt**  
-内容は1を記述  
 
 
