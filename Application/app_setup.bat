@@ -5,7 +5,8 @@ call setup_ini.bat
 
 
 chcp 437
+set PATH=%RTOOL_PATH%\bin;%RTOOL_PATH%\mingw_64\bin;%PATH%
 "%R_INSTALL_PATH%"\bin\rscript.exe ../R/installCheck.R
 "%R_INSTALL_PATH%"\bin\rscript.exe ../R/prophet_install.R
 
-
+"%R_INSTALL_PATH%"\bin\rscript.exe ../R/dll_unzip.r

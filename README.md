@@ -11,3 +11,6 @@ requirements
 [Rtools](https://cran.r-project.org/bin/windows/Rtools/history.html)
 ※RtoolsはRのバージョンにあったものが必要
 
+ApplicationはApplication\DDS2です。
+Application/app_setup.bat を実行することで利用可能になります。
+
