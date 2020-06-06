@@ -1,22 +1,20 @@
 # Data_analysis_tools
  
-requirements
+## requirements
+Libraries required to execute the built application
 
-[R-3.6.1](https://www.r-project.org/)
-
-[gnuplot](http://www.gnuplot.info/)
-
-[Graphviz](http://www.graphviz.org/)
-
-[Rtools](https://cran.r-project.org/bin/windows/Rtools/history.html)
-※RtoolsはRのバージョンにあったものが必要
+- [R-3.6.1](https://www.r-project.org/)
+- [gnuplot](http://www.gnuplot.info/)
+- [Graphviz](http://www.graphviz.org/)
+- [Rtools](https://cran.r-project.org/bin/windows/Rtools/history.html)  
+※Rtools must match R version  
 
 
 
-### セッティング手順
+### Setting procedure
 
-Application/setup_ini.batの修正
-requirementsをインストールしたパスに書き換え。
+Modification of  Application/setup_ini.bat
+Replace with the installed path.
 ```
 set R_INSTALL_PATH=C:\Program Files\R\R-3.6.1
 set GNUPLOT_PATH=C:\Program Files\gnuplot\bin
@@ -24,10 +22,10 @@ set GRAPHVIZ_PATH=C:\Program Files (x86)\Graphviz2.38\bin
 set RTOOL_PATH=C:\Rtools
 
 ```
-必要なパッケージなどのインストール  
-Application/app_setup.bat の実行
+####Installation of required packages  
+Run **Application/app_setup.bat**
 
-DDS2.bat で実行可能になります。
+It can be executed with **DDS2.bat**.
 
 
 
