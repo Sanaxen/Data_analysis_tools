@@ -15,20 +15,21 @@ Applications that make the most of **R** without writing **R** programs
 - No coding required for programs (scripts)
 - Predictive model can be created only with GUI
 
-## requirements
-Libraries required to execute the built application
+## requirements  
+**Visual Studio 2017** or higher is required to build.  
 
+Libraries required to execute the built application
 - [R-3.6.1](https://www.r-project.org/)
 - [gnuplot](http://www.gnuplot.info/)
 - [Graphviz](http://www.graphviz.org/)
 - [Rtools](https://cran.r-project.org/bin/windows/Rtools/history.html)  
-※RtoolsはRのバージョンにあったものが必要  
+※Rtools must match R version  
 
 ### Application  
-Application/app_setup.bat を実行することでApplication\DDS2に集められて  
-Application\DDS2.batで実行されます。  
+Collected in **Application\DDS2** by running Application/app_setup.bat
+It is executed by **Application\DDS2\DDS2.bat**.  
 
 - - -
 
-*I'm sorry  
-This application is a Japanese GUI at the moment.  *
+**I'm sorry.
+This application is a Japanese GUI at the moment.  **
