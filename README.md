@@ -22,7 +22,7 @@ Applications that make the most of **R** without writing **R** programs
 - [MetroFramework v1.2.0.3](http://thielj.github.io/MetroFramework/)
 - [Markdig v0.17.1](https://github.com/lunet-io/markdig)
 - [WindowsAPICodePack-Core v1.1.2](https://github.com/aybe/Windows-API-Code-Pack-1.1)
-
+- [Ookii.Dialogs.WinForms v1.1.0](https://github.com/augustoproiete/ookii-dialogs-winforms)
 
 Libraries required to execute the built application
 - [R-3.6.1](https://www.r-project.org/)
