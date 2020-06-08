@@ -32,7 +32,7 @@ Libraries required to execute the built application
 ※Rtools must match R version  
 
 ### Application  
-Collected in **Application\DDS2** by running **Application/app_setup.bat**
+Collected in **Application\DDS2** by running   **Application/app_setup.bat**  
 It is executed by **Application\DDS2\DDS2.bat**.  
 
 - - -
