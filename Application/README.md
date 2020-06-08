@@ -23,7 +23,7 @@ set RTOOL_PATH=C:\Rtools
 
 ```
 ####Installation of required packages  
-Run **Application/app_setup.bat**
+Run **Application/app_setup.bat**  
 **Please execute with administrator privileges.**
 
 It can be executed with **DDS2.bat**.
