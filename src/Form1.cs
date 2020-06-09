@@ -1596,7 +1596,10 @@ namespace WindowsFormsApplication1
             string startup = MyPath + "/startup.rdata";
             startup = startup.Replace("\\", "/");
 
-            SendCommand("load(\"" + startup + "\")\r\n");
+            if (File.Exists(startup))
+            {
+                SendCommand("load(\"" + startup + "\")\r\n");
+            }
             ChecklibraryAll();
             if (R_string_op == 1) SendCommand(R_string_op_def);
 
