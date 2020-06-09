@@ -55,13 +55,13 @@
 
 ## その他  
 
-![image00.png](.\images\image00.png)
+<img src=./images/image00.png>
 
 必須では無いが最低限「列名」があると良い。無い場合は自動で列名を付加します。
 時系列データは前項のデータフォーマットと形式的には全く同一形式ですが以下の点が異なります。  
 時間フォーマットは YYYY-MM-DD または YYYY-MM-DD hh:mm:ss の形式です。
 ※エクセルで開くと ファイル上はYYYY-MM-DDですが YYYY/MM/DD形式で表示される場合があるので注意して下さい。
-![image01.png](.\images\image01.png)
+<img src=./images/image01.png>
 
 
 #### 時系列データにおけるイベント効果・説明変数の追加  
@@ -69,5 +69,5 @@
 例えば、クリスマスの日に加えてクリスマスイブにもイベント効果を適応させたい場合は、
 lower_window=-1,upper_window=0とします。さらにprior_scaleカラムを追加することで、事前に各イベント日に対して別々に優先度をつけることができます。
 時系列モデルにおいて説明変数をひつようとするモデルでは予測しようとしている期間においても説明変数は必須です。
-![image02.png](.\images\image02.png)
+<img src=./images/image02.png>
 
