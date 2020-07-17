@@ -13,7 +13,7 @@ namespace WindowsFormsApplication1
 
     public partial class TimeSeriesRegression : Form
     {
-        public bool use_pytorch = true;
+        public bool use_pytorch = false;
         public string device_name = "gpu";
         public int user_abort = 0;
         public int running = 0;
