@@ -2373,5 +2373,37 @@ namespace WindowsFormsApplication1
                 checkBox13.Enabled = true;
             }
         }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < listBox1.Items.Count; i++)
+            {
+                listBox1.SetSelected(i, true);
+            }
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            int[] array = new int[listBox1.Items.Count];
+            for (int i = 0; i < listBox1.Items.Count; i++)
+            {
+                array[i] = -1;
+            }
+            for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+            {
+                array[i] = listBox1.SelectedIndices[i];
+            }
+
+            for (int i = 0; i < listBox1.Items.Count; i++)
+            {
+                listBox1.SetSelected(i, true);
+            }
+
+            for (int i = 0; i < listBox1.Items.Count; i++)
+            {
+                int idx = array[i];
+                if (idx >= 0) listBox1.SetSelected(idx, false);
+            }
+        }
     }
 }
