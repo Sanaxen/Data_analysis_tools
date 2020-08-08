@@ -940,6 +940,15 @@ namespace WindowsFormsApplication1
                         {
                             typeNG = true;
                         }
+                        if ( y_count > 32)
+                        {
+                            var s = MessageBox.Show("目的変数の次元が32を超えました\n継続しますか?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                            if ( s != DialogResult.OK)
+                            {
+                                MessageBox.Show("目的変数の次元が32まで計算します");
+                                break;
+                            }
+                        }
                     }
                     if (y_count == 0)
                     {
@@ -977,6 +986,15 @@ namespace WindowsFormsApplication1
                         {
                             typeNG = true;
                         }
+                        //if (x_count > 32)
+                        //{
+                        //    var s = MessageBox.Show("説明変数の次元が32を超えました\n継続しますか?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                        //    if (s != DialogResult.OK)
+                        //    {
+                        //        MessageBox.Show("説明変数の次元が32まで計算します");
+                        //        break;
+                        //    }
+                        //}
                     }
                     numericUpDown1.Value = x_count;
                 }else
