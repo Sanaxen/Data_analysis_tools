@@ -1419,6 +1419,7 @@
             this.Name = "TimeSeriesRegression";
             this.Text = "TimeSeriesRegression";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TimeSeriesRegression_FormClosing);
+            this.Load += new System.EventHandler(this.TimeSeriesRegression_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TimeSeriesRegression_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.panel3.ResumeLayout(false);

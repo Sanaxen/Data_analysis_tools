@@ -15,6 +15,8 @@ echo "%GNUPLOT_PATH%"> "%BATPATH%bin\gnuplot_path.txt"
 echo "%GRAPHVIZ_PATH%"> "%BATPATH%bin\graphviz_path.txt"
 
 echo 1 > "%BATPATH%bin\prophet_option.txt"
+echo 1 > "%PYTORCH_CUDA%bin\pytorch_cuda_version.txt"
+
 
 set PATH="%GRAPHVIZ_PATH%";%PATH%
 set PATH=%RTOOL_PATH%\bin;%RTOOL_PATH%\mingw_64\bin;%PATH%

@@ -179,10 +179,16 @@ namespace WindowsFormsApplication1
             {
                 if (update)
                 {
-
-                    if (System.IO.File.Exists(Form1.curDir + "\\fit_best.model"))
+                    if (use_pytorch)
                     {
-                        System.IO.File.Copy(Form1.curDir + "\\fit_best.model", save_name, true);
+
+                    }
+                    else
+                    {
+                        if (System.IO.File.Exists(Form1.curDir + "\\fit_best.pt"))
+                        {
+                            System.IO.File.Copy(Form1.curDir + "\\fit_best.pt", save_name, true);
+                        }
                     }
                     if (System.IO.File.Exists(Form1.curDir + "\\normalize_info.txt"))
                     {
@@ -1715,7 +1721,15 @@ namespace WindowsFormsApplication1
 
         public void load_model(string modelfile, object sender, EventArgs e)
         {
-            System.IO.File.Copy(modelfile, "fit_best.model", true);
+            if (use_pytorch)
+            {
+                System.IO.File.Copy(modelfile, "fit_best.pt", true);
+            }
+            else
+            {
+                System.IO.File.Copy(modelfile, "fit_best.model", true);
+            }
+
             System.IO.File.Copy(modelfile+ ".normalize_info.txt", "normalize_info.txt", true);
             Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
             Form1.VarAutoSelection_(listBox3, listBox3, modelfile + ".select_variables2.dat");
