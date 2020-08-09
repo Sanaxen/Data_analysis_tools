@@ -1308,6 +1308,8 @@ namespace WindowsFormsApplication1
                     // (C#2.0から追加されたメソッド)
                     process.BeginOutputReadLine();
                 }
+                TopMost = true;
+                TopMost = false;
             }
             catch {
                 if (process != null && !process.HasExited) process.Kill();
