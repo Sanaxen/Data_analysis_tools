@@ -2133,13 +2133,12 @@
             this.button70.Location = new System.Drawing.Point(611, 150);
             this.button70.Margin = new System.Windows.Forms.Padding(4);
             this.button70.Name = "button70";
-            this.button70.Size = new System.Drawing.Size(279, 63);
+            this.button70.Size = new System.Drawing.Size(296, 63);
             this.button70.TabIndex = 113;
             this.button70.Text = "State Space Models\r\n(KFSA)";
             this.button70.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolTip1.SetToolTip(this.button70, "基本的には階差によって線形とみなせるような比較的単純な時系列データに向いています\r\n※階差によって定常性の過程となる事が前提となります");
             this.button70.UseVisualStyleBackColor = false;
-            this.button70.Visible = false;
             this.button70.Click += new System.EventHandler(this.button70_Click);
             // 
             // label16
@@ -2160,7 +2159,7 @@
             this.button67.Location = new System.Drawing.Point(297, 150);
             this.button67.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button67.Name = "button67";
-            this.button67.Size = new System.Drawing.Size(281, 62);
+            this.button67.Size = new System.Drawing.Size(295, 62);
             this.button67.TabIndex = 111;
             this.button67.Text = "Gradient Boosting\r\n(Autoregressive model)";
             this.button67.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2302,7 +2301,7 @@
             this.button58.Location = new System.Drawing.Point(297, 310);
             this.button58.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button58.Name = "button58";
-            this.button58.Size = new System.Drawing.Size(255, 41);
+            this.button58.Size = new System.Drawing.Size(295, 41);
             this.button58.TabIndex = 51;
             this.button58.Text = "非線形時系列回帰";
             this.button58.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2321,7 +2320,7 @@
             this.button57.Location = new System.Drawing.Point(299, 86);
             this.button57.Margin = new System.Windows.Forms.Padding(4);
             this.button57.Name = "button57";
-            this.button57.Size = new System.Drawing.Size(279, 41);
+            this.button57.Size = new System.Drawing.Size(293, 41);
             this.button57.TabIndex = 49;
             this.button57.Text = "prophet";
             this.button57.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2342,7 +2341,7 @@
             this.button56.Location = new System.Drawing.Point(299, 24);
             this.button56.Margin = new System.Windows.Forms.Padding(4);
             this.button56.Name = "button56";
-            this.button56.Size = new System.Drawing.Size(279, 41);
+            this.button56.Size = new System.Drawing.Size(293, 41);
             this.button56.TabIndex = 48;
             this.button56.Text = "SARIMA(X)";
             this.button56.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2666,18 +2665,16 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(669, 24);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(33, 15);
+            this.label13.Size = new System.Drawing.Size(0, 15);
             this.label13.TabIndex = 7;
-            this.label13.Text = "";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(512, 8);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(97, 15);
+            this.label12.Size = new System.Drawing.Size(0, 15);
             this.label12.TabIndex = 6;
-            this.label12.Text = "";
             // 
             // label7
             // 
@@ -2686,9 +2683,8 @@
             this.label7.ForeColor = System.Drawing.Color.ForestGreen;
             this.label7.Location = new System.Drawing.Point(463, 22);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(188, 17);
+            this.label7.Size = new System.Drawing.Size(0, 17);
             this.label7.TabIndex = 5;
-            this.label7.Text = "";
             // 
             // panel14
             // 
@@ -2709,9 +2705,8 @@
             this.label14.Location = new System.Drawing.Point(13, 18);
             this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(382, 15);
+            this.label14.Size = new System.Drawing.Size(0, 15);
             this.label14.TabIndex = 0;
-            this.label14.Text = "";
             // 
             // splitter4
             // 
