@@ -67,7 +67,7 @@
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>C7ED3ED272BE74446FA907574A52CDEFE90FAB28</ManifestCertificateThumbprint>
@@ -771,6 +771,7 @@
     <EmbeddedResource Include="xgboost.resx">
       <DependentUpon>xgboost.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
