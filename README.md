@@ -3,6 +3,8 @@
 **R**プログラムを作成せずに**R**を最大限に活用するアプリケーション  
 Applications that make the most of **R** without writing **R** programs  
 
+<img src="./images/image00.png"/>
+
 **R**は世界で最も信頼できるデータ解析ツールの一つですがR言語でプログラムを作成する必要があります。Rをバックエンドで使うGUIアプリケーションとしてノンプログラミングでそのR及びそのパッケージを使いたいと思います。  
 **R** is one of the most reliable data analysis tools in the world, but it requires programming in R language. I would like to use that R and its package in non-programming as a GUI application used in the backend.  
 - - -
