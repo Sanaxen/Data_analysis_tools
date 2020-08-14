@@ -1597,255 +1597,260 @@ namespace WindowsFormsApplication1
 
             timer1.Stop();
             System.IO.Directory.SetCurrentDirectory(Form1.curDir);
-            if (!Form1.IsFileLocked("classification_warning.txt"))
+
+            try
             {
-                if (System.IO.File.Exists("classification_warning.txt"))
+                if (!Form1.IsFileLocked("classification_warning.txt"))
                 {
-                    MessageBox.Show("分類クラス数が一致しないため自動的に分類クラス値に修正",
-                        "warning",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-
-                    form1.FileDelete("classification_warning.txt");
-                }
-            }
-
-            System.IO.StreamReader sr = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
-            string path = "";
-            if (sr != null)
-            {
-                path = sr.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
-                sr.Close();
-            }
-
-            System.Diagnostics.Process p = new System.Diagnostics.Process();
-
-            p.StartInfo.FileName = path +"\\gnuplot.exe";
-            p.StartInfo.Arguments = Form1.curDir + "\\error_loss_plot_cap.plt";
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = false;
-            p.StartInfo.RedirectStandardInput = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.Start();
-            p.WaitForExit();
-
-            //for (int i = 0; i < 10; i++)
-            {
-                if (!Form1.IsFileLocked("loss.png"))
-                {
-                    if (System.IO.File.Exists("loss.png"))
+                    if (System.IO.File.Exists("classification_warning.txt"))
                     {
-                        pictureBox1.ImageLocation = "loss.png";
-                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                        pictureBox1.Dock = DockStyle.Fill;
-                        pictureBox1.Show();
-                    }
-                    if (_ImageView == null) _ImageView = new ImageView();
-                    _ImageView.form1 = this.form1;
-                    if (System.IO.File.Exists("loss.png"))
-                    {
-                        _ImageView.pictureBox1.ImageLocation = "loss.png";
-                        _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                        _ImageView.pictureBox1.Dock = DockStyle.Fill;
-                    }
+                        MessageBox.Show("分類クラス数が一致しないため自動的に分類クラス値に修正",
+                            "warning",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
 
-                    //break;
+                        form1.FileDelete("classification_warning.txt");
+                    }
                 }
-                //System.Threading.Thread.Sleep(300);
-            }
 
-            if (checkBox5.Checked)
-            {
-                System.IO.StreamReader sr3 = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
-                string gnuplotpath = "";
-                if (sr3 != null)
+                System.IO.StreamReader sr = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                string path = "";
+                if (sr != null)
                 {
-                    gnuplotpath = sr3.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
-                    sr3.Close();
+                    path = sr.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
+                    sr.Close();
                 }
-                System.Diagnostics.Process p3 = new System.Diagnostics.Process();
-                p3.StartInfo.FileName = gnuplotpath+"\\gnuplot.exe";
-                p3.StartInfo.Arguments = Form1.curDir + "\\accuracy_plot_cap.plt";
-                p3.StartInfo.UseShellExecute = false;
-                p3.StartInfo.RedirectStandardOutput = false;
-                p3.StartInfo.RedirectStandardInput = false;
-                p3.StartInfo.CreateNoWindow = true;
-                p3.Start();
-                p3.WaitForExit();
+
+                System.Diagnostics.Process p = new System.Diagnostics.Process();
+
+                p.StartInfo.FileName = path + "\\gnuplot.exe";
+                p.StartInfo.Arguments = Form1.curDir + "\\error_loss_plot_cap.plt";
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardOutput = false;
+                p.StartInfo.RedirectStandardInput = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.Start();
+                p.WaitForExit();
 
                 //for (int i = 0; i < 10; i++)
                 {
-                    if (!Form1.IsFileLocked("accuracy.png"))
+                    if (!Form1.IsFileLocked("loss.png"))
                     {
-                        if (System.IO.File.Exists("accuracy.png"))
+                        if (System.IO.File.Exists("loss.png"))
                         {
-                            pictureBox2.ImageLocation = "accuracy.png";
-                            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-                            pictureBox2.Dock = DockStyle.Fill;
-                            pictureBox2.Show();
+                            pictureBox1.ImageLocation = "loss.png";
+                            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                            pictureBox1.Dock = DockStyle.Fill;
+                            pictureBox1.Show();
                         }
-                        if (_ImageView2 == null) _ImageView2 = new ImageView();
-                        _ImageView2.form1 = this.form1;
-                        if (System.IO.File.Exists("accuracy.png"))
-                        {
-                            _ImageView2.pictureBox1.ImageLocation = "accuracy.png";
-                            _ImageView2.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                            _ImageView2.pictureBox1.Dock = DockStyle.Fill;
-                        }
-                        //break;
-                    }
-                    //System.Threading.Thread.Sleep(300);
-                }
-            }
-            else
-            {
-                System.IO.StreamReader sr3 = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
-                string gnuplotpath = "";
-                if (sr3 != null)
-                {
-                    gnuplotpath = sr3.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
-                    sr3.Close();
-                }
-                System.Diagnostics.Process p2 = new System.Diagnostics.Process();
-                p2.StartInfo.FileName = gnuplotpath + "\\gnuplot.exe";
-                p2.StartInfo.Arguments = Form1.curDir + "\\test_plot_cap.plt";
-                p2.StartInfo.UseShellExecute = false;
-                p2.StartInfo.RedirectStandardOutput = false;
-                p2.StartInfo.RedirectStandardInput = false;
-                p2.StartInfo.CreateNoWindow = true;
-                p2.Start();
-                p2.WaitForExit();
-
-
-                //for (int i = 0; i < 10; i++)
-                {
-                    if (!Form1.IsFileLocked("fitting.png"))
-                    {
-                        if (System.IO.File.Exists("fitting.png"))
-                        {
-                            pictureBox2.ImageLocation = "fitting.png";
-                            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-                            pictureBox2.Dock = DockStyle.Fill;
-                            pictureBox2.Show();
-                        }
-                        if (_ImageView2 == null) _ImageView2 = new ImageView();
+                        if (_ImageView == null) _ImageView = new ImageView();
                         _ImageView.form1 = this.form1;
-                        if (System.IO.File.Exists("fitting.png"))
+                        if (System.IO.File.Exists("loss.png"))
                         {
-                            _ImageView2.pictureBox1.ImageLocation = "fitting.png";
-                            _ImageView2.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                            _ImageView2.pictureBox1.Dock = DockStyle.Fill;
+                            _ImageView.pictureBox1.ImageLocation = "loss.png";
+                            _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                            _ImageView.pictureBox1.Dock = DockStyle.Fill;
                         }
+
                         //break;
                     }
                     //System.Threading.Thread.Sleep(300);
                 }
 
-                //for (int i = 0; i < 10; i++)
+                if (checkBox5.Checked)
                 {
-                    if (!Form1.IsFileLocked("observed_predict_NL.png"))
+                    System.IO.StreamReader sr3 = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                    string gnuplotpath = "";
+                    if (sr3 != null)
                     {
-                        if (System.IO.File.Exists("observed_predict_NL.png"))
+                        gnuplotpath = sr3.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
+                        sr3.Close();
+                    }
+                    System.Diagnostics.Process p3 = new System.Diagnostics.Process();
+                    p3.StartInfo.FileName = gnuplotpath + "\\gnuplot.exe";
+                    p3.StartInfo.Arguments = Form1.curDir + "\\accuracy_plot_cap.plt";
+                    p3.StartInfo.UseShellExecute = false;
+                    p3.StartInfo.RedirectStandardOutput = false;
+                    p3.StartInfo.RedirectStandardInput = false;
+                    p3.StartInfo.CreateNoWindow = true;
+                    p3.Start();
+                    p3.WaitForExit();
+
+                    //for (int i = 0; i < 10; i++)
+                    {
+                        if (!Form1.IsFileLocked("accuracy.png"))
                         {
-                            pictureBox3.ImageLocation = "observed_predict_NL.png";
-                            pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
-                            pictureBox3.Dock = DockStyle.Fill;
-                            pictureBox3.Show();
-                        }else
-                        {
-                            _ImageView3.pictureBox1.ImageLocation = null;
-                            _ImageView3.Show();
-                            pictureBox3.ImageLocation = null;
-                            pictureBox3.Show();
+                            if (System.IO.File.Exists("accuracy.png"))
+                            {
+                                pictureBox2.ImageLocation = "accuracy.png";
+                                pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+                                pictureBox2.Dock = DockStyle.Fill;
+                                pictureBox2.Show();
+                            }
+                            if (_ImageView2 == null) _ImageView2 = new ImageView();
+                            _ImageView2.form1 = this.form1;
+                            if (System.IO.File.Exists("accuracy.png"))
+                            {
+                                _ImageView2.pictureBox1.ImageLocation = "accuracy.png";
+                                _ImageView2.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                                _ImageView2.pictureBox1.Dock = DockStyle.Fill;
+                            }
+                            //break;
                         }
-                        //break;
+                        //System.Threading.Thread.Sleep(300);
                     }
-                    //System.Threading.Thread.Sleep(300);
                 }
-            }
-            if (System.IO.File.Exists(Form1.curDir + "\\timeseries_error_vari_loss.txt"))
-            {
-                label14.Text = "";
-                string file = Form1.curDir + "\\timeseries_error_vari_loss.txt";
-                System.IO.StreamReader sr2 = new System.IO.StreamReader(file, Encoding.GetEncoding("SHIFT_JIS"));
+                else
+                {
+                    System.IO.StreamReader sr3 = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                    string gnuplotpath = "";
+                    if (sr3 != null)
+                    {
+                        gnuplotpath = sr3.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
+                        sr3.Close();
+                    }
+                    System.Diagnostics.Process p2 = new System.Diagnostics.Process();
+                    p2.StartInfo.FileName = gnuplotpath + "\\gnuplot.exe";
+                    p2.StartInfo.Arguments = Form1.curDir + "\\test_plot_cap.plt";
+                    p2.StartInfo.UseShellExecute = false;
+                    p2.StartInfo.RedirectStandardOutput = false;
+                    p2.StartInfo.RedirectStandardInput = false;
+                    p2.StartInfo.CreateNoWindow = true;
+                    p2.Start();
+                    p2.WaitForExit();
 
-                string acc = "";
-                string loss = "";
-                while (sr2.EndOfStream == false)
-                {
-                    string line = sr2.ReadLine();
-                    var c = line.Split(':');
-                    if (c[0] == "best.model loss")
-                    {
-                        label14.Text = c[1];
-                        loss = c[1];
-                    }
-                    if (c[0] == "accuracy")
-                    {
-                        label16.Text = c[1];
-                        acc = c[1];
-                    }
-                }
-                sr2.Close();
-                if (form1._AutoTrain_Test2 != null && form1._AutoTrain_Test2.running == 1)
-                {
-                    string pre = "";
-                    if (form1._AutoTrain_Test2.label7.Text.IndexOf("->") >= 0)
-                    {
-                        string[] del = { "->" };
-                        pre = form1._AutoTrain_Test2.label7.Text.Split(del, StringSplitOptions.None)[1];
-                    }
-                    if (checkBox5.Checked && acc != "")
-                    {
-                        float r = float.Parse(acc.Replace("%", "").Replace("\r", ""));
-                        int ir = (int)r;
-                        r = ir;
-                        form1._AutoTrain_Test2.label7.Text = "accuracy = "+pre+"->" + r.ToString() + "%";
-                        form1._AutoTrain_Test2.label7.Refresh();
-                    }
-                    if (!checkBox5.Checked && loss != "")
-                    {
-                        float r = float.Parse(loss)*1000.0f;
-                        int ir = (int)r;
-                        r = ir/1000;
-                        form1._AutoTrain_Test2.label7.Text = "loss = "+pre+"->" + r.ToString();
-                        form1._AutoTrain_Test2.label7.Refresh();
-                    }
-                }
 
-                label14.Refresh();
-                label16.Refresh();
-            }
-            if (System.IO.File.Exists(Form1.curDir + "\\Time_to_finish.txt"))
-            {
-                string file = Form1.curDir + "\\Time_to_finish.txt";
-                try
+                    //for (int i = 0; i < 10; i++)
+                    {
+                        if (!Form1.IsFileLocked("fitting.png"))
+                        {
+                            if (System.IO.File.Exists("fitting.png"))
+                            {
+                                pictureBox2.ImageLocation = "fitting.png";
+                                pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+                                pictureBox2.Dock = DockStyle.Fill;
+                                pictureBox2.Show();
+                            }
+                            if (_ImageView2 == null) _ImageView2 = new ImageView();
+                            _ImageView.form1 = this.form1;
+                            if (System.IO.File.Exists("fitting.png"))
+                            {
+                                _ImageView2.pictureBox1.ImageLocation = "fitting.png";
+                                _ImageView2.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                                _ImageView2.pictureBox1.Dock = DockStyle.Fill;
+                            }
+                            //break;
+                        }
+                        //System.Threading.Thread.Sleep(300);
+                    }
+
+                    //for (int i = 0; i < 10; i++)
+                    {
+                        if (!Form1.IsFileLocked("observed_predict_NL.png"))
+                        {
+                            if (System.IO.File.Exists("observed_predict_NL.png"))
+                            {
+                                pictureBox3.ImageLocation = "observed_predict_NL.png";
+                                pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
+                                pictureBox3.Dock = DockStyle.Fill;
+                                pictureBox3.Show();
+                            }
+                            else
+                            {
+                                _ImageView3.pictureBox1.ImageLocation = null;
+                                _ImageView3.Show();
+                                pictureBox3.ImageLocation = null;
+                                pictureBox3.Show();
+                            }
+                            //break;
+                        }
+                        //System.Threading.Thread.Sleep(300);
+                    }
+                }
+                if (System.IO.File.Exists(Form1.curDir + "\\timeseries_error_vari_loss.txt"))
                 {
+                    label14.Text = "";
+                    string file = Form1.curDir + "\\timeseries_error_vari_loss.txt";
                     System.IO.StreamReader sr2 = new System.IO.StreamReader(file, Encoding.GetEncoding("SHIFT_JIS"));
+
+                    string acc = "";
+                    string loss = "";
                     while (sr2.EndOfStream == false)
                     {
                         string line = sr2.ReadLine();
-                        this.Text = line;
+                        var c = line.Split(':');
+                        if (c[0] == "best.model loss")
+                        {
+                            label14.Text = c[1];
+                            loss = c[1];
+                        }
+                        if (c[0] == "accuracy")
+                        {
+                            label16.Text = c[1];
+                            acc = c[1];
+                        }
                     }
                     sr2.Close();
-                }
-                catch { }
-            }
-            if (!checkBox6.Checked)
-            {
-                int idx = textBox4.Text.LastIndexOf("Epoch ");
-                if (idx >= 0)
-                {
-                    string s = textBox4.Text.Substring(idx);
-                    var ss = s.Split(' ');
-                    ss = ss[1].Split('/');
-                    float a = float.Parse(ss[0]);
-                    float b = float.Parse(ss[1]);
-                    progressBar1.Value = (int)((float)progressBar1.Maximum * a / b + 0.5);
-                }
-            }
-            if (process == null) return;
+                    if (form1._AutoTrain_Test2 != null && form1._AutoTrain_Test2.running == 1)
+                    {
+                        string pre = "";
+                        if (form1._AutoTrain_Test2.label7.Text.IndexOf("->") >= 0)
+                        {
+                            string[] del = { "->" };
+                            pre = form1._AutoTrain_Test2.label7.Text.Split(del, StringSplitOptions.None)[1];
+                        }
+                        if (checkBox5.Checked && acc != "")
+                        {
+                            float r = float.Parse(acc.Replace("%", "").Replace("\r", ""));
+                            int ir = (int)r;
+                            r = ir;
+                            form1._AutoTrain_Test2.label7.Text = "accuracy = " + pre + "->" + r.ToString() + "%";
+                            form1._AutoTrain_Test2.label7.Refresh();
+                        }
+                        if (!checkBox5.Checked && loss != "")
+                        {
+                            float r = float.Parse(loss) * 1000.0f;
+                            int ir = (int)r;
+                            r = ir / 1000;
+                            form1._AutoTrain_Test2.label7.Text = "loss = " + pre + "->" + r.ToString();
+                            form1._AutoTrain_Test2.label7.Refresh();
+                        }
+                    }
 
+                    label14.Refresh();
+                    label16.Refresh();
+                }
+                if (System.IO.File.Exists(Form1.curDir + "\\Time_to_finish.txt"))
+                {
+                    string file = Form1.curDir + "\\Time_to_finish.txt";
+                    try
+                    {
+                        System.IO.StreamReader sr2 = new System.IO.StreamReader(file, Encoding.GetEncoding("SHIFT_JIS"));
+                        while (sr2.EndOfStream == false)
+                        {
+                            string line = sr2.ReadLine();
+                            this.Text = line;
+                        }
+                        sr2.Close();
+                    }
+                    catch { }
+                }
+                if (!checkBox6.Checked)
+                {
+                    int idx = textBox4.Text.LastIndexOf("Epoch ");
+                    if (idx >= 0)
+                    {
+                        string s = textBox4.Text.Substring(idx);
+                        var ss = s.Split(' ');
+                        ss = ss[1].Split('/');
+                        float a = float.Parse(ss[0]);
+                        float b = float.Parse(ss[1]);
+                        progressBar1.Value = (int)((float)progressBar1.Maximum * a / b + 0.5);
+                    }
+                }
+                if (process == null) return;
+            }catch
+            { }
             process.Threads.Resume();
             timer1.Start();
         }
