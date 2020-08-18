@@ -1508,7 +1508,7 @@ namespace WindowsFormsApplication1
             //Console.Error.WriteLine("============\r\n");
             //Console.Error.WriteLine(e.Data);
         }
-        private void SetupPath(string Rversion, bool check)
+        private void SetupPath(bool check)
         {
             string r_version = "";
 
@@ -2905,7 +2905,7 @@ namespace WindowsFormsApplication1
 
             try
             {
-                SetupPath(Rversion, false);
+                SetupPath(false);
             }
             catch
             {
