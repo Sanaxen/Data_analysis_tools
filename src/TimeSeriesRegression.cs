@@ -937,6 +937,7 @@ namespace WindowsFormsApplication1
 
                 if (listBox1.SelectedIndex >= 0)
                 {
+                    int y_count_max_flg = 0;
                     int y_count = 0;
                     for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                     {
@@ -949,14 +950,16 @@ namespace WindowsFormsApplication1
                         {
                             typeNG = true;
                         }
-                        if ( y_count > 32)
+                        if ( y_count > 32 && y_count_max_flg == 0)
                         {
                             var s = MessageBox.Show("目的変数の次元が32を超えました\n継続しますか?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                             if ( s != DialogResult.OK)
                             {
                                 MessageBox.Show("目的変数の次元が32まで計算します");
+                                y_count_max_flg = 1;
                                 break;
                             }
+                            y_count_max_flg = 2;
                         }
                     }
                     if (y_count == 0)
