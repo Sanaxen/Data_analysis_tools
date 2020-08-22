@@ -6,6 +6,7 @@ set exe_path=%build_exe%\debug
 echo "%R_INSTALL_PATH%"> %build_exe%\..\backend.txt
 echo "%GNUPLOT_PATH%"> "%exe_path%\gnuplot_path.txt"
 echo "%GRAPHVIZ_PATH%"> "%exe_path%\graphviz_path.txt"
+echo "%DEEPAR_APP%"> "%exe_path%\deep_ar_path.txt"
 
 echo 1 > "%exe_path%\prophet_option.txt"
 
