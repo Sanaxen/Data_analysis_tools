@@ -314,6 +314,8 @@ namespace WindowsFormsApplication1
         static bool RProcess_NoConsoleWindow_View = true;
         static string Rversion = "R-3.6.1";
 
+        string deep_AR_Path = "";
+
         //各種フォーム
         public REditor _REditor = null;
         public Form2 form2 = null;
@@ -2895,6 +2897,30 @@ namespace WindowsFormsApplication1
                 Pytorch_cuda_version = "";
             }
 
+            if (System.IO.File.Exists(MyPath + "\\deep_ar_path.txt"))
+            {
+                StreamReader sr = new StreamReader(MyPath + "\\deep_ar_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                if (sr != null)
+                {
+                    deep_AR_Path = sr.ReadToEnd().Replace("\n", "").Replace("\r", "");
+
+                }
+                sr.Close();
+            }
+            if (deep_AR_Path != "")
+            {
+                deep_AR_Path = deep_AR_Path.Replace("\"", "");
+
+                if ( !System.IO.File.Exists(deep_AR_Path + "\\deepAR.bat"))
+                {
+                    deep_AR_Path = "";
+                    MessageBox.Show(deep_AR_Path + "\\deepAR.bat", "not found", MessageBoxButtons.OK);
+                }
+            }
+            if ( deep_AR_Path == "")
+            {
+                button72.Visible = false;
+            }
 
             label14.Text = App_userinfo;
             timer1.Enabled = true;
@@ -8948,6 +8974,58 @@ upper_window、 lower_windowにはそのイベントの効果が前後何日に�
         private void button70_Click(object sender, EventArgs e)
         {
             form1.button69_Click(sender, e);
+        }
+
+        private void button71_Click(object sender, EventArgs e)
+        {
+
+            if (RProcess.HasExited)
+            {
+                Restart();
+                SendCommand("\r\n");
+            }
+
+            if (!ExistObj("df"))
+            {
+                MessageBox.Show("データフレーム(df)が未定義です", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            form1.button62_Click(sender, e);
+
+            string cmd = "";
+            System.IO.Directory.SetCurrentDirectory(Form1.curDir);
+
+            cmd = "write.csv(df,\"tmp_deepAR.csv\",row.names = FALSE)\r\n";
+            form1.evalute_cmdstr(cmd);
+
+            System.Diagnostics.Process app = new System.Diagnostics.Process();
+            //deepar_app.FileName = "cmd.exe";
+            app.StartInfo.FileName = "cmd.exe";
+            app.StartInfo.Arguments += " /c " + deep_AR_Path+ "\\deepAR.bat";
+            app.StartInfo.Arguments += " " + "tmp_deepAR.csv";
+            app.StartInfo.Arguments += " " + Form1.curDir;
+            app.StartInfo.UseShellExecute = false;
+            app.StartInfo.CreateNoWindow = true;
+
+            if (System.IO.File.Exists("tmp_deepAR_prediction3.csv"))
+            {
+                System.IO.File.Delete("tmp_deepAR_prediction3.csv");
+            }
+            app.Start();
+            app.WaitForExit();
+
+            if (System.IO.File.Exists("tmp_deepAR_prediction3.csv"))
+            {
+                cmd = "predict_deepar <- read.csv(\"tmp_deepAR_prediction3.csv\",header = T)\r\n";
+                form1.evalute_cmdstr(cmd);
+
+                form1.ComboBoxItemAdd(form1.comboBox2, "predict_deepar");
+            }
+        }
+
+        private void button72_Click(object sender, EventArgs e)
+        {
+            form1.button71_Click(sender, e);
         }
     }
 }
