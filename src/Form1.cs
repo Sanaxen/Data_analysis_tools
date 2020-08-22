@@ -2920,6 +2920,7 @@ namespace WindowsFormsApplication1
             if ( deep_AR_Path == "")
             {
                 button72.Visible = false;
+                label17.Visible = false;
             }
 
             label14.Text = App_userinfo;
