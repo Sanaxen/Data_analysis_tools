@@ -8,6 +8,7 @@ echo "%GNUPLOT_PATH%"> "%exe_path%\gnuplot_path.txt"
 echo "%GRAPHVIZ_PATH%"> "%exe_path%\graphviz_path.txt"
 echo "%DEEPAR_APP%"> "%exe_path%\deep_ar_path.txt"
 
+echo "%PYTORCH_CUDA%"> "%exe_path%\pytorch_cuda_version.txt"
 echo 1 > "%exe_path%\prophet_option.txt"
 
 

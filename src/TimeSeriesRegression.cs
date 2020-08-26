@@ -740,6 +740,9 @@ namespace WindowsFormsApplication1
                     use_pytorch = true;
                 }
             }
+            //MessageBox.Show(Form1.Pytorch_cuda_version);
+            //MessageBox.Show(use_pytorch.ToString());
+
             if (use_pytorch)
             {
                 checkBox12.Enabled = true;
@@ -950,7 +953,7 @@ namespace WindowsFormsApplication1
                         {
                             typeNG = true;
                         }
-                        if ( y_count > 32 && y_count_max_flg == 0)
+                        if ( !checkBox6.Checked && y_count > 32 && y_count_max_flg == 0)
                         {
                             var s = MessageBox.Show("目的変数の次元が32を超えました\n継続しますか?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                             if ( s != DialogResult.OK)
@@ -1172,6 +1175,13 @@ namespace WindowsFormsApplication1
                 process.StartInfo.Arguments = " --@ comandline_args";
 
                 //p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+
+                numericUpDown3.Maximum = numericUpDown2.Value / 3;
+                if (numericUpDown2.Value* numericUpDown3.Maximum < numericUpDown2.Value)
+                {
+                    numericUpDown3.Maximum += 1;
+                }
+                numericUpDown3.Minimum = 0;
 
                 progressBar1.Value = 0;
                 if (checkBox7.Checked)
@@ -2452,6 +2462,31 @@ namespace WindowsFormsApplication1
         private void TimeSeriesRegression_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            System.IO.Directory.SetCurrentDirectory(Form1.curDir);
+            string filename = "multi_data" + $"{numericUpDown3.Value:000}"+"_ts.plt";
+
+            if ( System.IO.File.Exists(filename))
+            {
+                System.IO.StreamReader sr3 = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                string gnuplotpath = "";
+                if (sr3 != null)
+                {
+                    gnuplotpath = sr3.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
+                    sr3.Close();
+                }
+                System.Diagnostics.Process p3 = new System.Diagnostics.Process();
+                p3.StartInfo.FileName = gnuplotpath + "\\gnuplot.exe";
+                p3.StartInfo.Arguments = Form1.curDir + "\\" + filename;
+                p3.StartInfo.UseShellExecute = false;
+                p3.StartInfo.RedirectStandardOutput = false;
+                p3.StartInfo.RedirectStandardInput = false;
+                p3.StartInfo.CreateNoWindow = true;
+                p3.Start();
+            }
         }
     }
 }

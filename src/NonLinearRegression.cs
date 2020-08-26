@@ -1978,5 +1978,30 @@ namespace WindowsFormsApplication1
                 checkBox7.Enabled = true;
             }
         }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            System.IO.Directory.SetCurrentDirectory(Form1.curDir);
+            string filename = "multi_data" + $"{numericUpDown3.Value:000}" + ".plt";
+
+            if (System.IO.File.Exists(filename))
+            {
+                System.IO.StreamReader sr3 = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                string gnuplotpath = "";
+                if (sr3 != null)
+                {
+                    gnuplotpath = sr3.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
+                    sr3.Close();
+                }
+                System.Diagnostics.Process p3 = new System.Diagnostics.Process();
+                p3.StartInfo.FileName = gnuplotpath + "\\gnuplot.exe";
+                p3.StartInfo.Arguments = Form1.curDir + "\\" + filename;
+                p3.StartInfo.UseShellExecute = false;
+                p3.StartInfo.RedirectStandardOutput = false;
+                p3.StartInfo.RedirectStandardInput = false;
+                p3.StartInfo.CreateNoWindow = true;
+                p3.Start();
+            }
+        }
     }
 }

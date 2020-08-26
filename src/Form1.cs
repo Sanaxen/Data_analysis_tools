@@ -2889,7 +2889,7 @@ namespace WindowsFormsApplication1
             {
                 using (System.IO.StreamReader sr = new StreamReader(MyPath + "\\pytorch_cuda_version.txt", System.Text.Encoding.GetEncoding("shift_jis")))
                 {
-                    string line = sr.ReadLine().Replace("\n", "");
+                    string line = sr.ReadLine().Replace("\n", "").Replace("\r", "").Replace("\"", "");
                     Pytorch_cuda_version = line;
                 }
             }else
@@ -2897,12 +2897,13 @@ namespace WindowsFormsApplication1
                 Pytorch_cuda_version = "";
             }
 
+            //MessageBox.Show(Pytorch_cuda_version);
             if (System.IO.File.Exists(MyPath + "\\deep_ar_path.txt"))
             {
                 StreamReader sr = new StreamReader(MyPath + "\\deep_ar_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
                 if (sr != null)
                 {
-                    deep_AR_Path = sr.ReadToEnd().Replace("\n", "").Replace("\r", "");
+                    deep_AR_Path = sr.ReadToEnd().Replace("\n", "").Replace("\r", "").Replace("\"", "");
 
                 }
                 sr.Close();
