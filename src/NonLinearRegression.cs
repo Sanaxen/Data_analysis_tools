@@ -956,6 +956,10 @@ namespace WindowsFormsApplication1
                         process.StartInfo.Arguments += " --use_trained_scale 0";
                     }
                 }
+                if (numericUpDown4.Value >= 1)
+                {
+                    process.StartInfo.Arguments += " --multiplot_step " + numericUpDown4.Value.ToString();
+                }
 
                 //
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
@@ -2001,6 +2005,14 @@ namespace WindowsFormsApplication1
                 p3.StartInfo.RedirectStandardInput = false;
                 p3.StartInfo.CreateNoWindow = true;
                 p3.Start();
+            }
+        }
+
+        private void numericUpDown3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                numericUpDown3_ValueChanged(sender, null);
             }
         }
     }

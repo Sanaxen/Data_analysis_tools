@@ -953,12 +953,12 @@ namespace WindowsFormsApplication1
                         {
                             typeNG = true;
                         }
-                        if ( !checkBox6.Checked && y_count > 32 && y_count_max_flg == 0)
+                        if ( !checkBox6.Checked && y_count > 64 && y_count_max_flg == 0)
                         {
-                            var s = MessageBox.Show("目的変数の次元が32を超えました\n継続しますか?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                            var s = MessageBox.Show("目的変数の次元が64を超えました\n継続しますか?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                             if ( s != DialogResult.OK)
                             {
-                                MessageBox.Show("目的変数の次元が32まで計算します");
+                                MessageBox.Show("目的変数の次元が64まで計算します");
                                 y_count_max_flg = 1;
                                 break;
                             }
@@ -1169,6 +1169,11 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --dump_input 1";
                 }
+                if (numericUpDown4.Value >= 1)
+                {
+                    process.StartInfo.Arguments += " --multiplot_step " + numericUpDown4.Value.ToString();
+                }
+
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ");
                 System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments);
@@ -2486,6 +2491,14 @@ namespace WindowsFormsApplication1
                 p3.StartInfo.RedirectStandardInput = false;
                 p3.StartInfo.CreateNoWindow = true;
                 p3.Start();
+            }
+        }
+
+        private void numericUpDown3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ( e.KeyCode == Keys.Enter)
+            {
+                numericUpDown3_ValueChanged(sender, null);
             }
         }
     }
