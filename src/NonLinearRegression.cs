@@ -1904,6 +1904,11 @@ namespace WindowsFormsApplication1
 
         private void button17_Click_1(object sender, EventArgs e)
         {
+            if (running != 0)
+            {
+                MessageBox.Show("計算が実行中です");
+                return;
+            }
             layer_graph_only = 1;
             button1_Click(sender, e);
             layer_graph_only = 0;

@@ -106,6 +106,7 @@
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown12 = new System.Windows.Forms.NumericUpDown();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
@@ -135,7 +136,7 @@
             this.label20 = new System.Windows.Forms.Label();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.checkBox13 = new System.Windows.Forms.CheckBox();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -156,10 +157,11 @@
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
             this.panel2.SuspendLayout();
             this.contextMenuStrip4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.SuspendLayout();
             // 
             // numericUpDown2
@@ -495,7 +497,7 @@
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(91, 22);
             this.numericUpDown3.TabIndex = 35;
-            this.toolTip3.SetToolTip(this.numericUpDown3, "多変量の場合、３グラフ毎にプロットされます。\r\n番号を選択するか選択後にEnterで指定のグラフがプロットされます。");
+            this.toolTip3.SetToolTip(this.numericUpDown3, "多変量の場合、３(デフォルト)グラフ毎にプロットされます。\r\n番号を選択するか選択後にEnterで指定のグラフがプロットされます。");
             this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
             this.numericUpDown3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDown3_KeyDown);
             // 
@@ -1067,6 +1069,24 @@
             this.checkBox9.UseVisualStyleBackColor = true;
             this.checkBox9.Visible = false;
             // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(1493, 266);
+            this.numericUpDown4.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(57, 22);
+            this.numericUpDown4.TabIndex = 125;
+            this.toolTip3.SetToolTip(this.numericUpDown4, "多変量の場合の１画面中のグラフ数");
+            this.numericUpDown4.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
             // numericUpDown12
             // 
             this.numericUpDown12.Location = new System.Drawing.Point(1257, 59);
@@ -1375,23 +1395,18 @@
             this.checkBox13.Text = "use pytorch";
             this.checkBox13.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown4
+            // numericUpDown5
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(1493, 266);
-            this.numericUpDown4.Minimum = new decimal(new int[] {
-            1,
+            this.numericUpDown5.Location = new System.Drawing.Point(946, 35);
+            this.numericUpDown5.Maximum = new decimal(new int[] {
+            10000,
             0,
             0,
             0});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(57, 22);
-            this.numericUpDown4.TabIndex = 125;
-            this.toolTip3.SetToolTip(this.numericUpDown4, "多変量の場合の１画面中のグラフ数");
-            this.numericUpDown4.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
+            this.numericUpDown5.Name = "numericUpDown5";
+            this.numericUpDown5.Size = new System.Drawing.Size(61, 22);
+            this.numericUpDown5.TabIndex = 126;
+            this.toolTip3.SetToolTip(this.numericUpDown5, "y_dim limit");
             // 
             // TimeSeriesRegression
             // 
@@ -1399,6 +1414,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1924, 872);
+            this.Controls.Add(this.numericUpDown5);
             this.Controls.Add(this.numericUpDown4);
             this.Controls.Add(this.checkBox12);
             this.Controls.Add(this.checkBox13);
@@ -1482,11 +1498,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.contextMenuStrip4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1600,5 +1617,6 @@
         private System.Windows.Forms.Button button24;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.NumericUpDown numericUpDown5;
     }
 }

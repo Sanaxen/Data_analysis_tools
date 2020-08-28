@@ -953,12 +953,12 @@ namespace WindowsFormsApplication1
                         {
                             typeNG = true;
                         }
-                        if ( !checkBox6.Checked && y_count > 64 && y_count_max_flg == 0)
+                        if ( numericUpDown5.Value > 0 && !checkBox6.Checked && y_count > numericUpDown5.Value && y_count_max_flg == 0)
                         {
-                            var s = MessageBox.Show("目的変数の次元が64を超えました\n継続しますか?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                            var s = MessageBox.Show("目的変数の次元が"+ numericUpDown5.Value.ToString()+"を超えました\n継続しますか ?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                             if ( s != DialogResult.OK)
                             {
-                                MessageBox.Show("目的変数の次元が64まで計算します");
+                                MessageBox.Show("目的変数の次元が" + numericUpDown5.Value.ToString() + "まで計算します");
                                 y_count_max_flg = 1;
                                 break;
                             }
@@ -2351,6 +2351,11 @@ namespace WindowsFormsApplication1
 
         private void button20_Click(object sender, EventArgs e)
         {
+            if (running != 0 )
+            {
+                MessageBox.Show("計算が実行中です");
+                return;
+            }
             layer_graph_only = 1;
             button1_Click(sender, e);
             layer_graph_only = 0;

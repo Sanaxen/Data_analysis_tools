@@ -97,6 +97,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button16 = new System.Windows.Forms.Button();
@@ -116,7 +117,6 @@
             this.label17 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -137,8 +137,8 @@
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.panel5.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // numericUpDown2
@@ -414,7 +414,7 @@
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(82, 22);
             this.numericUpDown3.TabIndex = 36;
-            this.toolTip3.SetToolTip(this.numericUpDown3, "多変量の場合、３グラフ毎にプロットされます。\r\n番号を選択するか選択後にEnterで指定のグラフがプロットされます。\r\n");
+            this.toolTip3.SetToolTip(this.numericUpDown3, "多変量の場合、３(デフォルト)グラフ毎にプロットされます。\r\n番号を選択するか選択後にEnterで指定のグラフがプロットされます。\r\n");
             this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
             this.numericUpDown3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDown3_KeyDown);
             // 
@@ -934,6 +934,24 @@
             this.checkBox9.UseVisualStyleBackColor = true;
             this.checkBox9.Visible = false;
             // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(1258, 248);
+            this.numericUpDown4.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(72, 22);
+            this.numericUpDown4.TabIndex = 123;
+            this.toolTip3.SetToolTip(this.numericUpDown4, "多変量の場合の１画面中のグラフ数");
+            this.numericUpDown4.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
@@ -1143,24 +1161,6 @@
             this.checkBox7.UseVisualStyleBackColor = true;
             this.checkBox7.Paint += new System.Windows.Forms.PaintEventHandler(this.checkBox1_Paint);
             // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.Location = new System.Drawing.Point(1258, 248);
-            this.numericUpDown4.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(72, 22);
-            this.numericUpDown4.TabIndex = 123;
-            this.toolTip3.SetToolTip(this.numericUpDown4, "多変量の場合の１画面中のグラフ数");
-            this.numericUpDown4.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            // 
             // NonLinearRegression
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1238,9 +1238,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
