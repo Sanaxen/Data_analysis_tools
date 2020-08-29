@@ -233,6 +233,12 @@ namespace WindowsFormsApplication1
                             sw.Write("scale,");
                             sw.Write(textBox1.Text + "\r\n");
 
+                            sw.Write("use_pytorch,");
+                            if (checkBox1.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+                            sw.Write("gpu,");
+                            if (checkBox7.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
                             sw.Close();
                         }
                     }
@@ -812,6 +818,7 @@ namespace WindowsFormsApplication1
 
                 if (listBox1.SelectedIndex >= 0)
                 {
+                    int y_count_max_flg = 0;
                     int y_count = 0;
                     for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                     {
@@ -823,6 +830,17 @@ namespace WindowsFormsApplication1
                         else
                         {
                             typeNG = true;
+                        }
+                        if (numericUpDown6.Value > 0 && !checkBox6.Checked && y_count > numericUpDown6.Value && y_count_max_flg == 0)
+                        {
+                            var s = MessageBox.Show("目的変数の次元が" + numericUpDown6.Value.ToString() + "を超えました\n継続しますか ?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                            if (s != DialogResult.OK)
+                            {
+                                MessageBox.Show("目的変数の次元が" + numericUpDown6.Value.ToString() + "まで計算します");
+                                y_count_max_flg = 1;
+                                break;
+                            }
+                            y_count_max_flg = 2;
                         }
                     }
                     if ( y_count == 0)
@@ -1839,6 +1857,30 @@ namespace WindowsFormsApplication1
                     if (ss[0].IndexOf("scale") >= 0)
                     {
                         textBox1.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("use_pytorch") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox1.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox1.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("gpu") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox7.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox7.Checked = false;
+                        }
                         continue;
                     }
                 }

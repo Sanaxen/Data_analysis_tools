@@ -2897,6 +2897,14 @@ namespace WindowsFormsApplication1
                 Pytorch_cuda_version = "";
             }
 
+            if (Pytorch_cuda_version != "")
+            {
+                if (!System.IO.File.Exists(Pytorch_cuda_version + "\\TimeSeriesRegression_cuda.exe"))
+                {
+                    Pytorch_cuda_version = "";
+                    MessageBox.Show(Pytorch_cuda_version + "\\(TimeSeriesRegression|NonLinearRegression)_cuda.exe\n" + "GPU版はご利用できません", "", MessageBoxButtons.OK);
+                }
+            }
             //MessageBox.Show(Pytorch_cuda_version);
             if (System.IO.File.Exists(MyPath + "\\deep_ar_path.txt"))
             {
@@ -2915,7 +2923,7 @@ namespace WindowsFormsApplication1
                 if ( !System.IO.File.Exists(deep_AR_Path + "\\deepAR.bat"))
                 {
                     deep_AR_Path = "";
-                    MessageBox.Show(deep_AR_Path + "\\deepAR.bat", "not found", MessageBoxButtons.OK);
+                    MessageBox.Show(deep_AR_Path + "\\deepAR.bat\n"+"DeepARはご利用できません", "", MessageBoxButtons.OK);
                 }
             }
             if ( deep_AR_Path == "")

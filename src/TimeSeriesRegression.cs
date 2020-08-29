@@ -260,6 +260,13 @@ namespace WindowsFormsApplication1
                             if (_form12.checkBox3.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
 
+                            sw.Write("use_pytorch,");
+                            if (checkBox13.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+                            sw.Write("gpu,");
+                            if (checkBox12.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+
                             sw.Close();
                         }
                     }
@@ -2297,6 +2304,30 @@ namespace WindowsFormsApplication1
                         _form12.numericUpDown1.Value = decimal.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
+                    if (ss[0].IndexOf("use_pytorch") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox13.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox13.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("gpu") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox12.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox12.Checked = false;
+                        }
+                        continue;
+                    }
                 }
                 sr.Close();
             }
@@ -2505,6 +2536,10 @@ namespace WindowsFormsApplication1
             {
                 numericUpDown3_ValueChanged(sender, null);
             }
+        }
+
+        private void checkBox13_CheckedChanged(object sender, EventArgs e)
+        {
         }
     }
 }
