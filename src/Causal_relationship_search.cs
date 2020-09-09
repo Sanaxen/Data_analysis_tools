@@ -234,6 +234,10 @@ namespace WindowsFormsApplication1
                     form1.TextBoxEndposset(form1.textBox6);
                 }
 
+                if (System.IO.File.Exists("Digraph_gen.bat"))
+                {
+                    MessageBox.Show("グラフが複雑になる可能性があるため生成バッチのみ生成しました\nDigraph_gen.bat", "", MessageBoxButtons.OK);
+                }
                 if (System.IO.File.Exists("Digraph.png"))
                 {
                     for (int i = 0; i < 1000; i++)
