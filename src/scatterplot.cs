@@ -39,24 +39,33 @@ namespace WindowsFormsApplication1
             e.Cancel = true;
         }
 
+        bool selection_all = false;
         private void button10_Click(object sender, EventArgs e)
         {
+            selection_all = true;
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
                 listBox1.SetSelected(i, true);
             }
+            selection_all = false;
+            button1_Click(sender, e);
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
+            selection_all = true;
             for (int i = 0; i < listBox2.Items.Count; i++)
             {
                 listBox2.SetSelected(i, true);
             }
+            selection_all = false;
+            button1_Click(sender, e);
         }
 
+        bool invers_selection_all = false;
         private void button9_Click(object sender, EventArgs e)
         {
+            invers_selection_all = true;
             int[] array = new int[listBox1.Items.Count];
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
@@ -77,10 +86,13 @@ namespace WindowsFormsApplication1
                 int idx = array[i];
                 if (idx >= 0) listBox1.SetSelected(idx, false);
             }
+            invers_selection_all = false;
+            button1_Click(sender, e);
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
+            invers_selection_all = true;
             int[] array = new int[listBox2.Items.Count];
             for (int i = 0; i < listBox2.Items.Count; i++)
             {
@@ -101,10 +113,13 @@ namespace WindowsFormsApplication1
                 int idx = array[i];
                 if (idx >= 0) listBox2.SetSelected(idx, false);
             }
+            invers_selection_all = false;
+            button1_Click(sender, e);
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
+            selection_all = true;
             int[] array = new int[listBox1.Items.Count];
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
@@ -125,6 +140,8 @@ namespace WindowsFormsApplication1
                 int idx = array[i];
                 if (idx >= 0) listBox2.SetSelected(idx, false);
             }
+            selection_all = false;
+            button1_Click(sender, e);
         }
 
         public void button1_Click(object sender, EventArgs e)
@@ -675,18 +692,24 @@ namespace WindowsFormsApplication1
         private void checkBox1_CheckStateChanged(object sender, EventArgs e)
         {
             if (checkBox5.Checked) return;
+            if (selection_all) return;
+            if (invers_selection_all) return;
             button1_Click(sender, e);
         }
 
         private void checkBox2_CheckStateChanged(object sender, EventArgs e)
         {
             if (checkBox5.Checked) return;
+            if (selection_all) return;
+            if (invers_selection_all) return;
             button1_Click(sender, e);
         }
 
         private void checkBox3_CheckStateChanged(object sender, EventArgs e)
         {
             if (checkBox5.Checked) return;
+            if (selection_all) return;
+            if (invers_selection_all) return;
             button1_Click(sender, e);
         }
 
@@ -721,6 +744,8 @@ namespace WindowsFormsApplication1
         {
             if (!real_time_selection_draw) return;
             if (checkBox5.Checked) return;
+            if (selection_all) return;
+            if (invers_selection_all) return;
             button1_Click(sender, e);
         }
 
@@ -740,6 +765,8 @@ namespace WindowsFormsApplication1
 
             if (!real_time_selection_draw) return;
             if (checkBox5.Checked) return;
+            if (selection_all) return;
+            if (invers_selection_all) return;
             button1_Click(sender, e);
         }
 

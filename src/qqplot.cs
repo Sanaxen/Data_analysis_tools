@@ -33,12 +33,15 @@ namespace WindowsFormsApplication1
             e.Cancel = true;
         }
 
+        bool selection_all = false;
         private void button10_Click(object sender, EventArgs e)
         {
+            selection_all = true;
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
                 listBox1.SetSelected(i, true);
             }
+            selection_all = false;
             button1_Click(sender, e);
         }
 
@@ -51,8 +54,10 @@ namespace WindowsFormsApplication1
             button1_Click(sender, e);
         }
 
+        bool invers_selection_all = false;
         private void button9_Click(object sender, EventArgs e)
         {
+            invers_selection_all = true;
             int[] array = new int[listBox1.Items.Count];
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
@@ -73,6 +78,7 @@ namespace WindowsFormsApplication1
                 int idx = array[i];
                 if (idx >= 0) listBox1.SetSelected(idx, false);
             }
+            invers_selection_all = false;
             button1_Click(sender, e);
         }
 
@@ -392,6 +398,8 @@ namespace WindowsFormsApplication1
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (selection_all) return;
+            if (invers_selection_all) return;
             button1_Click(sender, e);
         }
     }
