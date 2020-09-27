@@ -1531,7 +1531,7 @@ namespace WindowsFormsApplication1
 
             Rversion = rpath[rpath.Length - 1];
             rDllPath = backend + "\\bin\\x64";
-            Environment.SetEnvironmentVariable("PATH", rDllPath);
+            Environment.SetEnvironmentVariable("PATH", rDllPath+";"+ Environment.GetEnvironmentVariable("Path"));
             Environment.SetEnvironmentVariable("R_LIBS", backend + "\\library");
 
             RProcess.StartInfo.FileName = rDllPath + "\\R.exe";
