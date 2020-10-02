@@ -1,6 +1,6 @@
 # Data_analysis_tools
  
-[Japanese 日本語.](https://github.com/Sanaxen/dnn_face_recognition_ex/blob/master/README_Japanese.md).
+[Japanese 日本語.](https://github.com/Sanaxen/Data_analysis_tools/blob/master/README_jp.md).
 
 Applications that make the most of **R** without writing **R** programs  
 
