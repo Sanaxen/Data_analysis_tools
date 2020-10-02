@@ -1188,8 +1188,8 @@ namespace WindowsFormsApplication1
 
                 //p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
 
-                numericUpDown3.Maximum = numericUpDown2.Value / 3;
-                if (numericUpDown2.Value* numericUpDown3.Maximum < numericUpDown2.Value)
+                numericUpDown3.Maximum = numericUpDown2.Value / numericUpDown4.Value;
+                if (numericUpDown4.Value* numericUpDown3.Maximum < numericUpDown2.Value)
                 {
                     numericUpDown3.Maximum += 1;
                 }

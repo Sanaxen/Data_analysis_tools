@@ -985,6 +985,13 @@ namespace WindowsFormsApplication1
                 System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments);
                 process.StartInfo.Arguments = " --@ comandline_args";
 
+                numericUpDown3.Maximum = numericUpDown2.Value / numericUpDown4.Value;
+                if (numericUpDown4.Value * numericUpDown3.Maximum < numericUpDown2.Value)
+                {
+                    numericUpDown3.Maximum += 1;
+                }
+                numericUpDown3.Minimum = 0;
+
                 // このプログラムが終了した時に Exited イベントを発生させる
                 process.EnableRaisingEvents = true;
                 // Exited イベントのハンドラを追加する
