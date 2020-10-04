@@ -1,3 +1,5 @@
+bind "Close" "if (GPVAL_TERM eq \'wxt\') bind \'Close\' \'\'; exit gnuplot; else bind \'Close\' \'\'; exit"
+
 set encoding utf8
 set term windows size 1280,960
 set term pngcairo size 1280,960

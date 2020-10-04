@@ -1,3 +1,5 @@
+bind "Close" "if (GPVAL_TERM eq \'wxt\') bind \'Close\' \'\'; exit gnuplot; else bind \'Close\' \'\'; exit"
+
 set border lc rgb "black"
 set grid lc rgb "#D8D8D8" lt 2
 set key opaque box
