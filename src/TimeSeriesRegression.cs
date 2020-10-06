@@ -56,6 +56,7 @@ namespace WindowsFormsApplication1
             {
                 checkBox12.Enabled = true;
                 checkBox13.Enabled = true;
+                numericUpDown6.Enabled = true;
             }
         }
         public bool isRunning()
@@ -266,6 +267,9 @@ namespace WindowsFormsApplication1
                             sw.Write("gpu,");
                             if (checkBox12.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
+
+                            sw.Write("deviceID,");
+                            sw.Write(numericUpDown6.Value.ToString()+ "\r\n");
 
                             sw.Close();
                         }
@@ -754,6 +758,7 @@ namespace WindowsFormsApplication1
             {
                 checkBox12.Enabled = true;
                 checkBox13.Enabled = true;
+                numericUpDown6.Enabled = true;
             }
 
             running = 1;
@@ -927,7 +932,7 @@ namespace WindowsFormsApplication1
                     process.StartInfo.Arguments += " --use_libtorch 1";
                     if (checkBox12.Checked)
                     {
-                        process.StartInfo.Arguments += " --device_name gpu";
+                        process.StartInfo.Arguments += " --device_name gpu:"+numericUpDown6.Value.ToString();
                     }
                     else
                     {
@@ -2321,11 +2326,18 @@ namespace WindowsFormsApplication1
                         if (ss[1].Replace("\r\n", "") == "true")
                         {
                             checkBox12.Checked = true;
+                            numericUpDown6.Enabled = true;
                         }
                         else
                         {
                             checkBox12.Checked = false;
+                            numericUpDown6.Enabled = false;
                         }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("deviceID") >= 0)
+                    {
+                        numericUpDown6.Value = decimal.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
                 }
@@ -2465,6 +2477,7 @@ namespace WindowsFormsApplication1
             {
                 checkBox12.Enabled = true;
                 checkBox13.Enabled = true;
+                numericUpDown6.Enabled = true;
             }
         }
 

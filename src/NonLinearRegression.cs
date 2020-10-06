@@ -53,6 +53,7 @@ namespace WindowsFormsApplication1
             {
                 checkBox1.Enabled = true;
                 checkBox7.Enabled = true;
+                numericUpDown7.Enabled = true;
             }
         }
 
@@ -240,6 +241,9 @@ namespace WindowsFormsApplication1
                             if (checkBox7.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
                             sw.Close();
+
+                            sw.Write("deviceID,");
+                            sw.Write(numericUpDown7.Value.ToString() + "\r\n");
                         }
                     }
                     if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
@@ -800,8 +804,9 @@ namespace WindowsFormsApplication1
                     process.StartInfo.Arguments += " --use_libtorch 1";
                     if ( checkBox7.Checked)
                     {
-                        process.StartInfo.Arguments += " --device_name gpu";
-                    }else
+                        process.StartInfo.Arguments += " --device_name gpu:" + numericUpDown7.Value.ToString();
+                    }
+                    else
                     {
                         process.StartInfo.Arguments += " --device_name cpu";
                     }
@@ -1883,11 +1888,18 @@ namespace WindowsFormsApplication1
                         if (ss[1].Replace("\r\n", "") == "true")
                         {
                             checkBox7.Checked = true;
+                            numericUpDown7.Enabled = true;
                         }
                         else
                         {
                             checkBox7.Checked = false;
+                            numericUpDown7.Enabled = false;
                         }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("deviceID") >= 0)
+                    {
+                        numericUpDown7.Value = decimal.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
                 }
@@ -2034,6 +2046,7 @@ namespace WindowsFormsApplication1
             {
                 checkBox1.Enabled = true;
                 checkBox7.Enabled = true;
+                numericUpDown7.Enabled = true;
             }
         }
 
