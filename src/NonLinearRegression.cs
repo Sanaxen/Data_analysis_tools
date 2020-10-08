@@ -791,6 +791,9 @@ namespace WindowsFormsApplication1
                     form1.FileDelete("ConfusionMatrix.txt");
                 if (System.IO.File.Exists("ConfusionMatrix.r"))
                     form1.FileDelete("ConfusionMatrix.r");
+                if (System.IO.File.Exists("NonLinearRegression.txt"))
+                    form1.FileDelete("NonLinearRegression.txt");
+                
 
                 process = new System.Diagnostics.Process();
 
@@ -2052,6 +2055,8 @@ namespace WindowsFormsApplication1
 
         private void numericUpDown3_ValueChanged(object sender, EventArgs e)
         {
+            form1.clear_gnuplot_proc();
+
             System.IO.Directory.SetCurrentDirectory(Form1.curDir);
             string filename = "multi_data" + $"{numericUpDown3.Value:000}" + ".plt";
 
