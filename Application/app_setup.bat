@@ -1,5 +1,6 @@
 copy ..\src\bin\Debug\*.dll DDS2\bin /v /y
 copy ..\src\bin\Debug\*.exe DDS2\bin /v /y
+copy ..\killprocByName\killprocByName\bin\Debug\killprocByName.exe  DDS2\bin /v /y
 
 call setup_ini.bat
 

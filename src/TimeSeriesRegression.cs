@@ -1187,6 +1187,10 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --multiplot_step " + numericUpDown4.Value.ToString();
                 }
+                if (listBox2.SelectedIndices.Count >= 1)
+                {
+                    process.StartInfo.Arguments += " --time_sift " + int.Parse( textBox5.Text.ToString());
+                }
 
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ");
@@ -2557,6 +2561,22 @@ namespace WindowsFormsApplication1
 
         private void checkBox13_CheckedChanged(object sender, EventArgs e)
         {
+        }
+
+        private void textBox8_Validating(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextAlignChanged(object sender, EventArgs e)
+        {
+            if (int.Parse(textBox5.Text.ToString()) != 0)
+            {
+                if (listBox2.SelectedIndices.Count >= 1)
+                {
+                    textBox5.Text = "0";
+                }
+            }
         }
     }
 }
