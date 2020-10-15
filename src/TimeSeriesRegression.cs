@@ -1191,6 +1191,8 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --time_sift " + int.Parse( textBox5.Text.ToString());
                 }
+                process.StartInfo.Arguments += " --target_position " + _form12.numericUpDown2.Value.ToString();
+                process.StartInfo.Arguments += " --mean_row " + _form12.numericUpDown11.Value.ToString();
 
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ");
