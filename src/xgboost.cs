@@ -28,6 +28,8 @@ namespace WindowsFormsApplication1
         public bool time_series_mode = false;
         public int lag = 0;
 
+        ListBox importance_var = new ListBox();
+
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
         public xgboost()
@@ -701,6 +703,43 @@ namespace WindowsFormsApplication1
                     form1.ComboBoxItemAdd(form1.comboBox3, "confusion_train");
                     form1.ComboBoxItemAdd(form1.comboBox3, "xgboost.model");
                 }
+
+                if (radioButton4.Checked)
+                {
+                    importance_var.Items.Clear();
+
+                    var lines = stat.Split('\n');
+                    int s = -1;
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        var index = lines[i].IndexOf("Feature");
+                        var index2 = lines[i].IndexOf("Gain");
+                        var index3 = lines[i].IndexOf("Cover");
+                        if (!(index >= 0 && index2 >=0 && index3 >= 0))
+                        {
+                            continue;
+                        }
+                        s = i + 1;
+                        break;
+                    }
+                    if ( s >= 0)
+                    {
+                        for (int i = s; i < lines.Length; i++)
+                        {
+                            string x = lines[i].TrimStart();
+                            var name = x.Split(' ');
+                            if (name.Length <= 1) break;
+
+                            int k = 1;
+                            for ( k = 1; k < name.Length; k++)
+                            {
+                                if (name[k] != "") break;
+                            }
+                            importance_var.Items.Add(name[k]);
+                        }
+                    }
+                }
+
                 RMSE = "";
                 if (radioButton1.Checked)
                 {
@@ -1174,6 +1213,30 @@ namespace WindowsFormsApplication1
         private void panel6_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            if ( importance_var.Items.Count == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < listBox2.Items.Count; i++)
+            {
+                listBox2.SetSelected(i, false);
+            }
+            for ( int i = 0; i < importance_var.Items.Count; i++)
+            {
+                for (int j = 0; j < listBox2.Items.Count; j++)
+                {
+                    if (importance_var.Items[i].ToString() == listBox2.Items[j].ToString())
+                    {
+                        listBox2.SetSelected(j, true);
+                    }
+                }
+                if (i + 1== numericUpDown9.Value) break;
+            }
         }
     }
 }

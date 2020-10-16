@@ -105,6 +105,8 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
+            this.button14 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
@@ -121,11 +123,14 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.button14);
+            this.panel2.Controls.Add(this.numericUpDown9);
             this.panel2.Controls.Add(this.label23);
             this.panel2.Controls.Add(this.numericUpDown8);
             this.panel2.Controls.Add(this.label22);
@@ -182,7 +187,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(713, 816);
+            this.panel2.Size = new System.Drawing.Size(715, 816);
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
@@ -926,7 +931,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 71);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(694, 745);
+            this.panel5.Size = new System.Drawing.Size(692, 745);
             this.panel5.TabIndex = 38;
             // 
             // pictureBox1
@@ -936,7 +941,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(692, 555);
+            this.pictureBox1.Size = new System.Drawing.Size(690, 555);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 35;
             this.pictureBox1.TabStop = false;
@@ -963,7 +968,7 @@
             this.splitter2.Location = new System.Drawing.Point(0, 555);
             this.splitter2.Margin = new System.Windows.Forms.Padding(4);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(692, 4);
+            this.splitter2.Size = new System.Drawing.Size(690, 4);
             this.splitter2.TabIndex = 36;
             this.splitter2.TabStop = false;
             // 
@@ -977,7 +982,7 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(692, 184);
+            this.textBox1.Size = new System.Drawing.Size(690, 184);
             this.textBox1.TabIndex = 31;
             this.textBox1.WordWrap = false;
             // 
@@ -994,7 +999,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(694, 71);
+            this.panel1.Size = new System.Drawing.Size(692, 71);
             this.panel1.TabIndex = 35;
             // 
             // button8
@@ -1079,15 +1084,15 @@
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.panel1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(713, 0);
+            this.panel3.Location = new System.Drawing.Point(715, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(694, 816);
+            this.panel3.Size = new System.Drawing.Size(692, 816);
             this.panel3.TabIndex = 39;
             // 
             // splitter1
             // 
-            this.splitter1.Location = new System.Drawing.Point(713, 0);
+            this.splitter1.Location = new System.Drawing.Point(715, 0);
             this.splitter1.Margin = new System.Windows.Forms.Padding(4);
             this.splitter1.Name = "splitter1";
             this.splitter1.Size = new System.Drawing.Size(4, 816);
@@ -1105,6 +1110,39 @@
             this.toolTip1.InitialDelay = 50;
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ReshowDelay = 100;
+            // 
+            // numericUpDown9
+            // 
+            this.numericUpDown9.Location = new System.Drawing.Point(608, 472);
+            this.numericUpDown9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown9.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown9.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown9.Name = "numericUpDown9";
+            this.numericUpDown9.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown9.TabIndex = 116;
+            this.numericUpDown9.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(608, 499);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(64, 23);
+            this.button14.TabIndex = 117;
+            this.button14.Text = "重要度";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // xgboost
             // 
@@ -1142,6 +1180,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1223,5 +1262,7 @@
         public System.Windows.Forms.NumericUpDown numericUpDown8;
         public System.Windows.Forms.Panel panel4;
         public System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button button14;
+        public System.Windows.Forms.NumericUpDown numericUpDown9;
     }
 }
