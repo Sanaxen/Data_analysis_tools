@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(xgboost));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button14 = new System.Windows.Forms.Button();
+            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
             this.label23 = new System.Windows.Forms.Label();
             this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
             this.label22 = new System.Windows.Forms.Label();
@@ -105,9 +107,10 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
-            this.button14 = new System.Windows.Forms.Button();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
@@ -123,12 +126,13 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label24);
+            this.panel2.Controls.Add(this.comboBox4);
             this.panel2.Controls.Add(this.button14);
             this.panel2.Controls.Add(this.numericUpDown9);
             this.panel2.Controls.Add(this.label23);
@@ -187,9 +191,42 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(715, 816);
+            this.panel2.Size = new System.Drawing.Size(715, 829);
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(608, 499);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(64, 23);
+            this.button14.TabIndex = 117;
+            this.button14.Text = "重要度";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // numericUpDown9
+            // 
+            this.numericUpDown9.Location = new System.Drawing.Point(608, 472);
+            this.numericUpDown9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown9.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown9.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown9.Name = "numericUpDown9";
+            this.numericUpDown9.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown9.TabIndex = 116;
+            this.numericUpDown9.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
             // 
             // label23
             // 
@@ -425,6 +462,7 @@
             this.label13.Size = new System.Drawing.Size(109, 15);
             this.label13.TabIndex = 95;
             this.label13.Text = "min_child_weight";
+            this.toolTip1.SetToolTip(this.label13, "分割中にノードの重みがこれを超えた時点で分割をやめる");
             // 
             // textBox4
             // 
@@ -444,7 +482,7 @@
             this.label12.Size = new System.Drawing.Size(50, 15);
             this.label12.TabIndex = 93;
             this.label12.Text = "gamma";
-            this.toolTip1.SetToolTip(this.label12, "大きいほど木が複雑となり、過学習を起こしやすくなります。\r\n値が大きいほどアルゴリズムは保守的になります。");
+            this.toolTip1.SetToolTip(this.label12, "損失関数の減少がこの値を超える時にのみ分割を進める");
             // 
             // textBox3
             // 
@@ -931,7 +969,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 71);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(692, 745);
+            this.panel5.Size = new System.Drawing.Size(692, 758);
             this.panel5.TabIndex = 38;
             // 
             // pictureBox1
@@ -941,7 +979,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(690, 555);
+            this.pictureBox1.Size = new System.Drawing.Size(690, 568);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 35;
             this.pictureBox1.TabStop = false;
@@ -965,7 +1003,7 @@
             // 
             this.splitter2.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(0, 555);
+            this.splitter2.Location = new System.Drawing.Point(0, 568);
             this.splitter2.Margin = new System.Windows.Forms.Padding(4);
             this.splitter2.Name = "splitter2";
             this.splitter2.Size = new System.Drawing.Size(690, 4);
@@ -977,7 +1015,7 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBox1.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox1.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.textBox1.Location = new System.Drawing.Point(0, 559);
+            this.textBox1.Location = new System.Drawing.Point(0, 572);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -1087,7 +1125,7 @@
             this.panel3.Location = new System.Drawing.Point(715, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(692, 816);
+            this.panel3.Size = new System.Drawing.Size(692, 829);
             this.panel3.TabIndex = 39;
             // 
             // splitter1
@@ -1095,7 +1133,7 @@
             this.splitter1.Location = new System.Drawing.Point(715, 0);
             this.splitter1.Margin = new System.Windows.Forms.Padding(4);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(4, 816);
+            this.splitter1.Size = new System.Drawing.Size(4, 829);
             this.splitter1.TabIndex = 40;
             this.splitter1.TabStop = false;
             // 
@@ -1111,44 +1149,31 @@
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ReshowDelay = 100;
             // 
-            // numericUpDown9
+            // comboBox4
             // 
-            this.numericUpDown9.Location = new System.Drawing.Point(608, 472);
-            this.numericUpDown9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numericUpDown9.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown9.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown9.Name = "numericUpDown9";
-            this.numericUpDown9.Size = new System.Drawing.Size(64, 22);
-            this.numericUpDown9.TabIndex = 116;
-            this.numericUpDown9.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
+            this.comboBox4.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(292, 120);
+            this.comboBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(158, 25);
+            this.comboBox4.TabIndex = 118;
             // 
-            // button14
+            // label24
             // 
-            this.button14.Location = new System.Drawing.Point(608, 499);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(64, 23);
-            this.button14.TabIndex = 117;
-            this.button14.Text = "重要度";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.label24.AutoSize = true;
+            this.label24.ForeColor = System.Drawing.Color.Black;
+            this.label24.Location = new System.Drawing.Point(289, 103);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(35, 15);
+            this.label24.TabIndex = 119;
+            this.label24.Text = "重み";
             // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1407, 816);
+            this.ClientSize = new System.Drawing.Size(1407, 829);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -1161,6 +1186,7 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.xgboost_MouseMove);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
@@ -1180,7 +1206,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1264,5 +1289,7 @@
         public System.Windows.Forms.Label label21;
         private System.Windows.Forms.Button button14;
         public System.Windows.Forms.NumericUpDown numericUpDown9;
+        public System.Windows.Forms.Label label24;
+        public System.Windows.Forms.ComboBox comboBox4;
     }
 }

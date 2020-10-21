@@ -390,7 +390,12 @@ namespace WindowsFormsApplication1
 
                 cmd += "train_mx<-";
                 cmd += "sparse.model.matrix(" + formuler+ ", data = train)\r\n";
-                cmd += "train_dmat <- xgb.DMatrix(train_mx, label = train$target_)\r\n";
+                cmd += "train_dmat <- xgb.DMatrix(train_mx, label = train$target_";
+                if ( comboBox4.Text != "")
+                {
+                    cmd += ",weight = train$'" + comboBox4.Text + "'";
+                }
+                cmd += ")\r\n";
                 cmd += "\r\n";
                 cmd += "\r\n";
 
@@ -412,7 +417,12 @@ namespace WindowsFormsApplication1
 
                 cmd += "test_mx<-";
                 cmd += "sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                cmd += "test_dmat <- xgb.DMatrix(test_mx, label = test$target_)\r\n";
+                cmd += "test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                if (comboBox4.Text != "")
+                {
+                    cmd += ",weight = test$'" + comboBox4.Text + "'";
+                }
+                cmd += ")\r\n";
                 cmd += "\r\n";
                 cmd += "\r\n";
 

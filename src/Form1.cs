@@ -4960,6 +4960,8 @@ namespace WindowsFormsApplication1
                 _randomForest.listBox1.Items.Add(Names.Items[i]);
                 _randomForest.listBox2.Items.Add(Names.Items[i]);
             }
+
+
             _randomForest.Show();
             _randomForest.TopMost = true;
             _randomForest.TopMost = false;
@@ -8455,12 +8457,31 @@ namespace WindowsFormsApplication1
                 return;
             }
 
+
+
+
             Names = GetNames("df");
+            ListBox types = GetTypes("df");
             for (int i = 0; i < Names.Items.Count; i++)
             {
                 _xgboost.listBox1.Items.Add(Names.Items[i]);
                 _xgboost.listBox2.Items.Add(Names.Items[i]);
             }
+            _xgboost.comboBox4.Items.Clear();
+            _xgboost.comboBox4.Text = "";
+            for (int i = 0; i < Names.Items.Count; i++)
+            {
+                if (types.Items[i].ToString() == "numeric" || types.Items[i].ToString() == "integer")
+                {
+                    _xgboost.comboBox4.Items.Add(Names.Items[i]);
+                }
+                else
+                {
+                    _xgboost.comboBox4.Items.Add(Names.Items[i] + "<-非数値です");
+                }
+            }
+            _xgboost.comboBox4.Items.Add("");
+
             _xgboost.Show();
             _xgboost.TopMost = true;
             _xgboost.TopMost = false;

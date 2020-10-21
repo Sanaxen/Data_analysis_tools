@@ -280,7 +280,16 @@ namespace WindowsFormsApplication1
 
                         cmd += "options(width=" + form1._setting.numericUpDown2.Value.ToString() + ")\r\n";
                         cmd += "sink(file = \"summary.txt\")\r\n";
-                        cmd += "rf.model<-tuneRF(tmp_df_, " + "df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "',doBest=T)\r\n";
+                        cmd += "rf.model<-tuneRF(tmp_df_, " + "df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "',doBest=T";
+
+                        if (radioButton2.Checked)
+                        {
+                            if (textBox3.Text != "")
+                            {
+                                cmd += ",classwt=c(" + textBox3.Text + ")";
+                            }
+                        }
+                        cmd += ")\r\n";
                         cmd += "sink()\r\n";
                     }
                     else
@@ -326,6 +335,14 @@ namespace WindowsFormsApplication1
                         cmd += ", mtry = " + numericUpDown2.Value.ToString();
                         //cmd += ",importance = T";
                         cmd += ",proximity=T,";
+                        if (radioButton2.Checked)
+                        {
+                            if (textBox3.Text != "")
+                            {
+                                cmd += "classwt=c(" + textBox3.Text + "),";
+                            }
+                        }
+
                         cmd += ", data = df_)\r\n";
                     }
 
