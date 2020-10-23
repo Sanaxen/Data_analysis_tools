@@ -63,7 +63,7 @@
             this.listBox1.Location = new System.Drawing.Point(6, 24);
             this.listBox1.Name = "listBox1";
             this.listBox1.ScrollAlwaysVisible = true;
-            this.listBox1.Size = new System.Drawing.Size(200, 508);
+            this.listBox1.Size = new System.Drawing.Size(200, 520);
             this.listBox1.TabIndex = 0;
             this.listBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseClick);
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -96,7 +96,7 @@
             // textBox5
             // 
             this.textBox5.Location = new System.Drawing.Point(534, 216);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
             this.textBox5.Multiline = true;
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(278, 124);
@@ -116,7 +116,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(895, 22);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(64, 18);
             this.button4.TabIndex = 14;
@@ -127,7 +127,7 @@
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(895, 47);
-            this.button5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(64, 18);
             this.button5.TabIndex = 15;
@@ -166,7 +166,7 @@
             // 
             this.textBox6.ForeColor = System.Drawing.Color.Crimson;
             this.textBox6.Location = new System.Drawing.Point(542, 20);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox6.Margin = new System.Windows.Forms.Padding(2);
             this.textBox6.Multiline = true;
             this.textBox6.Name = "textBox6";
             this.textBox6.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -277,7 +277,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1133, 536);
+            this.ClientSize = new System.Drawing.Size(1133, 549);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label2);

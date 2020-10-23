@@ -36,6 +36,7 @@
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.button4 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button71 = new System.Windows.Forms.Button();
             this.button69 = new System.Windows.Forms.Button();
             this.panel15 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -134,6 +135,8 @@
             this.button44 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.label17 = new System.Windows.Forms.Label();
+            this.button72 = new System.Windows.Forms.Button();
             this.button70 = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
             this.button67 = new System.Windows.Forms.Button();
@@ -179,8 +182,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
-            this.button71 = new System.Windows.Forms.Button();
-            this.button72 = new System.Windows.Forms.Button();
             this.roundButton10 = new WindowsFormsApplication1.RoundButton();
             this.roundButton6 = new WindowsFormsApplication1.RoundButton();
             this.roundButton9 = new WindowsFormsApplication1.RoundButton();
@@ -198,7 +199,6 @@
             this.roundButton13 = new WindowsFormsApplication1.RoundButton();
             this.roundButton12 = new WindowsFormsApplication1.RoundButton();
             this.roundButton11 = new WindowsFormsApplication1.RoundButton();
-            this.label17 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel15.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -234,11 +234,10 @@
             this.textBox2.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox2.ForeColor = System.Drawing.Color.OliveDrab;
             this.textBox2.Location = new System.Drawing.Point(0, 0);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox2.Size = new System.Drawing.Size(1529, 445);
+            this.textBox2.Size = new System.Drawing.Size(1144, 341);
             this.textBox2.TabIndex = 3;
             this.textBox2.WordWrap = false;
             // 
@@ -252,10 +251,9 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button3.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button3.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button3.Location = new System.Drawing.Point(416, 59);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
+            this.button3.Location = new System.Drawing.Point(312, 47);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(80, 29);
+            this.button3.Size = new System.Drawing.Size(60, 23);
             this.button3.TabIndex = 6;
             this.button3.Text = "Evaluate";
             this.toolTip1.SetToolTip(this.button3, "一行の簡単なコマンドを実行します");
@@ -266,10 +264,9 @@
             // 
             this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.button4.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button4.Location = new System.Drawing.Point(4, 0);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
+            this.button4.Location = new System.Drawing.Point(3, 0);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(117, 29);
+            this.button4.Size = new System.Drawing.Size(88, 23);
             this.button4.TabIndex = 8;
             this.button4.Text = "カレントディレクトリ";
             this.toolTip1.SetToolTip(this.button4, "作業ディレクトリの設定");
@@ -300,18 +297,31 @@
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(10, 60);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel1.Location = new System.Drawing.Point(8, 60);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1537, 198);
+            this.panel1.Size = new System.Drawing.Size(1152, 158);
             this.panel1.TabIndex = 9;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // button71
+            // 
+            this.button71.Location = new System.Drawing.Point(515, 59);
+            this.button71.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button71.Name = "button71";
+            this.button71.Size = new System.Drawing.Size(56, 18);
+            this.button71.TabIndex = 64;
+            this.button71.Text = "テスト";
+            this.button71.UseVisualStyleBackColor = true;
+            this.button71.Visible = false;
+            this.button71.Click += new System.EventHandler(this.button71_Click);
+            // 
             // button69
             // 
-            this.button69.Location = new System.Drawing.Point(768, 75);
+            this.button69.Location = new System.Drawing.Point(576, 60);
+            this.button69.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button69.Name = "button69";
-            this.button69.Size = new System.Drawing.Size(75, 23);
+            this.button69.Size = new System.Drawing.Size(56, 18);
             this.button69.TabIndex = 63;
             this.button69.Text = "テスト";
             this.button69.UseVisualStyleBackColor = true;
@@ -323,10 +333,9 @@
             this.panel15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(2)))));
             this.panel15.Controls.Add(this.label1);
             this.panel15.Controls.Add(this.roundButton17);
-            this.panel15.Location = new System.Drawing.Point(1257, 102);
-            this.panel15.Margin = new System.Windows.Forms.Padding(4);
+            this.panel15.Location = new System.Drawing.Point(943, 82);
             this.panel15.Name = "panel15";
-            this.panel15.Size = new System.Drawing.Size(152, 82);
+            this.panel15.Size = new System.Drawing.Size(114, 66);
             this.panel15.TabIndex = 62;
             this.toolTip1.SetToolTip(this.panel15, "モデル作成と評価");
             // 
@@ -334,9 +343,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.label1.Location = new System.Drawing.Point(33, 5);
+            this.label1.Location = new System.Drawing.Point(25, 4);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(86, 15);
+            this.label1.Size = new System.Drawing.Size(69, 12);
             this.label1.TabIndex = 62;
             this.label1.Text = "時系列データ";
             // 
@@ -345,10 +355,10 @@
             this.panel9.Controls.Add(this.button54);
             this.panel9.Controls.Add(this.button53);
             this.panel9.Controls.Add(this.button20);
-            this.panel9.Location = new System.Drawing.Point(1430, 3);
-            this.panel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel9.Location = new System.Drawing.Point(1072, 2);
+            this.panel9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(105, 98);
+            this.panel9.Size = new System.Drawing.Size(79, 78);
             this.panel9.TabIndex = 54;
             // 
             // button54
@@ -357,10 +367,9 @@
             this.button54.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button54.Font = new System.Drawing.Font("Meiryo UI", 7.2F);
             this.button54.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button54.Location = new System.Drawing.Point(3, 4);
-            this.button54.Margin = new System.Windows.Forms.Padding(4);
+            this.button54.Location = new System.Drawing.Point(2, 3);
             this.button54.Name = "button54";
-            this.button54.Size = new System.Drawing.Size(100, 29);
+            this.button54.Size = new System.Drawing.Size(75, 23);
             this.button54.TabIndex = 46;
             this.button54.Text = "作業読み込み";
             this.toolTip1.SetToolTip(this.button54, "保存してある作業データを読み込み");
@@ -373,10 +382,9 @@
             this.button53.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button53.Font = new System.Drawing.Font("Meiryo UI", 7.2F);
             this.button53.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button53.Location = new System.Drawing.Point(3, 35);
-            this.button53.Margin = new System.Windows.Forms.Padding(4);
+            this.button53.Location = new System.Drawing.Point(2, 28);
             this.button53.Name = "button53";
-            this.button53.Size = new System.Drawing.Size(100, 29);
+            this.button53.Size = new System.Drawing.Size(75, 23);
             this.button53.TabIndex = 45;
             this.button53.Text = "作業保存";
             this.toolTip1.SetToolTip(this.button53, "現在の作業データを全て保存");
@@ -389,10 +397,9 @@
             this.button20.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button20.Font = new System.Drawing.Font("Meiryo UI", 7.2F);
             this.button20.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button20.Location = new System.Drawing.Point(3, 66);
-            this.button20.Margin = new System.Windows.Forms.Padding(4);
+            this.button20.Location = new System.Drawing.Point(2, 53);
             this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(100, 29);
+            this.button20.Size = new System.Drawing.Size(75, 23);
             this.button20.TabIndex = 51;
             this.button20.Text = "作業クリア";
             this.toolTip1.SetToolTip(this.button20, "現在の作業データを全て削除します。\r\n削除すると作業内容は戻せません。");
@@ -404,10 +411,9 @@
             this.Report.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.Report.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Report.Font = new System.Drawing.Font("Meiryo UI", 7.2F);
-            this.Report.Location = new System.Drawing.Point(1434, 97);
-            this.Report.Margin = new System.Windows.Forms.Padding(4);
+            this.Report.Location = new System.Drawing.Point(1076, 78);
             this.Report.Name = "Report";
-            this.Report.Size = new System.Drawing.Size(100, 29);
+            this.Report.Size = new System.Drawing.Size(75, 23);
             this.Report.TabIndex = 50;
             this.Report.Text = "Report";
             this.toolTip1.SetToolTip(this.Report, "レポート用ドキュメントを作成できます。\r\nグラフなどは右クリックしてレポートに転記出来ます。\r\nMarkdownで綺麗なドキュメントを分析しながら作成できます。\r" +
@@ -420,10 +426,9 @@
             this.panel10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(2)))));
             this.panel10.Controls.Add(this.roundButton1);
             this.panel10.Controls.Add(this.checkBox7);
-            this.panel10.Location = new System.Drawing.Point(871, 102);
-            this.panel10.Margin = new System.Windows.Forms.Padding(4);
+            this.panel10.Location = new System.Drawing.Point(653, 82);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(117, 82);
+            this.panel10.Size = new System.Drawing.Size(88, 66);
             this.panel10.TabIndex = 49;
             // 
             // checkBox7
@@ -431,10 +436,9 @@
             this.checkBox7.AutoSize = true;
             this.checkBox7.BackColor = System.Drawing.Color.Black;
             this.checkBox7.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.checkBox7.Location = new System.Drawing.Point(9, 2);
-            this.checkBox7.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox7.Location = new System.Drawing.Point(7, 2);
             this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(57, 19);
+            this.checkBox7.Size = new System.Drawing.Size(46, 16);
             this.checkBox7.TabIndex = 50;
             this.checkBox7.Text = "auto";
             this.toolTip1.SetToolTip(this.checkBox7, "チェックを入れると整形処理結果を自動的にカレントのデータフレームに設定します。\r\nチェックがオフの場合はカレントのデータフレームは更新されません。\r\nその場合は必" +
@@ -446,10 +450,9 @@
             // 
             this.splitter5.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter5.Location = new System.Drawing.Point(0, 194);
-            this.splitter5.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter5.Location = new System.Drawing.Point(0, 155);
             this.splitter5.Name = "splitter5";
-            this.splitter5.Size = new System.Drawing.Size(1537, 4);
+            this.splitter5.Size = new System.Drawing.Size(1152, 3);
             this.splitter5.TabIndex = 43;
             this.splitter5.TabStop = false;
             // 
@@ -458,10 +461,9 @@
             this.button30.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button30.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button30.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button30.Location = new System.Drawing.Point(504, 59);
-            this.button30.Margin = new System.Windows.Forms.Padding(4);
+            this.button30.Location = new System.Drawing.Point(378, 47);
             this.button30.Name = "button30";
-            this.button30.Size = new System.Drawing.Size(135, 29);
+            this.button30.Size = new System.Drawing.Size(101, 23);
             this.button30.TabIndex = 39;
             this.button30.Text = "オブジェクト読み込み";
             this.toolTip1.SetToolTip(this.button30, "ファイルで指定されたオブジェクトデータ読み込み");
@@ -471,20 +473,19 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(4, 62);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox1.Location = new System.Drawing.Point(3, 50);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(404, 23);
+            this.comboBox1.Size = new System.Drawing.Size(304, 20);
             this.comboBox1.TabIndex = 38;
             // 
             // panel8
             // 
             this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(2)))));
             this.panel8.Controls.Add(this.roundButton2);
-            this.panel8.Location = new System.Drawing.Point(991, 102);
-            this.panel8.Margin = new System.Windows.Forms.Padding(4);
+            this.panel8.Location = new System.Drawing.Point(743, 82);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(105, 82);
+            this.panel8.Size = new System.Drawing.Size(79, 66);
             this.panel8.TabIndex = 37;
             this.toolTip1.SetToolTip(this.panel8, "データの可視化");
             // 
@@ -493,9 +494,10 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label6.ForeColor = System.Drawing.Color.YellowGreen;
-            this.label6.Location = new System.Drawing.Point(525, -1);
+            this.label6.Location = new System.Drawing.Point(394, -1);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 15);
+            this.label6.Size = new System.Drawing.Size(37, 13);
             this.label6.TabIndex = 28;
             this.label6.Text = "実験中";
             // 
@@ -504,10 +506,9 @@
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(2)))));
             this.panel7.Controls.Add(this.label15);
             this.panel7.Controls.Add(this.roundButton3);
-            this.panel7.Location = new System.Drawing.Point(1101, 102);
-            this.panel7.Margin = new System.Windows.Forms.Padding(4);
+            this.panel7.Location = new System.Drawing.Point(826, 82);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(152, 82);
+            this.panel7.Size = new System.Drawing.Size(114, 66);
             this.panel7.TabIndex = 36;
             this.toolTip1.SetToolTip(this.panel7, "モデル作成と評価");
             // 
@@ -515,9 +516,10 @@
             // 
             this.label15.AutoSize = true;
             this.label15.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.label15.Location = new System.Drawing.Point(19, 6);
+            this.label15.Location = new System.Drawing.Point(14, 5);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(71, 15);
+            this.label15.Size = new System.Drawing.Size(57, 12);
             this.label15.TabIndex = 63;
             this.label15.Text = "一般データ";
             // 
@@ -526,10 +528,10 @@
             this.button14.BackColor = System.Drawing.Color.DarkOrange;
             this.button14.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button14.ForeColor = System.Drawing.Color.Black;
-            this.button14.Location = new System.Drawing.Point(499, 9);
-            this.button14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button14.Location = new System.Drawing.Point(374, 7);
+            this.button14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(113, 31);
+            this.button14.Size = new System.Drawing.Size(85, 25);
             this.button14.TabIndex = 27;
             this.button14.Text = "python";
             this.button14.UseVisualStyleBackColor = false;
@@ -546,10 +548,10 @@
             this.panel6.Controls.Add(this.roundButton11);
             this.panel6.Controls.Add(this.comboBox3);
             this.panel6.Controls.Add(this.label5);
-            this.panel6.Location = new System.Drawing.Point(0, 102);
-            this.panel6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel6.Location = new System.Drawing.Point(0, 82);
+            this.panel6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(869, 82);
+            this.panel6.Size = new System.Drawing.Size(652, 66);
             this.panel6.TabIndex = 25;
             this.toolTip1.SetToolTip(this.panel6, "オブジェクトのサマリー等簡単な情報を見る事が出来ます");
             // 
@@ -558,10 +560,10 @@
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
             "df"});
-            this.comboBox3.Location = new System.Drawing.Point(7, 42);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox3.Location = new System.Drawing.Point(5, 34);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(145, 23);
+            this.comboBox3.Size = new System.Drawing.Size(110, 20);
             this.comboBox3.TabIndex = 37;
             this.comboBox3.Text = "df";
             // 
@@ -569,10 +571,9 @@
             // 
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.label5.Location = new System.Drawing.Point(7, 20);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(5, 16);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(86, 15);
+            this.label5.Size = new System.Drawing.Size(68, 12);
             this.label5.TabIndex = 23;
             this.label5.Text = "オブジェクト名";
             // 
@@ -595,10 +596,9 @@
             this.panel5.Controls.Add(this.label2);
             this.panel5.Controls.Add(this.button5);
             this.panel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.panel5.Location = new System.Drawing.Point(635, 3);
-            this.panel5.Margin = new System.Windows.Forms.Padding(4);
+            this.panel5.Location = new System.Drawing.Point(476, 2);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(789, 70);
+            this.panel5.Size = new System.Drawing.Size(592, 56);
             this.panel5.TabIndex = 21;
             this.toolTip1.SetToolTip(this.panel5, "データを変換したり整形できます。\r\n処理対象にするカレント・データフレームもここで切り替えできます");
             // 
@@ -609,10 +609,10 @@
             this.checkBox8.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox8.Font = new System.Drawing.Font("Meiryo UI", 7.2F);
             this.checkBox8.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.checkBox8.Location = new System.Drawing.Point(316, 4);
-            this.checkBox8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox8.Location = new System.Drawing.Point(237, 3);
+            this.checkBox8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(136, 19);
+            this.checkBox8.Size = new System.Drawing.Size(116, 17);
             this.checkBox8.TabIndex = 52;
             this.checkBox8.Text = "文字列を因子にしない";
             this.toolTip1.SetToolTip(this.checkBox8, "チェックを外すと文字列を因子ラベルとして読み込みます。");
@@ -623,10 +623,10 @@
             this.button19.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button19.Font = new System.Drawing.Font("Meiryo UI", 7.2F);
             this.button19.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button19.Location = new System.Drawing.Point(284, 38);
-            this.button19.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button19.Location = new System.Drawing.Point(213, 30);
+            this.button19.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(72, 29);
+            this.button19.Size = new System.Drawing.Size(54, 23);
             this.button19.TabIndex = 51;
             this.button19.Text = "確認";
             this.toolTip1.SetToolTip(this.button19, "読み込んだデータフレームをWEB表示して閲覧出来ます。");
@@ -638,10 +638,9 @@
             this.button33.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button33.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button33.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button33.Location = new System.Drawing.Point(508, 36);
-            this.button33.Margin = new System.Windows.Forms.Padding(4);
+            this.button33.Location = new System.Drawing.Point(381, 29);
             this.button33.Name = "button33";
-            this.button33.Size = new System.Drawing.Size(52, 29);
+            this.button33.Size = new System.Drawing.Size(39, 23);
             this.button33.TabIndex = 33;
             this.button33.Text = "更新";
             this.toolTip1.SetToolTip(this.button33, "dfを手でUpadateした場合に更新する必要があります");
@@ -653,10 +652,10 @@
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
             "df"});
-            this.comboBox2.Location = new System.Drawing.Point(487, 5);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox2.Location = new System.Drawing.Point(365, 4);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(198, 23);
+            this.comboBox2.Size = new System.Drawing.Size(150, 20);
             this.comboBox2.TabIndex = 31;
             this.comboBox2.Text = "df";
             // 
@@ -665,10 +664,9 @@
             this.checkBox4.AutoSize = true;
             this.checkBox4.Font = new System.Drawing.Font("Meiryo UI", 7.2F);
             this.checkBox4.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.checkBox4.Location = new System.Drawing.Point(132, 49);
-            this.checkBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox4.Location = new System.Drawing.Point(99, 39);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(97, 19);
+            this.checkBox4.Size = new System.Drawing.Size(82, 17);
             this.checkBox4.TabIndex = 23;
             this.checkBox4.Text = "UTF-8-BOM";
             this.toolTip1.SetToolTip(this.checkBox4, "UTF8 BOMありCSVの場合はチェックを入れて下さい");
@@ -679,10 +677,9 @@
             this.button28.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button28.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button28.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button28.Location = new System.Drawing.Point(563, 36);
-            this.button28.Margin = new System.Windows.Forms.Padding(4);
+            this.button28.Location = new System.Drawing.Point(422, 29);
             this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(125, 29);
+            this.button28.Size = new System.Drawing.Size(94, 23);
             this.button28.TabIndex = 21;
             this.button28.Text = "カレントdfに変更";
             this.toolTip1.SetToolTip(this.button28, "現在のdfを指示しているオブジェクト（データフレーム）に更新します\r\n※データ「整形」のautoチェックにチェックを入れておくと整形後のデータフレームに自動的に更" +
@@ -695,10 +692,10 @@
             this.button13.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button13.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button13.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button13.Location = new System.Drawing.Point(689, 36);
-            this.button13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button13.Location = new System.Drawing.Point(517, 29);
+            this.button13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(99, 29);
+            this.button13.Size = new System.Drawing.Size(74, 23);
             this.button13.TabIndex = 19;
             this.button13.Text = "別名で保存";
             this.toolTip1.SetToolTip(this.button13, "オブジェクトをファイルに保存します\r\nデータフレームはCVSで保存されます。");
@@ -709,10 +706,9 @@
             // 
             this.checkBox2.AutoSize = true;
             this.checkBox2.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.checkBox2.Location = new System.Drawing.Point(213, 5);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox2.Location = new System.Drawing.Point(160, 4);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(89, 19);
+            this.checkBox2.Size = new System.Drawing.Size(71, 16);
             this.checkBox2.TabIndex = 18;
             this.checkBox2.Text = "row.name";
             this.toolTip1.SetToolTip(this.checkBox2, "行名として読み込む列がある場合はチェックを入れて下さい");
@@ -726,9 +722,8 @@
             this.button15.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button15.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.button15.Location = new System.Drawing.Point(1, 1);
-            this.button15.Margin = new System.Windows.Forms.Padding(4);
             this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(125, 31);
+            this.button15.Size = new System.Drawing.Size(94, 25);
             this.button15.TabIndex = 30;
             this.button15.Text = "CSV読み込み";
             this.toolTip1.SetToolTip(this.button15, "CSVデータ読み込み");
@@ -741,10 +736,9 @@
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button7.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button7.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button7.Location = new System.Drawing.Point(4, 35);
-            this.button7.Margin = new System.Windows.Forms.Padding(4);
+            this.button7.Location = new System.Drawing.Point(3, 28);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(123, 29);
+            this.button7.Size = new System.Drawing.Size(92, 23);
             this.button7.TabIndex = 14;
             this.button7.Text = "再読み込み";
             this.toolTip1.SetToolTip(this.button7, "再読み込み");
@@ -757,10 +751,9 @@
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.checkBox1.Location = new System.Drawing.Point(128, 5);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox1.Location = new System.Drawing.Point(96, 4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(72, 19);
+            this.checkBox1.Size = new System.Drawing.Size(58, 16);
             this.checkBox1.TabIndex = 15;
             this.checkBox1.Text = "header";
             this.toolTip1.SetToolTip(this.checkBox1, "ヘッダーが無いCSVの場合はチェックを外してください");
@@ -768,15 +761,14 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(203, 26);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
+            this.numericUpDown1.Location = new System.Drawing.Point(152, 21);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             1000000,
             0,
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(57, 22);
+            this.numericUpDown1.Size = new System.Drawing.Size(43, 19);
             this.numericUpDown1.TabIndex = 16;
             this.numericUpDown1.Value = new decimal(new int[] {
             1,
@@ -788,10 +780,9 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.label2.Location = new System.Drawing.Point(129, 26);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(97, 21);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(74, 15);
+            this.label2.Size = new System.Drawing.Size(58, 12);
             this.label2.TabIndex = 17;
             this.label2.Text = "row.names";
             this.toolTip1.SetToolTip(this.label2, "何列目までが行名か設定できます");
@@ -801,10 +792,9 @@
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button5.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button5.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button5.Location = new System.Drawing.Point(688, 2);
-            this.button5.Margin = new System.Windows.Forms.Padding(4);
+            this.button5.Location = new System.Drawing.Point(516, 2);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(99, 30);
+            this.button5.Size = new System.Drawing.Size(74, 24);
             this.button5.TabIndex = 9;
             this.button5.Text = "上書とdf更新";
             this.toolTip1.SetToolTip(this.button5, "現在のデータを更新します\r\nカレントのdfも更新されます。");
@@ -813,10 +803,9 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(123, 4);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox5.Location = new System.Drawing.Point(92, 3);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(243, 22);
+            this.textBox5.Size = new System.Drawing.Size(183, 19);
             this.textBox5.TabIndex = 12;
             // 
             // checkBox6
@@ -826,10 +815,10 @@
             this.checkBox6.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox6.Font = new System.Drawing.Font("MS UI Gothic", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.checkBox6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.checkBox6.Location = new System.Drawing.Point(427, 24);
-            this.checkBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox6.Location = new System.Drawing.Point(320, 19);
+            this.checkBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(100, 17);
+            this.checkBox6.Size = new System.Drawing.Size(82, 14);
             this.checkBox6.TabIndex = 47;
             this.checkBox6.Text = "インデントガイド";
             this.toolTip1.SetToolTip(this.checkBox6, "コードのインデントの状態を分かりやすくできます");
@@ -840,9 +829,10 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.label4.Location = new System.Drawing.Point(116, 90);
+            this.label4.Location = new System.Drawing.Point(87, 72);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(18, 17);
+            this.label4.Size = new System.Drawing.Size(15, 14);
             this.label4.TabIndex = 46;
             this.label4.Text = "%";
             // 
@@ -850,10 +840,9 @@
             // 
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.label8.Location = new System.Drawing.Point(13, 91);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Location = new System.Drawing.Point(10, 73);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(46, 17);
+            this.label8.Size = new System.Drawing.Size(39, 14);
             this.label8.TabIndex = 21;
             this.label8.Text = "train";
             this.toolTip1.SetToolTip(this.label8, "現在のデータフレームを訓練(train)データと検証(test)データに分割します。\r\n指定された値（％）をtrainデータにします。");
@@ -864,10 +853,10 @@
             this.checkBox5.Checked = true;
             this.checkBox5.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox5.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.checkBox5.Location = new System.Drawing.Point(136, 89);
-            this.checkBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox5.Location = new System.Drawing.Point(102, 71);
+            this.checkBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(84, 21);
+            this.checkBox5.Size = new System.Drawing.Size(70, 18);
             this.checkBox5.TabIndex = 40;
             this.checkBox5.Text = "シャフル";
             this.toolTip1.SetToolTip(this.checkBox5, "訓練(train)データと検証(test)データに分けるときに現在のデータの並びをシャッフルして並びに依存しないようにします。");
@@ -879,10 +868,9 @@
             this.button24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button24.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button24.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button24.Location = new System.Drawing.Point(4, 116);
-            this.button24.Margin = new System.Windows.Forms.Padding(4);
+            this.button24.Location = new System.Drawing.Point(3, 93);
             this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(232, 29);
+            this.button24.Size = new System.Drawing.Size(174, 23);
             this.button24.TabIndex = 22;
             this.button24.Text = "train/test";
             this.toolTip1.SetToolTip(this.button24, "dfをtrainとtestに分割");
@@ -892,8 +880,7 @@
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(68, 88);
-            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(4);
+            this.numericUpDown3.Location = new System.Drawing.Point(51, 70);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             99,
             0,
@@ -905,7 +892,7 @@
             0,
             0});
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(49, 24);
+            this.numericUpDown3.Size = new System.Drawing.Size(37, 21);
             this.numericUpDown3.TabIndex = 23;
             this.numericUpDown3.Value = new decimal(new int[] {
             70,
@@ -921,10 +908,10 @@
             this.panel2.Controls.Add(this.splitter2);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(10, 258);
-            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel2.Location = new System.Drawing.Point(8, 218);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1537, 616);
+            this.panel2.Size = new System.Drawing.Size(1152, 481);
             this.panel2.TabIndex = 10;
             // 
             // tabControl1
@@ -940,10 +927,10 @@
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1537, 476);
+            this.tabControl1.Size = new System.Drawing.Size(1152, 369);
             this.tabControl1.TabIndex = 11;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
@@ -954,10 +941,10 @@
             // 
             this.tabPage5.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.tabPage5.Controls.Add(this.textBox6);
-            this.tabPage5.Location = new System.Drawing.Point(4, 27);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage5.Location = new System.Drawing.Point(4, 24);
+            this.tabPage5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1529, 445);
+            this.tabPage5.Size = new System.Drawing.Size(1144, 341);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "出力結果";
             // 
@@ -968,11 +955,10 @@
             this.textBox6.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.textBox6.Location = new System.Drawing.Point(0, 0);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(4);
             this.textBox6.Multiline = true;
             this.textBox6.Name = "textBox6";
             this.textBox6.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox6.Size = new System.Drawing.Size(1529, 445);
+            this.textBox6.Size = new System.Drawing.Size(1144, 341);
             this.textBox6.TabIndex = 12;
             this.textBox6.WordWrap = false;
             // 
@@ -998,21 +984,21 @@
             this.tabPage1.Controls.Add(this.button29);
             this.tabPage1.Controls.Add(this.button21);
             this.tabPage1.Controls.Add(this.button9);
-            this.tabPage1.Location = new System.Drawing.Point(4, 27);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1529, 445);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Size = new System.Drawing.Size(1144, 341);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "整形";
             // 
             // button68
             // 
             this.button68.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button68.Location = new System.Drawing.Point(163, 42);
-            this.button68.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button68.Location = new System.Drawing.Point(122, 34);
+            this.button68.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button68.Name = "button68";
-            this.button68.Size = new System.Drawing.Size(151, 41);
+            this.button68.Size = new System.Drawing.Size(113, 33);
             this.button68.TabIndex = 82;
             this.button68.Text = "型自動数値化";
             this.toolTip1.SetToolTip(this.button68, "数値以外の変数の数値化します。\r\n文字列を含んだ数値（単位記号付きの数値）も数値に変換します。\r\n※ただし、単位を考慮した変換は行いません。");
@@ -1022,10 +1008,10 @@
             // button65
             // 
             this.button65.Font = new System.Drawing.Font("Meiryo UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button65.Location = new System.Drawing.Point(963, 89);
-            this.button65.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button65.Location = new System.Drawing.Point(722, 71);
+            this.button65.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button65.Name = "button65";
-            this.button65.Size = new System.Drawing.Size(149, 41);
+            this.button65.Size = new System.Drawing.Size(112, 33);
             this.button65.TabIndex = 81;
             this.button65.Text = "Lag特徴量追加";
             this.toolTip1.SetToolTip(this.button65, "変数のラグをラグ特徴量として追加します");
@@ -1037,10 +1023,9 @@
             this.checkBox9.AutoSize = true;
             this.checkBox9.BackColor = System.Drawing.Color.Black;
             this.checkBox9.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.checkBox9.Location = new System.Drawing.Point(9, 8);
-            this.checkBox9.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox9.Location = new System.Drawing.Point(7, 6);
             this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(66, 21);
+            this.checkBox9.Size = new System.Drawing.Size(56, 18);
             this.checkBox9.TabIndex = 80;
             this.checkBox9.Text = "auto";
             this.toolTip1.SetToolTip(this.checkBox9, "チェックを入れると整形処理結果を自動的にカレントのデータフレームに設定します。\r\nチェックがオフの場合はカレントのデータフレームは更新されません。\r\nその場合は必" +
@@ -1054,10 +1039,9 @@
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button1.Location = new System.Drawing.Point(633, 42);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(475, 34);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(149, 41);
+            this.button1.Size = new System.Drawing.Size(112, 33);
             this.button1.TabIndex = 79;
             this.button1.Text = "列 行の追加";
             this.toolTip1.SetToolTip(this.button1, "データ列をまたは行をデータフレームに追加します");
@@ -1070,10 +1054,9 @@
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button2.Location = new System.Drawing.Point(477, 138);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Location = new System.Drawing.Point(358, 110);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(149, 41);
+            this.button2.Size = new System.Drawing.Size(112, 33);
             this.button2.TabIndex = 78;
             this.button2.Text = "外れ値削除";
             this.toolTip1.SetToolTip(this.button2, "データフレームの指定列の外れ値行を削除します。");
@@ -1086,10 +1069,9 @@
             this.button6.FlatAppearance.BorderSize = 0;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button6.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button6.Location = new System.Drawing.Point(633, 89);
-            this.button6.Margin = new System.Windows.Forms.Padding(4);
+            this.button6.Location = new System.Drawing.Point(475, 71);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(149, 41);
+            this.button6.Size = new System.Drawing.Size(112, 33);
             this.button6.TabIndex = 77;
             this.button6.Text = "重複除去";
             this.toolTip1.SetToolTip(this.button6, "データフレームから重複している行を削除します。");
@@ -1102,10 +1084,9 @@
             this.button8.FlatAppearance.BorderSize = 0;
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button8.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button8.Location = new System.Drawing.Point(963, 42);
-            this.button8.Margin = new System.Windows.Forms.Padding(4);
+            this.button8.Location = new System.Drawing.Point(722, 34);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(149, 41);
+            this.button8.Size = new System.Drawing.Size(112, 33);
             this.button8.TabIndex = 76;
             this.button8.Text = "分割表";
             this.toolTip1.SetToolTip(this.button8, "データフレームから分割表を作成します。");
@@ -1118,10 +1099,10 @@
             this.button51.FlatAppearance.BorderSize = 0;
             this.button51.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button51.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button51.Location = new System.Drawing.Point(321, 89);
-            this.button51.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button51.Location = new System.Drawing.Point(241, 71);
+            this.button51.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button51.Name = "button51";
-            this.button51.Size = new System.Drawing.Size(149, 41);
+            this.button51.Size = new System.Drawing.Size(112, 33);
             this.button51.TabIndex = 75;
             this.button51.Text = "カテゴライズ";
             this.toolTip1.SetToolTip(this.button51, "データをカテゴリ変数に変更できます");
@@ -1134,10 +1115,9 @@
             this.button49.FlatAppearance.BorderSize = 0;
             this.button49.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button49.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button49.Location = new System.Drawing.Point(789, 42);
-            this.button49.Margin = new System.Windows.Forms.Padding(4);
+            this.button49.Location = new System.Drawing.Point(592, 34);
             this.button49.Name = "button49";
-            this.button49.Size = new System.Drawing.Size(149, 41);
+            this.button49.Size = new System.Drawing.Size(112, 33);
             this.button49.TabIndex = 74;
             this.button49.Text = "ソート";
             this.toolTip1.SetToolTip(this.button49, "データの並べ替えが出来ます");
@@ -1150,10 +1130,9 @@
             this.button47.FlatAppearance.BorderSize = 0;
             this.button47.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button47.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button47.Location = new System.Drawing.Point(789, 89);
-            this.button47.Margin = new System.Windows.Forms.Padding(4);
+            this.button47.Location = new System.Drawing.Point(592, 71);
             this.button47.Name = "button47";
-            this.button47.Size = new System.Drawing.Size(149, 41);
+            this.button47.Size = new System.Drawing.Size(112, 33);
             this.button47.TabIndex = 73;
             this.button47.Text = "展開";
             this.toolTip1.SetToolTip(this.button47, "複数列の値を、カテゴリ変数1列と値1列の組に変換できます。");
@@ -1166,10 +1145,9 @@
             this.button42.FlatAppearance.BorderSize = 0;
             this.button42.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button42.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button42.Location = new System.Drawing.Point(633, 138);
-            this.button42.Margin = new System.Windows.Forms.Padding(4);
+            this.button42.Location = new System.Drawing.Point(475, 110);
             this.button42.Name = "button42";
-            this.button42.Size = new System.Drawing.Size(149, 41);
+            this.button42.Size = new System.Drawing.Size(112, 33);
             this.button42.TabIndex = 72;
             this.button42.Text = "列除去";
             this.toolTip1.SetToolTip(this.button42, "特定のデータ列をデータフレームから削除できます");
@@ -1182,10 +1160,9 @@
             this.button41.FlatAppearance.BorderSize = 0;
             this.button41.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button41.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button41.Location = new System.Drawing.Point(477, 89);
-            this.button41.Margin = new System.Windows.Forms.Padding(4);
+            this.button41.Location = new System.Drawing.Point(358, 71);
             this.button41.Name = "button41";
-            this.button41.Size = new System.Drawing.Size(149, 41);
+            this.button41.Size = new System.Drawing.Size(112, 33);
             this.button41.TabIndex = 71;
             this.button41.Text = "欠損値除去";
             this.toolTip1.SetToolTip(this.button41, "欠損値のあるデータを可能な限り削除します");
@@ -1198,10 +1175,10 @@
             this.button39.FlatAppearance.BorderSize = 0;
             this.button39.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button39.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button39.Location = new System.Drawing.Point(477, 42);
-            this.button39.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button39.Location = new System.Drawing.Point(358, 34);
+            this.button39.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button39.Name = "button39";
-            this.button39.Size = new System.Drawing.Size(149, 41);
+            this.button39.Size = new System.Drawing.Size(112, 33);
             this.button39.TabIndex = 70;
             this.button39.Text = "欠損値補完";
             this.toolTip1.SetToolTip(this.button39, "自動的に欠損値を補完する事が出来ます。\r\n※その為には全ての列が数値である必要があります。");
@@ -1214,10 +1191,9 @@
             this.button35.FlatAppearance.BorderSize = 0;
             this.button35.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button35.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button35.Location = new System.Drawing.Point(321, 42);
-            this.button35.Margin = new System.Windows.Forms.Padding(4);
+            this.button35.Location = new System.Drawing.Point(241, 34);
             this.button35.Name = "button35";
-            this.button35.Size = new System.Drawing.Size(149, 41);
+            this.button35.Size = new System.Drawing.Size(112, 33);
             this.button35.TabIndex = 69;
             this.button35.Text = "ダミー変数化";
             this.toolTip1.SetToolTip(this.button35, "特定の変数をダミー変数に変更出来ます");
@@ -1230,10 +1206,9 @@
             this.button32.FlatAppearance.BorderSize = 0;
             this.button32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button32.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button32.Location = new System.Drawing.Point(789, 138);
-            this.button32.Margin = new System.Windows.Forms.Padding(4);
+            this.button32.Location = new System.Drawing.Point(592, 110);
             this.button32.Name = "button32";
-            this.button32.Size = new System.Drawing.Size(149, 41);
+            this.button32.Size = new System.Drawing.Size(112, 33);
             this.button32.TabIndex = 68;
             this.button32.Text = "選択集計表";
             this.toolTip1.SetToolTip(this.button32, "データフレームについて「指定した列をカテゴリで分けて集計する」というような計算を行うことができます。");
@@ -1246,10 +1221,9 @@
             this.button31.FlatAppearance.BorderSize = 0;
             this.button31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button31.Font = new System.Drawing.Font("Meiryo UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button31.Location = new System.Drawing.Point(163, 138);
-            this.button31.Margin = new System.Windows.Forms.Padding(4);
+            this.button31.Location = new System.Drawing.Point(122, 110);
             this.button31.Name = "button31";
-            this.button31.Size = new System.Drawing.Size(149, 41);
+            this.button31.Size = new System.Drawing.Size(112, 33);
             this.button31.TabIndex = 67;
             this.button31.Text = "日付・時刻変換等";
             this.toolTip1.SetToolTip(this.button31, "日時等の時間に関するデータを数値にしたり、数値を時間にしたりできます。");
@@ -1262,10 +1236,10 @@
             this.button29.FlatAppearance.BorderSize = 0;
             this.button29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button29.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button29.Location = new System.Drawing.Point(7, 89);
-            this.button29.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button29.Location = new System.Drawing.Point(5, 71);
+            this.button29.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(149, 41);
+            this.button29.Size = new System.Drawing.Size(112, 33);
             this.button29.TabIndex = 66;
             this.button29.Text = "フィルタ置換";
             this.toolTip1.SetToolTip(this.button29, "特定の列の条件でデータを制限したりできます。");
@@ -1278,10 +1252,9 @@
             this.button21.FlatAppearance.BorderSize = 0;
             this.button21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button21.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button21.Location = new System.Drawing.Point(163, 89);
-            this.button21.Margin = new System.Windows.Forms.Padding(4);
+            this.button21.Location = new System.Drawing.Point(122, 71);
             this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(151, 41);
+            this.button21.Size = new System.Drawing.Size(113, 33);
             this.button21.TabIndex = 65;
             this.button21.Text = "置換";
             this.toolTip1.SetToolTip(this.button21, "データの内容を別の値にしたり、型を変更したり、削除も可能です");
@@ -1294,10 +1267,9 @@
             this.button9.FlatAppearance.BorderSize = 0;
             this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button9.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button9.Location = new System.Drawing.Point(7, 42);
-            this.button9.Margin = new System.Windows.Forms.Padding(4);
+            this.button9.Location = new System.Drawing.Point(5, 34);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(151, 41);
+            this.button9.Size = new System.Drawing.Size(113, 33);
             this.button9.TabIndex = 64;
             this.button9.Text = "フィルタ";
             this.toolTip1.SetToolTip(this.button9, "データの分析範囲を絞り込んだりできます");
@@ -1321,11 +1293,11 @@
             this.tabPage2.Controls.Add(this.button27);
             this.tabPage2.Controls.Add(this.button16);
             this.tabPage2.Controls.Add(this.button18);
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1529, 445);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Size = new System.Drawing.Size(1144, 341);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "可視化";
             // 
@@ -1335,10 +1307,10 @@
             this.button66.FlatAppearance.BorderSize = 0;
             this.button66.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button66.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button66.Location = new System.Drawing.Point(19, 18);
-            this.button66.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button66.Location = new System.Drawing.Point(14, 14);
+            this.button66.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button66.Name = "button66";
-            this.button66.Size = new System.Drawing.Size(229, 50);
+            this.button66.Size = new System.Drawing.Size(172, 40);
             this.button66.TabIndex = 70;
             this.button66.Text = "データをスキャン";
             this.toolTip1.SetToolTip(this.button66, "データフレームの各変数の概要をインタラクティブに可視化します");
@@ -1352,10 +1324,10 @@
             this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button10.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button10.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button10.Location = new System.Drawing.Point(19, 72);
-            this.button10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button10.Location = new System.Drawing.Point(14, 58);
+            this.button10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(229, 50);
+            this.button10.Size = new System.Drawing.Size(172, 40);
             this.button10.TabIndex = 69;
             this.button10.Text = "データフレームの特徴";
             this.button10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1370,10 +1342,10 @@
             this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button11.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button11.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button11.Location = new System.Drawing.Point(19, 312);
-            this.button11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button11.Location = new System.Drawing.Point(14, 250);
+            this.button11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(229, 50);
+            this.button11.Size = new System.Drawing.Size(172, 40);
             this.button11.TabIndex = 68;
             this.button11.Text = "データフレーム";
             this.button11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1387,10 +1359,10 @@
             this.button52.FlatAppearance.BorderSize = 0;
             this.button52.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button52.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button52.Location = new System.Drawing.Point(19, 126);
-            this.button52.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button52.Location = new System.Drawing.Point(14, 101);
+            this.button52.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button52.Name = "button52";
-            this.button52.Size = new System.Drawing.Size(229, 50);
+            this.button52.Size = new System.Drawing.Size(172, 40);
             this.button52.TabIndex = 66;
             this.button52.Text = "概観";
             this.toolTip1.SetToolTip(this.button52, "データフレームの各変数の概要をインタラクティブに可視化します");
@@ -1403,10 +1375,10 @@
             this.button43.FlatAppearance.BorderSize = 0;
             this.button43.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button43.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button43.Location = new System.Drawing.Point(19, 369);
-            this.button43.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button43.Location = new System.Drawing.Point(14, 295);
+            this.button43.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button43.Name = "button43";
-            this.button43.Size = new System.Drawing.Size(229, 50);
+            this.button43.Size = new System.Drawing.Size(172, 40);
             this.button43.TabIndex = 60;
             this.button43.Text = "Roughly";
             this.toolTip1.SetToolTip(this.button43, "データフレームの大雑把に概要をグラフ化します");
@@ -1419,10 +1391,10 @@
             this.button38.FlatAppearance.BorderSize = 0;
             this.button38.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button38.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button38.Location = new System.Drawing.Point(253, 18);
-            this.button38.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button38.Location = new System.Drawing.Point(190, 14);
+            this.button38.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button38.Name = "button38";
-            this.button38.Size = new System.Drawing.Size(229, 50);
+            this.button38.Size = new System.Drawing.Size(172, 40);
             this.button38.TabIndex = 63;
             this.button38.Text = "欠損値";
             this.toolTip1.SetToolTip(this.button38, "欠損値の状態を可視化します。\r\r\nNA_dfというデータフレームを生成いていますのでこれをさらに可視化することで欠損値の状態を確認できます。");
@@ -1435,10 +1407,10 @@
             this.button17.FlatAppearance.BorderSize = 0;
             this.button17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button17.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button17.Location = new System.Drawing.Point(959, 18);
-            this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button17.Location = new System.Drawing.Point(719, 14);
+            this.button17.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(229, 50);
+            this.button17.Size = new System.Drawing.Size(172, 40);
             this.button17.TabIndex = 59;
             this.button17.Text = "正規検査";
             this.toolTip1.SetToolTip(this.button17, "データが正規分布しているか可視化します");
@@ -1453,10 +1425,10 @@
             this.button12.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button12.Image = ((System.Drawing.Image)(resources.GetObject("button12.Image")));
             this.button12.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button12.Location = new System.Drawing.Point(19, 255);
-            this.button12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button12.Location = new System.Drawing.Point(14, 204);
+            this.button12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(229, 50);
+            this.button12.Size = new System.Drawing.Size(172, 40);
             this.button12.TabIndex = 67;
             this.button12.Text = "データフレーム特徴2";
             this.button12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1472,10 +1444,10 @@
             this.button48.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button48.Image = ((System.Drawing.Image)(resources.GetObject("button48.Image")));
             this.button48.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button48.Location = new System.Drawing.Point(724, 72);
-            this.button48.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button48.Location = new System.Drawing.Point(543, 58);
+            this.button48.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button48.Name = "button48";
-            this.button48.Size = new System.Drawing.Size(229, 50);
+            this.button48.Size = new System.Drawing.Size(172, 40);
             this.button48.TabIndex = 65;
             this.button48.Text = "棒グラフ";
             this.button48.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1491,10 +1463,10 @@
             this.button34.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button34.Image = ((System.Drawing.Image)(resources.GetObject("button34.Image")));
             this.button34.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button34.Location = new System.Drawing.Point(724, 126);
-            this.button34.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button34.Location = new System.Drawing.Point(543, 101);
+            this.button34.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button34.Name = "button34";
-            this.button34.Size = new System.Drawing.Size(229, 50);
+            this.button34.Size = new System.Drawing.Size(172, 40);
             this.button34.TabIndex = 64;
             this.button34.Text = "折れ線";
             this.button34.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1510,10 +1482,10 @@
             this.button26.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button26.Image = ((System.Drawing.Image)(resources.GetObject("button26.Image")));
             this.button26.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button26.Location = new System.Drawing.Point(959, 72);
-            this.button26.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button26.Location = new System.Drawing.Point(719, 58);
+            this.button26.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(229, 50);
+            this.button26.Size = new System.Drawing.Size(172, 40);
             this.button26.TabIndex = 61;
             this.button26.Text = "ヒートマップ";
             this.button26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1529,10 +1501,10 @@
             this.button27.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button27.Image = ((System.Drawing.Image)(resources.GetObject("button27.Image")));
             this.button27.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button27.Location = new System.Drawing.Point(489, 72);
-            this.button27.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button27.Location = new System.Drawing.Point(367, 58);
+            this.button27.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(229, 50);
+            this.button27.Size = new System.Drawing.Size(172, 40);
             this.button27.TabIndex = 62;
             this.button27.Text = "箱ひげ図";
             this.button27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1548,10 +1520,10 @@
             this.button16.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button16.Image = ((System.Drawing.Image)(resources.GetObject("button16.Image")));
             this.button16.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button16.Location = new System.Drawing.Point(489, 18);
-            this.button16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button16.Location = new System.Drawing.Point(367, 14);
+            this.button16.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(229, 50);
+            this.button16.Size = new System.Drawing.Size(172, 40);
             this.button16.TabIndex = 57;
             this.button16.Text = "散布図";
             this.button16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1567,10 +1539,10 @@
             this.button18.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button18.Image = ((System.Drawing.Image)(resources.GetObject("button18.Image")));
             this.button18.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button18.Location = new System.Drawing.Point(724, 18);
-            this.button18.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button18.Location = new System.Drawing.Point(543, 14);
+            this.button18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(229, 50);
+            this.button18.Size = new System.Drawing.Size(172, 40);
             this.button18.TabIndex = 58;
             this.button18.Text = "ヒストグラム";
             this.button18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1600,10 +1572,10 @@
             this.tabPage3.Controls.Add(this.button40);
             this.tabPage3.Controls.Add(this.button44);
             this.tabPage3.Controls.Add(this.button25);
-            this.tabPage3.Location = new System.Drawing.Point(4, 27);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1529, 445);
+            this.tabPage3.Size = new System.Drawing.Size(1144, 341);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "回帰モデル";
             // 
@@ -1611,10 +1583,9 @@
             // 
             this.checkBox3.AutoSize = true;
             this.checkBox3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.checkBox3.Location = new System.Drawing.Point(17, 284);
-            this.checkBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox3.Location = new System.Drawing.Point(13, 227);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(213, 21);
+            this.checkBox3.Size = new System.Drawing.Size(176, 18);
             this.checkBox3.TabIndex = 70;
             this.checkBox3.Text = "データsplit無（推論のみ）";
             this.checkBox3.UseVisualStyleBackColor = true;
@@ -1627,10 +1598,10 @@
             this.button61.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button61.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button61.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button61.Location = new System.Drawing.Point(299, 228);
-            this.button61.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button61.Location = new System.Drawing.Point(224, 182);
+            this.button61.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button61.Name = "button61";
-            this.button61.Size = new System.Drawing.Size(255, 41);
+            this.button61.Size = new System.Drawing.Size(191, 33);
             this.button61.TabIndex = 68;
             this.button61.Text = "SVM";
             this.button61.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1642,10 +1613,9 @@
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.label10.Location = new System.Drawing.Point(295, 358);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Location = new System.Drawing.Point(221, 286);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(68, 19);
+            this.label10.Size = new System.Drawing.Size(54, 15);
             this.label10.TabIndex = 67;
             this.label10.Text = "AI応用";
             // 
@@ -1654,10 +1624,9 @@
             this.button22.BackColor = System.Drawing.Color.Lavender;
             this.button22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button22.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button22.Location = new System.Drawing.Point(4, 24);
-            this.button22.Margin = new System.Windows.Forms.Padding(4);
+            this.button22.Location = new System.Drawing.Point(3, 19);
             this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(232, 48);
+            this.button22.Size = new System.Drawing.Size(174, 38);
             this.button22.TabIndex = 61;
             this.button22.Text = "計算済モデルライブラリ";
             this.button22.UseVisualStyleBackColor = false;
@@ -1671,10 +1640,10 @@
             this.button63.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button63.Image = ((System.Drawing.Image)(resources.GetObject("button63.Image")));
             this.button63.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button63.Location = new System.Drawing.Point(299, 284);
-            this.button63.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button63.Location = new System.Drawing.Point(224, 227);
+            this.button63.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button63.Name = "button63";
-            this.button63.Size = new System.Drawing.Size(255, 41);
+            this.button63.Size = new System.Drawing.Size(191, 33);
             this.button63.TabIndex = 69;
             this.button63.Text = "XGBoost";
             this.button63.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1689,10 +1658,10 @@
             this.button55.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button55.Image = ((System.Drawing.Image)(resources.GetObject("button55.Image")));
             this.button55.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button55.Location = new System.Drawing.Point(299, 378);
-            this.button55.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button55.Location = new System.Drawing.Point(224, 302);
+            this.button55.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button55.Name = "button55";
-            this.button55.Size = new System.Drawing.Size(255, 41);
+            this.button55.Size = new System.Drawing.Size(191, 33);
             this.button55.TabIndex = 46;
             this.button55.Text = "非線形回帰";
             this.button55.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1708,10 +1677,10 @@
             this.button45.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button45.Image = ((System.Drawing.Image)(resources.GetObject("button45.Image")));
             this.button45.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button45.Location = new System.Drawing.Point(299, 170);
-            this.button45.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button45.Location = new System.Drawing.Point(224, 136);
+            this.button45.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button45.Name = "button45";
-            this.button45.Size = new System.Drawing.Size(255, 41);
+            this.button45.Size = new System.Drawing.Size(191, 33);
             this.button45.TabIndex = 45;
             this.button45.Text = "ランダムフォレスト";
             this.button45.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1726,10 +1695,10 @@
             this.button37.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button37.Image = ((System.Drawing.Image)(resources.GetObject("button37.Image")));
             this.button37.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button37.Location = new System.Drawing.Point(849, 24);
-            this.button37.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button37.Location = new System.Drawing.Point(637, 19);
+            this.button37.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button37.Name = "button37";
-            this.button37.Size = new System.Drawing.Size(255, 41);
+            this.button37.Size = new System.Drawing.Size(191, 33);
             this.button37.TabIndex = 47;
             this.button37.Text = "決定木";
             this.button37.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1744,10 +1713,10 @@
             this.button46.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button46.Image = ((System.Drawing.Image)(resources.GetObject("button46.Image")));
             this.button46.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button46.Location = new System.Drawing.Point(1129, 24);
-            this.button46.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button46.Location = new System.Drawing.Point(847, 19);
+            this.button46.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button46.Name = "button46";
-            this.button46.Size = new System.Drawing.Size(255, 41);
+            this.button46.Size = new System.Drawing.Size(191, 33);
             this.button46.TabIndex = 44;
             this.button46.Text = "ロジスティック回帰";
             this.button46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1763,10 +1732,10 @@
             this.button36.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button36.Image = ((System.Drawing.Image)(resources.GetObject("button36.Image")));
             this.button36.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button36.Location = new System.Drawing.Point(576, 78);
-            this.button36.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button36.Location = new System.Drawing.Point(432, 62);
+            this.button36.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button36.Name = "button36";
-            this.button36.Size = new System.Drawing.Size(255, 41);
+            this.button36.Size = new System.Drawing.Size(191, 33);
             this.button36.TabIndex = 48;
             this.button36.Text = "部分的最小二乗(PLS)";
             this.button36.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1783,10 +1752,10 @@
             this.button23.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button23.Image = ((System.Drawing.Image)(resources.GetObject("button23.Image")));
             this.button23.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button23.Location = new System.Drawing.Point(576, 24);
-            this.button23.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button23.Location = new System.Drawing.Point(432, 19);
+            this.button23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(255, 41);
+            this.button23.Size = new System.Drawing.Size(191, 33);
             this.button23.TabIndex = 49;
             this.button23.Text = "一般化線形モデル";
             this.button23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1802,10 +1771,10 @@
             this.button40.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button40.Image = ((System.Drawing.Image)(resources.GetObject("button40.Image")));
             this.button40.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button40.Location = new System.Drawing.Point(299, 78);
-            this.button40.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button40.Location = new System.Drawing.Point(224, 62);
+            this.button40.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button40.Name = "button40";
-            this.button40.Size = new System.Drawing.Size(255, 41);
+            this.button40.Size = new System.Drawing.Size(191, 33);
             this.button40.TabIndex = 46;
             this.button40.Text = "正則化";
             this.button40.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1821,10 +1790,10 @@
             this.button44.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button44.Image = ((System.Drawing.Image)(resources.GetObject("button44.Image")));
             this.button44.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button44.Location = new System.Drawing.Point(299, 24);
-            this.button44.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button44.Location = new System.Drawing.Point(224, 19);
+            this.button44.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button44.Name = "button44";
-            this.button44.Size = new System.Drawing.Size(255, 41);
+            this.button44.Size = new System.Drawing.Size(191, 33);
             this.button44.TabIndex = 43;
             this.button44.Text = "線形回帰";
             this.button44.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1840,10 +1809,10 @@
             this.button25.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button25.Image = ((System.Drawing.Image)(resources.GetObject("button25.Image")));
             this.button25.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button25.Location = new System.Drawing.Point(8, 205);
-            this.button25.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button25.Location = new System.Drawing.Point(6, 164);
+            this.button25.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button25.Name = "button25";
-            this.button25.Size = new System.Drawing.Size(232, 41);
+            this.button25.Size = new System.Drawing.Size(174, 33);
             this.button25.TabIndex = 59;
             this.button25.Text = "変数選択";
             this.button25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1872,12 +1841,42 @@
             this.tabPage7.Controls.Add(this.button58);
             this.tabPage7.Controls.Add(this.button57);
             this.tabPage7.Controls.Add(this.button56);
-            this.tabPage7.Location = new System.Drawing.Point(4, 27);
-            this.tabPage7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage7.Location = new System.Drawing.Point(4, 24);
+            this.tabPage7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(1529, 445);
+            this.tabPage7.Size = new System.Drawing.Size(1144, 341);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "時系列モデル";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.label17.Location = new System.Drawing.Point(460, 284);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(182, 12);
+            this.label17.TabIndex = 115;
+            this.label17.Text = "データsplitには対応していません。";
+            // 
+            // button72
+            // 
+            this.button72.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.button72.FlatAppearance.BorderSize = 0;
+            this.button72.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button72.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
+            this.button72.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button72.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button72.Location = new System.Drawing.Point(458, 248);
+            this.button72.Name = "button72";
+            this.button72.Size = new System.Drawing.Size(222, 33);
+            this.button72.TabIndex = 114;
+            this.button72.Text = "DeepAREstimator";
+            this.button72.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.button72, "DeepARによる時系列予測モデルです。\r\nDeepAR はポイント予測と確率的予測の両方を生成するために再帰型ニューラルネットワーク (RNN) を使用する時系" +
+        "列予測の教師あり学習アルゴリズムです。");
+            this.button72.UseVisualStyleBackColor = false;
+            this.button72.Click += new System.EventHandler(this.button72_Click);
             // 
             // button70
             // 
@@ -1887,10 +1886,9 @@
             this.button70.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button70.ForeColor = System.Drawing.SystemColors.ControlText;
             this.button70.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button70.Location = new System.Drawing.Point(611, 150);
-            this.button70.Margin = new System.Windows.Forms.Padding(4);
+            this.button70.Location = new System.Drawing.Point(458, 120);
             this.button70.Name = "button70";
-            this.button70.Size = new System.Drawing.Size(296, 63);
+            this.button70.Size = new System.Drawing.Size(222, 50);
             this.button70.TabIndex = 113;
             this.button70.Text = "State Space Models\r\n(KFSA)";
             this.button70.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1903,9 +1901,10 @@
             this.label16.AutoSize = true;
             this.label16.BackColor = System.Drawing.Color.Lavender;
             this.label16.ForeColor = System.Drawing.Color.Blue;
-            this.label16.Location = new System.Drawing.Point(5, 166);
+            this.label16.Location = new System.Drawing.Point(4, 133);
+            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(99, 17);
+            this.label16.Size = new System.Drawing.Size(82, 14);
             this.label16.TabIndex = 112;
             this.label16.Text = "イベント効果";
             this.label16.Click += new System.EventHandler(this.label16_Click);
@@ -1913,10 +1912,10 @@
             // button67
             // 
             this.button67.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button67.Location = new System.Drawing.Point(297, 150);
-            this.button67.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button67.Location = new System.Drawing.Point(223, 120);
+            this.button67.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button67.Name = "button67";
-            this.button67.Size = new System.Drawing.Size(295, 62);
+            this.button67.Size = new System.Drawing.Size(221, 50);
             this.button67.TabIndex = 111;
             this.button67.Text = "Gradient Boosting\r\n(Autoregressive model)";
             this.button67.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1925,10 +1924,10 @@
             // 
             // button64
             // 
-            this.button64.Location = new System.Drawing.Point(5, 228);
-            this.button64.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button64.Location = new System.Drawing.Point(4, 182);
+            this.button64.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button64.Name = "button64";
-            this.button64.Size = new System.Drawing.Size(235, 26);
+            this.button64.Size = new System.Drawing.Size(176, 21);
             this.button64.TabIndex = 110;
             this.button64.Text = "曜日の追加";
             this.button64.UseVisualStyleBackColor = true;
@@ -1937,10 +1936,10 @@
             // button60
             // 
             this.button60.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button60.Location = new System.Drawing.Point(5, 185);
-            this.button60.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button60.Location = new System.Drawing.Point(4, 148);
+            this.button60.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button60.Name = "button60";
-            this.button60.Size = new System.Drawing.Size(235, 28);
+            this.button60.Size = new System.Drawing.Size(176, 22);
             this.button60.TabIndex = 109;
             this.button60.Text = "イベント追加（休日、催事等）";
             this.button60.UseVisualStyleBackColor = true;
@@ -1950,10 +1949,9 @@
             // 
             this.checkBox10.AutoSize = true;
             this.checkBox10.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.checkBox10.Location = new System.Drawing.Point(9, 298);
-            this.checkBox10.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox10.Location = new System.Drawing.Point(7, 238);
             this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(213, 21);
+            this.checkBox10.Size = new System.Drawing.Size(176, 18);
             this.checkBox10.TabIndex = 75;
             this.checkBox10.Text = "データsplit無（推論のみ）";
             this.checkBox10.UseVisualStyleBackColor = true;
@@ -1963,9 +1961,10 @@
             // 
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.label9.Location = new System.Drawing.Point(116, 90);
+            this.label9.Location = new System.Drawing.Point(87, 72);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(18, 17);
+            this.label9.Size = new System.Drawing.Size(15, 14);
             this.label9.TabIndex = 74;
             this.label9.Text = "%";
             // 
@@ -1973,10 +1972,9 @@
             // 
             this.label11.AutoSize = true;
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.label11.Location = new System.Drawing.Point(13, 91);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Location = new System.Drawing.Point(10, 73);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(46, 17);
+            this.label11.Size = new System.Drawing.Size(39, 14);
             this.label11.TabIndex = 70;
             this.label11.Text = "train";
             this.toolTip1.SetToolTip(this.label11, "現在のデータフレームを訓練(train)データと検証(test)データに分割します。\r\n指定された値（％）をtrainデータにします。");
@@ -1986,10 +1984,9 @@
             this.button62.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button62.Font = new System.Drawing.Font("Meiryo UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button62.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.button62.Location = new System.Drawing.Point(4, 116);
-            this.button62.Margin = new System.Windows.Forms.Padding(4);
+            this.button62.Location = new System.Drawing.Point(3, 93);
             this.button62.Name = "button62";
-            this.button62.Size = new System.Drawing.Size(232, 29);
+            this.button62.Size = new System.Drawing.Size(174, 23);
             this.button62.TabIndex = 71;
             this.button62.Text = "train/test";
             this.toolTip1.SetToolTip(this.button62, "dfをtrainとtestに分割");
@@ -1999,8 +1996,7 @@
             // 
             // numericUpDown5
             // 
-            this.numericUpDown5.Location = new System.Drawing.Point(68, 88);
-            this.numericUpDown5.Margin = new System.Windows.Forms.Padding(4);
+            this.numericUpDown5.Location = new System.Drawing.Point(51, 70);
             this.numericUpDown5.Maximum = new decimal(new int[] {
             99,
             0,
@@ -2012,7 +2008,7 @@
             0,
             0});
             this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(49, 24);
+            this.numericUpDown5.Size = new System.Drawing.Size(37, 21);
             this.numericUpDown5.TabIndex = 72;
             this.numericUpDown5.Value = new decimal(new int[] {
             70,
@@ -2026,10 +2022,9 @@
             this.button59.BackColor = System.Drawing.Color.Lavender;
             this.button59.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button59.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button59.Location = new System.Drawing.Point(4, 24);
-            this.button59.Margin = new System.Windows.Forms.Padding(4);
+            this.button59.Location = new System.Drawing.Point(3, 19);
             this.button59.Name = "button59";
-            this.button59.Size = new System.Drawing.Size(232, 48);
+            this.button59.Size = new System.Drawing.Size(174, 38);
             this.button59.TabIndex = 69;
             this.button59.Text = "計算済モデルライブラリ";
             this.button59.UseVisualStyleBackColor = false;
@@ -2040,10 +2035,9 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.label3.Location = new System.Drawing.Point(301, 289);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(226, 231);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 19);
+            this.label3.Size = new System.Drawing.Size(54, 15);
             this.label3.TabIndex = 68;
             this.label3.Text = "AI応用";
             // 
@@ -2055,10 +2049,10 @@
             this.button58.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button58.Image = ((System.Drawing.Image)(resources.GetObject("button58.Image")));
             this.button58.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button58.Location = new System.Drawing.Point(297, 310);
-            this.button58.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button58.Location = new System.Drawing.Point(223, 248);
+            this.button58.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button58.Name = "button58";
-            this.button58.Size = new System.Drawing.Size(295, 41);
+            this.button58.Size = new System.Drawing.Size(221, 33);
             this.button58.TabIndex = 51;
             this.button58.Text = "非線形時系列回帰";
             this.button58.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2074,10 +2068,9 @@
             this.button57.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button57.Image = ((System.Drawing.Image)(resources.GetObject("button57.Image")));
             this.button57.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button57.Location = new System.Drawing.Point(299, 86);
-            this.button57.Margin = new System.Windows.Forms.Padding(4);
+            this.button57.Location = new System.Drawing.Point(224, 69);
             this.button57.Name = "button57";
-            this.button57.Size = new System.Drawing.Size(293, 41);
+            this.button57.Size = new System.Drawing.Size(220, 33);
             this.button57.TabIndex = 49;
             this.button57.Text = "prophet";
             this.button57.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2095,10 +2088,9 @@
             this.button56.ForeColor = System.Drawing.SystemColors.ControlText;
             this.button56.Image = ((System.Drawing.Image)(resources.GetObject("button56.Image")));
             this.button56.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button56.Location = new System.Drawing.Point(299, 24);
-            this.button56.Margin = new System.Windows.Forms.Padding(4);
+            this.button56.Location = new System.Drawing.Point(224, 19);
             this.button56.Name = "button56";
-            this.button56.Size = new System.Drawing.Size(293, 41);
+            this.button56.Size = new System.Drawing.Size(220, 33);
             this.button56.TabIndex = 48;
             this.button56.Text = "SARIMA(X)";
             this.button56.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2110,10 +2102,10 @@
             // 
             this.tabPage8.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.tabPage8.Controls.Add(this.button50);
-            this.tabPage8.Location = new System.Drawing.Point(4, 27);
-            this.tabPage8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage8.Location = new System.Drawing.Point(4, 24);
+            this.tabPage8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(1529, 445);
+            this.tabPage8.Size = new System.Drawing.Size(1144, 341);
             this.tabPage8.TabIndex = 7;
             this.tabPage8.Text = "因果探索";
             // 
@@ -2125,10 +2117,10 @@
             this.button50.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
             this.button50.Image = ((System.Drawing.Image)(resources.GetObject("button50.Image")));
             this.button50.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button50.Location = new System.Drawing.Point(8, 18);
-            this.button50.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button50.Location = new System.Drawing.Point(6, 14);
+            this.button50.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button50.Name = "button50";
-            this.button50.Size = new System.Drawing.Size(232, 41);
+            this.button50.Size = new System.Drawing.Size(174, 33);
             this.button50.TabIndex = 60;
             this.button50.Text = "因果探索";
             this.button50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2142,10 +2134,10 @@
             this.tabPage4.Controls.Add(this.textBox1);
             this.tabPage4.Controls.Add(this.splitter3);
             this.tabPage4.Controls.Add(this.panel4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 27);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1529, 445);
+            this.tabPage4.Size = new System.Drawing.Size(1144, 341);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Rスクリプト";
             // 
@@ -2157,10 +2149,10 @@
             this.textBox1.CaretLineVisible = true;
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox1.Lexer = ScintillaNET.Lexer.R;
-            this.textBox1.Location = new System.Drawing.Point(0, 54);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox1.Location = new System.Drawing.Point(0, 44);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(1529, 391);
+            this.textBox1.Size = new System.Drawing.Size(1144, 297);
             this.textBox1.TabIndex = 5;
             this.textBox1.UseTabs = true;
             // 
@@ -2168,10 +2160,10 @@
             // 
             this.splitter3.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter3.Location = new System.Drawing.Point(0, 52);
-            this.splitter3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter3.Location = new System.Drawing.Point(0, 42);
+            this.splitter3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter3.Name = "splitter3";
-            this.splitter3.Size = new System.Drawing.Size(1529, 2);
+            this.splitter3.Size = new System.Drawing.Size(1144, 2);
             this.splitter3.TabIndex = 7;
             this.splitter3.TabStop = false;
             // 
@@ -2185,18 +2177,18 @@
             this.panel4.Controls.Add(this.roundButton5);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1529, 52);
+            this.panel4.Size = new System.Drawing.Size(1144, 42);
             this.panel4.TabIndex = 6;
             // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.textBox2);
-            this.tabPage6.Location = new System.Drawing.Point(4, 27);
-            this.tabPage6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage6.Location = new System.Drawing.Point(4, 24);
+            this.tabPage6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(1529, 445);
+            this.tabPage6.Size = new System.Drawing.Size(1144, 341);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "実行ログ";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -2205,10 +2197,10 @@
             // 
             this.splitter2.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(0, 476);
-            this.splitter2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter2.Location = new System.Drawing.Point(0, 369);
+            this.splitter2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(1537, 2);
+            this.splitter2.Size = new System.Drawing.Size(1152, 2);
             this.splitter2.TabIndex = 10;
             this.splitter2.TabStop = false;
             // 
@@ -2219,10 +2211,10 @@
             this.panel3.Controls.Add(this.panel12);
             this.panel3.Controls.Add(this.splitter4);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 478);
-            this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel3.Location = new System.Drawing.Point(0, 371);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1537, 138);
+            this.panel3.Size = new System.Drawing.Size(1152, 110);
             this.panel3.TabIndex = 9;
             // 
             // panel13
@@ -2231,30 +2223,30 @@
             this.panel13.Controls.Add(this.splitter6);
             this.panel13.Controls.Add(this.panel11);
             this.panel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel13.Location = new System.Drawing.Point(3, 0);
-            this.panel13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel13.Location = new System.Drawing.Point(2, 0);
+            this.panel13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(1534, 92);
+            this.panel13.Size = new System.Drawing.Size(1150, 73);
             this.panel13.TabIndex = 7;
             // 
             // textBox3
             // 
             this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox3.ForeColor = System.Drawing.Color.Tomato;
-            this.textBox3.Location = new System.Drawing.Point(414, 0);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox3.Location = new System.Drawing.Point(310, 0);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox3.Size = new System.Drawing.Size(1120, 92);
+            this.textBox3.Size = new System.Drawing.Size(840, 73);
             this.textBox3.TabIndex = 4;
             // 
             // splitter6
             // 
-            this.splitter6.Location = new System.Drawing.Point(411, 0);
-            this.splitter6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter6.Location = new System.Drawing.Point(308, 0);
+            this.splitter6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter6.Name = "splitter6";
-            this.splitter6.Size = new System.Drawing.Size(3, 92);
+            this.splitter6.Size = new System.Drawing.Size(2, 73);
             this.splitter6.TabIndex = 3;
             this.splitter6.TabStop = false;
             // 
@@ -2265,67 +2257,68 @@
             this.panel11.Controls.Add(this.textBox9);
             this.panel11.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel11.Location = new System.Drawing.Point(0, 0);
-            this.panel11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(411, 92);
+            this.panel11.Size = new System.Drawing.Size(308, 73);
             this.panel11.TabIndex = 2;
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(4, 34);
-            this.textBox8.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox8.Location = new System.Drawing.Point(3, 27);
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(401, 22);
+            this.textBox8.Size = new System.Drawing.Size(302, 19);
             this.textBox8.TabIndex = 0;
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(4, 4);
-            this.textBox9.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox9.Location = new System.Drawing.Point(3, 3);
             this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(401, 22);
+            this.textBox9.Size = new System.Drawing.Size(302, 19);
             this.textBox9.TabIndex = 1;
             // 
             // splitter1
             // 
             this.splitter1.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter1.Location = new System.Drawing.Point(3, 92);
-            this.splitter1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter1.Location = new System.Drawing.Point(2, 73);
+            this.splitter1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(1534, 2);
+            this.splitter1.Size = new System.Drawing.Size(1150, 2);
             this.splitter1.TabIndex = 6;
             this.splitter1.TabStop = false;
             // 
             // panel12
             // 
             this.panel12.BackColor = System.Drawing.Color.White;
+            this.panel12.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel12.BackgroundImage")));
             this.panel12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel12.Controls.Add(this.label13);
             this.panel12.Controls.Add(this.label12);
             this.panel12.Controls.Add(this.label7);
             this.panel12.Controls.Add(this.panel14);
             this.panel12.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel12.Location = new System.Drawing.Point(3, 94);
-            this.panel12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel12.Location = new System.Drawing.Point(2, 75);
+            this.panel12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(1534, 44);
+            this.panel12.Size = new System.Drawing.Size(1150, 35);
             this.panel12.TabIndex = 5;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(669, 24);
+            this.label13.Location = new System.Drawing.Point(502, 19);
+            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(0, 15);
+            this.label13.Size = new System.Drawing.Size(0, 12);
             this.label13.TabIndex = 7;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(512, 8);
+            this.label12.Location = new System.Drawing.Point(384, 6);
+            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(0, 15);
+            this.label12.Size = new System.Drawing.Size(0, 12);
             this.label12.TabIndex = 6;
             // 
             // label7
@@ -2333,39 +2326,42 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label7.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label7.Location = new System.Drawing.Point(463, 22);
+            this.label7.Location = new System.Drawing.Point(347, 18);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(0, 17);
+            this.label7.Size = new System.Drawing.Size(0, 14);
             this.label7.TabIndex = 5;
             // 
             // panel14
             // 
+            this.panel14.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel14.BackgroundImage")));
             this.panel14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel14.Controls.Add(this.label14);
+            this.panel14.Cursor = System.Windows.Forms.Cursors.Hand;
             this.panel14.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel14.Location = new System.Drawing.Point(0, 0);
-            this.panel14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(457, 44);
+            this.panel14.Size = new System.Drawing.Size(343, 35);
             this.panel14.TabIndex = 0;
+            //this.panel14.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel14_MouseClick);
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label14.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.label14.Location = new System.Drawing.Point(13, 18);
-            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label14.Location = new System.Drawing.Point(10, 14);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(0, 15);
+            this.label14.Size = new System.Drawing.Size(0, 12);
             this.label14.TabIndex = 0;
             // 
             // splitter4
             // 
             this.splitter4.Location = new System.Drawing.Point(0, 0);
-            this.splitter4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter4.Name = "splitter4";
-            this.splitter4.Size = new System.Drawing.Size(3, 138);
+            this.splitter4.Size = new System.Drawing.Size(2, 110);
             this.splitter4.TabIndex = 3;
             this.splitter4.TabStop = false;
             // 
@@ -2398,37 +2394,6 @@
             this.timer3.Interval = 10;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
-            // button71
-            // 
-            this.button71.Location = new System.Drawing.Point(687, 74);
-            this.button71.Name = "button71";
-            this.button71.Size = new System.Drawing.Size(75, 23);
-            this.button71.TabIndex = 64;
-            this.button71.Text = "テスト";
-            this.button71.UseVisualStyleBackColor = true;
-            this.button71.Visible = false;
-            this.button71.Click += new System.EventHandler(this.button71_Click);
-            // 
-            // button72
-            // 
-            this.button72.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.button72.FlatAppearance.BorderSize = 0;
-            this.button72.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button72.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button72.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button72.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button72.Location = new System.Drawing.Point(611, 310);
-            this.button72.Margin = new System.Windows.Forms.Padding(4);
-            this.button72.Name = "button72";
-            this.button72.Size = new System.Drawing.Size(296, 41);
-            this.button72.TabIndex = 114;
-            this.button72.Text = "DeepAREstimator";
-            this.button72.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.toolTip1.SetToolTip(this.button72, "DeepARによる時系列予測モデルです。\r\nDeepAR はポイント予測と確率的予測の両方を生成するために再帰型ニューラルネットワーク (RNN) を使用する時系" +
-        "列予測の教師あり学習アルゴリズムです。");
-            this.button72.UseVisualStyleBackColor = false;
-            this.button72.Click += new System.EventHandler(this.button72_Click);
-            // 
             // roundButton10
             // 
             this.roundButton10.BackColor = System.Drawing.Color.Transparent;
@@ -2439,12 +2404,12 @@
             this.roundButton10.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton10.ForeColor = System.Drawing.Color.AntiqueWhite;
             this.roundButton10.HighLightColor = System.Drawing.Color.White;
-            this.roundButton10.Location = new System.Drawing.Point(557, 2);
-            this.roundButton10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton10.Location = new System.Drawing.Point(418, 2);
+            this.roundButton10.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton10.Name = "roundButton10";
             this.roundButton10.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton10.ShadowSize = 6;
-            this.roundButton10.Size = new System.Drawing.Size(103, 38);
+            this.roundButton10.Size = new System.Drawing.Size(77, 30);
             this.roundButton10.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.roundButton10.TabIndex = 61;
             this.toolTip1.SetToolTip(this.roundButton10, "出力内容を消去します");
@@ -2460,12 +2425,12 @@
             this.roundButton6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton6.ForeColor = System.Drawing.Color.AntiqueWhite;
             this.roundButton6.HighLightColor = System.Drawing.Color.White;
-            this.roundButton6.Location = new System.Drawing.Point(4, 2);
-            this.roundButton6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton6.Location = new System.Drawing.Point(3, 2);
+            this.roundButton6.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton6.Name = "roundButton6";
             this.roundButton6.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton6.ShadowSize = 6;
-            this.roundButton6.Size = new System.Drawing.Size(103, 38);
+            this.roundButton6.Size = new System.Drawing.Size(77, 30);
             this.roundButton6.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.roundButton6.TabIndex = 57;
             this.toolTip1.SetToolTip(this.roundButton6, "下のエディタに書かれているコードを実行します。");
@@ -2481,12 +2446,12 @@
             this.roundButton9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton9.ForeColor = System.Drawing.Color.AntiqueWhite;
             this.roundButton9.HighLightColor = System.Drawing.Color.White;
-            this.roundButton9.Location = new System.Drawing.Point(309, 2);
-            this.roundButton9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton9.Location = new System.Drawing.Point(232, 2);
+            this.roundButton9.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton9.Name = "roundButton9";
             this.roundButton9.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton9.ShadowSize = 6;
-            this.roundButton9.Size = new System.Drawing.Size(103, 38);
+            this.roundButton9.Size = new System.Drawing.Size(77, 30);
             this.roundButton9.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.roundButton9.TabIndex = 60;
             this.toolTip1.SetToolTip(this.roundButton9, "Rのスクリプトを読み込みます");
@@ -2502,12 +2467,12 @@
             this.roundButton7.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton7.ForeColor = System.Drawing.Color.AntiqueWhite;
             this.roundButton7.HighLightColor = System.Drawing.Color.White;
-            this.roundButton7.Location = new System.Drawing.Point(107, 2);
-            this.roundButton7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton7.Location = new System.Drawing.Point(80, 2);
+            this.roundButton7.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton7.Name = "roundButton7";
             this.roundButton7.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton7.ShadowSize = 6;
-            this.roundButton7.Size = new System.Drawing.Size(103, 38);
+            this.roundButton7.Size = new System.Drawing.Size(77, 30);
             this.roundButton7.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.roundButton7.TabIndex = 58;
             this.toolTip1.SetToolTip(this.roundButton7, "エディタに書かれているいる内容をファイルに保存します。");
@@ -2523,12 +2488,12 @@
             this.roundButton5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton5.ForeColor = System.Drawing.Color.AntiqueWhite;
             this.roundButton5.HighLightColor = System.Drawing.Color.White;
-            this.roundButton5.Location = new System.Drawing.Point(205, 2);
-            this.roundButton5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton5.Location = new System.Drawing.Point(154, 2);
+            this.roundButton5.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton5.Name = "roundButton5";
             this.roundButton5.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton5.ShadowSize = 6;
-            this.roundButton5.Size = new System.Drawing.Size(103, 38);
+            this.roundButton5.Size = new System.Drawing.Size(77, 30);
             this.roundButton5.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.roundButton5.TabIndex = 56;
             this.toolTip1.SetToolTip(this.roundButton5, "スクリプトの内容の一部を自動的に変更します");
@@ -2544,12 +2509,12 @@
             this.roundButton17.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton17.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton17.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton17.Location = new System.Drawing.Point(8, 20);
-            this.roundButton17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton17.Location = new System.Drawing.Point(6, 16);
+            this.roundButton17.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton17.Name = "roundButton17";
             this.roundButton17.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton17.ShadowSize = 6;
-            this.roundButton17.Size = new System.Drawing.Size(144, 52);
+            this.roundButton17.Size = new System.Drawing.Size(108, 42);
             this.roundButton17.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton17.TabIndex = 61;
             this.toolTip1.SetToolTip(this.roundButton17, "時系列データを解析してモデルを探索します。\r\n統計解析や機械学習の知識が無くても簡単にモデルを探せます");
@@ -2564,12 +2529,12 @@
             this.roundButton4.FocusColor = System.Drawing.Color.Navy;
             this.roundButton4.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.roundButton4.HighLightColor = System.Drawing.Color.White;
-            this.roundButton4.Location = new System.Drawing.Point(373, -1);
-            this.roundButton4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton4.Location = new System.Drawing.Point(280, -1);
+            this.roundButton4.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton4.Name = "roundButton4";
             this.roundButton4.Padding = new System.Windows.Forms.Padding(8);
             this.roundButton4.ShadowSize = 6;
-            this.roundButton4.Size = new System.Drawing.Size(99, 38);
+            this.roundButton4.Size = new System.Drawing.Size(74, 30);
             this.roundButton4.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton4.TabIndex = 60;
             this.roundButton4.Click += new System.EventHandler(this.roundButton4_Click_1);
@@ -2584,12 +2549,12 @@
             this.roundButton8.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton8.ForeColor = System.Drawing.Color.Yellow;
             this.roundButton8.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton8.Location = new System.Drawing.Point(1430, 126);
-            this.roundButton8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton8.Location = new System.Drawing.Point(1072, 101);
+            this.roundButton8.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton8.Name = "roundButton8";
             this.roundButton8.Padding = new System.Windows.Forms.Padding(8);
             this.roundButton8.ShadowSize = 6;
-            this.roundButton8.Size = new System.Drawing.Size(109, 62);
+            this.roundButton8.Size = new System.Drawing.Size(82, 50);
             this.roundButton8.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton8.TabIndex = 59;
             this.toolTip1.SetToolTip(this.roundButton8, "作業履歴から指定した作業までの状態に巻き戻すスクリプトを読み込みます");
@@ -2605,12 +2570,12 @@
             this.roundButton1.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton1.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton1.Location = new System.Drawing.Point(3, 22);
-            this.roundButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton1.Location = new System.Drawing.Point(2, 18);
+            this.roundButton1.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton1.Name = "roundButton1";
             this.roundButton1.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton1.ShadowSize = 6;
-            this.roundButton1.Size = new System.Drawing.Size(104, 55);
+            this.roundButton1.Size = new System.Drawing.Size(78, 44);
             this.roundButton1.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton1.TabIndex = 38;
             this.toolTip1.SetToolTip(this.roundButton1, "データを整形処理します");
@@ -2626,12 +2591,12 @@
             this.roundButton2.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton2.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton2.Location = new System.Drawing.Point(1, 22);
-            this.roundButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton2.Location = new System.Drawing.Point(1, 18);
+            this.roundButton2.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton2.Name = "roundButton2";
             this.roundButton2.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton2.ShadowSize = 6;
-            this.roundButton2.Size = new System.Drawing.Size(103, 51);
+            this.roundButton2.Size = new System.Drawing.Size(77, 41);
             this.roundButton2.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton2.TabIndex = 55;
             this.toolTip1.SetToolTip(this.roundButton2, "データをグラフなどで可視化できます。");
@@ -2647,12 +2612,12 @@
             this.roundButton3.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton3.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton3.Location = new System.Drawing.Point(7, 22);
-            this.roundButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton3.Location = new System.Drawing.Point(5, 18);
+            this.roundButton3.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton3.Name = "roundButton3";
             this.roundButton3.Padding = new System.Windows.Forms.Padding(7);
             this.roundButton3.ShadowSize = 6;
-            this.roundButton3.Size = new System.Drawing.Size(144, 52);
+            this.roundButton3.Size = new System.Drawing.Size(108, 42);
             this.roundButton3.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton3.TabIndex = 56;
             this.toolTip1.SetToolTip(this.roundButton3, "データを解析してモデルを探索します。\r\n統計解析や機械学習の知識が無くても簡単にモデルを探せます");
@@ -2668,12 +2633,12 @@
             this.roundButton16.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton16.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton16.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton16.Location = new System.Drawing.Point(743, 18);
-            this.roundButton16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton16.Location = new System.Drawing.Point(557, 14);
+            this.roundButton16.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton16.Name = "roundButton16";
             this.roundButton16.Padding = new System.Windows.Forms.Padding(10);
             this.roundButton16.ShadowSize = 6;
-            this.roundButton16.Size = new System.Drawing.Size(120, 59);
+            this.roundButton16.Size = new System.Drawing.Size(90, 47);
             this.roundButton16.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton16.TabIndex = 67;
             this.toolTip1.SetToolTip(this.roundButton16, "オブジェクトの内容を情報付きで簡潔に表示");
@@ -2689,12 +2654,12 @@
             this.roundButton15.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton15.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton15.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton15.Location = new System.Drawing.Point(624, 18);
-            this.roundButton15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton15.Location = new System.Drawing.Point(468, 14);
+            this.roundButton15.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton15.Name = "roundButton15";
             this.roundButton15.Padding = new System.Windows.Forms.Padding(10);
             this.roundButton15.ShadowSize = 6;
-            this.roundButton15.Size = new System.Drawing.Size(128, 59);
+            this.roundButton15.Size = new System.Drawing.Size(96, 47);
             this.roundButton15.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton15.TabIndex = 66;
             this.toolTip1.SetToolTip(this.roundButton15, "最初の10行を表示");
@@ -2710,12 +2675,12 @@
             this.roundButton14.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton14.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton14.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton14.Location = new System.Drawing.Point(395, 18);
-            this.roundButton14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton14.Location = new System.Drawing.Point(296, 14);
+            this.roundButton14.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton14.Name = "roundButton14";
             this.roundButton14.Padding = new System.Windows.Forms.Padding(10);
             this.roundButton14.ShadowSize = 6;
-            this.roundButton14.Size = new System.Drawing.Size(120, 59);
+            this.roundButton14.Size = new System.Drawing.Size(90, 47);
             this.roundButton14.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton14.TabIndex = 65;
             this.toolTip1.SetToolTip(this.roundButton14, "どの列がどの型になっているかを確認できます。");
@@ -2731,12 +2696,12 @@
             this.roundButton13.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton13.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton13.Location = new System.Drawing.Point(507, 18);
-            this.roundButton13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton13.Location = new System.Drawing.Point(380, 14);
+            this.roundButton13.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton13.Name = "roundButton13";
             this.roundButton13.Padding = new System.Windows.Forms.Padding(10);
             this.roundButton13.ShadowSize = 6;
-            this.roundButton13.Size = new System.Drawing.Size(120, 59);
+            this.roundButton13.Size = new System.Drawing.Size(90, 47);
             this.roundButton13.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton13.TabIndex = 64;
             this.toolTip1.SetToolTip(this.roundButton13, "変数の内容を表示");
@@ -2752,12 +2717,12 @@
             this.roundButton12.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton12.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton12.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton12.Location = new System.Drawing.Point(269, 18);
-            this.roundButton12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton12.Location = new System.Drawing.Point(202, 14);
+            this.roundButton12.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton12.Name = "roundButton12";
             this.roundButton12.Padding = new System.Windows.Forms.Padding(10);
             this.roundButton12.ShadowSize = 6;
-            this.roundButton12.Size = new System.Drawing.Size(132, 58);
+            this.roundButton12.Size = new System.Drawing.Size(99, 46);
             this.roundButton12.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton12.TabIndex = 63;
             this.toolTip1.SetToolTip(this.roundButton12, "サマリーを表示");
@@ -2773,39 +2738,26 @@
             this.roundButton11.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.roundButton11.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.roundButton11.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton11.Location = new System.Drawing.Point(153, 18);
-            this.roundButton11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton11.Location = new System.Drawing.Point(115, 14);
+            this.roundButton11.Margin = new System.Windows.Forms.Padding(2);
             this.roundButton11.Name = "roundButton11";
             this.roundButton11.Padding = new System.Windows.Forms.Padding(10);
             this.roundButton11.ShadowSize = 6;
-            this.roundButton11.Size = new System.Drawing.Size(120, 59);
+            this.roundButton11.Size = new System.Drawing.Size(90, 47);
             this.roundButton11.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.roundButton11.TabIndex = 62;
             this.toolTip1.SetToolTip(this.roundButton11, "欠損値があるか確認できます");
             this.roundButton11.Click += new System.EventHandler(this.roundButton11_Click);
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.label17.Location = new System.Drawing.Point(614, 355);
-            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(221, 15);
-            this.label17.TabIndex = 115;
-            this.label17.Text = "データsplitには対応していません。";
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1557, 884);
+            this.ClientSize = new System.Drawing.Size(1168, 707);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Padding = new System.Windows.Forms.Padding(10, 60, 10, 10);
+            this.Padding = new System.Windows.Forms.Padding(8, 60, 8, 8);
             this.Text = "[DDS Anyone Data Scientist] with R　preview.version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);

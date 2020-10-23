@@ -179,6 +179,7 @@ namespace WindowsFormsApplication1
 
                 //p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
 
+                if (System.IO.File.Exists("Digraph.bat")) form1.FileDelete("Digraph.bat");
                 if (System.IO.File.Exists("Digraph.png")) form1.FileDelete("Digraph.png");
                 if (System.IO.File.Exists("causal_multi_histgram.png")) form1.FileDelete("causal_multi_histgram.png");
                 pictureBox1.ImageLocation = "";
@@ -234,9 +235,9 @@ namespace WindowsFormsApplication1
                     form1.TextBoxEndposset(form1.textBox6);
                 }
 
-                if (System.IO.File.Exists("Digraph_gen.bat"))
+                if (System.IO.File.Exists("Digraph.bat"))
                 {
-                    MessageBox.Show("グラフが複雑になる可能性があるため生成バッチのみ生成しました\nDigraph_gen.bat", "", MessageBoxButtons.OK);
+                    MessageBox.Show("グラフが複雑になる可能性があるため生成バッチのみ生成しました\nDigraph.bat", "", MessageBoxButtons.OK);
                 }
                 if (System.IO.File.Exists("Digraph.png"))
                 {

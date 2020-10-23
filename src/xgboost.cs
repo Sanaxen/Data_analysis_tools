@@ -473,6 +473,11 @@ namespace WindowsFormsApplication1
                         MessageBox.Show("説明変数に目的変数があるので無視されました", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
+                    if (radioButton4.Checked)
+                    {
+                        cmd += "xgb.dump(xgboost.model, \"xgboost.model.json\", with.stats = TRUE, dump_format =\"json\")\r\n";
+                    }
+
                     if (true)
                     {
                         //form1.textBox2.Text += cmd;

@@ -289,6 +289,8 @@ namespace WindowsFormsApplication1
                                 cmd += ",classwt=c(" + textBox3.Text + ")";
                             }
                         }
+                        cmd += ", ntree = " + numericUpDown1.Value.ToString();
+                        cmd += ", mtry = " + numericUpDown2.Value.ToString();
                         cmd += ")\r\n";
                         cmd += "sink()\r\n";
                     }
