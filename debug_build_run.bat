@@ -17,3 +17,5 @@ copy .\Application\DDS2\script\*.* %build_exe%\..\script /v /y
 
 mkdir %build_exe%\res
 copy .\Application\DDS2\bin\res\*.* %build_exe%\res /v /y
+
+copy .\Application\DDS2\bin\panel_click %build_exe% /v /y
