@@ -26,6 +26,146 @@ namespace WindowsFormsApplication1
         {
 
         }
+
+        System.Diagnostics.Process process = null;
+        public string output_string = "";
+        void p_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
+        {
+            if (e.Data != null)
+            {
+                output_string += e.Data.Replace("\r\r\n", "\r\n"); // 改行コードの修正
+                this.textBox3.AppendText(e.Data);
+                this.textBox3.AppendText(Environment.NewLine);
+            }
+        }
+
+        delegate void delegate1(object sender, System.EventArgs e);
+        private void Solver_Exited(object sender, System.EventArgs e)
+        {
+            Invoke(new delegate1(Solver_Exited0), sender, e);
+        }
+
+        private void Solver_Exited0(object sender, System.EventArgs e)
+        {
+            try
+            {
+                timer1.Stop();
+                timer1.Enabled = false;
+                if (process != null)
+                {
+                    if (!process.HasExited)
+                    {
+                        process.CancelOutputRead();
+                        process.Kill();
+                        process.WaitForExit(Form1.WaitForExitLimit);
+                    }
+
+                    process = null;
+
+                    {
+                        string cmd = "error_distr <- read.csv( \"error_distr.csv\", ";
+                        cmd += "header=T";
+                        cmd += ", stringsAsFactors = F";
+                        //cmd += ", fileEncoding=\"UTF-8-BOM\"";
+                        cmd += ", na.strings=\"NULL\"";
+                        cmd += ")\r\n";
+
+                        string bak = form1.textBox1.Text;
+                        form1.textBox1.Text = cmd;
+                        try
+                        {
+                            form1.script_execute(sender, e);
+                            form1.comboBox3.Text = "error_distr";
+                            form1.comboBox1.Text = "";
+                            form1.ComboBoxItemAdd(form1.comboBox2, form1.comboBox3.Text);
+                            form1.comboBox2.Text = form1.comboBox3.Text;
+
+                        }
+                        catch { }
+                        form1.textBox1.Text = bak;
+                    }
+
+                    //textBox3.Text = p.StartInfo.Arguments;
+                    //textBox3.Text = output_string;
+                    //output_string = output_string.Replace("\r\r\n", "\r\n"); // 改行コードの修正
+
+                    int s = textBox3.Text.IndexOf("Cause - and-effect diagram");
+                    if (s >= 0)
+                    {
+                        form1.textBox6.Text += textBox3.Text.Substring(s);
+                        form1.TextBoxEndposset(form1.textBox6);
+                    }
+
+                    if (System.IO.File.Exists("Digraph.bat"))
+                    {
+                        var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
+                        if (ss == DialogResult.OK)
+                        {
+                            System.Diagnostics.Process.Start("Digraph.bat");
+                        }
+                    }
+                    if (System.IO.File.Exists("Digraph.png"))
+                    {
+                        for (int i = 0; i < 1000; i++)
+                        {
+                            if (!Form1.IsFileLocked("Digraph.png"))
+                            {
+                                break;
+                            }
+                            System.Threading.Thread.Sleep(300);
+                        }
+
+                        pictureBox1.ImageLocation = "Digraph.png";
+                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox1.Dock = DockStyle.Fill;
+                        pictureBox1.Show();
+                    }
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if (!Form1.IsFileLocked("causal_multi_histgram.png"))
+                        {
+                            break;
+                        }
+                        System.Threading.Thread.Sleep(300);
+                    }
+                    if (System.IO.File.Exists("causal_multi_histgram.png"))
+                    {
+                        pictureBox2.ImageLocation = "causal_multi_histgram.png";
+                        pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox2.Dock = DockStyle.Fill;
+                        pictureBox2.Show();
+                    }
+                    if (System.IO.File.Exists("select_variables.dat"))
+                    {
+                        System.IO.StreamReader sr = new System.IO.StreamReader("select_variables.dat", Encoding.GetEncoding("SHIFT_JIS"));
+                        string dat = "";
+                        if (sr != null)
+                        {
+                            dat = sr.ReadToEnd();
+                        }
+                        sr.Close();
+
+                        System.IO.StreamWriter sw = new System.IO.StreamWriter("select_variables.dat", false, Encoding.GetEncoding("SHIFT_JIS"));
+                        if (sw != null)
+                        {
+                            sw.Write("1\r\n");
+                            sw.Write(dat);
+                        }
+                        sw.Close();
+                    }
+
+                }
+            }
+            catch
+            {
+            }
+            finally
+            {
+                running = 0;
+                process = null;
+            }
+        }
+
         public Causal_relationship_search()
         {
             InitializeComponent();
@@ -82,6 +222,7 @@ namespace WindowsFormsApplication1
                 }
             }
             running = 1;
+            textBox3.Text = "";
 
             try
             {
@@ -93,41 +234,41 @@ namespace WindowsFormsApplication1
                 pictureBox1.Image = null;
                 pictureBox2.Image = null;
 
-                System.Diagnostics.Process p = new System.Diagnostics.Process();
+                process = new System.Diagnostics.Process();
 
-                p.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
-                p.StartInfo.Arguments = "--csv " + fileName;
-                p.StartInfo.Arguments += " --header 1";
-                p.StartInfo.Arguments += " --col 0";
-                p.StartInfo.Arguments += " --iter " + textBox1.Text;
-                p.StartInfo.Arguments += " --tol " + textBox2.Text;
+                process.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
+                process.StartInfo.Arguments = "--csv " + fileName;
+                process.StartInfo.Arguments += " --header 1";
+                process.StartInfo.Arguments += " --col 0";
+                process.StartInfo.Arguments += " --iter " + textBox1.Text;
+                process.StartInfo.Arguments += " --tol " + textBox2.Text;
                 if (checkBox1.Checked)
                 {
-                    p.StartInfo.Arguments += " --sideways 1";
+                    process.StartInfo.Arguments += " --sideways 1";
                 }
                 if (numericUpDown1.Value > 5)
                 {
-                    p.StartInfo.Arguments += " --diaglam_size " + numericUpDown1.Value.ToString();
+                    process.StartInfo.Arguments += " --diaglam_size " + numericUpDown1.Value.ToString();
                 }
-                p.StartInfo.Arguments += " --lasso " + float.Parse(textBox4.Text);
+                process.StartInfo.Arguments += " --lasso " + float.Parse(textBox4.Text);
 
                 if (checkBox2.Checked)
                 {
-                    p.StartInfo.Arguments += " --error_distr 1";
-                    p.StartInfo.Arguments += " --capture 1";
+                    process.StartInfo.Arguments += " --error_distr 1";
+                    process.StartInfo.Arguments += " --capture 1";
                     if (numericUpDown2.Value >= 1)
                     {
-                        p.StartInfo.Arguments += " --error_distr_size  " + (640 * numericUpDown2.Value).ToString() + "," + (480 * numericUpDown2.Value).ToString();
+                        process.StartInfo.Arguments += " --error_distr_size  " + (640 * numericUpDown2.Value).ToString() + "," + (480 * numericUpDown2.Value).ToString();
                     }
                 }
 
-                p.StartInfo.Arguments += " --min_cor_delete " + float.Parse(textBox5.Text);
-                p.StartInfo.Arguments += " --min_delete " + float.Parse(textBox6.Text);
+                process.StartInfo.Arguments += " --min_cor_delete " + float.Parse(textBox5.Text);
+                process.StartInfo.Arguments += " --min_delete " + float.Parse(textBox6.Text);
 
                 if (float.Parse(textBox7.Text) != 0 && float.Parse(textBox8.Text) != 0 && float.Parse(textBox7.Text) < float.Parse(textBox8.Text))
                 {
-                    p.StartInfo.Arguments += " --cor_range_d " + textBox7.Text;
-                    p.StartInfo.Arguments += " --cor_range_u " + textBox8.Text;
+                    process.StartInfo.Arguments += " --cor_range_d " + textBox7.Text;
+                    process.StartInfo.Arguments += " --cor_range_u " + textBox8.Text;
                 }
 
                 var Names = form1.GetNames("df");
@@ -142,9 +283,10 @@ namespace WindowsFormsApplication1
 
                         if (typename.Items[listBox1.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox1.SelectedIndices[i]].ToString() == "integer")
                         {
-                            p.StartInfo.Arguments += " --y_var " + "\"" + var + "\"";
-                            //p.StartInfo.Arguments += " --x_var " + (listBox1.SelectedIndices[i] - _analysis.numericUpDown1.Value).ToString();
-                        }else
+                            process.StartInfo.Arguments += " --y_var " + "\"" + var + "\"";
+                            //process.StartInfo.Arguments += " --x_var " + (listBox1.SelectedIndices[i] - _analysis.numericUpDown1.Value).ToString();
+                        }
+                        else
                         {
                             typeNG = true;
                         }
@@ -157,9 +299,10 @@ namespace WindowsFormsApplication1
                         if (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer")
                         {
                             string var = listBox2.Items[listBox2.SelectedIndices[i]].ToString();
-                            p.StartInfo.Arguments += " --x_var " + "\"" + var + "\"";
-                            //p.StartInfo.Arguments += " --x_var " + (listBox1.SelectedIndices[i] - _analysis.numericUpDown1.Value).ToString();
-                        }else
+                            process.StartInfo.Arguments += " --x_var " + "\"" + var + "\"";
+                            //process.StartInfo.Arguments += " --x_var " + (listBox1.SelectedIndices[i] - _analysis.numericUpDown1.Value).ToString();
+                        }
+                        else
                         {
                             typeNG = true;
                         }
@@ -173,11 +316,12 @@ namespace WindowsFormsApplication1
                 //MessageBox.Show(p.StartInfo.Arguments);
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ");
-                System.IO.File.AppendAllText("comandline_args", p.StartInfo.Arguments, Encoding.GetEncoding("shift_jis"));
-                p.StartInfo.Arguments = " --@ comandline_args";
+                System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments, Encoding.GetEncoding("shift_jis"));
+                process.StartInfo.Arguments = " --@ comandline_args";
 
+                process.OutputDataReceived += p_OutputDataReceived;
 
-                //p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                //process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
 
                 if (System.IO.File.Exists("Digraph.bat")) form1.FileDelete("Digraph.bat");
                 if (System.IO.File.Exists("Digraph.png")) form1.FileDelete("Digraph.png");
@@ -185,111 +329,37 @@ namespace WindowsFormsApplication1
                 pictureBox1.ImageLocation = "";
                 pictureBox2.ImageLocation = "";
 
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
 
-                string output = "";
+                // このプログラムが終了した時に Exited イベントを発生させる
+                process.EnableRaisingEvents = true;
+                // Exited イベントのハンドラを追加する
+                process.Exited += new System.EventHandler(Solver_Exited);
+
+                output_string = "";
                 try
                 {
-                    p.Start();
-                    output = p.StandardOutput.ReadToEnd(); // 標準出力の読み取り
-                    output = output.Replace("\r\r\n", "\r\n"); // 改行コードの修正
+                    process.Start();
+                    process.BeginOutputReadLine();
                 }
                 catch (Exception)
                 {
+                    if (process != null && !process.HasExited) process.Kill();
+                    process = null;
+                    running = 0;
                     return;
                 }
-                p.WaitForExit();
+                //process.WaitForExit();
+                //process.Close();
 
-                {
-                    string cmd = "error_distr <- read.csv( \"error_distr.csv\", ";
-                    cmd += "header=T";
-                    cmd += ", stringsAsFactors = F";
-                    //cmd += ", fileEncoding=\"UTF-8-BOM\"";
-                    cmd += ", na.strings=\"NULL\"";
-                    cmd += ")\r\n";
-
-                    string bak = form1.textBox1.Text;
-                    form1.textBox1.Text = cmd;
-                    try
-                    {
-                        form1.script_execute(sender, e);
-                        form1.comboBox3.Text = "error_distr";
-                        form1.comboBox1.Text = "";
-                        form1.ComboBoxItemAdd(form1.comboBox2, form1.comboBox3.Text);
-                        form1.comboBox2.Text = form1.comboBox3.Text;
-
-                    }
-                    catch { }
-                    form1.textBox1.Text = bak;
-                }
-
-                //textBox3.Text = p.StartInfo.Arguments;
-                textBox3.Text = output;
-
-                int s = output.IndexOf("Cause - and-effect diagram");
-                if (s >= 0)
-                {
-                    form1.textBox6.Text += output.Substring(s);
-                    form1.TextBoxEndposset(form1.textBox6);
-                }
-
-                if (System.IO.File.Exists("Digraph.bat"))
-                {
-                    MessageBox.Show("グラフが複雑になる可能性があるため生成バッチのみ生成しました\nDigraph.bat", "", MessageBoxButtons.OK);
-                }
-                if (System.IO.File.Exists("Digraph.png"))
-                {
-                    for (int i = 0; i < 1000; i++)
-                    {
-                        if (!Form1.IsFileLocked("Digraph.png"))
-                        {
-                            break;
-                        }
-                        System.Threading.Thread.Sleep(300);
-                    }
-
-                    pictureBox1.ImageLocation = "Digraph.png";
-                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox1.Dock = DockStyle.Fill;
-                    pictureBox1.Show();
-                }
-                for (int i = 0; i < 10; i++)
-                {
-                    if (!Form1.IsFileLocked("causal_multi_histgram.png"))
-                    {
-                        break;
-                    }
-                    System.Threading.Thread.Sleep(300);
-                }
-                if (System.IO.File.Exists("causal_multi_histgram.png"))
-                {
-                    pictureBox2.ImageLocation = "causal_multi_histgram.png";
-                    pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox2.Dock = DockStyle.Fill;
-                    pictureBox2.Show();
-                }
-                if (System.IO.File.Exists("select_variables.dat"))
-                {
-                    System.IO.StreamReader sr = new System.IO.StreamReader("select_variables.dat", Encoding.GetEncoding("SHIFT_JIS"));
-                    string dat = "";
-                    if (sr != null)
-                    {
-                        dat = sr.ReadToEnd();
-                    }
-                    sr.Close();
-
-                    System.IO.StreamWriter sw = new System.IO.StreamWriter("select_variables.dat", false, Encoding.GetEncoding("SHIFT_JIS"));
-                    if (sw != null)
-                    {
-                        sw.Write("1\r\n");
-                        sw.Write(dat);
-                    }
-                    sw.Close();
-                }
             }
-            catch { }
+            catch {
+                if (process != null && !process.HasExited) process.Kill();
+                process = null;
+                running = 0;
+            }
             finally
             {
                 timer1.Enabled = true;
@@ -496,6 +566,27 @@ namespace WindowsFormsApplication1
             finally
             {
                 (sender as TextBox).Refresh();
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            if (process != null)
+            {
+                try
+                {
+                    if (Form1.Send_CTRL_C(process))
+                    {
+                        timer1.Stop();
+                        return;
+                    }
+                }
+                catch
+                {
+                    timer1.Stop();
+                    if (!process.HasExited) process.Kill();
+                    return;
+                }
             }
         }
     }

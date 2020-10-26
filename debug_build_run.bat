@@ -14,3 +14,6 @@ echo 1 > "%exe_path%\prophet_option.txt"
 
 mkdir %build_exe%\..\script
 copy .\Application\DDS2\script\*.* %build_exe%\..\script /v /y
+
+mkdir %build_exe%\res
+copy .\Application\DDS2\bin\res\*.* %build_exe%\res /v /y

@@ -17,13 +17,13 @@ echo "%PYTORCH_CUDA%"> "%BATPATH%bin\pytorch_cuda_version.txt"
 echo "%DEEPAR_APP%"> "%BATPATH%bin\deep_ar_path.txt"
 
 echo "%GNUPLOT_PATH%"> "%PYTORCH_CUDA%\gnuplot_path.txt"
-echo "%GRAPHVIZ_PATH%"> "%PYTORCH_CUDA%\graphviz_path.txt"
+echo "%GRAPHVIZ_PATH%"> "%GRAPHVIZ_PATH%\graphviz_path.txt"
 
 echo 1 > "%BATPATH%bin\prophet_option.txt"
 
 
 set PATH="%GRAPHVIZ_PATH%";%PATH%
-set PATH=%RTOOL_PATH%\bin;%RTOOL_PATH%\mingw_64\bin;%PATH%
+set PATH=%RTOOL_PATH%\bin;%RTOOL_PATH%\mingw_64\bin;%APPDATA%\PhantomJS;%PATH%
 
 
 :pause
