@@ -805,6 +805,7 @@ namespace WindowsFormsApplication1
                 //}
 
                 form1.SelectionVarWrite_(listBox1, listBox2, "select_variables.dat");
+                form1.SelectionVarWrite_(listBox3, listBox4, "select_variables2.dat");
 
                 //form1.summary_df("train");
                 //form1.summary_df("test");
