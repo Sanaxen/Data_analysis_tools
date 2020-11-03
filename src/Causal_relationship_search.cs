@@ -49,8 +49,11 @@ namespace WindowsFormsApplication1
         {
             try
             {
+                timer2.Stop();
+                timer2.Enabled = false;
                 timer1.Stop();
                 timer1.Enabled = false;
+                running = 0;
                 if (process != null)
                 {
                     if (!process.HasExited)
@@ -85,6 +88,7 @@ namespace WindowsFormsApplication1
                         form1.textBox1.Text = bak;
                     }
 
+
                     //textBox3.Text = p.StartInfo.Arguments;
                     //textBox3.Text = output_string;
                     //output_string = output_string.Replace("\r\r\n", "\r\n"); // 改行コードの修正
@@ -101,11 +105,19 @@ namespace WindowsFormsApplication1
                         var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
                         if (ss == DialogResult.OK)
                         {
+                            if (System.IO.File.Exists("Digraph.png"))
+                            {
+                                System.IO.File.Delete("Digraph.png");
+                            }
+                            timer3.Enabled = true;
+                            timer3.Start();
                             System.Diagnostics.Process.Start("Digraph.bat");
                         }
                     }
                     if (System.IO.File.Exists("Digraph.png"))
                     {
+                        timer3.Stop();
+                        timer3.Enabled = false;
                         for (int i = 0; i < 1000; i++)
                         {
                             if (!Form1.IsFileLocked("Digraph.png"))
@@ -161,6 +173,8 @@ namespace WindowsFormsApplication1
             }
             finally
             {
+                TopMost = true;
+                TopMost = false;
                 running = 0;
                 process = null;
             }
@@ -234,6 +248,10 @@ namespace WindowsFormsApplication1
                 pictureBox1.Image = null;
                 pictureBox2.Image = null;
 
+                if ( System.IO.File.Exists("error_cols.txt"))
+                {
+                    System.IO.File.Delete("error_cols.txt");
+                }
                 process = new System.Diagnostics.Process();
 
                 process.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
@@ -309,6 +327,16 @@ namespace WindowsFormsApplication1
                     }
                 }
 
+                if ( checkBox3.Checked)
+                {
+                    process.StartInfo.Arguments += " --ignore_constant_value_columns 1";
+                }else
+                {
+                    process.StartInfo.Arguments += " --ignore_constant_value_columns 0";
+                }
+                process.StartInfo.Arguments += " --lasso_tol " + textBox9.Text;
+                process.StartInfo.Arguments += " --lasso_itr_max " + textBox10.Text;
+
                 if (typeNG )
                 {
                     MessageBox.Show("数値以外のデータ列が選択を未選択扱いにしました");
@@ -339,6 +367,8 @@ namespace WindowsFormsApplication1
                 process.Exited += new System.EventHandler(Solver_Exited);
 
                 output_string = "";
+                timer2.Enabled = true;
+                timer2.Start();
                 try
                 {
                     process.Start();
@@ -349,6 +379,8 @@ namespace WindowsFormsApplication1
                     if (process != null && !process.HasExited) process.Kill();
                     process = null;
                     running = 0;
+                    timer2.Stop();
+                    timer2.Enabled = false;
                     return;
                 }
                 //process.WaitForExit();
@@ -359,13 +391,14 @@ namespace WindowsFormsApplication1
                 if (process != null && !process.HasExited) process.Kill();
                 process = null;
                 running = 0;
+                timer2.Enabled = false;
+                timer2.Stop();
             }
             finally
             {
                 timer1.Enabled = true;
                 this.TopMost = true;
                 this.TopMost = false;
-                running = 0;
             }
         }
 
@@ -587,6 +620,53 @@ namespace WindowsFormsApplication1
                     if (!process.HasExited) process.Kill();
                     return;
                 }
+            }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists("error_cols.txt"))
+            {
+                timer2.Stop();
+                timer2.Enabled = false;
+                var s = MessageBox.Show("値の変化が無い列があり因果ダイアグラムが不正になる事があります。\n(乱数で埋めて計算しました)\n\"error_cols.txt\"を確認して下さい（除外して下さい)\n計算を続けますか?", "", MessageBoxButtons.OKCancel);
+                if ( s == DialogResult.Cancel)
+                {
+                    button10_Click(sender, e);
+                }else
+                {
+                    if ( float.Parse(textBox4.Text) > 0.0 )
+                    {
+                        s = MessageBox.Show("このまま継続するとLassの計算が収束しない場合があります", "", MessageBoxButtons.OKCancel);
+                        if (s == DialogResult.Cancel)
+                        {
+                            button10_Click(sender, e);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists("Digraph.png"))
+            {
+                timer3.Stop();
+                timer3.Enabled = false;
+                for (int i = 0; i < 1000; i++)
+                {
+                    if (!Form1.IsFileLocked("Digraph.png"))
+                    {
+                        break;
+                    }
+                    System.Threading.Thread.Sleep(300);
+                }
+
+                pictureBox1.ImageLocation = "Digraph.png";
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox1.Dock = DockStyle.Fill;
+                pictureBox1.Show();
             }
         }
     }
