@@ -105,7 +105,11 @@ namespace WindowsFormsApplication1
         private void save_model()
         {
             //if (checkBox6.Checked) return;
-            if (timer1.Enabled) return;
+            if (timer1.Enabled)
+            {
+                MessageBox.Show("今は保存できません", "", MessageBoxButtons.OK);
+                return;
+            }
 
             string rmse = "none";
 
