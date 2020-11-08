@@ -1434,7 +1434,6 @@
             this.checkBox12.TabIndex = 124;
             this.checkBox12.Text = "GPU(cuda)";
             this.checkBox12.UseVisualStyleBackColor = true;
-            this.checkBox12.CheckedChanged += new System.EventHandler(this.checkBox13_CheckedChanged);
             // 
             // checkBox13
             // 

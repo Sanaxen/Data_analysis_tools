@@ -812,6 +812,15 @@ namespace WindowsFormsApplication1
                     if ( checkBox7.Checked)
                     {
                         process.StartInfo.Arguments += " --device_name gpu:" + numericUpDown7.Value.ToString();
+
+                        var cuda_chk = new System.Diagnostics.Process();
+                        cuda_chk.StartInfo.FileName = gpu_version_path + "\\cuda_is_available.exe";
+                        cuda_chk.WaitForExit();
+                        if (System.IO.File.Exists(gpu_version_path + "\\cuda_is_available.log"))
+                        {
+                            MessageBox.Show("GPUを利用できません\nCUDAをインストールするかGPUのドライバーを更新して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
                     }
                     else
                     {
@@ -2089,6 +2098,14 @@ namespace WindowsFormsApplication1
             if (e.KeyCode == Keys.Enter)
             {
                 numericUpDown3_ValueChanged(sender, null);
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if ( checkBox1.Checked == false)
+            {
+                checkBox7.Checked = false;
             }
         }
     }
