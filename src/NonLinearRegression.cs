@@ -815,6 +815,11 @@ namespace WindowsFormsApplication1
 
                         var cuda_chk = new System.Diagnostics.Process();
                         cuda_chk.StartInfo.FileName = gpu_version_path + "\\cuda_is_available.exe";
+                        cuda_chk.StartInfo.CreateNoWindow = true;
+                        cuda_chk.StartInfo.RedirectStandardOutput = true;
+                        cuda_chk.StartInfo.UseShellExecute = false;
+                        cuda_chk.Start();
+
                         cuda_chk.WaitForExit();
                         if (System.IO.File.Exists(gpu_version_path + "\\cuda_is_available.log"))
                         {
