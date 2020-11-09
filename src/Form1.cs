@@ -8597,6 +8597,11 @@ namespace WindowsFormsApplication1
                 cmd += ")\r\n";
 
                 evalute_cmdstr(cmd);
+                if ( _TimeSeriesRegression != null)
+                {
+                    _TimeSeriesRegression.add_holidays = false;
+                    _TimeSeriesRegression.Hide();
+                }
             }
         }
 
@@ -8606,6 +8611,11 @@ namespace WindowsFormsApplication1
             f.form1 = this;
             f.Init();
             f.Show();
+            if (_TimeSeriesRegression != null)
+            {
+                _TimeSeriesRegression.add_holidays = false;
+                _TimeSeriesRegression.Hide();
+            }
         }
 
         public void summary_df(string dataframe="df")

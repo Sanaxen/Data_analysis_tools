@@ -1122,7 +1122,12 @@ namespace WindowsFormsApplication1
                 TopMost = false;
             }
             catch {
-                if (process != null && !process.HasExited) process.Kill();
+                try
+                {
+                    if (process != null && !process.HasExited) process.Kill();
+                }
+                catch
+                { }
                 process = null;
                 running = 0;
             }
@@ -1212,7 +1217,7 @@ namespace WindowsFormsApplication1
             if (process != null && process.HasExited)
             {
                 timer1.Stop();
-                process.Threads.Resume();
+                if (process != null )process.Threads.Resume();
                 progressBar1.Value = progressBar1.Maximum;
                 progressBar1.Refresh();
                 return;
