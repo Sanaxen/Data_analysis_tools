@@ -5,4 +5,7 @@ copy %d%\TimeSeriesRegression_cuda.exe .\bin\gpu_version\TimeSeriesRegression_cu
 copy %d%\NonLinearRegression_cuda.exe .\bin\gpu_version\NonLinearRegression_cuda.exe /v /y
 
 copy D:\torch\cpp_torch\test\rnn6\rnn6\x64\Release\*.dll .\bin\gpu_version /v /y
+
+set d="D:\torch\cpp_torch\test\cuda_is_available\cuda_is_available\x64\Release"
+copy %d%\cuda_is_available.exe .\bin\gpu_version\cuda_is_available.exe /v /y
 pause
