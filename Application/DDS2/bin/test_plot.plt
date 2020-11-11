@@ -14,7 +14,8 @@ if(x_timefromat != 0) set timefmt "%Y/%m/%d[%H:%M:%S]"
 if(x_timefromat != 0) set xtics timedate
 if(x_timefromat != 0) set xtics format "%Y/%m/%d"
 
-unset key
+#unset key
+set key left top
 
 file = "test.dat"
 

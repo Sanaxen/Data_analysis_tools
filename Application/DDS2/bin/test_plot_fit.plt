@@ -7,7 +7,8 @@ set key opaque box
 set object 1 rect behind from screen 0,0 to screen 1,1 fc rgb "#FAFAFA" fillstyle solid
 #set size ratio -1
 
-unset key
+#unset key
+set key left top
 
 file = "test.dat"
 

@@ -9,6 +9,7 @@ set output "loss.png"
 
 set key opaque box
 set object 1 rect behind from screen 0,0 to screen 1,1 fc rgb "#FAFAFA" fillstyle solid
+set key left top
 
 
 plot 'error_loss.dat' using 1   t "loss"  with lines linewidth 1 linecolor rgbcolor "#F5A9A9" dt 1
