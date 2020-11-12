@@ -265,6 +265,9 @@ namespace WindowsFormsApplication1
                             if (_form12.checkBox3.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
 
+                            sw.Write("sift,");
+                            sw.Write(textBox5.Text + "\r\n");
+
                             sw.Write("use_pytorch,");
                             if (checkBox13.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
@@ -2339,6 +2342,11 @@ namespace WindowsFormsApplication1
                     if (ss[0].IndexOf("diff") >= 0)
                     {
                         _form12.numericUpDown1.Value = decimal.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("sift") >= 0)
+                    {
+                        textBox5.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
                     if (ss[0].IndexOf("use_pytorch") >= 0)

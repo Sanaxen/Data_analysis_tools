@@ -976,7 +976,6 @@
             this.groupBox1.Size = new System.Drawing.Size(299, 175);
             this.groupBox1.TabIndex = 83;
             this.groupBox1.TabStop = false;
-            this.toolTip3.SetToolTip(this.groupBox1, "エポック数");
             // 
             // button21
             // 
