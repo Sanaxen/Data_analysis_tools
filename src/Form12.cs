@@ -87,5 +87,9 @@ namespace WindowsFormsApplication1
                 panel1.Visible = false;
             }
         }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
     }
 }

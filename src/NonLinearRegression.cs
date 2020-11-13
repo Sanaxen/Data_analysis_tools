@@ -186,13 +186,16 @@ namespace WindowsFormsApplication1
                 {
                     if (use_pytorch)
                     {
-
-                    }
-                    else
-                    {
                         if (System.IO.File.Exists(Form1.curDir + "\\fit_best.pt"))
                         {
                             System.IO.File.Copy(Form1.curDir + "\\fit_best.pt", save_name, true);
+                        }
+                    }
+                    else
+                    {
+                        if (System.IO.File.Exists(Form1.curDir + "\\fit_best.model"))
+                        {
+                            System.IO.File.Copy(Form1.curDir + "\\fit_best.model", save_name, true);
                         }
                     }
                     if (System.IO.File.Exists(Form1.curDir + "\\normalize_info.txt"))
@@ -238,16 +241,21 @@ namespace WindowsFormsApplication1
                             sw.Write("scale,");
                             sw.Write(textBox1.Text + "\r\n");
 
+                            sw.Write("weight initialize,");
+                            sw.Write(_form11.comboBox2.Text + "\r\n");
+                            sw.Write("activation_fnc,");
+                            sw.Write(_form11.comboBox3.Text + "\r\n");
+
                             sw.Write("use_pytorch,");
                             if (checkBox1.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
                             sw.Write("gpu,");
                             if (checkBox7.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
-                            sw.Close();
 
                             sw.Write("deviceID,");
                             sw.Write(numericUpDown7.Value.ToString() + "\r\n");
+                            sw.Close();
                         }
                     }
                     if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
@@ -689,6 +697,15 @@ namespace WindowsFormsApplication1
                     return;
                 }
             }
+            if (checkBox1.Checked)
+            {
+                if (_form11.comboBox2.Text == "lecun")
+                {
+                    MessageBox.Show("weight initializeで\"lecun\"は利用できません", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    running = 0;
+                    return;
+                }
+            }
 
             running = 1;
 
@@ -1003,6 +1020,15 @@ namespace WindowsFormsApplication1
                 if (numericUpDown4.Value >= 1)
                 {
                     process.StartInfo.Arguments += " --multiplot_step " + numericUpDown4.Value.ToString();
+                }
+
+                if (_form11.comboBox3.Text != "")
+                {
+                    process.StartInfo.Arguments += " --activation_fnc " + _form11.comboBox3.Text;
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --activation_fnc tanh";
                 }
 
                 //
@@ -1794,7 +1820,7 @@ namespace WindowsFormsApplication1
                 System.IO.File.Copy(modelfile, "fit_best.model", true);
             }
 
-            System.IO.File.Copy(modelfile+ ".normalize_info.txt", "normalize_info.txt", true);
+            System.IO.File.Copy(modelfile+ ".normalize_info.dat", "normalize_info.txt", true);
             Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
             Form1.VarAutoSelection_(listBox3, listBox3, modelfile + ".select_variables2.dat");
 
@@ -1897,6 +1923,18 @@ namespace WindowsFormsApplication1
                         textBox1.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
+                    if (ss[0].IndexOf("weight initialize") >= 0)
+                    {
+                        _form11.comboBox2.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("activation_fnc") >= 0)
+                    {
+                        _form11.comboBox3.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+
+
                     if (ss[0].IndexOf("use_pytorch") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")

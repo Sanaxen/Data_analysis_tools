@@ -199,7 +199,7 @@ namespace WindowsFormsApplication1
                     }
                     if (System.IO.File.Exists(Form1.curDir + "\\normalize_info_t.txt"))
                     {
-                        System.IO.File.Copy(Form1.curDir + "\\normalize_info_t.txt", save_name+ ".normalize_info_t.txt", true);
+                        System.IO.File.Copy(Form1.curDir + "\\normalize_info_t.txt", save_name+ ".normalize_info_t.dat", true);
                     }
                     form1.SelectionVarWrite_(listBox1, listBox2, save_name + ".select_variables.dat");
                     form1.SelectionVarWrite_(listBox3, listBox4, save_name + ".select_variables2.dat");
@@ -267,6 +267,13 @@ namespace WindowsFormsApplication1
 
                             sw.Write("sift,");
                             sw.Write(textBox5.Text + "\r\n");
+
+                            sw.Write("target_position,");
+                            sw.Write(_form12.numericUpDown2.Value.ToString()+ "\r\n");
+                            sw.Write("weight initialize,");
+                            sw.Write(_form12.comboBox2.Text + "\r\n");
+                            sw.Write("activation_fnc,");
+                            sw.Write(_form12.comboBox4.Text + "\r\n");
 
                             sw.Write("use_pytorch,");
                             if (checkBox13.Checked) sw.Write("true\r\n");
@@ -767,6 +774,15 @@ namespace WindowsFormsApplication1
                 checkBox13.Enabled = true;
                 numericUpDown6.Enabled = true;
             }
+            if (checkBox13.Checked)
+            {
+                if (_form12.comboBox2.Text == "lecun")
+                {
+                    MessageBox.Show("weight initializeで\"lecun\"は利用できません", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    running = 0;
+                    return;
+                }
+            }
 
             running = 1;
 
@@ -1215,6 +1231,14 @@ namespace WindowsFormsApplication1
                 }
                 process.StartInfo.Arguments += " --target_position " + _form12.numericUpDown2.Value.ToString();
                 process.StartInfo.Arguments += " --mean_row " + _form12.numericUpDown11.Value.ToString();
+
+                if (_form12.comboBox4.Text != "")
+                {
+                    process.StartInfo.Arguments += " --activation_fnc " + _form12.comboBox4.Text;
+                }else
+                {
+                    process.StartInfo.Arguments += " --activation_fnc tanh";
+                }
 
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ");
@@ -2180,7 +2204,7 @@ namespace WindowsFormsApplication1
             {
                 System.IO.File.Copy(modelfile, "fit_best_ts.model", true);
             }
-            System.IO.File.Copy(modelfile + ".normalize_info_t.txt", "normalize_info_t.txt", true);
+            System.IO.File.Copy(modelfile + ".normalize_info_t.dat", "normalize_info_t.txt", true);
             Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
             Form1.VarAutoSelection_(listBox3, listBox4, modelfile + ".select_variables2.dat");
 
@@ -2349,6 +2373,22 @@ namespace WindowsFormsApplication1
                         textBox5.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
+                    if (ss[0].IndexOf("target_position") >= 0)
+                    {
+                        _form12.numericUpDown2.Value = decimal.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("weight initialize") >= 0)
+                    {
+                        _form12.comboBox2.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("activation_fnc") >= 0)
+                    {
+                        _form12.comboBox4.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+
                     if (ss[0].IndexOf("use_pytorch") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")

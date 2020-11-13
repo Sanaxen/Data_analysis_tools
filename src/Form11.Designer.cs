@@ -55,6 +55,8 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
@@ -66,6 +68,8 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.PowderBlue;
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.comboBox3);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.comboBox2);
@@ -91,9 +95,9 @@
             this.groupBox1.Controls.Add(this.textBox2);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Location = new System.Drawing.Point(9, 10);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(510, 202);
             this.groupBox1.TabIndex = 86;
             this.groupBox1.TabStop = false;
@@ -101,7 +105,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(442, 169);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(60, 30);
             this.button1.TabIndex = 89;
@@ -129,9 +133,10 @@
             "lecun",
             "gaussian",
             "constant",
-            "he"});
-            this.comboBox2.Location = new System.Drawing.Point(267, 93);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            "he",
+            "auto"});
+            this.comboBox2.Location = new System.Drawing.Point(272, 93);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(68, 20);
             this.comboBox2.TabIndex = 87;
@@ -410,6 +415,31 @@
             this.label6.Text = "epochs";
             this.toolTip1.SetToolTip(this.label6, "エポック数");
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(185, 121);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 12);
+            this.label2.TabIndex = 91;
+            this.label2.Text = "activation";
+            this.toolTip1.SetToolTip(this.label2, "ウェイトの初期化方法");
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "tanh",
+            "relu"});
+            this.comboBox3.Location = new System.Drawing.Point(272, 116);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(68, 20);
+            this.comboBox3.TabIndex = 90;
+            this.comboBox3.Text = "tanh";
+            // 
             // Form11
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -417,7 +447,7 @@
             this.ClientSize = new System.Drawing.Size(529, 221);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form11";
             this.Text = "ハイパーパラメータ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form11_FormClosing);
@@ -460,5 +490,7 @@
         public System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.ComboBox comboBox3;
     }
 }

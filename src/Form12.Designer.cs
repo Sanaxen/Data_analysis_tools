@@ -77,6 +77,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label15 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -97,6 +99,8 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.PowderBlue;
+            this.groupBox1.Controls.Add(this.label15);
+            this.groupBox1.Controls.Add(this.comboBox4);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.numericUpDown11);
             this.groupBox1.Controls.Add(this.numericUpDown2);
@@ -141,9 +145,9 @@
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.numericUpDown3);
             this.groupBox1.Location = new System.Drawing.Point(-2, -2);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(604, 310);
             this.groupBox1.TabIndex = 84;
             this.groupBox1.TabStop = false;
@@ -151,7 +155,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(328, 137);
+            this.label13.Location = new System.Drawing.Point(331, 182);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(99, 12);
             this.label13.TabIndex = 98;
@@ -160,7 +164,7 @@
             // 
             // numericUpDown11
             // 
-            this.numericUpDown11.Location = new System.Drawing.Point(431, 135);
+            this.numericUpDown11.Location = new System.Drawing.Point(434, 180);
             this.numericUpDown11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown11.Maximum = new decimal(new int[] {
             100000,
@@ -297,7 +301,7 @@
             "gru",
             "rnn"});
             this.comboBox3.Location = new System.Drawing.Point(452, 82);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(50, 20);
             this.comboBox3.TabIndex = 88;
@@ -306,7 +310,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(538, 257);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(62, 38);
             this.button1.TabIndex = 87;
@@ -334,13 +338,15 @@
             "lecun",
             "gaussian",
             "constant",
-            "he"});
+            "he",
+            "auto"});
             this.comboBox2.Location = new System.Drawing.Point(431, 114);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(70, 20);
             this.comboBox2.TabIndex = 85;
             this.comboBox2.Text = "xavier";
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // label14
             // 
@@ -763,6 +769,31 @@
             0,
             0});
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(343, 150);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(55, 12);
+            this.label15.TabIndex = 101;
+            this.label15.Text = "activation";
+            this.toolTip1.SetToolTip(this.label15, "ウェイトの初期化方法");
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "tanh",
+            "relu"});
+            this.comboBox4.Location = new System.Drawing.Point(430, 145);
+            this.comboBox4.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(72, 20);
+            this.comboBox4.TabIndex = 100;
+            this.comboBox4.Text = "tanh";
+            // 
             // Form12
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -770,7 +801,7 @@
             this.ClientSize = new System.Drawing.Size(603, 308);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form12";
             this.Text = "ハイパーパラメータ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form12_FormClosing);
@@ -845,5 +876,7 @@
         public System.Windows.Forms.NumericUpDown numericUpDown11;
         public System.Windows.Forms.NumericUpDown numericUpDown2;
         public System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label15;
+        public System.Windows.Forms.ComboBox comboBox4;
     }
 }
