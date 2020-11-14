@@ -82,6 +82,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -348,6 +349,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.label13);
             this.panel3.Controls.Add(this.button7);
             this.panel3.Controls.Add(this.label16);
             this.panel3.Controls.Add(this.button6);
@@ -738,6 +740,15 @@
             // 
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(136, 11);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(15, 15);
+            this.label13.TabIndex = 111;
+            this.label13.Text = "%";
+            // 
             // AutoTrain_Test2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -817,5 +828,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.Label label13;
     }
 }

@@ -226,6 +226,7 @@
             this.button12.Size = new System.Drawing.Size(105, 22);
             this.button12.TabIndex = 53;
             this.button12.Text = "変数自動選択";
+            this.toolTip1.SetToolTip(this.button12, "他の機能で選択していた変数と同じ選択に設定できます");
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click_1);
             // 
@@ -1156,7 +1157,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 81);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(659, 795);
+            this.panel5.Size = new System.Drawing.Size(687, 795);
             this.panel5.TabIndex = 38;
             // 
             // pictureBox1
@@ -1166,7 +1167,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(657, 605);
+            this.pictureBox1.Size = new System.Drawing.Size(685, 605);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 35;
             this.pictureBox1.TabStop = false;
@@ -1193,7 +1194,7 @@
             this.splitter2.Location = new System.Drawing.Point(0, 605);
             this.splitter2.Margin = new System.Windows.Forms.Padding(4);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(657, 4);
+            this.splitter2.Size = new System.Drawing.Size(685, 4);
             this.splitter2.TabIndex = 36;
             this.splitter2.TabStop = false;
             // 
@@ -1207,7 +1208,7 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(657, 184);
+            this.textBox1.Size = new System.Drawing.Size(685, 184);
             this.textBox1.TabIndex = 31;
             this.textBox1.WordWrap = false;
             // 
@@ -1226,7 +1227,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(659, 81);
+            this.panel1.Size = new System.Drawing.Size(687, 81);
             this.panel1.TabIndex = 35;
             // 
             // button10
@@ -1239,6 +1240,7 @@
             this.button10.TabIndex = 46;
             this.button10.Text = "button10";
             this.button10.UseVisualStyleBackColor = false;
+            this.button10.Visible = false;
             this.button10.Click += new System.EventHandler(this.button10_Click_1);
             // 
             // button9
@@ -1338,7 +1340,7 @@
             this.panel3.Location = new System.Drawing.Point(862, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(659, 876);
+            this.panel3.Size = new System.Drawing.Size(687, 876);
             this.panel3.TabIndex = 39;
             // 
             // splitter1
@@ -1358,7 +1360,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1521, 876);
+            this.ClientSize = new System.Drawing.Size(1549, 876);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);

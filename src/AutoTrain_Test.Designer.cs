@@ -30,6 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.label22 = new System.Windows.Forms.Label();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.checkBox13 = new System.Windows.Forms.CheckBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -93,15 +97,12 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.panel10 = new System.Windows.Forms.Panel();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.label22 = new System.Windows.Forms.Label();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.label23 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            this.panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            this.panel10.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -164,6 +165,50 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Tag = "";
             this.groupBox1.Text = "solver";
+            // 
+            // panel10
+            // 
+            this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel10.Controls.Add(this.radioButton2);
+            this.panel10.Controls.Add(this.label22);
+            this.panel10.Controls.Add(this.radioButton1);
+            this.panel10.Location = new System.Drawing.Point(508, 68);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(242, 47);
+            this.panel10.TabIndex = 116;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(106, 25);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(118, 19);
+            this.radioButton2.TabIndex = 119;
+            this.radioButton2.Text = "誤差率中央値";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(3, 3);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(67, 15);
+            this.label22.TabIndex = 118;
+            this.label22.Text = "精度指標";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
+            this.radioButton1.Location = new System.Drawing.Point(3, 25);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(88, 19);
+            this.radioButton1.TabIndex = 117;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "決定係数";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // checkBox13
             // 
@@ -410,6 +455,7 @@
             // 
             // panel8
             // 
+            this.panel8.Controls.Add(this.label23);
             this.panel8.Controls.Add(this.button7);
             this.panel8.Controls.Add(this.checkBox12);
             this.panel8.Controls.Add(this.label16);
@@ -503,7 +549,7 @@
             this.checkBox8.Checked = true;
             this.checkBox8.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox8.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.checkBox8.Location = new System.Drawing.Point(153, 12);
+            this.checkBox8.Location = new System.Drawing.Point(162, 12);
             this.checkBox8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(73, 19);
@@ -900,49 +946,14 @@
             // 
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // panel10
+            // label23
             // 
-            this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel10.Controls.Add(this.radioButton2);
-            this.panel10.Controls.Add(this.label22);
-            this.panel10.Controls.Add(this.radioButton1);
-            this.panel10.Location = new System.Drawing.Point(508, 68);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(242, 47);
-            this.panel10.TabIndex = 116;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(3, 25);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(88, 19);
-            this.radioButton1.TabIndex = 117;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "決定係数";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(3, 3);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(67, 15);
-            this.label22.TabIndex = 118;
-            this.label22.Text = "精度指標";
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(106, 25);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(118, 19);
-            this.radioButton2.TabIndex = 119;
-            this.radioButton2.Text = "誤差率中央値";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(138, 14);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(15, 15);
+            this.label23.TabIndex = 112;
+            this.label23.Text = "%";
             // 
             // AutoTrain_Test
             // 
@@ -958,12 +969,12 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AutoTrain_Test_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel10.ResumeLayout(false);
+            this.panel10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            this.panel10.ResumeLayout(false);
-            this.panel10.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1039,5 +1050,6 @@
         private System.Windows.Forms.Label label22;
         public System.Windows.Forms.RadioButton radioButton2;
         public System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.Label label23;
     }
 }

@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
@@ -98,7 +99,6 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             this.panel9.SuspendLayout();
@@ -159,6 +159,18 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(862, 836);
             this.panel2.TabIndex = 3;
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Checked = true;
+            this.checkBox9.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox9.Location = new System.Drawing.Point(288, 307);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(74, 19);
+            this.checkBox9.TabIndex = 127;
+            this.checkBox9.Text = "切片項";
+            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // checkBox8
             // 
@@ -484,6 +496,7 @@
             this.button12.Size = new System.Drawing.Size(105, 22);
             this.button12.TabIndex = 53;
             this.button12.Text = "変数自動選択";
+            this.toolTip1.SetToolTip(this.button12, "他の機能で選択していた変数と同じ選択に設定できます");
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click_1);
             // 
@@ -830,6 +843,7 @@
             this.button10.TabIndex = 46;
             this.button10.Text = "button10";
             this.button10.UseVisualStyleBackColor = false;
+            this.button10.Visible = false;
             this.button10.Click += new System.EventHandler(this.button10_Click_1);
             // 
             // button9
@@ -944,18 +958,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Checked = true;
-            this.checkBox9.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox9.Location = new System.Drawing.Point(288, 307);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(74, 19);
-            this.checkBox9.TabIndex = 127;
-            this.checkBox9.Text = "切片項";
-            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // KFAS
             // 

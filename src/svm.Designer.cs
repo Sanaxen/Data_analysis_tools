@@ -450,6 +450,7 @@
             this.button5.Size = new System.Drawing.Size(105, 22);
             this.button5.TabIndex = 58;
             this.button5.Text = "変数自動選択";
+            this.toolTip1.SetToolTip(this.button5, "他の機能で選択していた変数と同じ選択に設定できます");
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -818,6 +819,7 @@
             this.button8.TabIndex = 45;
             this.button8.Text = "button8";
             this.button8.UseVisualStyleBackColor = false;
+            this.button8.Visible = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button6

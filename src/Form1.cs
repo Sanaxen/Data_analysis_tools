@@ -2929,11 +2929,11 @@ namespace WindowsFormsApplication1
                     MessageBox.Show(deep_AR_Path + "\\deepAR.bat\n"+"DeepARはご利用できません", "", MessageBoxButtons.OK);
                 }
             }
-            if ( deep_AR_Path == "")
-            {
-                button72.Visible = false;
-                label17.Visible = false;
-            }
+            //if ( deep_AR_Path == "")
+            //{
+            //    button72.Visible = false;
+            //    label17.Visible = false;
+            //}
 
             label14.Text = App_userinfo;
             timer1.Enabled = true;
@@ -9029,6 +9029,16 @@ upper_window、 lower_windowにはそのイベントの効果が前後何日に�
 
         private void button71_Click(object sender, EventArgs e)
         {
+            if (deep_AR_Path == "")
+            {
+                MessageBox.Show("deepARの機能は利用できません\n(未定)", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            if ( !System.IO.File.Exists(deep_AR_Path + "\\deepAR.bat"))
+            {
+                MessageBox.Show("deepARの機能がインストールされていません", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
             if (RProcess.HasExited)
             {
