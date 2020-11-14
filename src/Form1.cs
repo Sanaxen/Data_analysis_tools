@@ -2926,7 +2926,7 @@ namespace WindowsFormsApplication1
                 if ( !System.IO.File.Exists(deep_AR_Path + "\\deepAR.bat"))
                 {
                     deep_AR_Path = "";
-                    MessageBox.Show(deep_AR_Path + "\\deepAR.bat\n"+"DeepARはご利用できません", "", MessageBoxButtons.OK);
+                    //MessageBox.Show(deep_AR_Path + "\\deepAR.bat\n"+"DeepARはご利用できません", "", MessageBoxButtons.OK);
                 }
             }
             //if ( deep_AR_Path == "")
