@@ -282,6 +282,10 @@ namespace WindowsFormsApplication1
                             if (checkBox12.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
 
+                            sw.Write("use_attention,");
+                            if (_form12.checkBox5.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+
                             sw.Write("deviceID,");
                             sw.Write(numericUpDown6.Value.ToString()+ "\r\n");
 
@@ -1238,6 +1242,15 @@ namespace WindowsFormsApplication1
                 }else
                 {
                     process.StartInfo.Arguments += " --activation_fnc tanh";
+                }
+
+                if (_form12.checkBox5.Checked)
+                {
+                    process.StartInfo.Arguments += " --use_attention 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --use_attention 0";
                 }
 
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
@@ -2415,6 +2428,19 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
+                    if (ss[0].IndexOf("use_attention") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form12.checkBox5.Checked = true;
+                        }
+                        else
+                        {
+                            _form12.checkBox5.Checked = false;
+                        }
+                        continue;
+                    }
+
                     if (ss[0].IndexOf("deviceID") >= 0)
                     {
                         numericUpDown6.Value = decimal.Parse(ss[1].Replace("\r\n", ""));
