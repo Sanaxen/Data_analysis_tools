@@ -286,6 +286,10 @@ namespace WindowsFormsApplication1
                             if (_form12.checkBox5.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
 
+                            sw.Write("use_cnn_add_bn,");
+                            if (_form12.checkBox6.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+
                             sw.Write("deviceID,");
                             sw.Write(numericUpDown6.Value.ToString()+ "\r\n");
 
@@ -1251,6 +1255,19 @@ namespace WindowsFormsApplication1
                 else
                 {
                     process.StartInfo.Arguments += " --use_attention 0";
+                }
+
+                if (_form12.checkBox6.Checked)
+                {
+                    if (_form12.numericUpDown10.Value == 0)
+                    {
+                        MessageBox.Show("batch normalizeは無視されます", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    process.StartInfo.Arguments += " --use_cnn_add_bn 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --use_cnn_add_bn 0";
                 }
 
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
@@ -2437,6 +2454,18 @@ namespace WindowsFormsApplication1
                         else
                         {
                             _form12.checkBox5.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("use_cnn_add_bn") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form12.checkBox6.Checked = true;
+                        }
+                        else
+                        {
+                            _form12.checkBox6.Checked = false;
                         }
                         continue;
                     }
