@@ -1030,12 +1030,42 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --activation_fnc tanh";
                 }
+                if (form1.multi_files != "")
+                {
+                    process.StartInfo.Arguments += " --multi_files \"" + form1.multi_files + "\"";
+                }
 
                 //
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
-                System.IO.File.AppendAllText("comandline_args", " ");
-                System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments);
+                System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
+                System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments, System.Text.Encoding.GetEncoding("shift_jis"));
                 process.StartInfo.Arguments = " --@ comandline_args";
+
+                if (form1.multi_files != "")
+                {
+                    try
+                    {
+                        //process.StartInfo.CreateNoWindow = true;
+                        process.StartInfo.UseShellExecute = false;
+                        process.Start();
+                        process.WaitForExit();
+
+                        MessageBox.Show(
+                            "ファイルを結合しました\n" + form1.multi_files + "と同じ場所にconcat.csvが作成されました。"
+                            , "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        MessageBox.Show("データフレームとして再度読み込んで下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch { }
+                    finally
+                    {
+                        process = null;
+                        running = 0;
+                        checkBox6_CheckStateChanged(sender, e);
+                        form1.multi_files = "";
+                    }
+                    return;
+                }
 
                 numericUpDown3.Maximum = numericUpDown2.Value / numericUpDown4.Value;
                 if (numericUpDown4.Value * numericUpDown3.Maximum < numericUpDown2.Value)
@@ -1807,6 +1837,12 @@ namespace WindowsFormsApplication1
                 button1.BackColor = Color.FromArgb(128, 255, 128);
                 checkBox9.Visible = false;
             }
+            if (form1.multi_files != "")
+            {
+                button1.Text = "連結";
+                button1.BackColor = Color.FromArgb(255, 255, 128);
+                checkBox9.Visible = false;
+            }
         }
 
         public void load_model(string modelfile, object sender, EventArgs e)
@@ -2155,6 +2191,19 @@ namespace WindowsFormsApplication1
             {
                 checkBox7.Checked = false;
             }
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            form1.multi_files = "";
+            if (openFileDialog2.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            form1.multi_files = openFileDialog2.FileName;
+            checkBox6_CheckStateChanged(sender, e);
+
+            MessageBox.Show("連結を実行して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

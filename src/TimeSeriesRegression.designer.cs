@@ -107,6 +107,11 @@
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.label23 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
+            this.button22 = new System.Windows.Forms.Button();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.checkBox13 = new System.Windows.Forms.CheckBox();
+            this.checkBox12 = new System.Windows.Forms.CheckBox();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button21 = new System.Windows.Forms.Button();
             this.checkBox11 = new System.Windows.Forms.CheckBox();
@@ -135,18 +140,15 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
-            this.button22 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
-            this.checkBox12 = new System.Windows.Forms.CheckBox();
-            this.checkBox13 = new System.Windows.Forms.CheckBox();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.textBox5 = new System.Windows.Forms.TextBox();
-            this.panel11 = new System.Windows.Forms.Panel();
             this.panel12 = new System.Windows.Forms.Panel();
+            this.button25 = new System.Windows.Forms.Button();
+            this.label27 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel13 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
-            this.label27 = new System.Windows.Forms.Label();
+            this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -168,12 +170,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            this.panel11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
             this.panel2.SuspendLayout();
             this.contextMenuStrip4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
-            this.panel11.SuspendLayout();
             this.panel12.SuspendLayout();
             this.panel13.SuspendLayout();
             this.SuspendLayout();
@@ -986,10 +988,10 @@
             // button19
             // 
             this.button19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.button19.Location = new System.Drawing.Point(705, 9);
+            this.button19.Location = new System.Drawing.Point(705, 4);
             this.button19.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(139, 34);
+            this.button19.Size = new System.Drawing.Size(139, 32);
             this.button19.TabIndex = 85;
             this.button19.Text = "ハイパーパラメータ";
             this.toolTip3.SetToolTip(this.button19, "ハイパーパラメータ変更");
@@ -1047,7 +1049,7 @@
             // 
             // numericUpDown4
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(705, 271);
+            this.numericUpDown4.Location = new System.Drawing.Point(671, 271);
             this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown4.Minimum = new decimal(new int[] {
             1,
@@ -1055,7 +1057,7 @@
             0,
             0});
             this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(57, 22);
+            this.numericUpDown4.Size = new System.Drawing.Size(91, 22);
             this.numericUpDown4.TabIndex = 125;
             this.toolTip3.SetToolTip(this.numericUpDown4, "多変量の場合の１画面中のグラフ数");
             this.numericUpDown4.Value = new decimal(new int[] {
@@ -1099,6 +1101,68 @@
             this.label26.TabIndex = 130;
             this.label26.Text = "sift";
             this.toolTip3.SetToolTip(this.label26, "説明変数を時間方向にシフトします\r\n");
+            // 
+            // button22
+            // 
+            this.button22.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button22.Location = new System.Drawing.Point(159, 14);
+            this.button22.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(105, 22);
+            this.button22.TabIndex = 118;
+            this.button22.Text = "変数自動選択";
+            this.toolTip3.SetToolTip(this.button22, "他の機能で選択していた変数と同じ選択に設定できます");
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
+            // 
+            // panel11
+            // 
+            this.panel11.BackColor = System.Drawing.SystemColors.Info;
+            this.panel11.Controls.Add(this.checkBox13);
+            this.panel11.Controls.Add(this.checkBox12);
+            this.panel11.Controls.Add(this.numericUpDown6);
+            this.panel11.Controls.Add(this.label23);
+            this.panel11.Location = new System.Drawing.Point(33, 222);
+            this.panel11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(367, 39);
+            this.panel11.TabIndex = 132;
+            this.toolTip3.SetToolTip(this.panel11, "ソルバをpytorchに変更します");
+            // 
+            // checkBox13
+            // 
+            this.checkBox13.AutoSize = true;
+            this.checkBox13.Checked = true;
+            this.checkBox13.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox13.Enabled = false;
+            this.checkBox13.Location = new System.Drawing.Point(7, 14);
+            this.checkBox13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox13.Name = "checkBox13";
+            this.checkBox13.Size = new System.Drawing.Size(105, 19);
+            this.checkBox13.TabIndex = 123;
+            this.checkBox13.Text = "use pytorch";
+            this.checkBox13.UseVisualStyleBackColor = true;
+            this.checkBox13.CheckedChanged += new System.EventHandler(this.checkBox13_CheckedChanged);
+            // 
+            // checkBox12
+            // 
+            this.checkBox12.AutoSize = true;
+            this.checkBox12.Enabled = false;
+            this.checkBox12.Location = new System.Drawing.Point(119, 14);
+            this.checkBox12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox12.Name = "checkBox12";
+            this.checkBox12.Size = new System.Drawing.Size(98, 19);
+            this.checkBox12.TabIndex = 124;
+            this.checkBox12.Text = "GPU(cuda)";
+            this.checkBox12.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.Location = new System.Drawing.Point(299, 10);
+            this.numericUpDown6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(55, 22);
+            this.numericUpDown6.TabIndex = 127;
             // 
             // groupBox1
             // 
@@ -1210,10 +1274,10 @@
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(563, 9);
+            this.button17.Location = new System.Drawing.Point(575, 39);
             this.button17.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(123, 29);
+            this.button17.Size = new System.Drawing.Size(123, 31);
             this.button17.TabIndex = 74;
             this.button17.Text = "モデル読み込み";
             this.button17.UseVisualStyleBackColor = true;
@@ -1225,10 +1289,10 @@
             // 
             // button18
             // 
-            this.button18.Location = new System.Drawing.Point(448, 9);
+            this.button18.Location = new System.Drawing.Point(575, 5);
             this.button18.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(107, 29);
+            this.button18.Size = new System.Drawing.Size(123, 29);
             this.button18.TabIndex = 82;
             this.button18.Text = "モデル保存";
             this.button18.UseVisualStyleBackColor = true;
@@ -1262,13 +1326,14 @@
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(744, 50);
+            this.button20.Location = new System.Drawing.Point(744, 156);
             this.button20.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(100, 29);
             this.button20.TabIndex = 88;
             this.button20.Text = "レイヤー構造";
             this.button20.UseVisualStyleBackColor = true;
+            this.button20.Visible = false;
             this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
             // textBox1
@@ -1379,7 +1444,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label16.Location = new System.Drawing.Point(429, 276);
+            this.label16.Location = new System.Drawing.Point(488, 274);
             this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(48, 17);
@@ -1402,19 +1467,6 @@
             this.checkBox10.UseVisualStyleBackColor = true;
             this.checkBox10.Visible = false;
             // 
-            // button22
-            // 
-            this.button22.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button22.Location = new System.Drawing.Point(159, 14);
-            this.button22.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(105, 22);
-            this.button22.TabIndex = 118;
-            this.button22.Text = "変数自動選択";
-            this.toolTip3.SetToolTip(this.button22, "他の機能で選択していた変数と同じ選択に設定できます");
-            this.button22.UseVisualStyleBackColor = true;
-            this.button22.Click += new System.EventHandler(this.button22_Click);
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -1425,39 +1477,6 @@
             this.label20.Size = new System.Drawing.Size(47, 15);
             this.label20.TabIndex = 119;
             this.label20.Text = "MER=";
-            // 
-            // checkBox12
-            // 
-            this.checkBox12.AutoSize = true;
-            this.checkBox12.Enabled = false;
-            this.checkBox12.Location = new System.Drawing.Point(119, 14);
-            this.checkBox12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.checkBox12.Name = "checkBox12";
-            this.checkBox12.Size = new System.Drawing.Size(98, 19);
-            this.checkBox12.TabIndex = 124;
-            this.checkBox12.Text = "GPU(cuda)";
-            this.checkBox12.UseVisualStyleBackColor = true;
-            // 
-            // checkBox13
-            // 
-            this.checkBox13.AutoSize = true;
-            this.checkBox13.Enabled = false;
-            this.checkBox13.Location = new System.Drawing.Point(7, 14);
-            this.checkBox13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.checkBox13.Name = "checkBox13";
-            this.checkBox13.Size = new System.Drawing.Size(105, 19);
-            this.checkBox13.TabIndex = 123;
-            this.checkBox13.Text = "use pytorch";
-            this.checkBox13.UseVisualStyleBackColor = true;
-            this.checkBox13.CheckedChanged += new System.EventHandler(this.checkBox13_CheckedChanged);
-            // 
-            // numericUpDown6
-            // 
-            this.numericUpDown6.Location = new System.Drawing.Point(299, 10);
-            this.numericUpDown6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(55, 22);
-            this.numericUpDown6.TabIndex = 127;
             // 
             // textBox5
             // 
@@ -1470,22 +1489,9 @@
             this.textBox5.TextAlignChanged += new System.EventHandler(this.textBox5_TextAlignChanged);
             this.textBox5.TextChanged += new System.EventHandler(this.textBox8_Validating);
             // 
-            // panel11
-            // 
-            this.panel11.BackColor = System.Drawing.SystemColors.Info;
-            this.panel11.Controls.Add(this.checkBox13);
-            this.panel11.Controls.Add(this.checkBox12);
-            this.panel11.Controls.Add(this.numericUpDown6);
-            this.panel11.Controls.Add(this.label23);
-            this.panel11.Location = new System.Drawing.Point(33, 222);
-            this.panel11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(367, 39);
-            this.panel11.TabIndex = 132;
-            this.toolTip3.SetToolTip(this.panel11, "ソルバをpytorchに変更します");
-            // 
             // panel12
             // 
+            this.panel12.Controls.Add(this.button25);
             this.panel12.Controls.Add(this.label27);
             this.panel12.Controls.Add(this.panel11);
             this.panel12.Controls.Add(this.label1);
@@ -1543,6 +1549,26 @@
             this.panel12.Size = new System.Drawing.Size(1148, 648);
             this.panel12.TabIndex = 107;
             // 
+            // button25
+            // 
+            this.button25.Location = new System.Drawing.Point(705, 39);
+            this.button25.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(139, 31);
+            this.button25.TabIndex = 134;
+            this.button25.Text = "複数ファイル";
+            this.button25.UseVisualStyleBackColor = true;
+            this.button25.Click += new System.EventHandler(this.button25_Click);
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(239, 124);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(15, 15);
+            this.label27.TabIndex = 133;
+            this.label27.Text = "%";
+            // 
             // splitter1
             // 
             this.splitter1.BackColor = System.Drawing.SystemColors.Highlight;
@@ -1575,14 +1601,9 @@
             this.splitter2.TabIndex = 110;
             this.splitter2.TabStop = false;
             // 
-            // label27
+            // openFileDialog2
             // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(239, 124);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(15, 15);
-            this.label27.TabIndex = 133;
-            this.label27.Text = "%";
+            this.openFileDialog2.FileName = "openFileDialog2";
             // 
             // TimeSeriesRegression
             // 
@@ -1630,15 +1651,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            this.panel11.ResumeLayout(false);
+            this.panel11.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.contextMenuStrip4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
-            this.panel11.ResumeLayout(false);
-            this.panel11.PerformLayout();
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
             this.panel13.ResumeLayout(false);
@@ -1766,5 +1787,7 @@
         private System.Windows.Forms.Panel panel13;
         private System.Windows.Forms.Splitter splitter2;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Button button25;
+        private System.Windows.Forms.OpenFileDialog openFileDialog2;
     }
 }

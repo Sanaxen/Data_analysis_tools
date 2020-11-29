@@ -23,6 +23,7 @@ namespace WindowsFormsApplication1
         public string MER = "";
         public static DateTime fileTime = DateTime.Now.AddHours(-1);
         public ImageView _ImageView;
+        public ImageView _ImageView2;
         public Form1 form1;
 
         public bool time_series_mode = false;
@@ -356,7 +357,12 @@ namespace WindowsFormsApplication1
                 l_params += ",alpha=" + textBox5.Text + "\r\n";
                 l_params += ",lambda=" + textBox6.Text + "\r\n";
                 l_params += ",colsample_bytree=" + textBox7.Text + "\r\n";
-                l_params += ",nthread=" + 8 + "\r\n";
+                l_params += ",nthread=" + numericUpDown10.Value.ToString() + "\r\n";
+                if (checkBox3.Checked)
+                {
+                    l_params += ",n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+                    l_params += ",tree_method='gpu_hist'" + "\r\n";
+                }
 
                 if ( radioButton2.Checked)
                 {
@@ -498,6 +504,7 @@ namespace WindowsFormsApplication1
                     {
                         using (System.IO.StreamWriter sw = new System.IO.StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
                         {
+                            sw.Write("library('Ckmeans.1d.dp')\r\n");
                             sw.Write("options(width=" + form1._setting.numericUpDown2.Value.ToString() + ")\r\n");
                             sw.Write("sink(file = \"summary.txt\")\r\n");
                             sw.Write(cmd);
@@ -510,9 +517,11 @@ namespace WindowsFormsApplication1
                                 sw.Write("par(mfrow=c(1,1),lwd=2)\r\n");
 
                                 sw.Write("xgb.plot.importance(imp_)\r\n");
-
                                 sw.Write("par(mar=c(5, 4, 4, 2) + 3)\r\n");
                                 sw.Write("dev.off()\r\n");
+
+                                sw.Write("plt_<-xgb.ggplot.importance(imp_, top_n = 6, measure = NULL, rel_to_first = F)\r\n");
+                                sw.Write("ggsave(\"tmp_xgboost2.png\", plt_, dpi = 100, width = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                             }
                             sw.Write("\r\n");
                         }
@@ -889,7 +898,8 @@ namespace WindowsFormsApplication1
                 {
                     if (radioButton4.Checked)
                     {
-                        pictureBox1.Image = Form1.CreateImage("tmp_xgboost.png");
+                        //pictureBox1.Image = Form1.CreateImage("tmp_xgboost.png");
+                        pictureBox1.Image = Form1.CreateImage("tmp_xgboost2.png");
                     }
                     if (radioButton3.Checked)
                     {
@@ -1252,6 +1262,77 @@ namespace WindowsFormsApplication1
                 }
                 if (i + 1== numericUpDown9.Value) break;
             }
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+
+            string tree_png = "xgb_plot.multi_trees.png";
+
+            if (System.IO.File.Exists(tree_png))
+            {
+                form1.FileDelete(tree_png);
+            }
+
+#if true
+                string cmd = "gr_<-xgb.plot.tree(model = xgboost.model, trees =2, render = T )\r\n";
+#else
+            string cmd = "gr_<-xgb.plot.multi.trees(model = xgboost.model";
+            cmd += ", features_keep = 5";
+            cmd += ", use.names=T, render = T )\r\n";
+#endif
+            cmd += "path<- html_print(gr_, background = \"white\", viewer = NULL)\r\n";
+            cmd += "url <- paste0(\"file:///\", gsub(\"\\\\\\\\\", \"/\", normalizePath(path)))\r\n";
+            cmd += "webshot(url,file = \"xgb_plot.multi_trees.png\", delay = 0.2, zoom ="+ numericUpDown12.Value.ToString()+")\r\n";
+
+            System.IO.Directory.SetCurrentDirectory(Form1.curDir);
+            form1.Clear_file();
+            string file = "tmp_xgb_plot_multi_trees.R";
+
+            try
+            {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                {
+                    sw.Write("library('DiagrammeR')\r\n");
+                    sw.Write(cmd);
+                }
+            }
+            catch
+            {
+                if (MessageBox.Show("tmp_xgb_plot_multi_trees.Rが書き込み出来ません", "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return;
+            }
+
+            string stat = form1.Execute_script(file);
+            if (stat == "$ERROR")
+            {
+                return;
+            }
+
+            if (_ImageView2 == null) _ImageView2 = new ImageView();
+
+            _ImageView2.form1 = this.form1;
+            if (System.IO.File.Exists(tree_png))
+            {
+                _ImageView2.pictureBox1.ImageLocation = tree_png;
+                _ImageView2.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                _ImageView2.pictureBox1.Dock = DockStyle.Fill;
+                _ImageView2.Show();
+
+                Form15 f = new Form15();
+                f.richTextBox1.Text = "Cover：葉に分類されたトレーニングデータの2次勾配の合計。\r\n" +
+                    "        それが二乗損失である場合、これは単に、トレーニング中に分割によって見られた、または葉によって収集されたインスタンスの数に対応します。\r\n" +
+                    "        ノードがツリーの奥深くにあるほど、このメトリックは低くなります。\r\n\r\n" +
+                    "Gain （分割ノードの場合）：分割の情報ゲインメトリック（モデル内のノードの重要度に対応）。\r\n\r\n" +
+                    "Value （葉の場合）：葉が予測に寄与する可能性のあるマージン値。\r\n";
+                f.Show();
+            }
+
+        }
+
+        private void numericUpDown12_ValueChanged(object sender, EventArgs e)
+        {
+            //button15_Click(sender, e);
         }
     }
 }

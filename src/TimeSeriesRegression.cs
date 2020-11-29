@@ -1269,13 +1269,43 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --use_cnn_add_bn 0";
                 }
+                if (form1.multi_files != "")
+                {
+                    process.StartInfo.Arguments += " --multi_files \"" + form1.multi_files +"\"";
+                }
 
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
-                System.IO.File.AppendAllText("comandline_args", " ");
-                System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments);
+                System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
+                System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments, System.Text.Encoding.GetEncoding("shift_jis"));
                 process.StartInfo.Arguments = " --@ comandline_args";
 
                 //p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+
+                if (form1.multi_files != "")
+                {
+                    try
+                    {
+                        //process.StartInfo.CreateNoWindow = true;
+                        process.StartInfo.UseShellExecute = false;
+                        process.Start();
+                        process.WaitForExit();
+
+                        MessageBox.Show(
+                            "ファイルを結合しました\n" + form1.multi_files + "と同じ場所にconcat.csvが作成されました。"
+                            , "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        MessageBox.Show("データフレームとして再度読み込んで下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch { }
+                    finally
+                    {
+                        process = null;
+                        running = 0;
+                        form1.multi_files = "";
+                        checkBox6_CheckStateChanged(sender, e);
+                    }
+                    return;
+                }
 
                 numericUpDown3.Maximum = numericUpDown2.Value / numericUpDown4.Value;
                 if (numericUpDown4.Value* numericUpDown3.Maximum < numericUpDown2.Value)
@@ -2198,6 +2228,14 @@ namespace WindowsFormsApplication1
                 checkBox9.Visible = false;
                 checkBox10.Visible = false;
             }
+            if ( form1.multi_files != "")
+            {
+                button1.Text = "連結";
+                button1.BackColor = Color.FromArgb(255, 255, 128);
+                checkBox1.Visible = false;
+                checkBox9.Visible = false;
+                checkBox10.Visible = false;
+            }
         }
 
         private void checkBox7_CheckStateChanged(object sender, EventArgs e)
@@ -2710,6 +2748,19 @@ namespace WindowsFormsApplication1
                     textBox5.Text = "0";
                 }
             }
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            form1.multi_files = "";
+            if ( openFileDialog2.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            form1.multi_files = openFileDialog2.FileName;
+            checkBox6_CheckStateChanged(sender, e);
+
+            MessageBox.Show("連結を実行して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

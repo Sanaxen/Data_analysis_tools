@@ -315,6 +315,8 @@ namespace WindowsFormsApplication1
         static string Rversion = "R-3.6.1";
 
         string deep_AR_Path = "";
+        public string multi_files = "";
+
 
         //各種フォーム
         public REditor _REditor = null;

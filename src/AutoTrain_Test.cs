@@ -679,7 +679,7 @@ namespace WindowsFormsApplication1
                                 if (checkBox12.Checked)
                                 {
                                     button7.Visible = true;
-                                    string file = "tmp_xgboost.png";
+                                    string file = "tmp_xgboost2.png";
                                     if (System.IO.File.Exists(file))
                                     {
                                         System.IO.File.Copy(file, "変数重要度.png", true);
