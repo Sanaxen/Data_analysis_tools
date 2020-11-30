@@ -236,6 +236,21 @@ namespace WindowsFormsApplication1
                             if (checkBox5.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
 
+                            sw.Write("lr,");
+                            sw.Write(_form11.textBox2.Text + "\r\n");
+                            sw.Write("dropout,");
+                            sw.Write(_form11.textBox8.Text + "\r\n");
+                            sw.Write("minibatch,");
+                            sw.Write(_form11.numericUpDown4.Value.ToString() + "\r\n");
+                            sw.Write("eval_minibatch,");
+                            sw.Write(_form11.numericUpDown12.Value.ToString() + "\r\n");
+                            sw.Write("epoch,");
+                            sw.Write(_form11.numericUpDown3.Value.ToString() + "\r\n");
+                            sw.Write("fc,");
+                            sw.Write(_form11.numericUpDown6.Value.ToString() + "\r\n");
+                            sw.Write("unit,");
+                            sw.Write(_form11.numericUpDown8.Value.ToString() + "\r\n");
+
                             sw.Write("Number of classes,");
                             sw.Write(numericUpDown5.Value.ToString() + "\r\n");
                             sw.Write("scale,");
@@ -1035,6 +1050,15 @@ namespace WindowsFormsApplication1
                     process.StartInfo.Arguments += " --multi_files \"" + form1.multi_files + "\"";
                 }
 
+                if (_form11.numericUpDown12.Value == 0)
+                {
+                    process.StartInfo.Arguments += " --eval_minibatch_size " + _form11.numericUpDown4.Value.ToString();
+                    _form11.numericUpDown12.Value = _form11.numericUpDown4.Value;
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --eval_minibatch_size " + _form11.numericUpDown12.Value.ToString();
+                }
                 //
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
@@ -1949,6 +1973,43 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
+
+                    if (ss[0].IndexOf("lr") >= 0)
+                    {
+                        _form11.textBox2.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("dropout") >= 0)
+                    {
+                        _form11.textBox8.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("eval_minibatch") >= 0)
+                    {
+                        _form11.numericUpDown12.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("minibatch") >= 0)
+                    {
+                        _form11.numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("epoch") >= 0)
+                    {
+                        _form11.numericUpDown3.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("fc") >= 0)
+                    {
+                        _form11.numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("unit") >= 0)
+                    {
+                        _form11.numericUpDown8.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+
                     if (ss[0].IndexOf("Number of classes") >= 0)
                     {
                         numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));

@@ -234,6 +234,13 @@ namespace WindowsFormsApplication1
                             sw.Write("out_sequence_length,");
                             sw.Write(_form12.numericUpDown13.Value.ToString() + "\r\n");
 
+                            sw.Write("lr,");
+                            sw.Write(_form12.textBox2.Text + "\r\n");
+                            sw.Write("epoch,");
+                            sw.Write(_form12.numericUpDown3.Value.ToString() + "\r\n");
+                            sw.Write("eval_minbatch,");
+                            sw.Write(_form12.numericUpDown12.Value.ToString() + "\r\n");
+
                             sw.Write("minbatch,");
                             sw.Write(_form12.numericUpDown4.Value.ToString() + "\r\n");
                             sw.Write("hidden,");
@@ -1272,6 +1279,15 @@ namespace WindowsFormsApplication1
                 if (form1.multi_files != "")
                 {
                     process.StartInfo.Arguments += " --multi_files \"" + form1.multi_files +"\"";
+                }
+                if (_form12.numericUpDown12.Value == 0)
+                {
+                    process.StartInfo.Arguments += " --eval_minibatch_size " + _form12.numericUpDown4.Value.ToString();
+                    _form12.numericUpDown12.Value = _form12.numericUpDown4.Value;
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --eval_minibatch_size " + _form12.numericUpDown12.Value.ToString();
                 }
 
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
@@ -2340,6 +2356,23 @@ namespace WindowsFormsApplication1
                         numericUpDown11.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
+
+                    if (ss[0].IndexOf("lr") >= 0)
+                    {
+                        _form12.textBox2.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("epoch") >= 0)
+                    {
+                        _form12.numericUpDown3.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("eval_minbatch") >= 0)
+                    {
+                        _form12.numericUpDown12.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+
                     if (ss[0].IndexOf("out_sequence_length") >= 0)
                     {
                         _form12.numericUpDown13.Value = int.Parse(ss[1].Replace("\r\n", ""));
