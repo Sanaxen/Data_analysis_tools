@@ -323,6 +323,33 @@ namespace WindowsFormsApplication1
                     error_status = 1;
                     return;
                 }
+                if (textBox4.Text.LastIndexOf("WARNING:") >= 0)
+                {
+                    int idx = textBox4.Text.LastIndexOf("WARNING:");
+                    string s = textBox4.Text.Substring(idx);
+                    idx = s.IndexOf("\r\n");
+                    if (idx > 0)
+                    {
+                        s = s.Substring(0, idx);
+                    }
+                    error_string = s;
+
+                    //if (Form1.batch_mode == 0) MessageBox.Show(s, "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    if (System.IO.File.Exists("classification_warning.txt"))
+                    {
+                        Form15 f = new Form15();
+                        using (System.IO.StreamReader sr = new System.IO.StreamReader("classification_warning.txt", System.Text.Encoding.GetEncoding("shift_jis")))
+                        {
+                            f.richTextBox1.Text = sr.ReadToEnd();
+                        }
+                        f.Show();
+                        f.TopMost = true;
+                        f.TopMost = false;
+                    }
+                    //error_status = 1;
+                    //return;
+                }
 
                 {
                     string destFile = "select_variables.dat";
@@ -803,6 +830,10 @@ namespace WindowsFormsApplication1
                 {
                     fileName = "tmp_NonLinearRegression_test.csv";
                 }
+
+                label14.Text = "---";
+                label16.Text = "---";
+
                 pictureBox1.Image = null;
                 pictureBox2.Image = null;
                 pictureBox3.Image = null;
@@ -829,7 +860,9 @@ namespace WindowsFormsApplication1
                     form1.FileDelete("ConfusionMatrix.r");
                 if (System.IO.File.Exists("NonLinearRegression.txt"))
                     form1.FileDelete("NonLinearRegression.txt");
-                
+                if (System.IO.File.Exists("classification_warning.txt"))
+                    form1.FileDelete("classification_warning.txt");
+
 
                 process = new System.Diagnostics.Process();
 
@@ -2265,6 +2298,21 @@ namespace WindowsFormsApplication1
             checkBox6_CheckStateChanged(sender, e);
 
             MessageBox.Show("連結を実行して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists("NonLinearRegression.txt"))
+            {
+                Form15 f = new Form15();
+                using (System.IO.StreamReader sr = new System.IO.StreamReader("NonLinearRegression.txt", System.Text.Encoding.GetEncoding("shift_jis")))
+                {
+                    f.richTextBox1.Text = sr.ReadToEnd();
+                }
+                f.Show();
+                f.TopMost = true;
+                f.TopMost = false;
+            }
         }
     }
 }

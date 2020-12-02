@@ -309,7 +309,7 @@ namespace WindowsFormsApplication1
                 string cmd = "";
                 if (checkBox1.Checked)
                 {
-                    cmd = Form1.MyPath + "../script/外れ値除去.r";
+                    cmd = Form1.MyPath + "../script/outlier_removal.r";
                     cmd = cmd.Replace("\\", "/");
                     string stat = form1.Execute_script(cmd);
                     if (stat == "$ERROR")
