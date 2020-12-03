@@ -335,6 +335,7 @@ namespace WindowsFormsApplication1
                     process = null;
                 }
 
+                button1.Enabled = true;
                 if (layer_graph_only == 1)
                 {
                     error_status = 0;
@@ -772,8 +773,9 @@ namespace WindowsFormsApplication1
             }
             finally
             {
-                running = 0;
                 process = null;
+                button1.Enabled = true;
+                running = 0;
                 if (!adf_test)
                 {
                     this.TopMost = true;
@@ -897,6 +899,7 @@ namespace WindowsFormsApplication1
                     //process = null;
                 }
 
+                button1.Enabled = false;
                 string cmd = "";
 
                 cmd = "write.csv(train,\"tmp_TimeSeriesRegression_train.csv\",row.names = FALSE)\r\n";
@@ -1016,6 +1019,8 @@ namespace WindowsFormsApplication1
                         if (System.IO.File.Exists(gpu_version_path + "\\cuda_is_available.log"))
                         {
                             MessageBox.Show("GPUを利用できません\nCUDAをインストールするかGPUのドライバーを更新して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            button1.Enabled = true;
+                            running = 0;
                             return;
                         }
                     }
@@ -1065,6 +1070,8 @@ namespace WindowsFormsApplication1
                     if (y_count == 0)
                     {
                         MessageBox.Show("数値以外の目的変数の選択が選択されています", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        button1.Enabled = true;
+                        running = 0;
                         return;
                     }
                     numericUpDown2.Value = y_count;
@@ -1199,6 +1206,7 @@ namespace WindowsFormsApplication1
                         if (int.Parse(textBox7.Text) <= 0)
                         {
                             MessageBox.Show("frequencyを正しく設定して下さい");
+                            button1.Enabled = true;
                             running = 0;
                             return;
                         }
@@ -1206,6 +1214,7 @@ namespace WindowsFormsApplication1
                     catch
                     {
                         MessageBox.Show("frequencyを正しく設定して下さい");
+                        button1.Enabled = true;
                         running = 0;
                         return;
                     }
@@ -1350,6 +1359,8 @@ namespace WindowsFormsApplication1
                         form1.multi_files = "";
                         checkBox6_CheckStateChanged(sender, e);
                     }
+                    button1.Enabled = true;
+                    running = 0;
                     return;
                 }
 
@@ -1378,6 +1389,7 @@ namespace WindowsFormsApplication1
                     {
                         if (process != null && !process.HasExited) process.Kill();
                         process = null;
+                        button1.Enabled = true;
                         running = 0;
                         return;
                     }
@@ -1409,6 +1421,7 @@ namespace WindowsFormsApplication1
                     }
                     if (process != null && !process.HasExited) process.Kill();
                     process = null;
+                    button1.Enabled = true;
                     running = 0;
                     return;
                 }
@@ -1447,6 +1460,7 @@ namespace WindowsFormsApplication1
 
                         if (process != null && !process.HasExited) process.Kill();
                         process = null;
+                        button1.Enabled = true;
                         running = 0;
                         return;
                     }
