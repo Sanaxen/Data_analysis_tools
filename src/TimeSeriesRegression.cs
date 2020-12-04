@@ -900,6 +900,7 @@ namespace WindowsFormsApplication1
                 }
 
                 button1.Enabled = false;
+                button1.BackColor = Color.FromArgb(150, 150, 150);
                 string cmd = "";
 
                 cmd = "write.csv(train,\"tmp_TimeSeriesRegression_train.csv\",row.names = FALSE)\r\n";
@@ -1020,6 +1021,7 @@ namespace WindowsFormsApplication1
                         {
                             MessageBox.Show("GPUを利用できません\nCUDAをインストールするかGPUのドライバーを更新して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             button1.Enabled = true;
+                            checkBox6_CheckStateChanged(sender, e);
                             running = 0;
                             return;
                         }
@@ -1071,6 +1073,7 @@ namespace WindowsFormsApplication1
                     {
                         MessageBox.Show("数値以外の目的変数の選択が選択されています", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         button1.Enabled = true;
+                        checkBox6_CheckStateChanged(sender, e);
                         running = 0;
                         return;
                     }
@@ -1207,6 +1210,7 @@ namespace WindowsFormsApplication1
                         {
                             MessageBox.Show("frequencyを正しく設定して下さい");
                             button1.Enabled = true;
+                            checkBox6_CheckStateChanged(sender, e);
                             running = 0;
                             return;
                         }
@@ -1215,6 +1219,7 @@ namespace WindowsFormsApplication1
                     {
                         MessageBox.Show("frequencyを正しく設定して下さい");
                         button1.Enabled = true;
+                        checkBox6_CheckStateChanged(sender, e);
                         running = 0;
                         return;
                     }
@@ -1360,9 +1365,11 @@ namespace WindowsFormsApplication1
                         checkBox6_CheckStateChanged(sender, e);
                     }
                     button1.Enabled = true;
+                    checkBox6_CheckStateChanged(sender, e);
                     running = 0;
                     return;
                 }
+                checkBox6_CheckStateChanged(sender, e);
 
                 numericUpDown3.Maximum = numericUpDown2.Value / numericUpDown4.Value;
                 if (numericUpDown4.Value* numericUpDown3.Maximum < numericUpDown2.Value)
