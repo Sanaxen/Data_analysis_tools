@@ -321,6 +321,8 @@ namespace WindowsFormsApplication1
             try
             {
                 error_status = 99;
+                button1.Enabled = true;
+                checkBox6_CheckStateChanged(sender, e);
                 timer1.Stop();
                 timer1.Enabled = false;
                 if (process != null)
@@ -775,6 +777,7 @@ namespace WindowsFormsApplication1
             {
                 process = null;
                 button1.Enabled = true;
+                checkBox6_CheckStateChanged(sender, e);
                 running = 0;
                 if (!adf_test)
                 {
@@ -1369,7 +1372,6 @@ namespace WindowsFormsApplication1
                     running = 0;
                     return;
                 }
-                checkBox6_CheckStateChanged(sender, e);
 
                 numericUpDown3.Maximum = numericUpDown2.Value / numericUpDown4.Value;
                 if (numericUpDown4.Value* numericUpDown3.Maximum < numericUpDown2.Value)
@@ -1397,6 +1399,7 @@ namespace WindowsFormsApplication1
                         if (process != null && !process.HasExited) process.Kill();
                         process = null;
                         button1.Enabled = true;
+                        checkBox6_CheckStateChanged(sender, e);
                         running = 0;
                         return;
                     }
@@ -1429,6 +1432,7 @@ namespace WindowsFormsApplication1
                     if (process != null && !process.HasExited) process.Kill();
                     process = null;
                     button1.Enabled = true;
+                    checkBox6_CheckStateChanged(sender, e);
                     running = 0;
                     return;
                 }
@@ -1481,6 +1485,7 @@ namespace WindowsFormsApplication1
                 FitPlot();
                 LossPlot();
                 AccuracyPlot();
+                button9.Visible = false;
 
 
                 if (checkBox2.Checked || layer_graph_only == 1)
@@ -1538,6 +1543,7 @@ namespace WindowsFormsApplication1
                 }
                 catch
                 { }
+                button1.Enabled = true;
                 process = null;
                 running = 0;
             }
@@ -1816,8 +1822,10 @@ namespace WindowsFormsApplication1
 
             try
             {
-                if (!Form1.IsFileLocked("classification_warning.txt"))
+                if (!button9.Visible && !Form1.IsFileLocked("classification_warning.txt"))
                 {
+                    button9.Visible = true;
+
                     if (System.IO.File.Exists("classification_warning.txt"))
                     {
                         MessageBox.Show("分類クラス数が一致しないため自動的に分類クラス値に修正",
@@ -1825,7 +1833,7 @@ namespace WindowsFormsApplication1
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
 
-                        form1.FileDelete("classification_warning.txt");
+                        //form1.FileDelete("classification_warning.txt");
                     }
                 }
 
@@ -2250,31 +2258,35 @@ namespace WindowsFormsApplication1
         {
             if (System.IO.File.Exists("classification_warning.txt"))
             {
-                string file = "classification_warning.txt";
-                System.IO.StreamReader sr = new System.IO.StreamReader(file, Encoding.GetEncoding("SHIFT_JIS"));
-
-                if (_GridTable1 == null) _GridTable1 = new gridtable();
-                _GridTable1.dataGridView1.RowCount = 0;
-                _GridTable1.dataGridView1.ColumnCount = 3;
-                _GridTable1.dataGridView1.Columns[0].HeaderText = "class";
-                _GridTable1.dataGridView1.Columns[1].HeaderText = "min";
-                _GridTable1.dataGridView1.Columns[2].HeaderText = "max";
-
-                while (sr.EndOfStream == false)
+                try
                 {
-                    string line = sr.ReadLine();
-                    break;
+                    string file = "classification_warning.txt";
+                    System.IO.StreamReader sr = new System.IO.StreamReader(file, Encoding.GetEncoding("SHIFT_JIS"));
+
+                    if (_GridTable1 == null) _GridTable1 = new gridtable();
+                    _GridTable1.dataGridView1.RowCount = 0;
+                    _GridTable1.dataGridView1.ColumnCount = 3;
+                    _GridTable1.dataGridView1.Columns[0].HeaderText = "class";
+                    _GridTable1.dataGridView1.Columns[1].HeaderText = "min";
+                    _GridTable1.dataGridView1.Columns[2].HeaderText = "max";
+
+                    while (sr.EndOfStream == false)
+                    {
+                        string line = sr.ReadLine();
+                        break;
+                    }
+                    while (sr.EndOfStream == false)
+                    {
+                        string line = sr.ReadLine();
+                        var c = line.Split(' ');
+                        if (c.Length != 3) continue;
+                        _GridTable1.dataGridView1.Rows.Add(c[0], c[1], c[2]);
+                    }
+                    sr.Close();
                 }
-                while (sr.EndOfStream == false)
-                {
-                    string line = sr.ReadLine();
-                    var c = line.Split(' ');
-                    if (c.Length != 3) continue;
-                    _GridTable1.dataGridView1.Rows.Add(c[0], c[1], c[2]);
-                }
-                sr.Close();
+                catch { }
             }
-            _GridTable1.Show();
+            if (_GridTable1 != null ) _GridTable1.Show();
         }
 
         private void checkBox6_CheckStateChanged(object sender, EventArgs e)
@@ -2849,17 +2861,22 @@ namespace WindowsFormsApplication1
 
         private void button26_Click(object sender, EventArgs e)
         {
-            if (System.IO.File.Exists("TimeSeriesRegression.txt"))
+            if (running != 0) return;
+            try
             {
-                Form15 f = new Form15();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader("TimeSeriesRegression.txt", System.Text.Encoding.GetEncoding("shift_jis")))
+                if (System.IO.File.Exists("TimeSeriesRegression.txt"))
                 {
-                    f.richTextBox1.Text = sr.ReadToEnd();
+                    Form15 f = new Form15();
+                    using (System.IO.StreamReader sr = new System.IO.StreamReader("TimeSeriesRegression.txt", System.Text.Encoding.GetEncoding("shift_jis")))
+                    {
+                        f.richTextBox1.Text = sr.ReadToEnd();
+                    }
+                    f.Show();
+                    f.TopMost = true;
+                    f.TopMost = false;
                 }
-                f.Show();
-                f.TopMost = true;
-                f.TopMost = false;
             }
+            catch { }
         }
     }
 }
