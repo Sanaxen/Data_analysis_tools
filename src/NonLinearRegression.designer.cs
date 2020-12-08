@@ -122,13 +122,14 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.button26 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel12 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-            this.button26 = new System.Windows.Forms.Button();
+            this.button27 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -750,7 +751,7 @@
             // 
             this.button8.BackColor = System.Drawing.Color.Red;
             this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Location = new System.Drawing.Point(239, 159);
+            this.button8.Location = new System.Drawing.Point(291, 156);
             this.button8.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(92, 32);
@@ -1193,7 +1194,7 @@
             this.progressBar1.Location = new System.Drawing.Point(12, 165);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(223, 22);
+            this.progressBar1.Size = new System.Drawing.Size(215, 22);
             this.progressBar1.TabIndex = 99;
             // 
             // label14
@@ -1231,6 +1232,7 @@
             // 
             // panel11
             // 
+            this.panel11.Controls.Add(this.button27);
             this.panel11.Controls.Add(this.button26);
             this.panel11.Controls.Add(this.button25);
             this.panel11.Controls.Add(this.label20);
@@ -1276,6 +1278,16 @@
             this.panel11.Name = "panel11";
             this.panel11.Size = new System.Drawing.Size(1123, 651);
             this.panel11.TabIndex = 106;
+            // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(284, 8);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(103, 28);
+            this.button26.TabIndex = 136;
+            this.button26.Text = "status log";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
             // button25
             // 
@@ -1333,15 +1345,15 @@
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
             // 
-            // button26
+            // button27
             // 
-            this.button26.Location = new System.Drawing.Point(284, 8);
-            this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(103, 28);
-            this.button26.TabIndex = 136;
-            this.button26.Text = "status log";
-            this.button26.UseVisualStyleBackColor = true;
-            this.button26.Click += new System.EventHandler(this.button26_Click);
+            this.button27.Location = new System.Drawing.Point(233, 156);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(58, 31);
+            this.button27.TabIndex = 137;
+            this.button27.Text = "終了";
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
             // NonLinearRegression
             // 
@@ -1503,5 +1515,6 @@
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.OpenFileDialog openFileDialog2;
         private System.Windows.Forms.Button button26;
+        private System.Windows.Forms.Button button27;
     }
 }

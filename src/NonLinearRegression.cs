@@ -261,6 +261,9 @@ namespace WindowsFormsApplication1
                             sw.Write("activation_fnc,");
                             sw.Write(_form11.comboBox3.Text + "\r\n");
 
+                            sw.Write("sampling,");
+                            sw.Write(_form11.numericUpDown1.Value.ToString() + "\r\n");
+
                             sw.Write("use_pytorch,");
                             if (checkBox1.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
@@ -1108,6 +1111,7 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --eval_minibatch_size " + _form11.numericUpDown12.Value.ToString();
                 }
+                process.StartInfo.Arguments += " --n_sampling " + _form11.numericUpDown1.Value.ToString();
                 //
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
@@ -2082,6 +2086,13 @@ namespace WindowsFormsApplication1
                         numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
+                    if (ss[0].IndexOf("sampling") >= 0)
+                    {
+                        _form11.numericUpDown1.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+
+
                     if (ss[0].IndexOf("scale") >= 0)
                     {
                         textBox1.Text = ss[1].Replace("\r\n", "");
@@ -2352,6 +2363,17 @@ namespace WindowsFormsApplication1
                 }
             }catch
             { }
+        }
+
+        private void button27_Click(object sender, EventArgs e)
+        {
+            System.IO.StreamWriter sw = new System.IO.StreamWriter("_stopping_solver_", false, Encoding.GetEncoding("SHIFT_JIS"));
+            if (sw != null)
+            {
+                sw.Write("\n");
+                sw.Close();
+                sw.Dispose();
+            }
         }
     }
 }

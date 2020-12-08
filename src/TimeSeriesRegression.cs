@@ -297,6 +297,9 @@ namespace WindowsFormsApplication1
                             if (_form12.checkBox6.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
 
+                            sw.Write("sampling,");
+                            sw.Write(_form12.numericUpDown15.Value.ToString() + "\r\n");
+
                             sw.Write("deviceID,");
                             sw.Write(numericUpDown6.Value.ToString()+ "\r\n");
 
@@ -1336,6 +1339,7 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --eval_minibatch_size " + _form12.numericUpDown12.Value.ToString();
                 }
+                process.StartInfo.Arguments += " --n_sampling " + _form12.numericUpDown15.Value.ToString();
 
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
@@ -2603,6 +2607,11 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
+                    if (ss[0].IndexOf("sampling") >= 0)
+                    {
+                        _form12.numericUpDown15.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
 
                     if (ss[0].IndexOf("deviceID") >= 0)
                     {
@@ -2877,6 +2886,17 @@ namespace WindowsFormsApplication1
                 }
             }
             catch { }
+        }
+
+        private void button27_Click(object sender, EventArgs e)
+        {
+            System.IO.StreamWriter sw = new System.IO.StreamWriter("_stopping_solver_", false, Encoding.GetEncoding("SHIFT_JIS"));
+            if (sw != null)
+            {
+                sw.Write("\n");
+                sw.Close();
+                sw.Dispose();
+            }
         }
     }
 }
