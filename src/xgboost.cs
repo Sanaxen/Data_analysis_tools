@@ -29,6 +29,8 @@ namespace WindowsFormsApplication1
         public bool time_series_mode = false;
         public int lag = 0;
         string image_link = "";
+
+        int grid_serch_stop = 0;
         ListBox importance_var = new ListBox();
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
@@ -354,7 +356,7 @@ namespace WindowsFormsApplication1
                 l_params += ",eta=" + textBox3.Text + "\r\n";
                 l_params += ",gamma=" + textBox4.Text + "\r\n";
                 l_params += ",min_child_weight=" + numericUpDown4.Text + "\r\n";
-                l_params += ",subsample=" + numericUpDown5.Text + "\r\n";
+                l_params += ",subsample=" + textBox8.Text + "\r\n";
                 l_params += ",max_depth=" + numericUpDown6.Text + "\r\n";
                 l_params += ",alpha=" + textBox5.Text + "\r\n";
                 l_params += ",lambda=" + textBox6.Text + "\r\n";
@@ -1378,6 +1380,120 @@ namespace WindowsFormsApplication1
             f.Show();
             System.Diagnostics.Process.Start(image_link);
         }
+
+        void grid_serch()
+        {
+            string t3 = textBox3.Text;
+            string t4 = textBox4.Text;
+            string t5 = textBox5.Text;
+            string t6 = textBox6.Text;
+            string t7 = textBox7.Text;
+            string t8 = textBox8.Text;
+
+            string n4 = numericUpDown4.Text;
+            string n6 = numericUpDown6.Text;
+
+            Random eta = new System.Random();
+            Random gamma = new System.Random();
+            Random min_child_weight = new System.Random();
+            Random subsample = new System.Random();
+            Random max_depth = new System.Random();
+            Random alpha = new System.Random();
+            Random lambda = new System.Random();
+            Random colsample_bytree = new System.Random();
+
+            float r2 = 0.0f;
+            for (int i = 0; i < 100; i++)
+            {
+                if (grid_serch_stop > 0) break;
+                textBox3.Text = (0.01 + eta.NextDouble() * 0.5).ToString();
+                textBox4.Text = (gamma.NextDouble() * 0.2).ToString();
+                textBox5.Text = (alpha.NextDouble() * 1.2).ToString();
+                textBox6.Text = (lambda.NextDouble()).ToString();
+                textBox7.Text = (0.001+colsample_bytree.NextDouble()).ToString();
+                textBox8.Text = subsample.NextDouble().ToString();
+
+                try
+                {
+                    numericUpDown4.Text = min_child_weight.Next(1, 10).ToString();
+                    numericUpDown6.Text = max_depth.Next(3, 10).ToString();
+
+                    //train
+                    radioButton4.Checked = true;
+                    radioButton3.Checked = false;
+                    button1_Click(null, null);
+
+                    //test
+                    radioButton4.Checked = false;
+                    radioButton3.Checked = true;
+                    button1_Click(null, null);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                bool res = false;
+                if ( radioButton1.Checked)
+                {
+                    res = float.Parse(R2) > r2 && float.Parse(R2) < 1.0;
+                }else
+                {
+                    res = float.Parse(ACC) > r2 && float.Parse(ACC) < 1.0;
+                }
+                if ( res )
+                {
+                    button16.Text = R2;
+
+                    r2 = float.Parse(R2);
+                    t3 = textBox3.Text;
+                    t4 = textBox4.Text;
+                    t5 = textBox5.Text;
+                    t6 = textBox6.Text;
+                    t7 = textBox7.Text;
+                    t8 = textBox8.Text;
+
+                    n4 = numericUpDown4.Text;
+                    n6 = numericUpDown6.Text;
+                }
+            }
+
+            button16.Text = "auto";
+            button17.Text = "stop";
+
+            grid_serch_stop = 0;
+            textBox3.Text = t3;
+            textBox4.Text = t4;
+            textBox5.Text = t5;
+            textBox6.Text = t6;
+            textBox7.Text = t7;
+            textBox8.Text = t8;
+
+            numericUpDown4.Text = n4;
+            numericUpDown6.Text = n6;
+
+            //train
+            radioButton4.Checked = true;
+            radioButton3.Checked = false;
+            button1_Click(null, null);
+
+            //test
+            radioButton4.Checked = false;
+            radioButton3.Checked = true;
+            button1_Click(null, null);
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            grid_serch_stop = 0;
+            grid_serch();
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            grid_serch_stop = 1;
+        }
     }
+
 }
 
