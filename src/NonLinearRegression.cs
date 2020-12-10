@@ -262,6 +262,9 @@ namespace WindowsFormsApplication1
                             sw.Write(_form11.comboBox3.Text + "\r\n");
 
                             sw.Write("sampling,");
+                            if (_form11.checkBox2.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+                            sw.Write("n_sampling,");
                             sw.Write(_form11.numericUpDown1.Value.ToString() + "\r\n");
 
                             sw.Write("use_pytorch,");
@@ -1111,7 +1114,10 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --eval_minibatch_size " + _form11.numericUpDown12.Value.ToString();
                 }
-                process.StartInfo.Arguments += " --n_sampling " + _form11.numericUpDown1.Value.ToString();
+                if (_form11.checkBox2.Checked)
+                {
+                    process.StartInfo.Arguments += " --n_sampling " + _form11.numericUpDown1.Value.ToString();
+                }
                 //
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
@@ -2086,9 +2092,21 @@ namespace WindowsFormsApplication1
                         numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
-                    if (ss[0].IndexOf("sampling") >= 0)
+                    if (ss[0].IndexOf("n_sampling") >= 0)
                     {
                         _form11.numericUpDown1.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("sampling") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form11.checkBox2.Checked = true;
+                        }
+                        else
+                        {
+                            _form11.checkBox2.Checked = false;
+                        }
                         continue;
                     }
 

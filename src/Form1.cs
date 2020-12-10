@@ -741,38 +741,38 @@ namespace WindowsFormsApplication1
                 if (listupNA)
                 {
                     cmd += "if(x_ == 0 && sum(is.na(" + "df$'" + list.Items[i].ToString() + "')) != 0){\r\n";
-                    cmd += "cat(\"na\\n\")\r\n";
-                    cmd += "x_ <- 1\r\n";
+                    cmd += "\tcat(\"na\\n\")\r\n";
+                    cmd += "\tx_ <- 1\r\n";
                     cmd += "}\r\n";
                 }
 
                 cmd += "if(x_ == 0 && is.numeric(" + "df$'" + list.Items[i].ToString() + "')){\r\n";
-                cmd += "cat(\"numeric\\n\")\r\n";
-                cmd += "x_ <- 1\r\n";
+                cmd += "\tcat(\"numeric\\n\")\r\n";
+                cmd += "\tx_ <- 1\r\n";
                 cmd += "}\r\n";
 
                 cmd += "if(x_ == 0 && is.integer(" + "df$'" + list.Items[i].ToString() + "')){\r\n";
-                cmd += "cat(\"integer\\n\")\r\n";
-                cmd += "x_ <- 1\r\n";
+                cmd += "\tcat(\"integer\\n\")\r\n";
+                cmd += "\tx_ <- 1\r\n";
                 cmd += "}\r\n";
 
                 cmd += "if(x_ == 0 && is.factor(" + "df$'" + list.Items[i].ToString() + "')){\r\n";
-                cmd += "cat(\"factor\\n\")\r\n";
-                cmd += "x_ <- 1\r\n";
+                cmd += "\tcat(\"factor\\n\")\r\n";
+                cmd += "\tx_ <- 1\r\n";
                 cmd += "}\r\n";
 
                 cmd += "if(x_ == 0 && is.character(" + "df$'" + list.Items[i].ToString() + "')){\r\n";
-                cmd += "cat(\"character\\n\")\r\n";
-                cmd += "x_ <- 1\r\n";
+                cmd += "\tcat(\"character\\n\")\r\n";
+                cmd += "\tx_ <- 1\r\n";
                 cmd += "}\r\n";
 
                 cmd += "if(x_ == 0 && is.logical(" + "df$'" + list.Items[i].ToString() + "')){\r\n";
-                cmd += "cat(\"logical\\n\")\r\n";
-                cmd += "x_ <- 1\r\n";
+                cmd += "\tcat(\"logical\\n\")\r\n";
+                cmd += "\tx_ <- 1\r\n";
                 cmd += "}\r\n";
 
                 cmd += "if ( x_ == 0 ){\r\n";
-                cmd += "cat(\"other\\n\")\r\n";
+                cmd += "\tcat(\"other\\n\")\r\n";
                 cmd += "}\r\n";
             }
             textBox1.Text = cmd;
@@ -3624,7 +3624,8 @@ namespace WindowsFormsApplication1
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //engine.Dispose();
+            Environment.Exit(0);
+            //Application.Exit(); 
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -7742,6 +7743,7 @@ namespace WindowsFormsApplication1
                 e.Cancel = true;
                 return;
             }
+            e.Cancel = false;
         }
 
         private void button20_Click_3(object sender, EventArgs e)

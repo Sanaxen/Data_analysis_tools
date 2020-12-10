@@ -6,6 +6,7 @@ set RTOOL_PATH=C:\Rtools
 :#https://github.com/Sanaxen/deepAR
 set DEEPAR_APP=C:\Users\bccat\Desktop\deepARapp\deepAR_application
 
+set APPDATA_DDS=%APPDATA%
  
 set PYTORCH_CUDA=%~dp0\DDS2\bin\gpu_version
 mkdir %PYTORCH_CUDA%

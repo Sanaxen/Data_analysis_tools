@@ -298,6 +298,9 @@ namespace WindowsFormsApplication1
                             else sw.Write("false\r\n");
 
                             sw.Write("sampling,");
+                            if (_form12.checkBox7.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+                            sw.Write("n_sampling,");
                             sw.Write(_form12.numericUpDown15.Value.ToString() + "\r\n");
 
                             sw.Write("deviceID,");
@@ -1339,8 +1342,10 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --eval_minibatch_size " + _form12.numericUpDown12.Value.ToString();
                 }
-                process.StartInfo.Arguments += " --n_sampling " + _form12.numericUpDown15.Value.ToString();
-
+                if (_form12.checkBox7.Checked)
+                {
+                    process.StartInfo.Arguments += " --n_sampling " + _form12.numericUpDown15.Value.ToString();
+                }
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
                 System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments, System.Text.Encoding.GetEncoding("shift_jis"));
@@ -2607,9 +2612,21 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
-                    if (ss[0].IndexOf("sampling") >= 0)
+                    if (ss[0].IndexOf("n_sampling") >= 0)
                     {
                         _form12.numericUpDown15.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("sampling") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form12.checkBox7.Checked = true;
+                        }
+                        else
+                        {
+                            _form12.checkBox7.Checked = false;
+                        }
                         continue;
                     }
 

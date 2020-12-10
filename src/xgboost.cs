@@ -28,7 +28,7 @@ namespace WindowsFormsApplication1
 
         public bool time_series_mode = false;
         public int lag = 0;
-
+        string image_link = "";
         ListBox importance_var = new ListBox();
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
@@ -162,6 +162,8 @@ namespace WindowsFormsApplication1
             }
 
             running = 1;
+            linkLabel1.Visible = false;
+            linkLabel1.LinkVisited = false;
 
             try
             {
@@ -1266,6 +1268,8 @@ namespace WindowsFormsApplication1
 
         private void button15_Click(object sender, EventArgs e)
         {
+            linkLabel1.Visible = false;
+            linkLabel1.LinkVisited = false;
 
             string tree_png = "xgb_plot.multi_trees.png";
 
@@ -1275,7 +1279,7 @@ namespace WindowsFormsApplication1
             }
 
 #if true
-                string cmd = "gr_<-xgb.plot.tree(model = xgboost.model, trees =2, render = T )\r\n";
+                string cmd = "gr_<-xgb.plot.tree(model = xgboost.model, trees =" + numericUpDown13.Value.ToString()+", render = T )\r\n";
 #else
             string cmd = "gr_<-xgb.plot.multi.trees(model = xgboost.model";
             cmd += ", features_keep = 5";
@@ -1283,6 +1287,10 @@ namespace WindowsFormsApplication1
 #endif
             cmd += "path<- html_print(gr_, background = \"white\", viewer = NULL)\r\n";
             cmd += "url <- paste0(\"file:///\", gsub(\"\\\\\\\\\", \"/\", normalizePath(path)))\r\n";
+            cmd += "sink(file = \"summary.txt\")\r\n";
+            cmd += "cat(url)\r\n";
+            cmd += "cat(\"\\n\")\r\n";
+            cmd += "sink()\r\n";
             cmd += "webshot(url,file = \"xgb_plot.multi_trees.png\", delay = 0.2, zoom ="+ numericUpDown12.Value.ToString()+")\r\n";
 
             System.IO.Directory.SetCurrentDirectory(Form1.curDir);
@@ -1295,6 +1303,7 @@ namespace WindowsFormsApplication1
                 {
                     sw.Write("library('DiagrammeR')\r\n");
                     sw.Write(cmd);
+                    sw.Write("\r\n");
                 }
             }
             catch
@@ -1309,6 +1318,14 @@ namespace WindowsFormsApplication1
                 return;
             }
 
+            image_link = stat;
+            linkLabel1.Visible = true;
+
+            form1.textBox6.Text += stat;
+            //テキスト最後までスクロール
+            form1.TextBoxEndposset(form1.textBox6);
+
+            System.Threading.Thread.Sleep(200);
             if (_ImageView2 == null) _ImageView2 = new ImageView();
 
             _ImageView2.form1 = this.form1;
@@ -1326,13 +1343,40 @@ namespace WindowsFormsApplication1
                     "Gain （分割ノードの場合）：分割の情報ゲインメトリック（モデル内のノードの重要度に対応）。\r\n\r\n" +
                     "Value （葉の場合）：葉が予測に寄与する可能性のあるマージン値。\r\n";
                 f.Show();
+            }else
+            {
+                linkLabel1_LinkClicked(sender, null);
             }
-
         }
 
         private void numericUpDown12_ValueChanged(object sender, EventArgs e)
         {
             //button15_Click(sender, e);
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            linkLabel1.LinkVisited = true;
+            image_link = image_link.Split('\n')[0];
+            image_link = image_link.Replace("\"", "");
+
+            Uri u = new Uri(image_link);
+            if (u.IsFile)
+            {
+                image_link = u.LocalPath + Uri.UnescapeDataString(u.Fragment);
+            }else
+            {
+                MessageBox.Show("図が生成されていません", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            Form15 f = new Form15();
+            f.richTextBox1.Text = "Cover：葉に分類されたトレーニングデータの2次勾配の合計。\r\n" +
+                "        それが二乗損失である場合、これは単に、トレーニング中に分割によって見られた、または葉によって収集されたインスタンスの数に対応します。\r\n" +
+                "        ノードがツリーの奥深くにあるほど、このメトリックは低くなります。\r\n\r\n" +
+                "Gain （分割ノードの場合）：分割の情報ゲインメトリック（モデル内のノードの重要度に対応）。\r\n\r\n" +
+                "Value （葉の場合）：葉が予測に寄与する可能性のあるマージン値。\r\n";
+            f.Show();
+            System.Diagnostics.Process.Start(image_link);
         }
     }
 }
