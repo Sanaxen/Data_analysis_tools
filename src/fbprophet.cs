@@ -208,6 +208,7 @@ namespace WindowsFormsApplication1
                 form1.SelectionVarWrite_(listBox1, listBox3, "select_variables.dat");
                 form1.SelectionVarWrite_(listBox2, listBox2, "select_variables2.dat");
 
+                ListBox typename = form1.GetTypeNameList(listBox1);
                 string cmd = "";
                 if (true)
                 {
@@ -255,7 +256,7 @@ namespace WindowsFormsApplication1
                 }
 
 
-                ListBox typename = form1.GetTypeNameList(listBox1);
+                //ListBox typename = form1.GetTypeNameList(listBox1);
 
                 if (typename.Items[listBox1.SelectedIndex].ToString() != "numeric" && typename.Items[listBox1.SelectedIndex].ToString() != "integer")
                 {
@@ -333,9 +334,24 @@ namespace WindowsFormsApplication1
                     }
                     cmd += ", fit=FALSE)\r\n";
 
+                    bool typeNG = false;
                     for ( int i = 0; i < listBox3.SelectedIndices.Count; i++)
                     {
-                        cmd += "prophet_model <- add_regressor(prophet_model,'" + listBox3.Items[listBox3.SelectedIndices[i]].ToString() + "')\r\n";
+                        if (typename.Items[listBox3.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox3.SelectedIndices[i]].ToString() == "integer")
+                        {
+                            cmd += "prophet_model <- add_regressor(prophet_model,'" + listBox3.Items[listBox3.SelectedIndices[i]].ToString() + "')\r\n";
+                        }else
+                        {
+                            typeNG = true;
+                            listBox3.SetSelected(listBox3.SelectedIndices[i], false);
+                        }
+                    }
+                    if (Form1.batch_mode == 0)
+                    {
+                        if (typeNG)
+                        {
+                            MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
+                        }
                     }
                     cmd += "prophet_model <-fit.prophet(prophet_model, df_)\r\n";
                 }

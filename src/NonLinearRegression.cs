@@ -934,6 +934,7 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
+                            listBox1.SetSelected(listBox1.SelectedIndices[i], false);
                             typeNG = true;
                         }
                         if (numericUpDown6.Value > 0 && !checkBox6.Checked && y_count > numericUpDown6.Value && y_count_max_flg == 0)
@@ -971,12 +972,13 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
+                            listBox2.SetSelected(listBox2.SelectedIndices[i], false);
                             typeNG = true;
                         }
                     }
                     if (x_count == 0)
                     {
-                        MessageBox.Show("数値以外の目的変数の選択が選択されています", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("数値以外の説明変数の選択が選択されています", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         process = null;
                         button1.Enabled = true;
                         checkBox6_CheckStateChanged(sender, e);
@@ -995,6 +997,7 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
+                            listBox3.SetSelected(listBox3.SelectedIndices[i], false);
                             typeNG = true;
                         }
                     }
@@ -1004,7 +1007,7 @@ namespace WindowsFormsApplication1
                 {
                     if (typeNG)
                     {
-                        MessageBox.Show("数値以外のデータ列が選択を未選択扱いにしました");
+                        MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
                     }
                 }
 

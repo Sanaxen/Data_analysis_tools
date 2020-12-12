@@ -320,6 +320,7 @@ namespace WindowsFormsApplication1
                     else
                     {
                         typeNG = true;
+                        listBox2.SetSelected(listBox2.SelectedIndices[i], false);
                     }
                 }
                 for (int i = 0; i < var.Items.Count; i++)
@@ -341,7 +342,7 @@ namespace WindowsFormsApplication1
                 {
                     if (typeNG)
                     {
-                        MessageBox.Show("数値以外のデータ列が選択を未選択扱いにしました");
+                        MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
                     }
                 }
 
@@ -1439,13 +1440,20 @@ namespace WindowsFormsApplication1
                     res = float.Parse(R2) > r2 && float.Parse(R2) < 1.0;
                 }else
                 {
-                    res = float.Parse(ACC) > r2 && float.Parse(ACC) < 1.0;
+                    res = float.Parse(ACC.Replace("%", "")) > r2 && float.Parse(ACC.Replace("%","")) < 1.0;
                 }
                 if ( res )
                 {
-                    button16.Text = R2;
-
-                    r2 = float.Parse(R2);
+                    if (radioButton1.Checked)
+                    {
+                        button16.Text = R2;
+                        r2 = float.Parse(R2);
+                    }
+                    else
+                    {
+                        button16.Text = ACC;
+                        r2 = float.Parse(ACC);
+                    }
                     t3 = textBox3.Text;
                     t4 = textBox4.Text;
                     t5 = textBox5.Text;

@@ -273,6 +273,7 @@ namespace WindowsFormsApplication1
                             var.Items.Add(form1.Names.Items[(listBox2.SelectedIndices[j])].ToString());
                         }else
                         {
+                            listBox2.SetSelected(listBox2.SelectedIndices[j], false);
                             typeNG = true;
                         }
                     }
@@ -288,7 +289,7 @@ namespace WindowsFormsApplication1
                     {
                         if (typeNG)
                         {
-                            MessageBox.Show("数値以外のデータ列が選択を未選択扱いにしました");
+                            MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
                         }
                     }
 

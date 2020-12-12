@@ -306,6 +306,7 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
+                            listBox1.SetSelected(listBox1.SelectedIndices[i], false);
                             typeNG = true;
                         }
                     }
@@ -322,6 +323,7 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
+                            listBox2.SetSelected(listBox2.SelectedIndices[i], false);
                             typeNG = true;
                         }
                     }
@@ -339,7 +341,7 @@ namespace WindowsFormsApplication1
 
                 if (typeNG )
                 {
-                    MessageBox.Show("数値以外のデータ列が選択を未選択扱いにしました");
+                    MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
                 }
                 //MessageBox.Show(p.StartInfo.Arguments);
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");

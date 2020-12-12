@@ -268,6 +268,7 @@ namespace WindowsFormsApplication1
                     }
                     else
                     {
+                        listBox3.SetSelected(listBox3.SelectedIndices[i], false);
                         typeNG = true;
                     }
                 }
@@ -277,7 +278,7 @@ namespace WindowsFormsApplication1
                 {
                     if (typeNG)
                     {
-                        MessageBox.Show("数値以外のデータ列が選択を未選択扱いにしました");
+                        MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
                     }
                 }
 
