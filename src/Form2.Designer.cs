@@ -122,7 +122,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(305, 28);
             this.textBox2.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.textBox2, "条件式を描いてください");
+            this.toolTip1.SetToolTip(this.textBox2, "条件式を書いてください");
             // 
             // button1
             // 

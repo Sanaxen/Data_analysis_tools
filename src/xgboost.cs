@@ -1100,6 +1100,7 @@ namespace WindowsFormsApplication1
             if (radioButton2.Checked)
             {
                 comboBox2.Text = "\"multi:softmax\"";
+                MessageBox.Show("num_classを設定して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
