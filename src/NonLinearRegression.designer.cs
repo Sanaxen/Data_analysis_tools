@@ -122,6 +122,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.button27 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
@@ -129,7 +130,6 @@
             this.panel12 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-            this.button27 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -163,6 +163,11 @@
             // 
             this.numericUpDown2.Location = new System.Drawing.Point(64, 36);
             this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             this.numericUpDown2.Minimum = new decimal(new int[] {
             1,
             0,
@@ -329,6 +334,11 @@
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(64, 10);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             this.numericUpDown1.Minimum = new decimal(new int[] {
             1,
             0,
@@ -1279,6 +1289,16 @@
             this.panel11.Size = new System.Drawing.Size(1123, 651);
             this.panel11.TabIndex = 106;
             // 
+            // button27
+            // 
+            this.button27.Location = new System.Drawing.Point(233, 156);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(58, 31);
+            this.button27.TabIndex = 137;
+            this.button27.Text = "終了";
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
+            // 
             // button26
             // 
             this.button26.Location = new System.Drawing.Point(284, 8);
@@ -1344,16 +1364,6 @@
             // openFileDialog2
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
-            // 
-            // button27
-            // 
-            this.button27.Location = new System.Drawing.Point(233, 156);
-            this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(58, 31);
-            this.button27.TabIndex = 137;
-            this.button27.Text = "終了";
-            this.button27.UseVisualStyleBackColor = true;
-            this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
             // NonLinearRegression
             // 

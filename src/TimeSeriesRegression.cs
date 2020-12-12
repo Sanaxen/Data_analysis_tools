@@ -2236,6 +2236,7 @@ namespace WindowsFormsApplication1
 
         public void button8_Click(object sender, EventArgs e)
         {
+            running = 0;
             user_abort = 1;
             if (process != null)
             {
