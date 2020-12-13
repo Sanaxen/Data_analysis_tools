@@ -61,6 +61,9 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
@@ -69,11 +72,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.PowderBlue;
+            this.groupBox1.Controls.Add(this.checkBox6);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.numericUpDown10);
             this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.numericUpDown1);
             this.groupBox1.Controls.Add(this.label5);
@@ -145,7 +152,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(237, 101);
+            this.label5.Location = new System.Drawing.Point(229, 174);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(124, 15);
@@ -155,7 +162,7 @@
             // 
             // numericUpDown12
             // 
-            this.numericUpDown12.Location = new System.Drawing.Point(375, 99);
+            this.numericUpDown12.Location = new System.Drawing.Point(367, 172);
             this.numericUpDown12.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.numericUpDown12.Maximum = new decimal(new int[] {
             100000,
@@ -170,7 +177,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(259, 74);
+            this.label2.Location = new System.Drawing.Point(251, 147);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 15);
             this.label2.TabIndex = 91;
@@ -184,7 +191,7 @@
             this.comboBox3.Items.AddRange(new object[] {
             "tanh",
             "relu"});
-            this.comboBox3.Location = new System.Drawing.Point(373, 68);
+            this.comboBox3.Location = new System.Drawing.Point(365, 141);
             this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(101, 23);
@@ -205,7 +212,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(259, 45);
+            this.label1.Location = new System.Drawing.Point(251, 118);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(103, 15);
             this.label1.TabIndex = 88;
@@ -223,7 +230,7 @@
             "constant",
             "he",
             "auto"});
-            this.comboBox2.Location = new System.Drawing.Point(373, 39);
+            this.comboBox2.Location = new System.Drawing.Point(365, 112);
             this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(101, 23);
@@ -514,6 +521,37 @@
             this.label6.Text = "epochs";
             this.toolTip1.SetToolTip(this.label6, "エポック数");
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(319, 87);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(73, 15);
+            this.label8.TabIndex = 111;
+            this.label8.Text = "conv layer";
+            this.toolTip1.SetToolTip(this.label8, "畳み込みとプーリング層を使って特徴抽出をする場合の畳み込みとプーリング層の数");
+            // 
+            // numericUpDown10
+            // 
+            this.numericUpDown10.Location = new System.Drawing.Point(420, 86);
+            this.numericUpDown10.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.numericUpDown10.Name = "numericUpDown10";
+            this.numericUpDown10.Size = new System.Drawing.Size(47, 22);
+            this.numericUpDown10.TabIndex = 112;
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(475, 89);
+            this.checkBox6.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(129, 19);
+            this.checkBox6.TabIndex = 113;
+            this.checkBox6.Text = "batch normalize";
+            this.toolTip1.SetToolTip(this.checkBox6, "ミニバッチごとに平均、分散を求め、インプットを正規化します。\r\nミニバッチサイズが小さい場合は平均・分散を計算すると推定値が不安定になってしまう事があります。");
+            this.checkBox6.UseVisualStyleBackColor = true;
+            // 
             // Form11
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -534,6 +572,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -572,5 +611,8 @@
         public System.Windows.Forms.NumericUpDown numericUpDown12;
         public System.Windows.Forms.NumericUpDown numericUpDown1;
         public System.Windows.Forms.CheckBox checkBox2;
+        public System.Windows.Forms.Label label8;
+        public System.Windows.Forms.NumericUpDown numericUpDown10;
+        public System.Windows.Forms.CheckBox checkBox6;
     }
 }

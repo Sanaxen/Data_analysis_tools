@@ -143,6 +143,7 @@
             this.label20 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.panel12 = new System.Windows.Forms.Panel();
+            this.button27 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
@@ -150,7 +151,6 @@
             this.panel13 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-            this.button27 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -923,6 +923,7 @@
             this.checkBox5.TabIndex = 64;
             this.checkBox5.Text = "Classification";
             this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
             // numericUpDown11
             // 
@@ -1553,6 +1554,16 @@
             this.panel12.Size = new System.Drawing.Size(1148, 648);
             this.panel12.TabIndex = 107;
             // 
+            // button27
+            // 
+            this.button27.Location = new System.Drawing.Point(247, 149);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(58, 32);
+            this.button27.TabIndex = 136;
+            this.button27.Text = "終了";
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
+            // 
             // button26
             // 
             this.button26.Location = new System.Drawing.Point(466, 6);
@@ -1618,16 +1629,6 @@
             // openFileDialog2
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
-            // 
-            // button27
-            // 
-            this.button27.Location = new System.Drawing.Point(247, 149);
-            this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(58, 32);
-            this.button27.TabIndex = 136;
-            this.button27.Text = "終了";
-            this.button27.UseVisualStyleBackColor = true;
-            this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
             // TimeSeriesRegression
             // 

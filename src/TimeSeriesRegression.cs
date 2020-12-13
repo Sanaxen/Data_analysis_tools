@@ -2916,5 +2916,14 @@ namespace WindowsFormsApplication1
                 sw.Dispose();
             }
         }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_form12 == null)
+            {
+                _form12 = new Form12();
+            }
+            _form12.comboBox4.SelectedIndex = 1;
+        }
     }
 }

@@ -250,6 +250,9 @@ namespace WindowsFormsApplication1
                             sw.Write(_form11.numericUpDown6.Value.ToString() + "\r\n");
                             sw.Write("unit,");
                             sw.Write(_form11.numericUpDown8.Value.ToString() + "\r\n");
+                            sw.Write("use_conv,");
+                            sw.Write(_form11.numericUpDown10.Value.ToString() + "\r\n");
+
 
                             sw.Write("Number of classes,");
                             sw.Write(numericUpDown5.Value.ToString() + "\r\n");
@@ -261,6 +264,9 @@ namespace WindowsFormsApplication1
                             sw.Write("activation_fnc,");
                             sw.Write(_form11.comboBox3.Text + "\r\n");
 
+                            sw.Write("use_cnn_add_bn,");
+                            if (_form11.checkBox6.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
                             sw.Write("sampling,");
                             if (_form11.checkBox2.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
@@ -1121,6 +1127,21 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --n_sampling " + _form11.numericUpDown1.Value.ToString();
                 }
+
+                process.StartInfo.Arguments += " --use_cnn " + _form11.numericUpDown10.Value.ToString();
+                if (_form11.checkBox6.Checked)
+                {
+                    if (_form11.numericUpDown10.Value == 0)
+                    {
+                        MessageBox.Show("batch normalizeは無視されます", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    process.StartInfo.Arguments += " --use_cnn_add_bn 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --use_cnn_add_bn 0";
+                }
+
                 //
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
@@ -2101,6 +2122,11 @@ namespace WindowsFormsApplication1
                         _form11.numericUpDown1.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
+                    if (ss[0].IndexOf("use_cnv") >= 0)
+                    {
+                        _form11.numericUpDown10.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
                     if (ss[0].IndexOf("sampling") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")
@@ -2114,6 +2140,18 @@ namespace WindowsFormsApplication1
                         continue;
                     }
 
+                    if (ss[0].IndexOf("use_cnn_add_bn") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form11.checkBox6.Checked = true;
+                        }
+                        else
+                        {
+                            _form11.checkBox6.Checked = false;
+                        }
+                        continue;
+                    }
 
                     if (ss[0].IndexOf("scale") >= 0)
                     {
@@ -2396,6 +2434,15 @@ namespace WindowsFormsApplication1
                 sw.Close();
                 sw.Dispose();
             }
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_form11 == null)
+            {
+                _form11 = new Form11();
+            }
+            _form11.comboBox3.SelectedIndex = 1;
         }
     }
 }

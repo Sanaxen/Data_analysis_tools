@@ -856,6 +856,7 @@
             this.checkBox5.Text = "Classification";
             this.toolTip3.SetToolTip(this.checkBox5, "分類問題を解く");
             this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
             // numericUpDown5
             // 
