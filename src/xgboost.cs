@@ -987,7 +987,8 @@ namespace WindowsFormsApplication1
         private void button7_Click_1(object sender, EventArgs e)
         {
             if (_ImageView == null) _ImageView = new ImageView();
-            string file = "tmp_xgboost.png";
+            //string file = "tmp_xgboost.png";
+            string file = "tmp_xgboost2.png";
             if ( radioButton3.Checked)
             {
                 file = "tmp_xgboost_predict.png";
