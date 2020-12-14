@@ -671,6 +671,11 @@ namespace WindowsFormsApplication1
                 pictureBox1.Show();
             }
         }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            Form1.VarAutoSelection(listBox1, listBox2);
+        }
     }
 }
 

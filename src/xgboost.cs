@@ -1269,6 +1269,7 @@ namespace WindowsFormsApplication1
                 }
                 if (i + 1== numericUpDown9.Value) break;
             }
+            form1.SelectionVarWrite_(listBox1, listBox2, "select_variables.dat");
         }
 
         private void button15_Click(object sender, EventArgs e)
