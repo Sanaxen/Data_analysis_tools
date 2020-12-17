@@ -273,6 +273,12 @@ namespace WindowsFormsApplication1
                             sw.Write("n_sampling,");
                             sw.Write(_form11.numericUpDown1.Value.ToString() + "\r\n");
 
+                            sw.Write("residual,");
+                            sw.Write(_form11.numericUpDown2.Value.ToString() + "\r\n");
+                            sw.Write("padding,");
+                            if (_form11.checkBox3.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+
                             sw.Write("use_pytorch,");
                             if (checkBox1.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
@@ -1140,6 +1146,19 @@ namespace WindowsFormsApplication1
                 else
                 {
                     process.StartInfo.Arguments += " --use_cnn_add_bn 0";
+                }
+
+                if (_form11.numericUpDown10.Value > 0)
+                {
+                    if (_form11.checkBox3.Checked)
+                    {
+                        process.StartInfo.Arguments += " --padding_prm 1";
+                    }
+                    else
+                    {
+                        process.StartInfo.Arguments += " --padding_prm 0";
+                    }
+                    process.StartInfo.Arguments += " --residual " + _form11.numericUpDown2.Value.ToString();
                 }
 
                 //
@@ -2152,6 +2171,24 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
+                    if (ss[0].IndexOf("padding") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form11.checkBox3.Checked = true;
+                        }
+                        else
+                        {
+                            _form11.checkBox3.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("residual") >= 0)
+                    {
+                        _form11.numericUpDown2.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+
 
                     if (ss[0].IndexOf("scale") >= 0)
                     {
@@ -2427,13 +2464,17 @@ namespace WindowsFormsApplication1
 
         private void button27_Click(object sender, EventArgs e)
         {
-            System.IO.StreamWriter sw = new System.IO.StreamWriter("_stopping_solver_", false, Encoding.GetEncoding("SHIFT_JIS"));
-            if (sw != null)
+            try
             {
-                sw.Write("\n");
-                sw.Close();
-                sw.Dispose();
+                System.IO.StreamWriter sw = new System.IO.StreamWriter("_stopping_solver_", false, Encoding.GetEncoding("SHIFT_JIS"));
+                if (sw != null)
+                {
+                    sw.Write("\n");
+                    sw.Close();
+                    sw.Dispose();
+                }
             }
+            catch { }
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)

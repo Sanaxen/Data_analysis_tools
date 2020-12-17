@@ -30,6 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
@@ -61,10 +67,10 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label8 = new System.Windows.Forms.Label();
-            this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
@@ -72,15 +78,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.PowderBlue;
-            this.groupBox1.Controls.Add(this.checkBox6);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.numericUpDown10);
+            this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.numericUpDown1);
             this.groupBox1.Controls.Add(this.label5);
@@ -115,14 +119,76 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(909, 252);
+            this.groupBox1.Size = new System.Drawing.Size(830, 324);
             this.groupBox1.TabIndex = 86;
             this.groupBox1.TabStop = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 55);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(100, 15);
+            this.label10.TabIndex = 115;
+            this.label10.Text = "residual blocks";
+            this.toolTip1.SetToolTip(this.label10, "residual blockの数");
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(108, 54);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(47, 22);
+            this.numericUpDown2.TabIndex = 116;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(167, 55);
+            this.checkBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(75, 19);
+            this.checkBox3.TabIndex = 114;
+            this.checkBox3.Text = "padding";
+            this.toolTip1.SetToolTip(this.checkBox3, "ミニバッチごとに平均、分散を求め、インプットを正規化します。\r\nミニバッチサイズが小さい場合は平均・分散を計算すると推定値が不安定になってしまう事があります。");
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(167, 27);
+            this.checkBox6.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(129, 19);
+            this.checkBox6.TabIndex = 113;
+            this.checkBox6.Text = "batch normalize";
+            this.toolTip1.SetToolTip(this.checkBox6, "batch normalizeを追加");
+            this.checkBox6.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 25);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(73, 15);
+            this.label8.TabIndex = 111;
+            this.label8.Text = "conv layer";
+            this.toolTip1.SetToolTip(this.label8, "畳み込みとプーリング層を使って特徴抽出をする場合の畳み込みとプーリング層の数");
+            // 
+            // numericUpDown10
+            // 
+            this.numericUpDown10.Location = new System.Drawing.Point(108, 24);
+            this.numericUpDown10.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.numericUpDown10.Name = "numericUpDown10";
+            this.numericUpDown10.Size = new System.Drawing.Size(47, 22);
+            this.numericUpDown10.TabIndex = 112;
             // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(536, 30);
+            this.checkBox2.Location = new System.Drawing.Point(568, 198);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(131, 19);
             this.checkBox2.TabIndex = 110;
@@ -132,7 +198,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(674, 30);
+            this.numericUpDown1.Location = new System.Drawing.Point(706, 198);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             2,
@@ -152,7 +218,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(229, 174);
+            this.label5.Location = new System.Drawing.Point(241, 78);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(124, 15);
@@ -162,7 +228,7 @@
             // 
             // numericUpDown12
             // 
-            this.numericUpDown12.Location = new System.Drawing.Point(367, 172);
+            this.numericUpDown12.Location = new System.Drawing.Point(373, 71);
             this.numericUpDown12.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.numericUpDown12.Maximum = new decimal(new int[] {
             100000,
@@ -177,7 +243,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(251, 147);
+            this.label2.Location = new System.Drawing.Point(296, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 15);
             this.label2.TabIndex = 91;
@@ -191,7 +257,7 @@
             this.comboBox3.Items.AddRange(new object[] {
             "tanh",
             "relu"});
-            this.comboBox3.Location = new System.Drawing.Point(365, 141);
+            this.comboBox3.Location = new System.Drawing.Point(371, 40);
             this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(101, 23);
@@ -200,7 +266,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(824, 211);
+            this.button1.Location = new System.Drawing.Point(739, 282);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(80, 38);
@@ -212,7 +278,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(251, 118);
+            this.label1.Location = new System.Drawing.Point(262, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(103, 15);
             this.label1.TabIndex = 88;
@@ -230,7 +296,7 @@
             "constant",
             "he",
             "auto"});
-            this.comboBox2.Location = new System.Drawing.Point(365, 112);
+            this.comboBox2.Location = new System.Drawing.Point(371, 8);
             this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(101, 23);
@@ -242,7 +308,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(431, 4);
+            this.checkBox1.Location = new System.Drawing.Point(568, 8);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(75, 19);
@@ -252,7 +318,7 @@
             // 
             // numericUpDown9
             // 
-            this.numericUpDown9.Location = new System.Drawing.Point(613, 1);
+            this.numericUpDown9.Location = new System.Drawing.Point(750, 5);
             this.numericUpDown9.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown9.Name = "numericUpDown9";
             this.numericUpDown9.Size = new System.Drawing.Size(60, 22);
@@ -266,7 +332,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(533, 2);
+            this.label14.Location = new System.Drawing.Point(670, 6);
             this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(69, 15);
@@ -393,7 +459,7 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(367, 208);
+            this.textBox5.Location = new System.Drawing.Point(730, 166);
             this.textBox5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(48, 22);
@@ -403,7 +469,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(247, 211);
+            this.label17.Location = new System.Drawing.Point(610, 169);
             this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(114, 15);
@@ -521,42 +587,27 @@
             this.label6.Text = "epochs";
             this.toolTip1.SetToolTip(this.label6, "エポック数");
             // 
-            // label8
+            // groupBox2
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(319, 87);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(73, 15);
-            this.label8.TabIndex = 111;
-            this.label8.Text = "conv layer";
-            this.toolTip1.SetToolTip(this.label8, "畳み込みとプーリング層を使って特徴抽出をする場合の畳み込みとプーリング層の数");
-            // 
-            // numericUpDown10
-            // 
-            this.numericUpDown10.Location = new System.Drawing.Point(420, 86);
-            this.numericUpDown10.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.numericUpDown10.Name = "numericUpDown10";
-            this.numericUpDown10.Size = new System.Drawing.Size(47, 22);
-            this.numericUpDown10.TabIndex = 112;
-            // 
-            // checkBox6
-            // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(475, 89);
-            this.checkBox6.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(129, 19);
-            this.checkBox6.TabIndex = 113;
-            this.checkBox6.Text = "batch normalize";
-            this.toolTip1.SetToolTip(this.checkBox6, "ミニバッチごとに平均、分散を求め、インプットを正規化します。\r\nミニバッチサイズが小さい場合は平均・分散を計算すると推定値が不安定になってしまう事があります。");
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.groupBox2.BackColor = System.Drawing.Color.LightGreen;
+            this.groupBox2.Controls.Add(this.numericUpDown10);
+            this.groupBox2.Controls.Add(this.checkBox3);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.checkBox6);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.numericUpDown2);
+            this.groupBox2.Location = new System.Drawing.Point(244, 122);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(300, 95);
+            this.groupBox2.TabIndex = 117;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "CNN";
             // 
             // Form11
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(923, 269);
+            this.ClientSize = new System.Drawing.Size(855, 347);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -565,6 +616,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form11_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
@@ -572,7 +625,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -614,5 +668,9 @@
         public System.Windows.Forms.Label label8;
         public System.Windows.Forms.NumericUpDown numericUpDown10;
         public System.Windows.Forms.CheckBox checkBox6;
+        public System.Windows.Forms.Label label10;
+        public System.Windows.Forms.NumericUpDown numericUpDown2;
+        public System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }

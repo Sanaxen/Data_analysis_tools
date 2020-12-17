@@ -1040,7 +1040,7 @@
             this.checkBox9.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.checkBox9.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox9.Location = new System.Drawing.Point(664, 84);
+            this.checkBox9.Location = new System.Drawing.Point(647, 84);
             this.checkBox9.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(180, 19);

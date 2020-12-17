@@ -303,6 +303,12 @@ namespace WindowsFormsApplication1
                             sw.Write("n_sampling,");
                             sw.Write(_form12.numericUpDown15.Value.ToString() + "\r\n");
 
+                            sw.Write("residual,");
+                            sw.Write(_form12.numericUpDown16.Value.ToString() + "\r\n");
+                            sw.Write("padding,");
+                            if (_form12.checkBox8.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+
                             sw.Write("deviceID,");
                             sw.Write(numericUpDown6.Value.ToString()+ "\r\n");
 
@@ -1346,6 +1352,19 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --n_sampling " + _form12.numericUpDown15.Value.ToString();
                 }
+                if (_form12.numericUpDown10.Value > 0)
+                {
+                    if (_form12.checkBox8.Checked)
+                    {
+                        process.StartInfo.Arguments += " --padding_prm 1";
+                    }else
+                    {
+                        process.StartInfo.Arguments += " --padding_prm 0";
+                    }
+                    process.StartInfo.Arguments += " --residual " + _form12.numericUpDown16.Value.ToString();
+                }
+
+
                 if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
                 System.IO.File.AppendAllText("comandline_args", " ", System.Text.Encoding.GetEncoding("shift_jis"));
                 System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments, System.Text.Encoding.GetEncoding("shift_jis"));
@@ -2563,6 +2582,24 @@ namespace WindowsFormsApplication1
                         continue;
                     }
 
+                    if (ss[0].IndexOf("padding") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form12.checkBox8.Checked = true;
+                        }
+                        else
+                        {
+                            _form12.checkBox8.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("residual") >= 0)
+                    {
+                        _form12.numericUpDown16.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+
                     if (ss[0].IndexOf("use_pytorch") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")
@@ -2908,13 +2945,17 @@ namespace WindowsFormsApplication1
 
         private void button27_Click(object sender, EventArgs e)
         {
-            System.IO.StreamWriter sw = new System.IO.StreamWriter("_stopping_solver_", false, Encoding.GetEncoding("SHIFT_JIS"));
-            if (sw != null)
+            try
             {
-                sw.Write("\n");
-                sw.Close();
-                sw.Dispose();
+                System.IO.StreamWriter sw = new System.IO.StreamWriter("_stopping_solver_", false, Encoding.GetEncoding("SHIFT_JIS"));
+                if (sw != null)
+                {
+                    sw.Write("\n");
+                    sw.Close();
+                    sw.Dispose();
+                }
             }
+            catch { }
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
