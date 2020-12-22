@@ -524,10 +524,15 @@
             // 
             // numericUpDown12
             // 
-            this.numericUpDown12.Location = new System.Drawing.Point(450, 91);
+            this.numericUpDown12.Location = new System.Drawing.Point(431, 91);
             this.numericUpDown12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown12.Maximum = new decimal(new int[] {
+            30000,
+            0,
+            0,
+            0});
             this.numericUpDown12.Name = "numericUpDown12";
-            this.numericUpDown12.Size = new System.Drawing.Size(48, 22);
+            this.numericUpDown12.Size = new System.Drawing.Size(67, 22);
             this.numericUpDown12.TabIndex = 12;
             this.numericUpDown12.Value = new decimal(new int[] {
             12,
@@ -704,7 +709,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(215, 107);
+            this.label34.Location = new System.Drawing.Point(220, 115);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(17, 15);
             this.label34.TabIndex = 126;
