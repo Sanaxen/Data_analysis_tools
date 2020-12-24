@@ -128,6 +128,8 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown13)).BeginInit();
             this.panel7.SuspendLayout();
@@ -157,6 +159,8 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.button17);
+            this.panel2.Controls.Add(this.button16);
             this.panel2.Controls.Add(this.label31);
             this.panel2.Controls.Add(this.button12);
             this.panel2.Controls.Add(this.button5);
@@ -220,7 +224,7 @@
             // button12
             // 
             this.button12.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button12.Location = new System.Drawing.Point(720, 34);
+            this.button12.Location = new System.Drawing.Point(608, 38);
             this.button12.Margin = new System.Windows.Forms.Padding(4);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(105, 22);
@@ -1361,6 +1365,30 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(733, 67);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(87, 23);
+            this.button17.TabIndex = 117;
+            this.button17.Text = "stop";
+            this.toolTip1.SetToolTip(this.button17, "最適パラメータ探索停止");
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Visible = false;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(733, 41);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(87, 23);
+            this.button16.TabIndex = 116;
+            this.button16.Text = "auto";
+            this.toolTip1.SetToolTip(this.button16, "最適パラメータ探索開始");
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Visible = false;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
             // sarima
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1511,5 +1539,7 @@
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button16;
     }
 }

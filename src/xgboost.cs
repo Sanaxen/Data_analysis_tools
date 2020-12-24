@@ -47,12 +47,19 @@ namespace WindowsFormsApplication1
 
         private void xgboost_FormClosing(object sender, FormClosingEventArgs e)
         {
+            grid_serch_stop = 1;
             e.Cancel = true;
             if (running != 0)
             {
-                MessageBox.Show("未だ処理中のタスクが有ります\nしばらくお待ちください");
-                return;
+                var x = MessageBox.Show("未だ処理中のタスクが有ります\nしばらくお待ちください", "", MessageBoxButtons.OKCancel); ;
+
+                if (x == DialogResult.OK)
+                {
+                    return;
+                }
             }
+            Form1.batch_mode = 0;
+            running = 0;
             Hide();
         }
 
@@ -164,6 +171,7 @@ namespace WindowsFormsApplication1
             }
 
             running = 1;
+
             linkLabel1.Visible = false;
             linkLabel1.LinkVisited = false;
 
@@ -345,6 +353,7 @@ namespace WindowsFormsApplication1
                         MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
                     }
                 }
+
 
                 string l_params = "l_params = list(";
                 l_params += "booster=" + comboBox1.Text + "\r\n";
@@ -1397,14 +1406,14 @@ namespace WindowsFormsApplication1
             string n4 = numericUpDown4.Text;
             string n6 = numericUpDown6.Text;
 
-            Random eta = new System.Random();
-            Random gamma = new System.Random();
-            Random min_child_weight = new System.Random();
-            Random subsample = new System.Random();
-            Random max_depth = new System.Random();
-            Random alpha = new System.Random();
-            Random lambda = new System.Random();
-            Random colsample_bytree = new System.Random();
+            Random eta = new System.Random(1);
+            Random gamma = new System.Random(2);
+            Random min_child_weight = new System.Random(3);
+            Random subsample = new System.Random(4);
+            Random max_depth = new System.Random(5);
+            Random alpha = new System.Random(6);
+            Random lambda = new System.Random(7);
+            Random colsample_bytree = new System.Random(8);
 
             float r2 = 0.0f;
             for (int i = 0; i < 100; i++)
@@ -1473,6 +1482,7 @@ namespace WindowsFormsApplication1
             button17.Text = "stop";
 
             grid_serch_stop = 0;
+            Form1.batch_mode = 0;
             textBox3.Text = t3;
             textBox4.Text = t4;
             textBox5.Text = t5;
@@ -1497,7 +1507,9 @@ namespace WindowsFormsApplication1
         private void button16_Click(object sender, EventArgs e)
         {
             grid_serch_stop = 0;
+            Form1.batch_mode = 1;
             grid_serch();
+            Form1.batch_mode = 0;
         }
 
         private void button17_Click(object sender, EventArgs e)

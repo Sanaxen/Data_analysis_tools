@@ -44,12 +44,19 @@ namespace WindowsFormsApplication1
 
         private void sarima_FormClosing(object sender, FormClosingEventArgs e)
         {
+            grid_serch_stop = 1;
             e.Cancel = true;
             if (running != 0)
             {
-                MessageBox.Show("未だ処理中のタスクが有ります\nしばらくお待ちください");
-                return;
+                var x = MessageBox.Show("未だ処理中のタスクが有ります\nしばらくお待ちください", "", MessageBoxButtons.OKCancel); ;
+
+                if (x == DialogResult.OK)
+                {
+                    return;
+                }
             }
+            Form1.batch_mode = 0;
+            running = 0;
             Hide();
         }
 
@@ -161,9 +168,11 @@ namespace WindowsFormsApplication1
                     if (Form1.batch_mode == 1)
                     {
                         error_status = 2;
+                        running = 0;
                         return;
                     }
                     MessageBox.Show("時間変数を指定して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    running = 0;
                     return;
                 }
                 if (listBox1.SelectedIndex < 0)
@@ -171,9 +180,11 @@ namespace WindowsFormsApplication1
                     if (Form1.batch_mode == 1)
                     {
                         error_status = 2;
+                        running = 0;
                         return;
                     }
                     MessageBox.Show("目的変数を指定して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    running = 0;
                     return;
                 }
                 if (numericUpDown1.Value == 1)
@@ -197,10 +208,12 @@ namespace WindowsFormsApplication1
                             if (Form1.batch_mode == 1)
                             {
                                 error_status = 2;
+                                running = 0;
                                 return;
                             }
                             MessageBox.Show("データフレーム(train)が未定義です", "Error");
                             error_status = 2;
+                            running = 0;
                             return;
                         }
                         cmd += "df_ <- train\r\n";
@@ -212,10 +225,12 @@ namespace WindowsFormsApplication1
                             if (Form1.batch_mode == 1)
                             {
                                 error_status = 2;
+                                running = 0;
                                 return;
                             }
                             MessageBox.Show("データフレーム(test)が未定義です", "Error");
                             error_status = 2;
+                            running = 0;
                             return;
                         }
                         cmd += "test <- df\r\n";
@@ -602,6 +617,7 @@ namespace WindowsFormsApplication1
                     catch
                     {
                         error_status = -1;
+                        running = 0;
                         return;
                     }
                 }
@@ -656,6 +672,7 @@ namespace WindowsFormsApplication1
                     catch
                     {
                         error_status = -1;
+                        running = 0;
                         return;
                     }
                 }
@@ -673,6 +690,7 @@ namespace WindowsFormsApplication1
                 {
                     error_status = 1;
                     if (Form1.batch_mode == 0) MessageBox.Show("SARIMA", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    running = 0;
                     return;
                 }
 
@@ -692,6 +710,7 @@ namespace WindowsFormsApplication1
                     }
                     catch
                     {
+                        running = 0;
                         return;
                     }
                     return;
@@ -1252,6 +1271,117 @@ namespace WindowsFormsApplication1
         private void label34_Click(object sender, EventArgs e)
         {
 
+        }
+
+        int grid_serch_stop = 0;
+        private void button13_Click_1(object sender, EventArgs e)
+        {
+        }
+        void grid_serch()
+        {
+            checkBox2.Checked = false;
+            string t6 = numericUpDown6.Text;
+            string t7 = numericUpDown7.Text;
+            string t8 = numericUpDown8.Text;
+            string t9 = numericUpDown9.Text;
+            string t10 = numericUpDown10.Text;
+            string t11 = numericUpDown11.Text;
+            string t12 = numericUpDown12.Text;
+
+
+            Random rnd6 = new System.Random(1);
+            Random rnd7 = new System.Random(2);
+            Random rnd8 = new System.Random(3);
+            Random rnd9 = new System.Random(4);
+            Random rnd10 = new System.Random(5);
+            Random rnd11 = new System.Random(6);
+            Random rnd12 = new System.Random(7);
+
+            float aic = 9999999.0f;
+            for (int i = 0; i < 100; i++)
+            {
+                if (grid_serch_stop > 0) break;
+                try
+                {
+                    numericUpDown6.Text = rnd6.Next(0, 3).ToString();
+                    numericUpDown7.Text = rnd7.Next(0, 3).ToString();
+                    numericUpDown8.Text = rnd8.Next(0, 3).ToString();
+                    numericUpDown9.Text = rnd9.Next(0, 3).ToString();
+                    numericUpDown10.Text = rnd10.Next(0, 3).ToString();
+                    numericUpDown11.Text = rnd11.Next(0, 3).ToString();
+                    numericUpDown12.Text = rnd12.Next(0, 365).ToString();
+
+                    //train
+                    radioButton1.Checked = true;
+                    radioButton2.Checked = false;
+                    button1_Click(null, null);
+
+                    //test
+                    radioButton1.Checked = false;
+                    radioButton2.Checked = true;
+                    button1_Click(null, null);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                float a = 999999.0f;
+                try
+                {
+                    a = float.Parse(AIC);
+                }catch
+                { }
+                if ( a < aic)
+                {
+                    button16.Text = AIC;
+                    aic = a;
+
+                    t6 = numericUpDown6.Text;
+                    t7 = numericUpDown7.Text;
+                    t8 = numericUpDown8.Text;
+                    t9 = numericUpDown9.Text;
+                    t10 = numericUpDown10.Text;
+                    t11 = numericUpDown11.Text;
+                    t12 = numericUpDown12.Text;
+                }
+            }
+
+            button16.Text = "auto";
+            button17.Text = "stop";
+
+            grid_serch_stop = 0;
+            Form1.batch_mode = 0;
+            numericUpDown6.Text = t6;
+            numericUpDown7.Text = t7;
+            numericUpDown8.Text = t8;
+            numericUpDown9.Text = t9;
+            numericUpDown10.Text = t10;
+            numericUpDown11.Text = t11;
+            numericUpDown12.Text = t12;
+
+            //train
+            radioButton1.Checked = true;
+            radioButton2.Checked = false;
+            button1_Click(null, null);
+
+            //test
+            radioButton1.Checked = false;
+            radioButton2.Checked = true;
+            button1_Click(null, null);
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            grid_serch_stop = 0;
+            Form1.batch_mode = 1;
+            grid_serch();
+            Form1.batch_mode = 0;
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            grid_serch_stop = 1;
         }
     }
 }
