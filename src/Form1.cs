@@ -1309,14 +1309,14 @@ namespace WindowsFormsApplication1
                 {
                     return;
                 }
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     if (!Form1.IsFileLocked(path))
                     {
                         delete_ok = true;
                         break;
                     }
-                    System.Threading.Thread.Sleep(30);
+                    System.Threading.Thread.Sleep(100);
                 }
                 if (delete_ok) System.IO.File.Delete(path);
                 else
