@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
             this.label31 = new System.Windows.Forms.Label();
             this.button12 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -128,8 +130,6 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button17 = new System.Windows.Forms.Button();
-            this.button16 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown13)).BeginInit();
             this.panel7.SuspendLayout();
@@ -207,6 +207,28 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(862, 876);
             this.panel2.TabIndex = 3;
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(757, 233);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(87, 23);
+            this.button17.TabIndex = 117;
+            this.button17.Text = "stop";
+            this.toolTip1.SetToolTip(this.button17, "最適パラメータ探索停止");
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(757, 207);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(87, 23);
+            this.button16.TabIndex = 116;
+            this.button16.Text = "auto";
+            this.toolTip1.SetToolTip(this.button16, "最適パラメータ探索開始");
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // label31
             // 
@@ -468,7 +490,7 @@
             this.panel7.Location = new System.Drawing.Point(307, 261);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(519, 156);
+            this.panel7.Size = new System.Drawing.Size(536, 156);
             this.panel7.TabIndex = 77;
             // 
             // label44
@@ -1364,30 +1386,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(733, 67);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(87, 23);
-            this.button17.TabIndex = 117;
-            this.button17.Text = "stop";
-            this.toolTip1.SetToolTip(this.button17, "最適パラメータ探索停止");
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Visible = false;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // button16
-            // 
-            this.button16.Location = new System.Drawing.Point(733, 41);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(87, 23);
-            this.button16.TabIndex = 116;
-            this.button16.Text = "auto";
-            this.toolTip1.SetToolTip(this.button16, "最適パラメータ探索開始");
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Visible = false;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // sarima
             // 

@@ -1555,39 +1555,48 @@ namespace WindowsFormsApplication1
                 // UI操作のため、表スレッドにて実行
                 this.BeginInvoke(new Action<String>(delegate (String str)
                 {
-                    if (!this.Disposing && !this.IsDisposed)
+                    try
                     {
-                        if (str.IndexOf("追加情報:  警告メッセージ: ") >= 0)
-                        {
-                            str = "";
-                        } else
-                        if (str.IndexOf("Error in dev.off() :") >= 0)
-                        {
-                            str = "";
-                        } else
-                    if (str != null)
+                        if (!this.Disposing && !this.IsDisposed)
                         {
                             if (str.IndexOf("追加情報:  警告メッセージ: ") >= 0)
                             {
                                 str = "";
                             }
                             else
-                        if (str.IndexOf("Error in dev.off() :") >= 0)
+                            if (str.IndexOf("Error in dev.off() :") >= 0)
                             {
                                 str = "";
                             }
                             else
-                        if (str.IndexOf("取り除くべき sink がありません ") >= 0)
+                        if (str != null)
                             {
-                                str = str + "\r\n作成されたファイルは全て閉じていて問題ありません";
-                            } else
-                            {
-                                this.textBox3.AppendText(str);
-                                this.textBox3.AppendText(Environment.NewLine);
-                                //カレット位置までスクロール
-                                this.textBox3.ScrollToCaret();
+                                if (str.IndexOf("追加情報:  警告メッセージ: ") >= 0)
+                                {
+                                    str = "";
+                                }
+                                else
+                            if (str.IndexOf("Error in dev.off() :") >= 0)
+                                {
+                                    str = "";
+                                }
+                                else
+                            if (str.IndexOf("取り除くべき sink がありません ") >= 0)
+                                {
+                                    str = str + "\r\n作成されたファイルは全て閉じていて問題ありません";
+                                }
+                                else
+                                {
+                                    this.textBox3.AppendText(str);
+                                    this.textBox3.AppendText(Environment.NewLine);
+                                    //カレット位置までスクロール
+                                    this.textBox3.ScrollToCaret();
+                                }
                             }
                         }
+                    }catch
+                    {
+                        return;
                     }
                 }), new object[] { args.Data });
             });
@@ -2719,7 +2728,7 @@ namespace WindowsFormsApplication1
                 Refresh();
 
                 //int retry_max = 600;
-                int retry_max = 600 * 2000;
+                int retry_max = 600 * 200000;
                 int cont_num = 0;
                 try
                 {

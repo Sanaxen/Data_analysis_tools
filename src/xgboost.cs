@@ -1506,6 +1506,7 @@ namespace WindowsFormsApplication1
 
         private void button16_Click(object sender, EventArgs e)
         {
+            if (running != 0) return;
             grid_serch_stop = 0;
             Form1.batch_mode = 1;
             grid_serch();

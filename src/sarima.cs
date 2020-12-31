@@ -1280,6 +1280,17 @@ namespace WindowsFormsApplication1
         void grid_serch()
         {
             checkBox2.Checked = false;
+
+            //train
+            radioButton1.Checked = true;
+            radioButton2.Checked = false;
+            button1_Click(null, null);
+
+            //test
+            radioButton1.Checked = false;
+            radioButton2.Checked = true;
+            button1_Click(null, null);
+
             string t6 = numericUpDown6.Text;
             string t7 = numericUpDown7.Text;
             string t8 = numericUpDown8.Text;
@@ -1297,20 +1308,28 @@ namespace WindowsFormsApplication1
             Random rnd11 = new System.Random(6);
             Random rnd12 = new System.Random(7);
 
-            float aic = 9999999.0f;
+            int[] rnd12array = new int[] { 0, 1, 4, 12, 365 };
+
+            float rmse = 9999999.0f;
             for (int i = 0; i < 100; i++)
             {
                 if (grid_serch_stop > 0) break;
                 try
                 {
-                    numericUpDown6.Text = rnd6.Next(0, 3).ToString();
-                    numericUpDown7.Text = rnd7.Next(0, 3).ToString();
-                    numericUpDown8.Text = rnd8.Next(0, 3).ToString();
-                    numericUpDown9.Text = rnd9.Next(0, 3).ToString();
-                    numericUpDown10.Text = rnd10.Next(0, 3).ToString();
-                    numericUpDown11.Text = rnd11.Next(0, 3).ToString();
-                    numericUpDown12.Text = rnd12.Next(0, 365).ToString();
+                    numericUpDown6.Text = rnd6.Next(0, 2 + 1).ToString();
+                    numericUpDown7.Text = rnd7.Next(0, 2 + 1).ToString();
+                    numericUpDown8.Text = rnd8.Next(0, 2).ToString();
+                    //numericUpDown8.Text = "1";
+                    numericUpDown9.Text = rnd9.Next(0, 2 + 1).ToString();
+                    numericUpDown10.Text = rnd10.Next(0, 2 + 1).ToString();
+                    numericUpDown11.Text = rnd11.Next(0, 2 + 1).ToString();
+                    numericUpDown12.Text = rnd12array[rnd12.Next(0, rnd12array.Length)].ToString();
 
+                    if (numericUpDown6.Text=="0"&& numericUpDown7.Text=="0" && numericUpDown8.Text == "0"
+                        && numericUpDown9.Text == "0" && numericUpDown10.Text == "0" && numericUpDown11.Text == "0" && numericUpDown12.Text == "0")
+                    {
+                        continue;
+                    }
                     //train
                     radioButton1.Checked = true;
                     radioButton2.Checked = false;
@@ -1329,13 +1348,16 @@ namespace WindowsFormsApplication1
                 float a = 999999.0f;
                 try
                 {
-                    a = float.Parse(AIC);
-                }catch
+                    //a = float.Parse(AIC);
+                    a = float.Parse(RMSE);
+                }
+                catch
                 { }
-                if ( a < aic)
+                if ( a < rmse)
                 {
-                    button16.Text = AIC;
-                    aic = a;
+                    button16.Text = RMSE;
+                    //button16.Text = AIC;
+                    rmse = a;
 
                     t6 = numericUpDown6.Text;
                     t7 = numericUpDown7.Text;
@@ -1344,6 +1366,8 @@ namespace WindowsFormsApplication1
                     t10 = numericUpDown10.Text;
                     t11 = numericUpDown11.Text;
                     t12 = numericUpDown12.Text;
+
+                    //textBox1.AppendText("p,q,d=(" + t6 + "," + t7 + "," + t8 + ")P,Q,D" + t9 + "," + t10 + "," + t11 + "period=" + t12+"\r\n");
                 }
             }
 
@@ -1373,10 +1397,14 @@ namespace WindowsFormsApplication1
 
         private void button16_Click(object sender, EventArgs e)
         {
+            if (running != 0) return;
             grid_serch_stop = 0;
             Form1.batch_mode = 1;
+            checkBox2.Checked = false;
             grid_serch();
             Form1.batch_mode = 0;
+            radioButton1.Checked = true;
+            radioButton2.Checked = false;
         }
 
         private void button17_Click(object sender, EventArgs e)
