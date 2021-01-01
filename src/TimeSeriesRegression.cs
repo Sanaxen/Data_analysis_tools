@@ -34,12 +34,20 @@ namespace WindowsFormsApplication1
         public gridtable _GridTable1;
         public Form12 _form12 = null;
         int layer_graph_only = 0;
+        input_text inputform = null;
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
         public TimeSeriesRegression()
         {
             InitializeComponent();
+
+            if (inputform == null)
+            {
+                inputform = new input_text();
+                inputform.Hide();
+            }
+
             if (_form12 == null)
             {
                 _form12 = new Form12();
@@ -166,12 +174,24 @@ namespace WindowsFormsApplication1
             {
                 System.IO.Directory.CreateDirectory("model");
             }
+
+            inputform.label1.Text = "保存する名前";
+            inputform.ShowDialog();
+
+            string base_name = inputform.textBox1.Text;
+
+
             bool update = true;
-            string save_name = Form1.curDir + "\\model\\tsfit_best.model(adjR2=" + adjR2 + ")" + Form1.FnameToDataFrameName(model_id, true);
+            string save_name = Form1.curDir + "\\model\\tsfit_best.model(RMSE=" + rmse + ")" + Form1.FnameToDataFrameName(model_id, true);
             if (checkBox5.Checked)
             {
                 save_name = Form1.curDir + "\\model\\tsfit_best.model(ACC=" + ACC + ")" + Form1.FnameToDataFrameName(model_id, true);
             }
+            if (base_name != "")
+            {
+                save_name = Form1.curDir + "\\model\\tsfit_best.model(" + base_name + ")" + Form1.FnameToDataFrameName(model_id, true);
+            }
+
             if (System.IO.File.Exists(save_name))
             {
                 if (MessageBox.Show("同じモデルが存在しています", "上書きしますか?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
@@ -303,6 +323,8 @@ namespace WindowsFormsApplication1
                             sw.Write("n_sampling,");
                             sw.Write(_form12.numericUpDown15.Value.ToString() + "\r\n");
 
+                            sw.Write("use_cnn,");
+                            sw.Write(_form12.numericUpDown10.Value.ToString() + "\r\n");
                             sw.Write("residual,");
                             sw.Write(_form12.numericUpDown16.Value.ToString() + "\r\n");
                             sw.Write("padding,");
@@ -2668,6 +2690,11 @@ namespace WindowsFormsApplication1
                         continue;
                     }
 
+                    if (ss[0].IndexOf("use_cnn") >= 0)
+                    {
+                        _form12.numericUpDown10.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
                     if (ss[0].IndexOf("deviceID") >= 0)
                     {
                         numericUpDown6.Value = decimal.Parse(ss[1].Replace("\r\n", ""));
