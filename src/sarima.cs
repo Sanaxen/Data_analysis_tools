@@ -537,8 +537,13 @@ namespace WindowsFormsApplication1
                                    + ",max.q=" + numericUpDown4.Value.ToString()
                                    + ",max.order=" + numericUpDown5.Value.ToString()
                                    + ",max.d=" + numericUpDown14.Value.ToString()
-                                   + ",max.D=" + numericUpDown15.Value.ToString();
-                               //
+                                   + ",max.D=" + numericUpDown15.Value.ToString()
+                                   + ",start.p = 0"
+                                   + ",start.q = 0"
+                                   + ",start.P = 0"
+                                   + ",start.Q = 0"
+                                   ;
+                                //
                                 if (checkBox3.Checked)
                                 {
                                     cmd += ",seasonal=T";
