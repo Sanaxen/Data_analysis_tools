@@ -275,7 +275,8 @@
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
             "tanh",
-            "relu"});
+            "relu",
+            "leakyrelu"});
             this.comboBox3.Location = new System.Drawing.Point(371, 40);
             this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox3.Name = "comboBox3";
