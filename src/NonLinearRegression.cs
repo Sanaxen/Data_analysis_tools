@@ -304,6 +304,10 @@ namespace WindowsFormsApplication1
                             if (checkBox7.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
 
+                            sw.Write("use_add_bn,");
+                            if (_form11.checkBox9.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+
                             sw.Write("deviceID,");
                             sw.Write(numericUpDown7.Value.ToString() + "\r\n");
                             sw.Close();
@@ -1177,6 +1181,13 @@ namespace WindowsFormsApplication1
                         process.StartInfo.Arguments += " --padding_prm 0";
                     }
                     process.StartInfo.Arguments += " --residual " + _form11.numericUpDown2.Value.ToString();
+                }
+                if ( _form11.checkBox9.Checked)
+                {
+                    process.StartInfo.Arguments += " --use_add_bn 1";
+                }else
+                {
+                    process.StartInfo.Arguments += " --use_add_bn 0";
                 }
 
                 //
@@ -2248,6 +2259,18 @@ namespace WindowsFormsApplication1
                         {
                             checkBox7.Checked = false;
                             numericUpDown7.Enabled = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("use_add_bn") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form11.checkBox9.Checked = true;
+                        }
+                        else
+                        {
+                            _form11.checkBox9.Checked = false;
                         }
                         continue;
                     }

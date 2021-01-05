@@ -89,6 +89,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
@@ -113,6 +114,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.PowderBlue;
+            this.groupBox1.Controls.Add(this.checkBox9);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.checkBox7);
             this.groupBox1.Controls.Add(this.numericUpDown15);
@@ -166,7 +168,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(827, 391);
+            this.groupBox1.Size = new System.Drawing.Size(827, 429);
             this.groupBox1.TabIndex = 84;
             this.groupBox1.TabStop = false;
             // 
@@ -320,7 +322,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(261, 258);
+            this.label15.Location = new System.Drawing.Point(260, 262);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(68, 15);
             this.label15.TabIndex = 101;
@@ -415,7 +417,7 @@
             this.panel1.Controls.Add(this.checkBox4);
             this.panel1.Controls.Add(this.checkBox2);
             this.panel1.Controls.Add(this.checkBox3);
-            this.panel1.Location = new System.Drawing.Point(31, 298);
+            this.panel1.Location = new System.Drawing.Point(30, 325);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(189, 88);
@@ -463,7 +465,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(112, 276);
+            this.label5.Location = new System.Drawing.Point(111, 303);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 15);
@@ -473,7 +475,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(156, 270);
+            this.numericUpDown1.Location = new System.Drawing.Point(155, 297);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(63, 22);
@@ -518,7 +520,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(227, 230);
+            this.label1.Location = new System.Drawing.Point(232, 231);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(103, 15);
             this.label1.TabIndex = 86;
@@ -594,7 +596,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(59, 168);
+            this.label7.Location = new System.Drawing.Point(58, 195);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(97, 15);
@@ -604,7 +606,7 @@
             // 
             // numericUpDown4
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(161, 168);
+            this.numericUpDown4.Location = new System.Drawing.Point(160, 195);
             this.numericUpDown4.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.numericUpDown4.Maximum = new decimal(new int[] {
             100000,
@@ -685,7 +687,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(97, 198);
+            this.label28.Location = new System.Drawing.Point(96, 225);
             this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(59, 15);
@@ -696,7 +698,7 @@
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(171, 194);
+            this.textBox9.Location = new System.Drawing.Point(170, 221);
             this.textBox9.Margin = new System.Windows.Forms.Padding(4);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(52, 22);
@@ -705,7 +707,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(65, 141);
+            this.label10.Location = new System.Drawing.Point(64, 168);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(102, 15);
@@ -715,7 +717,7 @@
             // 
             // numericUpDown7
             // 
-            this.numericUpDown7.Location = new System.Drawing.Point(179, 138);
+            this.numericUpDown7.Location = new System.Drawing.Point(178, 165);
             this.numericUpDown7.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.numericUpDown7.Maximum = new decimal(new int[] {
             100000,
@@ -902,7 +904,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(112, 228);
+            this.label3.Location = new System.Drawing.Point(111, 255);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(23, 15);
@@ -912,7 +914,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(140, 222);
+            this.textBox1.Location = new System.Drawing.Point(139, 249);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(83, 22);
@@ -963,11 +965,21 @@
             0,
             0});
             // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(96, 132);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(129, 19);
+            this.checkBox9.TabIndex = 121;
+            this.checkBox9.Text = "batch normalize";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            // 
             // Form12
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(821, 389);
+            this.ClientSize = new System.Drawing.Size(821, 426);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -1062,5 +1074,6 @@
         public System.Windows.Forms.NumericUpDown numericUpDown16;
         public System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.GroupBox groupBox2;
+        public System.Windows.Forms.CheckBox checkBox9;
     }
 }
