@@ -1269,9 +1269,9 @@ namespace WindowsFormsApplication1
                 process.StartInfo.Arguments += " --weight_init_type " + _form12.comboBox2.Text;
                 process.StartInfo.Arguments += " --layer_graph_only " + layer_graph_only.ToString();
 
-                if ( checkBox1.Checked)
+                if (checkBox1.Checked)
                 {
-                    process.StartInfo.Arguments += " --use_latest_observations 1";
+                    process.StartInfo.Arguments += " --use_latest_observations " + (((float)numericUpDown7.Value) / 100.0).ToString();
                 }
                 else
                 {
