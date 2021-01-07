@@ -143,6 +143,8 @@
             this.label20 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.panel12 = new System.Windows.Forms.Panel();
+            this.label28 = new System.Windows.Forms.Label();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
             this.button27 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
@@ -151,8 +153,6 @@
             this.panel13 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            this.label28 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -181,8 +181,8 @@
             this.panel2.SuspendLayout();
             this.contextMenuStrip4.SuspendLayout();
             this.panel12.SuspendLayout();
-            this.panel13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
+            this.panel13.SuspendLayout();
             this.SuspendLayout();
             // 
             // numericUpDown2
@@ -447,7 +447,7 @@
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
             this.textBox4.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox4.Size = new System.Drawing.Size(1148, 218);
+            this.textBox4.Size = new System.Drawing.Size(1142, 218);
             this.textBox4.TabIndex = 26;
             // 
             // checkBox2
@@ -467,7 +467,7 @@
             this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel8.Controls.Add(this.pictureBox2);
             this.panel8.Controls.Add(this.panel9);
-            this.panel8.Location = new System.Drawing.Point(387, 294);
+            this.panel8.Location = new System.Drawing.Point(378, 294);
             this.panel8.Margin = new System.Windows.Forms.Padding(4);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(379, 350);
@@ -568,7 +568,7 @@
             this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel7.Controls.Add(this.pictureBox1);
             this.panel7.Controls.Add(this.panel6);
-            this.panel7.Location = new System.Drawing.Point(13, 294);
+            this.panel7.Location = new System.Drawing.Point(5, 294);
             this.panel7.Margin = new System.Windows.Forms.Padding(4);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(367, 350);
@@ -660,7 +660,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label17.Location = new System.Drawing.Point(779, 274);
+            this.label17.Location = new System.Drawing.Point(770, 274);
             this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(113, 15);
@@ -695,7 +695,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.pictureBox3);
             this.panel1.Controls.Add(this.panel10);
-            this.panel1.Location = new System.Drawing.Point(772, 294);
+            this.panel1.Location = new System.Drawing.Point(763, 294);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(378, 350);
@@ -1007,7 +1007,7 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(596, 190);
+            this.checkBox3.Location = new System.Drawing.Point(596, 194);
             this.checkBox3.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(152, 19);
@@ -1055,7 +1055,7 @@
             // 
             // numericUpDown4
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(671, 271);
+            this.numericUpDown4.Location = new System.Drawing.Point(665, 271);
             this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown4.Minimum = new decimal(new int[] {
             1,
@@ -1184,7 +1184,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(299, 175);
+            this.groupBox1.Size = new System.Drawing.Size(285, 175);
             this.groupBox1.TabIndex = 83;
             this.groupBox1.TabStop = false;
             // 
@@ -1260,7 +1260,7 @@
             this.panel2.Controls.Add(this.checkBox7);
             this.panel2.Controls.Add(this.label24);
             this.panel2.Controls.Add(this.textBox7);
-            this.panel2.Location = new System.Drawing.Point(969, 188);
+            this.panel2.Location = new System.Drawing.Point(956, 187);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(180, 71);
@@ -1415,6 +1415,7 @@
             this.label8.Size = new System.Drawing.Size(95, 15);
             this.label8.TabIndex = 101;
             this.label8.Text = "データでの形式";
+            this.toolTip3.SetToolTip(this.label8, "データの時間変数が所定の時間フォーマットである必要があります");
             // 
             // label9
             // 
@@ -1439,7 +1440,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label14.Location = new System.Drawing.Point(61, 274);
+            this.label14.Location = new System.Drawing.Point(53, 274);
             this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(48, 17);
@@ -1556,8 +1557,30 @@
             this.panel12.Location = new System.Drawing.Point(776, 0);
             this.panel12.Margin = new System.Windows.Forms.Padding(4);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(1148, 648);
+            this.panel12.Size = new System.Drawing.Size(1142, 648);
             this.panel12.TabIndex = 107;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(631, 84);
+            this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(15, 15);
+            this.label28.TabIndex = 138;
+            this.label28.Text = "%";
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.Location = new System.Drawing.Point(573, 80);
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(53, 22);
+            this.numericUpDown7.TabIndex = 137;
+            this.numericUpDown7.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // button27
             // 
@@ -1618,7 +1641,7 @@
             this.panel13.Location = new System.Drawing.Point(776, 654);
             this.panel13.Margin = new System.Windows.Forms.Padding(4);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(1148, 218);
+            this.panel13.Size = new System.Drawing.Size(1142, 218);
             this.panel13.TabIndex = 109;
             // 
             // splitter2
@@ -1629,7 +1652,7 @@
             this.splitter2.Location = new System.Drawing.Point(776, 648);
             this.splitter2.Margin = new System.Windows.Forms.Padding(4);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(1148, 6);
+            this.splitter2.Size = new System.Drawing.Size(1142, 6);
             this.splitter2.TabIndex = 110;
             this.splitter2.TabStop = false;
             // 
@@ -1637,34 +1660,12 @@
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
             // 
-            // numericUpDown7
-            // 
-            this.numericUpDown7.Location = new System.Drawing.Point(573, 80);
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(53, 22);
-            this.numericUpDown7.TabIndex = 137;
-            this.numericUpDown7.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(631, 84);
-            this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(15, 15);
-            this.label28.TabIndex = 138;
-            this.label28.Text = "%";
-            // 
             // TimeSeriesRegression
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1924, 872);
+            this.ClientSize = new System.Drawing.Size(1918, 872);
             this.Controls.Add(this.panel13);
             this.Controls.Add(this.splitter2);
             this.Controls.Add(this.panel12);
@@ -1716,9 +1717,9 @@
             this.contextMenuStrip4.ResumeLayout(false);
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             this.panel13.ResumeLayout(false);
             this.panel13.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             this.ResumeLayout(false);
 
         }
