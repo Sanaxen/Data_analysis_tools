@@ -1688,7 +1688,7 @@ namespace WindowsFormsApplication1
 
                 System.IO.StreamWriter sw = new System.IO.StreamWriter(Form1.curDir + "\\test_plot.plt", false, Encoding.GetEncoding("SHIFT_JIS"));
                 System.IO.StreamReader sr = new System.IO.StreamReader(Form1.curDir + "\\test_plot.plt_", Encoding.GetEncoding("SHIFT_JIS"));
-                if (sr != null && sw != null && numericUpDown12.Value == 0)
+                if (sr != null && sw != null /*&& numericUpDown12.Value == 0*/)
                 {
                     while (sr.EndOfStream == false)
                     {
@@ -1718,7 +1718,7 @@ namespace WindowsFormsApplication1
 
                 sw = new System.IO.StreamWriter(Form1.curDir + "\\test_plot_cap.plt", false, Encoding.GetEncoding("SHIFT_JIS"));
                 sr = new System.IO.StreamReader(Form1.curDir + "\\test_plot_cap.plt_", Encoding.GetEncoding("SHIFT_JIS"));
-                if (sr != null && sw != null && numericUpDown12.Value == 0)
+                if (sr != null && sw != null /*&& numericUpDown12.Value == 0*/)
                 {
                     while (sr.EndOfStream == false)
                     {

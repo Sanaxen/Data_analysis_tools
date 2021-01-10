@@ -43,6 +43,14 @@ namespace WindowsFormsApplication1
             cmd += Form1.MyPath + "..\\script\\weekdays.r";
             cmd = cmd.Replace("\\", "/");
             form1.evalute_cmdstr("source(\""+cmd+"\")");
+            cmd = "";
+            cmd += Form1.MyPath + "..\\script\\get_month_day.r";
+            cmd = cmd.Replace("\\", "/");
+            form1.evalute_cmdstr("source(\"" + cmd + "\")");
+            cmd = "";
+            cmd += Form1.MyPath + "..\\script\\get_time.r";
+            cmd = cmd.Replace("\\", "/");
+            form1.evalute_cmdstr("source(\"" + cmd + "\")");
 
             cmd = "";
             if (checkBox1.Checked) cmd += "df$sunday<-add_sunday(df$'" + comboBox2.Text + "')\r\n";
@@ -53,6 +61,14 @@ namespace WindowsFormsApplication1
             if (checkBox6.Checked) cmd += "df$friday<-add_friday(df$'" + comboBox2.Text + "')\r\n";
             if (checkBox7.Checked) cmd += "df$saturday<-add_saturday(df$'" + comboBox2.Text + "')\r\n";
             if (cmd == "") return;
+
+            if (checkBox8.Checked) cmd += "df$month<-add_MonthNumber(df$'" + comboBox2.Text + "')\r\n";
+            if (checkBox9.Checked) cmd += "df$day<-add_DayNumber(df$'" + comboBox2.Text + "')\r\n";
+
+            if (checkBox10.Checked) cmd += "df$hour<-add_HourNumber(df$'" + comboBox2.Text + "')\r\n";
+            if (checkBox11.Checked) cmd += "df$minute<-add_MinuteNumber(df$'" + comboBox2.Text + "')\r\n";
+            if (checkBox12.Checked) cmd += "df$second<-add_SecondNumber(df$'" + comboBox2.Text + "')\r\n";
+
             form1.script_executestr(cmd);
             form1.ResetListBoxs();
         }
