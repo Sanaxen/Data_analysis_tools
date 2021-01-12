@@ -112,6 +112,7 @@
             this.checkBox13 = new System.Windows.Forms.CheckBox();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button21 = new System.Windows.Forms.Button();
             this.checkBox11 = new System.Windows.Forms.CheckBox();
@@ -134,7 +135,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -153,6 +153,8 @@
             this.panel13 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+            this.button28 = new System.Windows.Forms.Button();
+            this.button29 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -477,10 +479,10 @@
             // 
             this.pictureBox2.ContextMenuStrip = this.contextMenuStrip2;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 39);
+            this.pictureBox2.Location = new System.Drawing.Point(0, 54);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(377, 309);
+            this.pictureBox2.Size = new System.Drawing.Size(377, 294);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 30;
             this.pictureBox2.TabStop = false;
@@ -502,6 +504,7 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.button28);
             this.panel9.Controls.Add(this.numericUpDown3);
             this.panel9.Controls.Add(this.button12);
             this.panel9.Controls.Add(this.button10);
@@ -510,7 +513,7 @@
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(377, 39);
+            this.panel9.Size = new System.Drawing.Size(377, 54);
             this.panel9.TabIndex = 35;
             // 
             // numericUpDown3
@@ -578,10 +581,10 @@
             // 
             this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 39);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 54);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(365, 309);
+            this.pictureBox1.Size = new System.Drawing.Size(365, 294);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 30;
             this.pictureBox1.TabStop = false;
@@ -603,6 +606,7 @@
             // 
             // panel6
             // 
+            this.panel6.Controls.Add(this.button29);
             this.panel6.Controls.Add(this.button15);
             this.panel6.Controls.Add(this.button13);
             this.panel6.Controls.Add(this.button14);
@@ -610,7 +614,7 @@
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(365, 39);
+            this.panel6.Size = new System.Drawing.Size(365, 54);
             this.panel6.TabIndex = 35;
             // 
             // button15
@@ -1170,6 +1174,17 @@
             this.numericUpDown6.Size = new System.Drawing.Size(55, 22);
             this.numericUpDown6.TabIndex = 127;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(488, 221);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(95, 15);
+            this.label8.TabIndex = 101;
+            this.label8.Text = "データでの形式";
+            this.toolTip3.SetToolTip(this.label8, "データの時間変数が所定の時間フォーマットである必要があります");
+            // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.PowderBlue;
@@ -1405,17 +1420,6 @@
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(223, 22);
             this.progressBar1.TabIndex = 100;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(488, 221);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(95, 15);
-            this.label8.TabIndex = 101;
-            this.label8.Text = "データでの形式";
-            this.toolTip3.SetToolTip(this.label8, "データの時間変数が所定の時間フォーマットである必要があります");
             // 
             // label9
             // 
@@ -1660,6 +1664,28 @@
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
             // 
+            // button28
+            // 
+            this.button28.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button28.Location = new System.Drawing.Point(208, 38);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(69, 13);
+            this.button28.TabIndex = 36;
+            this.toolTip3.SetToolTip(this.button28, "リアルタイムPlot");
+            this.button28.UseVisualStyleBackColor = false;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
+            // button29
+            // 
+            this.button29.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button29.Location = new System.Drawing.Point(220, 38);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(69, 13);
+            this.button29.TabIndex = 37;
+            this.toolTip3.SetToolTip(this.button29, "リアルタイムPlot");
+            this.button29.UseVisualStyleBackColor = false;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
             // TimeSeriesRegression
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1849,5 +1875,7 @@
         private System.Windows.Forms.Button button27;
         private System.Windows.Forms.NumericUpDown numericUpDown7;
         private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Button button28;
+        private System.Windows.Forms.Button button29;
     }
 }

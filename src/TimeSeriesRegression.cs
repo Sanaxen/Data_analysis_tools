@@ -3017,5 +3017,51 @@ namespace WindowsFormsApplication1
             }
             _form12.comboBox4.SelectedIndex = 1;
         }
+
+        private void button28_Click(object sender, EventArgs e)
+        {
+            System.IO.Directory.SetCurrentDirectory(Form1.curDir);
+            System.IO.StreamReader sr = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+            string path = "";
+            if (sr != null)
+            {
+                path = sr.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
+                sr.Close();
+            }
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+
+            p.StartInfo.FileName = path + "\\gnuplot.exe";
+            p.StartInfo.Arguments = Form1.curDir + "\\test_plot.plt";
+            if (checkBox5.Checked)
+            {
+                p.StartInfo.Arguments = Form1.curDir + "\\accuracy_plot.plt";
+            }
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = false;
+            p.StartInfo.RedirectStandardInput = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+        }
+
+        private void button29_Click(object sender, EventArgs e)
+        {
+            System.IO.Directory.SetCurrentDirectory(Form1.curDir);
+            System.IO.StreamReader sr = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+            string path = "";
+            if (sr != null)
+            {
+                path = sr.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
+                sr.Close();
+            }
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+
+            p.StartInfo.FileName = path + "\\gnuplot.exe";
+            p.StartInfo.Arguments = Form1.curDir + "\\error_loss_plot.plt";
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = false;
+            p.StartInfo.RedirectStandardInput = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+        }
     }
 }

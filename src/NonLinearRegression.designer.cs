@@ -130,6 +130,8 @@
             this.panel12 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+            this.button29 = new System.Windows.Forms.Button();
+            this.button20 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -401,10 +403,10 @@
             // 
             this.pictureBox2.ContextMenuStrip = this.contextMenuStrip2;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 38);
+            this.pictureBox2.Location = new System.Drawing.Point(0, 52);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(372, 327);
+            this.pictureBox2.Size = new System.Drawing.Size(372, 313);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 30;
             this.pictureBox2.TabStop = false;
@@ -426,6 +428,7 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.button20);
             this.panel9.Controls.Add(this.numericUpDown3);
             this.panel9.Controls.Add(this.button10);
             this.panel9.Controls.Add(this.button12);
@@ -434,7 +437,7 @@
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(372, 38);
+            this.panel9.Size = new System.Drawing.Size(372, 52);
             this.panel9.TabIndex = 35;
             // 
             // numericUpDown3
@@ -500,10 +503,10 @@
             // 
             this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 38);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 51);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(368, 326);
+            this.pictureBox1.Size = new System.Drawing.Size(368, 313);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 30;
             this.pictureBox1.TabStop = false;
@@ -525,6 +528,7 @@
             // 
             // panel6
             // 
+            this.panel6.Controls.Add(this.button29);
             this.panel6.Controls.Add(this.button15);
             this.panel6.Controls.Add(this.button13);
             this.panel6.Controls.Add(this.button14);
@@ -532,7 +536,7 @@
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(368, 38);
+            this.panel6.Size = new System.Drawing.Size(368, 51);
             this.panel6.TabIndex = 35;
             // 
             // button15
@@ -1366,6 +1370,28 @@
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
             // 
+            // button29
+            // 
+            this.button29.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button29.Location = new System.Drawing.Point(219, 36);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(69, 13);
+            this.button29.TabIndex = 38;
+            this.toolTip3.SetToolTip(this.button29, "リアルタイムPlot");
+            this.button29.UseVisualStyleBackColor = false;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
+            // button20
+            // 
+            this.button20.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button20.Location = new System.Drawing.Point(214, 37);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(69, 13);
+            this.button20.TabIndex = 39;
+            this.toolTip3.SetToolTip(this.button20, "リアルタイムPlot");
+            this.button20.UseVisualStyleBackColor = false;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
+            // 
             // NonLinearRegression
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1527,5 +1553,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog2;
         private System.Windows.Forms.Button button26;
         private System.Windows.Forms.Button button27;
+        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Button button29;
     }
 }

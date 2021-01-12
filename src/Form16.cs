@@ -60,7 +60,6 @@ namespace WindowsFormsApplication1
             if (checkBox5.Checked) cmd += "df$thursday<-add_thursday(df$'" + comboBox2.Text + "')\r\n";
             if (checkBox6.Checked) cmd += "df$friday<-add_friday(df$'" + comboBox2.Text + "')\r\n";
             if (checkBox7.Checked) cmd += "df$saturday<-add_saturday(df$'" + comboBox2.Text + "')\r\n";
-            if (cmd == "") return;
 
             if (checkBox8.Checked) cmd += "df$month<-add_MonthNumber(df$'" + comboBox2.Text + "')\r\n";
             if (checkBox9.Checked) cmd += "df$day<-add_DayNumber(df$'" + comboBox2.Text + "')\r\n";
@@ -68,6 +67,7 @@ namespace WindowsFormsApplication1
             if (checkBox10.Checked) cmd += "df$hour<-add_HourNumber(df$'" + comboBox2.Text + "')\r\n";
             if (checkBox11.Checked) cmd += "df$minute<-add_MinuteNumber(df$'" + comboBox2.Text + "')\r\n";
             if (checkBox12.Checked) cmd += "df$second<-add_SecondNumber(df$'" + comboBox2.Text + "')\r\n";
+            if (cmd == "") return;
 
             form1.script_executestr(cmd);
             form1.ResetListBoxs();
