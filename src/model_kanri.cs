@@ -307,6 +307,11 @@ namespace WindowsFormsApplication1
                 form1.FileDelete(model);
                 form1.FileDelete(model + ".select_variables.dat");
                 form1.FileDelete(model + ".options");
+
+                if ( System.IO.File.Exists(model + ".select_variables2.dat"))
+                {
+                    form1.FileDelete(model + ".select_variables.dat");
+                }
             }
             catch { }
             button1_Click(sender, e);
@@ -329,6 +334,10 @@ namespace WindowsFormsApplication1
                     form1.FileDelete(model);
                     form1.FileDelete(model + ".select_variables.dat");
                     form1.FileDelete(model + ".options");
+                    if (System.IO.File.Exists(model + ".select_variables2.dat"))
+                    {
+                        form1.FileDelete(model + ".select_variables2.dat");
+                    }
                 }
                 catch { }
             }
