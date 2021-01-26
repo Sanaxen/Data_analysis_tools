@@ -57,6 +57,7 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.このグラフをダッシュボードに追加ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.button28 = new System.Windows.Forms.Button();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.button12 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
@@ -66,6 +67,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.このグラフをダッシュボードに追加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.button29 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
@@ -153,8 +155,6 @@
             this.panel13 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-            this.button28 = new System.Windows.Forms.Button();
-            this.button29 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -516,6 +516,17 @@
             this.panel9.Size = new System.Drawing.Size(377, 54);
             this.panel9.TabIndex = 35;
             // 
+            // button28
+            // 
+            this.button28.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button28.Location = new System.Drawing.Point(208, 38);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(69, 13);
+            this.button28.TabIndex = 36;
+            this.toolTip3.SetToolTip(this.button28, "リアルタイムPlot");
+            this.button28.UseVisualStyleBackColor = false;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
             // numericUpDown3
             // 
             this.numericUpDown3.Location = new System.Drawing.Point(283, 10);
@@ -616,6 +627,17 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(365, 54);
             this.panel6.TabIndex = 35;
+            // 
+            // button29
+            // 
+            this.button29.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button29.Location = new System.Drawing.Point(220, 38);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(69, 13);
+            this.button29.TabIndex = 37;
+            this.toolTip3.SetToolTip(this.button29, "リアルタイムPlot");
+            this.button29.UseVisualStyleBackColor = false;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
             // 
             // button15
             // 
@@ -1093,13 +1115,13 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(231, 14);
+            this.label23.Location = new System.Drawing.Point(231, 11);
             this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(61, 15);
             this.label23.TabIndex = 128;
             this.label23.Text = "deviseID";
-            this.toolTip3.SetToolTip(this.label23, "バリデーションテストデータの割合");
+            this.toolTip3.SetToolTip(this.label23, "GPUのID");
             // 
             // label26
             // 
@@ -1145,7 +1167,7 @@
             this.checkBox13.Checked = true;
             this.checkBox13.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox13.Enabled = false;
-            this.checkBox13.Location = new System.Drawing.Point(7, 14);
+            this.checkBox13.Location = new System.Drawing.Point(7, 11);
             this.checkBox13.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox13.Name = "checkBox13";
             this.checkBox13.Size = new System.Drawing.Size(105, 19);
@@ -1158,7 +1180,7 @@
             // 
             this.checkBox12.AutoSize = true;
             this.checkBox12.Enabled = false;
-            this.checkBox12.Location = new System.Drawing.Point(119, 14);
+            this.checkBox12.Location = new System.Drawing.Point(119, 11);
             this.checkBox12.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(98, 19);
@@ -1168,7 +1190,7 @@
             // 
             // numericUpDown6
             // 
-            this.numericUpDown6.Location = new System.Drawing.Point(299, 10);
+            this.numericUpDown6.Location = new System.Drawing.Point(299, 7);
             this.numericUpDown6.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown6.Name = "numericUpDown6";
             this.numericUpDown6.Size = new System.Drawing.Size(55, 22);
@@ -1444,7 +1466,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label14.Location = new System.Drawing.Point(53, 274);
+            this.label14.Location = new System.Drawing.Point(57, 274);
             this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(48, 17);
@@ -1580,6 +1602,7 @@
             this.numericUpDown7.Name = "numericUpDown7";
             this.numericUpDown7.Size = new System.Drawing.Size(53, 22);
             this.numericUpDown7.TabIndex = 137;
+            this.toolTip3.SetToolTip(this.numericUpDown7, "データの何パーセントまでを観測値を使うか設定できます");
             this.numericUpDown7.Value = new decimal(new int[] {
             100,
             0,
@@ -1663,28 +1686,6 @@
             // openFileDialog2
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
-            // 
-            // button28
-            // 
-            this.button28.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.button28.Location = new System.Drawing.Point(208, 38);
-            this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(69, 13);
-            this.button28.TabIndex = 36;
-            this.toolTip3.SetToolTip(this.button28, "リアルタイムPlot");
-            this.button28.UseVisualStyleBackColor = false;
-            this.button28.Click += new System.EventHandler(this.button28_Click);
-            // 
-            // button29
-            // 
-            this.button29.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.button29.Location = new System.Drawing.Point(220, 38);
-            this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(69, 13);
-            this.button29.TabIndex = 37;
-            this.toolTip3.SetToolTip(this.button29, "リアルタイムPlot");
-            this.button29.UseVisualStyleBackColor = false;
-            this.button29.Click += new System.EventHandler(this.button29_Click);
             // 
             // TimeSeriesRegression
             // 

@@ -52,6 +52,7 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.このグラフをダッシュボードに追加ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.button20 = new System.Windows.Forms.Button();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.button10 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
@@ -61,6 +62,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.このグラフをダッシュボードに追加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.button29 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
@@ -130,8 +132,6 @@
             this.panel12 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-            this.button29 = new System.Windows.Forms.Button();
-            this.button20 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -440,6 +440,17 @@
             this.panel9.Size = new System.Drawing.Size(372, 52);
             this.panel9.TabIndex = 35;
             // 
+            // button20
+            // 
+            this.button20.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button20.Location = new System.Drawing.Point(214, 37);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(69, 13);
+            this.button20.TabIndex = 39;
+            this.toolTip3.SetToolTip(this.button20, "リアルタイムPlot");
+            this.button20.UseVisualStyleBackColor = false;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
+            // 
             // numericUpDown3
             // 
             this.numericUpDown3.Location = new System.Drawing.Point(285, 6);
@@ -538,6 +549,17 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(368, 51);
             this.panel6.TabIndex = 35;
+            // 
+            // button29
+            // 
+            this.button29.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button29.Location = new System.Drawing.Point(219, 36);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(69, 13);
+            this.button29.TabIndex = 38;
+            this.toolTip3.SetToolTip(this.button29, "リアルタイムPlot");
+            this.button29.UseVisualStyleBackColor = false;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
             // 
             // button15
             // 
@@ -1007,7 +1029,7 @@
             this.label23.Size = new System.Drawing.Size(61, 15);
             this.label23.TabIndex = 130;
             this.label23.Text = "deviseID";
-            this.toolTip3.SetToolTip(this.label23, "バリデーションテストデータの割合");
+            this.toolTip3.SetToolTip(this.label23, "GPUのID");
             // 
             // button22
             // 
@@ -1369,28 +1391,6 @@
             // openFileDialog2
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
-            // 
-            // button29
-            // 
-            this.button29.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.button29.Location = new System.Drawing.Point(219, 36);
-            this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(69, 13);
-            this.button29.TabIndex = 38;
-            this.toolTip3.SetToolTip(this.button29, "リアルタイムPlot");
-            this.button29.UseVisualStyleBackColor = false;
-            this.button29.Click += new System.EventHandler(this.button29_Click);
-            // 
-            // button20
-            // 
-            this.button20.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.button20.Location = new System.Drawing.Point(214, 37);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(69, 13);
-            this.button20.TabIndex = 39;
-            this.toolTip3.SetToolTip(this.button20, "リアルタイムPlot");
-            this.button20.UseVisualStyleBackColor = false;
-            this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
             // NonLinearRegression
             // 
