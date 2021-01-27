@@ -115,6 +115,7 @@
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button21 = new System.Windows.Forms.Button();
             this.checkBox11 = new System.Windows.Forms.CheckBox();
@@ -146,7 +147,6 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.panel12 = new System.Windows.Forms.Panel();
             this.label28 = new System.Windows.Forms.Label();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
             this.button27 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
@@ -178,12 +178,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.panel11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
             this.panel2.SuspendLayout();
             this.contextMenuStrip4.SuspendLayout();
             this.panel12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             this.panel13.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -866,9 +866,9 @@
             this.label21.Location = new System.Drawing.Point(4, -4);
             this.label21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(72, 15);
+            this.label21.Size = new System.Drawing.Size(76, 15);
             this.label21.TabIndex = 83;
-            this.label21.Text = "normaize";
+            this.label21.Text = "normalize";
             // 
             // radioButton6
             // 
@@ -1206,6 +1206,19 @@
             this.label8.TabIndex = 101;
             this.label8.Text = "データでの形式";
             this.toolTip3.SetToolTip(this.label8, "データの時間変数が所定の時間フォーマットである必要があります");
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.Location = new System.Drawing.Point(573, 80);
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(53, 22);
+            this.numericUpDown7.TabIndex = 137;
+            this.toolTip3.SetToolTip(this.numericUpDown7, "データの何パーセントまでを観測値を使うか設定できます");
+            this.numericUpDown7.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // groupBox1
             // 
@@ -1596,19 +1609,6 @@
             this.label28.TabIndex = 138;
             this.label28.Text = "%";
             // 
-            // numericUpDown7
-            // 
-            this.numericUpDown7.Location = new System.Drawing.Point(573, 80);
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(53, 22);
-            this.numericUpDown7.TabIndex = 137;
-            this.toolTip3.SetToolTip(this.numericUpDown7, "データの何パーセントまでを観測値を使うか設定できます");
-            this.numericUpDown7.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
             // button27
             // 
             this.button27.Location = new System.Drawing.Point(247, 149);
@@ -1736,6 +1736,7 @@
             this.panel11.ResumeLayout(false);
             this.panel11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).EndInit();
@@ -1744,7 +1745,6 @@
             this.contextMenuStrip4.ResumeLayout(false);
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             this.panel13.ResumeLayout(false);
             this.panel13.PerformLayout();
             this.ResumeLayout(false);
