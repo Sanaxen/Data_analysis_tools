@@ -1145,9 +1145,9 @@
             this.label18.Location = new System.Drawing.Point(19, 8);
             this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(72, 15);
+            this.label18.Size = new System.Drawing.Size(76, 15);
             this.label18.TabIndex = 84;
-            this.label18.Text = "normaize";
+            this.label18.Text = "normalize";
             // 
             // groupBox1
             // 
