@@ -71,6 +71,8 @@ namespace WindowsFormsApplication1
 
             form1.script_executestr(cmd);
             form1.ResetListBoxs();
+
+            Close();
         }
     }
 }

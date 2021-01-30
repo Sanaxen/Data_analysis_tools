@@ -334,6 +334,11 @@ namespace WindowsFormsApplication1
                             sw.Write("use_add_bn,");
                             if (_form12.checkBox9.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
+
+                            sw.Write("use_self_sequence,");
+                            if (_form12.checkBox10.Checked) sw.Write("true\r\n");
+                            else sw.Write("false\r\n");
+
                             sw.Write("deviceID,");
                             sw.Write(numericUpDown6.Value.ToString()+ "\r\n");
 
@@ -1395,6 +1400,14 @@ namespace WindowsFormsApplication1
                 else
                 {
                     process.StartInfo.Arguments += " --use_add_bn 0";
+                }
+                if (_form12.checkBox10.Checked)
+                {
+                    process.StartInfo.Arguments += " --use_self_sequence 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --use_self_sequence 0";
                 }
 
 
@@ -2715,6 +2728,18 @@ namespace WindowsFormsApplication1
                         else
                         {
                             _form12.checkBox9.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("use_self_sequence") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            _form12.checkBox10.Checked = true;
+                        }
+                        else
+                        {
+                            _form12.checkBox10.Checked = false;
                         }
                         continue;
                     }

@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -89,7 +90,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
@@ -114,6 +115,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.PowderBlue;
+            this.groupBox1.Controls.Add(this.checkBox10);
             this.groupBox1.Controls.Add(this.checkBox9);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.checkBox7);
@@ -171,6 +173,16 @@
             this.groupBox1.Size = new System.Drawing.Size(827, 429);
             this.groupBox1.TabIndex = 84;
             this.groupBox1.TabStop = false;
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(96, 132);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(129, 19);
+            this.checkBox9.TabIndex = 121;
+            this.checkBox9.Text = "batch normalize";
+            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -965,15 +977,18 @@
             0,
             0});
             // 
-            // checkBox9
+            // checkBox10
             // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(96, 132);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(129, 19);
-            this.checkBox9.TabIndex = 121;
-            this.checkBox9.Text = "batch normalize";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Checked = true;
+            this.checkBox10.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox10.Location = new System.Drawing.Point(270, 297);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(166, 19);
+            this.checkBox10.TabIndex = 122;
+            this.checkBox10.Text = "自己シーケンスを含める";
+            this.toolTip1.SetToolTip(this.checkBox10, "説明変数が無い場合は無視されます。\r\n説明変数がある場合は入力シーケンスは説明変数の入力シーケンスになります");
+            this.checkBox10.UseVisualStyleBackColor = true;
             // 
             // Form12
             // 
@@ -1075,5 +1090,6 @@
         public System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.GroupBox groupBox2;
         public System.Windows.Forms.CheckBox checkBox9;
+        public System.Windows.Forms.CheckBox checkBox10;
     }
 }
