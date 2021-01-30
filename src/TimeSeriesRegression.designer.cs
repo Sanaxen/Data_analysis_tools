@@ -1219,6 +1219,7 @@
             0,
             0,
             0});
+            this.numericUpDown7.Visible = false;
             // 
             // groupBox1
             // 
