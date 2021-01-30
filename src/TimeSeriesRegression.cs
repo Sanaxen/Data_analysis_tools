@@ -2371,6 +2371,7 @@ namespace WindowsFormsApplication1
                 button1.Text = "推論";
                 button1.BackColor = Color.FromArgb(255, 128, 255);
                 checkBox1.Visible = true;
+                numericUpDown7.Visible = true;
                 checkBox9.Visible = true;
                 checkBox10.Visible = true;
             }
@@ -2379,6 +2380,7 @@ namespace WindowsFormsApplication1
                 button1.Text = "学習";
                 button1.BackColor = Color.FromArgb(128, 255, 128);
                 checkBox1.Visible = false;
+                numericUpDown7.Visible = false;
                 checkBox9.Visible = false;
                 checkBox10.Visible = false;
             }
@@ -2387,6 +2389,7 @@ namespace WindowsFormsApplication1
                 button1.Text = "連結";
                 button1.BackColor = Color.FromArgb(255, 255, 128);
                 checkBox1.Visible = false;
+                numericUpDown7.Visible = false;
                 checkBox9.Visible = false;
                 checkBox10.Visible = false;
             }
