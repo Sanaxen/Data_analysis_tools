@@ -339,6 +339,16 @@ namespace WindowsFormsApplication1
                 process.StartInfo.Arguments += " --lasso_tol " + textBox9.Text;
                 process.StartInfo.Arguments += " --lasso_itr_max " + textBox10.Text;
 
+                if (checkBox4.Checked)
+                {
+                    process.StartInfo.Arguments += " --confounding_factors 1";
+                    process.StartInfo.Arguments += " --confounding_factors_sampling " + numericUpDown3.Value.ToString();
+                    //
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --confounding_factors 0";
+                }
                 if (typeNG )
                 {
                     MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
