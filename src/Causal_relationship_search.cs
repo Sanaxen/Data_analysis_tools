@@ -349,6 +349,21 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --confounding_factors 0";
                 }
+                process.StartInfo.Arguments += " --mutual_information_cut " + textBox11.Text;
+
+                if ( checkBox5.Checked)
+                {
+                    process.StartInfo.Arguments += " --mutual_information_values 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --mutual_information_values 0";
+                }
+
+                if ( checkBox6.Checked)
+                {
+                    process.StartInfo.Arguments += " --load_model lingam";
+                }
                 if (typeNG )
                 {
                     MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
