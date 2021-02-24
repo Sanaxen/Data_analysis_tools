@@ -64,6 +64,7 @@ namespace WindowsFormsApplication1
                     }
 
                     process = null;
+                    checkBox6.Checked = true;
 
                     {
                         string cmd = "error_distr <- read.csv( \"error_distr.csv\", ";
@@ -364,6 +365,10 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --load_model lingam";
                 }
+                process.StartInfo.Arguments += " --temperature_alp " + textBox12.Text;
+                process.StartInfo.Arguments += " --distribution_rate " + textBox13.Text;
+
+
                 if (typeNG )
                 {
                     MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
@@ -700,6 +705,17 @@ namespace WindowsFormsApplication1
         private void button11_Click(object sender, EventArgs e)
         {
             Form1.VarAutoSelection(listBox1, listBox2);
+        }
+
+        private void checkBox6_CheckStateChanged(object sender, EventArgs e)
+        {
+            if ( checkBox6.Checked)
+            {
+                button6.Text = "再評価";
+            }else
+            {
+                button6.Text = "解析";
+            }
         }
     }
 }
