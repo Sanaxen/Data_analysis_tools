@@ -37,6 +37,10 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBox12 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
@@ -72,6 +76,7 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
@@ -79,9 +84,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label22 = new System.Windows.Forms.Label();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -107,10 +112,14 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
-            this.textBox12 = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.button12 = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.label23 = new System.Windows.Forms.Label();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.button13 = new System.Windows.Forms.Button();
+            this.label25 = new System.Windows.Forms.Label();
+            this.textBox14 = new System.Windows.Forms.TextBox();
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -234,6 +243,12 @@
             // panel11
             // 
             this.panel11.BackColor = System.Drawing.SystemColors.Info;
+            this.panel11.Controls.Add(this.label25);
+            this.panel11.Controls.Add(this.textBox14);
+            this.panel11.Controls.Add(this.button13);
+            this.panel11.Controls.Add(this.checkBox7);
+            this.panel11.Controls.Add(this.label23);
+            this.panel11.Controls.Add(this.button12);
             this.panel11.Controls.Add(this.label21);
             this.panel11.Controls.Add(this.textBox13);
             this.panel11.Controls.Add(this.label19);
@@ -242,19 +257,62 @@
             this.panel11.Controls.Add(this.label15);
             this.panel11.Controls.Add(this.checkBox4);
             this.panel11.Controls.Add(this.numericUpDown3);
-            this.panel11.Location = new System.Drawing.Point(687, 10);
+            this.panel11.Location = new System.Drawing.Point(709, 10);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(398, 98);
+            this.panel11.Size = new System.Drawing.Size(505, 98);
             this.panel11.TabIndex = 50;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(84, 66);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(22, 15);
+            this.label21.TabIndex = 55;
+            this.label21.Text = "β";
+            this.toolTip2.SetToolTip(this.label21, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(112, 63);
+            this.textBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(49, 22);
+            this.textBox13.TabIndex = 54;
+            this.textBox13.Text = "0.005";
+            this.toolTip2.SetToolTip(this.textBox13, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            this.textBox13.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(3, 66);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(22, 15);
+            this.label19.TabIndex = 53;
+            this.label19.Text = "α";
+            this.toolTip2.SetToolTip(this.label19, "遷移確率関数\r\n基本的には最適な因果に繊維するが確率的に最適でない因果を採用することで局所解に落ち込むことを回避する");
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(29, 63);
+            this.textBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(49, 22);
+            this.textBox12.TabIndex = 52;
+            this.textBox12.Text = "0.75";
+            this.toolTip2.SetToolTip(this.textBox12, "遷移確率関数\r\n基本的には最適な因果に繊維するが確率的に最適でない因果を採用することで局所解に落ち込むことを回避する");
+            this.textBox12.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.BackColor = System.Drawing.Color.Blue;
+            this.label16.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label16.ForeColor = System.Drawing.SystemColors.Info;
-            this.label16.Location = new System.Drawing.Point(313, 79);
+            this.label16.Location = new System.Drawing.Point(410, 80);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(82, 15);
+            this.label16.Size = new System.Drawing.Size(93, 17);
             this.label16.TabIndex = 51;
             this.label16.Text = "実験的機能";
             // 
@@ -294,7 +352,7 @@
             this.numericUpDown3.Size = new System.Drawing.Size(75, 22);
             this.numericUpDown3.TabIndex = 49;
             this.numericUpDown3.Value = new decimal(new int[] {
-            1000,
+            4000,
             0,
             0,
             0});
@@ -651,6 +709,15 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(1206, 157);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(252, 15);
+            this.label18.TabIndex = 27;
+            this.label18.Text = "指定値以下の相互情報量の因果を削除";
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(448, 110);
@@ -722,6 +789,8 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label24);
+            this.panel1.Controls.Add(this.label22);
             this.panel1.Controls.Add(this.checkBox5);
             this.panel1.Controls.Add(this.textBox11);
             this.panel1.Controls.Add(this.textBox6);
@@ -739,6 +808,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1849, 101);
             this.panel1.TabIndex = 8;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(604, 72);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(252, 15);
+            this.label22.TabIndex = 29;
+            this.label22.Text = "指定値以下の相互情報量の因果を削除";
             // 
             // checkBox5
             // 
@@ -758,15 +836,6 @@
             this.textBox11.Size = new System.Drawing.Size(49, 22);
             this.textBox11.TabIndex = 26;
             this.textBox11.Text = "0";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(1206, 157);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(252, 15);
-            this.label18.TabIndex = 27;
-            this.label18.Text = "指定値以下の相互情報量の因果を削除";
             // 
             // textBox6
             // 
@@ -1017,45 +1086,79 @@
             // 
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
-            // textBox12
+            // button12
             // 
-            this.textBox12.Location = new System.Drawing.Point(29, 63);
-            this.textBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(49, 22);
-            this.textBox12.TabIndex = 52;
-            this.textBox12.Text = "0.75";
-            this.toolTip2.SetToolTip(this.textBox12, "遷移確率関数\r\n基本的には最適な因果に繊維するが確率的に最適でない因果を採用することで局所解に落ち込むことを回避する");
+            this.button12.Location = new System.Drawing.Point(351, 9);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(151, 23);
+            this.button12.TabIndex = 56;
+            this.button12.Text = "事前知識の選択";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
-            // label19
+            // openFileDialog1
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(3, 66);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(22, 15);
-            this.label19.TabIndex = 53;
-            this.label19.Text = "α";
-            this.toolTip2.SetToolTip(this.label19, "遷移確率関数\r\n基本的には最適な因果に繊維するが確率的に最適でない因果を採用することで局所解に落ち込むことを回避する");
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // label21
+            // label23
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(99, 66);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(22, 15);
-            this.label21.TabIndex = 55;
-            this.label21.Text = "β";
-            this.toolTip2.SetToolTip(this.label21, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(348, 49);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(0, 15);
+            this.label23.TabIndex = 57;
             // 
-            // textBox13
+            // checkBox7
             // 
-            this.textBox13.Location = new System.Drawing.Point(127, 63);
-            this.textBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(49, 22);
-            this.textBox13.TabIndex = 54;
-            this.textBox13.Text = "0.005";
-            this.toolTip2.SetToolTip(this.textBox13, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Location = new System.Drawing.Point(351, 32);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(83, 19);
+            this.checkBox7.TabIndex = 58;
+            this.checkBox7.Text = "参照する";
+            this.checkBox7.UseVisualStyleBackColor = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label24.ForeColor = System.Drawing.Color.Red;
+            this.label24.Location = new System.Drawing.Point(1161, 72);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(16, 15);
+            this.label24.TabIndex = 30;
+            this.label24.Text = "0";
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(260, 62);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(98, 23);
+            this.button13.TabIndex = 59;
+            this.button13.Text = "デフォルト値";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(167, 66);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(22, 15);
+            this.label25.TabIndex = 61;
+            this.label25.Text = "ρ";
+            this.toolTip2.SetToolTip(this.label25, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            // 
+            // textBox14
+            // 
+            this.textBox14.Location = new System.Drawing.Point(195, 63);
+            this.textBox14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.Size = new System.Drawing.Size(49, 22);
+            this.textBox14.TabIndex = 60;
+            this.textBox14.Text = "0.001";
+            this.toolTip2.SetToolTip(this.textBox14, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            this.textBox14.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // Causal_relationship_search
             // 
@@ -1189,5 +1292,14 @@
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TextBox textBox14;
     }
 }

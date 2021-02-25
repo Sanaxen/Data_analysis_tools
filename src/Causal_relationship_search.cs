@@ -12,6 +12,9 @@ namespace WindowsFormsApplication1
 {
     public partial class Causal_relationship_search : Form
     {
+        public int error_status= 0;
+        public string error_string = "";
+        public string prior_knowledge_file = "";
         public int running = 0;
         public int execute_count = 0;
         public static DateTime fileTime = DateTime.Now.AddHours(-1);
@@ -66,6 +69,44 @@ namespace WindowsFormsApplication1
                     process = null;
                     checkBox6.Checked = true;
 
+                    {
+                        if (textBox3.Text.LastIndexOf("ERROR:") >= 0)
+                        {
+                            int idx = textBox3.Text.LastIndexOf("ERROR:");
+                            string s1 = textBox3.Text.Substring(idx);
+                            idx = s1.IndexOf("\r\n");
+                            if (idx > 0)
+                            {
+                                s1 = s1.Substring(0, idx);
+                            }
+                            error_status = 1;
+                            error_string = s1;
+                            return;
+                        }
+                        if (textBox3.Text.LastIndexOf("WARNING:") >= 0)
+                        {
+                            int idx = textBox3.Text.LastIndexOf("WARNING:");
+                            string s2 = textBox3.Text.Substring(idx);
+                            idx = s2.IndexOf("\r\n");
+                            if (idx > 0)
+                            {
+                                s2 = s2.Substring(0, idx);
+                            }
+                            //error_status = 1;
+                            error_string = s2;
+                        }
+                    }
+                    if (error_string != "")
+                    {
+                        label24.Text = error_string;
+                        if (error_status == 1)
+                        {
+                            label24.ForeColor = Color.FromArgb(255, 0, 0);
+                        }else
+                        {
+                            label24.ForeColor = Color.FromArgb(0, 128, 0);
+                        }
+                    }
                     {
                         string cmd = "error_distr <- read.csv( \"error_distr.csv\", ";
                         cmd += "header=T";
@@ -219,8 +260,12 @@ namespace WindowsFormsApplication1
         {
         }
 
+
         private void metroButton5_Click(object sender, EventArgs e)
         {
+            label24.Text = "";
+            error_status = 0;
+            error_string = "";
             if (running != 0) return;
             if (form1.isSolverRunning(this))
             {
@@ -368,17 +413,43 @@ namespace WindowsFormsApplication1
                 process.StartInfo.Arguments += " --temperature_alp " + textBox12.Text;
                 process.StartInfo.Arguments += " --distribution_rate " + textBox13.Text;
 
+                if (checkBox7.Checked)
+                {
+                    if ( !checkBox4.Checked)
+                    {
+                        MessageBox.Show("事前知識は参照されません\n未観測の交絡変数がある（潜在共通変数)を選択する必要があります");
+                    }
+                    if (prior_knowledge_file != "")
+                    {
+                        process.StartInfo.Arguments += " --prior_knowledge " + prior_knowledge_file;
+                    }else
+                    {
+                        MessageBox.Show("事前知識が設定されていません");
+                    }
+                }
+                process.StartInfo.Arguments += " --rho " + textBox14.Text;
+
 
                 if (typeNG )
                 {
                     MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
                 }
-                //MessageBox.Show(p.StartInfo.Arguments);
-                if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
-                System.IO.File.AppendAllText("comandline_args", " ");
-                System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments, Encoding.GetEncoding("shift_jis"));
-                process.StartInfo.Arguments = " --@ comandline_args";
 
+                if (!checkBox6.Checked)
+                {
+                    //MessageBox.Show(p.StartInfo.Arguments);
+                    if (System.IO.File.Exists("comandline_args")) form1.FileDelete("comandline_args");
+                    System.IO.File.AppendAllText("comandline_args", " ");
+                    System.IO.File.AppendAllText("comandline_args", process.StartInfo.Arguments, Encoding.GetEncoding("shift_jis"));
+                    process.StartInfo.Arguments = " --@ comandline_args";
+                }else
+                {
+                    //MessageBox.Show(p.StartInfo.Arguments);
+                    if (System.IO.File.Exists("comandline_args_tmp")) form1.FileDelete("comandline_args_tmp");
+                    System.IO.File.AppendAllText("comandline_args_tmp", " ");
+                    System.IO.File.AppendAllText("comandline_args_tmp", process.StartInfo.Arguments, Encoding.GetEncoding("shift_jis"));
+                    process.StartInfo.Arguments = " --@ comandline_args_tmp";
+                }
                 process.OutputDataReceived += p_OutputDataReceived;
 
                 //process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
@@ -716,6 +787,22 @@ namespace WindowsFormsApplication1
             {
                 button6.Text = "解析";
             }
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                prior_knowledge_file = openFileDialog1.FileName;
+                label23.Text = System.IO.Path.GetFileName(prior_knowledge_file);
+            }
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            textBox12.Text = "0.75";
+            textBox13.Text = "0.005";
+            textBox14.Text = "0.001";
         }
     }
 }
