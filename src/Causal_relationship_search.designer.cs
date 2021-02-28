@@ -37,6 +37,12 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.label25 = new System.Windows.Forms.Label();
+            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.button13 = new System.Windows.Forms.Button();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.button12 = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
@@ -84,6 +90,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label24 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
@@ -112,14 +119,9 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
-            this.button12 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.label23 = new System.Windows.Forms.Label();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.button13 = new System.Windows.Forms.Button();
-            this.label25 = new System.Windows.Forms.Label();
-            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.button14 = new System.Windows.Forms.Button();
+            this.timer4 = new System.Windows.Forms.Timer(this.components);
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -261,6 +263,65 @@
             this.panel11.Name = "panel11";
             this.panel11.Size = new System.Drawing.Size(505, 98);
             this.panel11.TabIndex = 50;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(167, 66);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(22, 15);
+            this.label25.TabIndex = 61;
+            this.label25.Text = "ρ";
+            this.toolTip2.SetToolTip(this.label25, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            // 
+            // textBox14
+            // 
+            this.textBox14.Location = new System.Drawing.Point(195, 63);
+            this.textBox14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.Size = new System.Drawing.Size(49, 22);
+            this.textBox14.TabIndex = 60;
+            this.textBox14.Text = "0.001";
+            this.toolTip2.SetToolTip(this.textBox14, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            this.textBox14.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(260, 62);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(98, 23);
+            this.button13.TabIndex = 59;
+            this.button13.Text = "デフォルト値";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
+            // checkBox7
+            // 
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Location = new System.Drawing.Point(351, 32);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(83, 19);
+            this.checkBox7.TabIndex = 58;
+            this.checkBox7.Text = "参照する";
+            this.checkBox7.UseVisualStyleBackColor = true;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(348, 49);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(0, 15);
+            this.label23.TabIndex = 57;
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(351, 9);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(151, 23);
+            this.button12.TabIndex = 56;
+            this.button12.Text = "事前知識の選択";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // label21
             // 
@@ -789,6 +850,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.button14);
             this.panel1.Controls.Add(this.label24);
             this.panel1.Controls.Add(this.label22);
             this.panel1.Controls.Add(this.checkBox5);
@@ -809,6 +871,17 @@
             this.panel1.Size = new System.Drawing.Size(1849, 101);
             this.panel1.TabIndex = 8;
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label24.ForeColor = System.Drawing.Color.Red;
+            this.label24.Location = new System.Drawing.Point(1181, 71);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(16, 15);
+            this.label24.TabIndex = 30;
+            this.label24.Text = "0";
+            // 
             // label22
             // 
             this.label22.AutoSize = true;
@@ -821,7 +894,7 @@
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(922, 71);
+            this.checkBox5.Location = new System.Drawing.Point(942, 70);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(169, 19);
             this.checkBox5.TabIndex = 28;
@@ -830,7 +903,7 @@
             // 
             // textBox11
             // 
-            this.textBox11.Location = new System.Drawing.Point(860, 66);
+            this.textBox11.Location = new System.Drawing.Point(880, 65);
             this.textBox11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(49, 22);
@@ -839,7 +912,7 @@
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(860, 35);
+            this.textBox6.Location = new System.Drawing.Point(880, 34);
             this.textBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(49, 22);
@@ -1020,7 +1093,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(1248, 10);
+            this.label14.Location = new System.Drawing.Point(1268, 9);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(22, 15);
             this.label14.TabIndex = 13;
@@ -1028,7 +1101,7 @@
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(1271, 5);
+            this.textBox8.Location = new System.Drawing.Point(1291, 4);
             this.textBox8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(52, 22);
@@ -1038,7 +1111,7 @@
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(1189, 5);
+            this.textBox7.Location = new System.Drawing.Point(1209, 4);
             this.textBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(52, 22);
@@ -1049,7 +1122,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(919, 11);
+            this.label13.Location = new System.Drawing.Point(939, 10);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(248, 15);
             this.label13.TabIndex = 10;
@@ -1066,7 +1139,7 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(861, 8);
+            this.textBox5.Location = new System.Drawing.Point(881, 7);
             this.textBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(47, 22);
@@ -1086,79 +1159,25 @@
             // 
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(351, 9);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(151, 23);
-            this.button12.TabIndex = 56;
-            this.button12.Text = "事前知識の選択";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // label23
+            // button14
             // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(348, 49);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(0, 15);
-            this.label23.TabIndex = 57;
+            this.button14.Location = new System.Drawing.Point(1704, 55);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(75, 23);
+            this.button14.TabIndex = 31;
+            this.button14.Text = "button14";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
-            // checkBox7
+            // timer4
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(351, 32);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(83, 19);
-            this.checkBox7.TabIndex = 58;
-            this.checkBox7.Text = "参照する";
-            this.checkBox7.UseVisualStyleBackColor = true;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label24.ForeColor = System.Drawing.Color.Red;
-            this.label24.Location = new System.Drawing.Point(1161, 72);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(16, 15);
-            this.label24.TabIndex = 30;
-            this.label24.Text = "0";
-            // 
-            // button13
-            // 
-            this.button13.Location = new System.Drawing.Point(260, 62);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(98, 23);
-            this.button13.TabIndex = 59;
-            this.button13.Text = "デフォルト値";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(167, 66);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(22, 15);
-            this.label25.TabIndex = 61;
-            this.label25.Text = "ρ";
-            this.toolTip2.SetToolTip(this.label25, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
-            // 
-            // textBox14
-            // 
-            this.textBox14.Location = new System.Drawing.Point(195, 63);
-            this.textBox14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(49, 22);
-            this.textBox14.TabIndex = 60;
-            this.textBox14.Text = "0.001";
-            this.toolTip2.SetToolTip(this.textBox14, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
-            this.textBox14.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
+            this.timer4.Enabled = true;
+            this.timer4.Interval = 10000;
+            this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
             // Causal_relationship_search
             // 
@@ -1301,5 +1320,7 @@
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Timer timer4;
     }
 }
