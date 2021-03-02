@@ -37,6 +37,7 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.label25 = new System.Windows.Forms.Label();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.button13 = new System.Windows.Forms.Button();
@@ -90,6 +91,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label26 = new System.Windows.Forms.Label();
+            this.button14 = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
@@ -120,8 +123,8 @@
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button14 = new System.Windows.Forms.Button();
             this.timer4 = new System.Windows.Forms.Timer(this.components);
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -142,6 +145,7 @@
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.SuspendLayout();
             // 
             // panel4
@@ -245,6 +249,8 @@
             // panel11
             // 
             this.panel11.BackColor = System.Drawing.SystemColors.Info;
+            this.panel11.Controls.Add(this.numericUpDown4);
+            this.panel11.Controls.Add(this.checkBox8);
             this.panel11.Controls.Add(this.label25);
             this.panel11.Controls.Add(this.textBox14);
             this.panel11.Controls.Add(this.button13);
@@ -259,35 +265,45 @@
             this.panel11.Controls.Add(this.label15);
             this.panel11.Controls.Add(this.checkBox4);
             this.panel11.Controls.Add(this.numericUpDown3);
-            this.panel11.Location = new System.Drawing.Point(709, 10);
+            this.panel11.Location = new System.Drawing.Point(683, 10);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(505, 98);
+            this.panel11.Size = new System.Drawing.Size(531, 98);
             this.panel11.TabIndex = 50;
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(417, 63);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(79, 19);
+            this.checkBox8.TabIndex = 62;
+            this.checkBox8.Text = "console";
+            this.checkBox8.UseVisualStyleBackColor = true;
             // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(167, 66);
+            this.label25.Location = new System.Drawing.Point(171, 67);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(22, 15);
             this.label25.TabIndex = 61;
             this.label25.Text = "ρ";
-            this.toolTip2.SetToolTip(this.label25, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
+            this.toolTip2.SetToolTip(this.label25, "残差同士が独立していること優先する場合は大きく\r\n残差が最小になる事を優先する場合は小さくする。");
             // 
             // textBox14
             // 
-            this.textBox14.Location = new System.Drawing.Point(195, 63);
+            this.textBox14.Location = new System.Drawing.Point(199, 64);
             this.textBox14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(49, 22);
             this.textBox14.TabIndex = 60;
-            this.textBox14.Text = "0.001";
+            this.textBox14.Text = "100";
             this.toolTip2.SetToolTip(this.textBox14, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
             this.textBox14.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(260, 62);
+            this.button13.Location = new System.Drawing.Point(264, 63);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(98, 23);
             this.button13.TabIndex = 59;
@@ -298,7 +314,7 @@
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(351, 32);
+            this.checkBox7.Location = new System.Drawing.Point(329, 35);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(83, 19);
             this.checkBox7.TabIndex = 58;
@@ -308,16 +324,16 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(348, 49);
+            this.label23.Location = new System.Drawing.Point(352, 50);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(0, 15);
             this.label23.TabIndex = 57;
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(351, 9);
+            this.button12.Location = new System.Drawing.Point(329, 9);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(151, 23);
+            this.button12.Size = new System.Drawing.Size(167, 23);
             this.button12.TabIndex = 56;
             this.button12.Text = "事前知識の選択";
             this.button12.UseVisualStyleBackColor = true;
@@ -326,7 +342,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(84, 66);
+            this.label21.Location = new System.Drawing.Point(88, 67);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(22, 15);
             this.label21.TabIndex = 55;
@@ -335,19 +351,19 @@
             // 
             // textBox13
             // 
-            this.textBox13.Location = new System.Drawing.Point(112, 63);
+            this.textBox13.Location = new System.Drawing.Point(116, 64);
             this.textBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(49, 22);
             this.textBox13.TabIndex = 54;
-            this.textBox13.Text = "0.005";
+            this.textBox13.Text = "0.5";
             this.toolTip2.SetToolTip(this.textBox13, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
             this.textBox13.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(3, 66);
+            this.label19.Location = new System.Drawing.Point(7, 67);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(22, 15);
             this.label19.TabIndex = 53;
@@ -356,12 +372,12 @@
             // 
             // textBox12
             // 
-            this.textBox12.Location = new System.Drawing.Point(29, 63);
+            this.textBox12.Location = new System.Drawing.Point(33, 64);
             this.textBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(49, 22);
             this.textBox12.TabIndex = 52;
-            this.textBox12.Text = "0.75";
+            this.textBox12.Text = "0.95";
             this.toolTip2.SetToolTip(this.textBox12, "遷移確率関数\r\n基本的には最適な因果に繊維するが確率的に最適でない因果を採用することで局所解に落ち込むことを回避する");
             this.textBox12.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
@@ -371,7 +387,7 @@
             this.label16.BackColor = System.Drawing.Color.Blue;
             this.label16.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label16.ForeColor = System.Drawing.SystemColors.Info;
-            this.label16.Location = new System.Drawing.Point(410, 80);
+            this.label16.Location = new System.Drawing.Point(414, 81);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(93, 17);
             this.label16.TabIndex = 51;
@@ -380,7 +396,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(84, 34);
+            this.label15.Location = new System.Drawing.Point(88, 35);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(126, 15);
             this.label15.TabIndex = 50;
@@ -389,7 +405,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(3, 6);
+            this.checkBox4.Location = new System.Drawing.Point(7, 7);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(287, 19);
             this.checkBox4.TabIndex = 26;
@@ -398,7 +414,7 @@
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(3, 32);
+            this.numericUpDown3.Location = new System.Drawing.Point(7, 33);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -850,6 +866,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label26);
             this.panel1.Controls.Add(this.button14);
             this.panel1.Controls.Add(this.label24);
             this.panel1.Controls.Add(this.label22);
@@ -870,6 +887,27 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1849, 101);
             this.panel1.TabIndex = 8;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label26.ForeColor = System.Drawing.Color.Red;
+            this.label26.Location = new System.Drawing.Point(1181, 52);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(16, 15);
+            this.label26.TabIndex = 32;
+            this.label26.Text = "0";
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(1735, 68);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(96, 23);
+            this.button14.TabIndex = 31;
+            this.button14.Text = "load model";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // label24
             // 
@@ -1161,23 +1199,25 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // button14
-            // 
-            this.button14.Location = new System.Drawing.Point(1704, 55);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(75, 23);
-            this.button14.TabIndex = 31;
-            this.button14.Text = "button14";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.openFileDialog1.FileName = "*.*";
             // 
             // timer4
             // 
             this.timer4.Enabled = true;
             this.timer4.Interval = 10000;
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(428, 32);
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(55, 22);
+            this.numericUpDown4.TabIndex = 63;
+            this.numericUpDown4.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // Causal_relationship_search
             // 
@@ -1224,6 +1264,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1322,5 +1363,8 @@
         private System.Windows.Forms.TextBox textBox14;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Timer timer4;
+        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
     }
 }

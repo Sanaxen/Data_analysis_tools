@@ -213,7 +213,11 @@ namespace WindowsFormsApplication1
                         }
                         sw.Close();
                     }
-
+                    if (System.IO.File.Exists("confounding_factors.txt"))
+                    {
+                        MessageBox.Show("未観測の潜在共通変数が存在している可能性があります");
+                        label26.Text = "未観測の潜在共通変数が存在している可能性があります";
+                    }
                 }
             }
             catch
@@ -313,6 +317,12 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
+                    if (ss[0].IndexOf("knowledge_rate") >= 0)
+                    {
+                        numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+
                     if (ss[0].IndexOf("knowledge_file") >= 0)
                     {
                         prior_knowledge_file = ss[1].Replace("\r\n", "");
@@ -320,6 +330,7 @@ namespace WindowsFormsApplication1
                         label23.Text = System.IO.Path.GetFileName(prior_knowledge_file);
                         continue;
                     }
+
                     if (ss[0].IndexOf("knowledge") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")
@@ -485,6 +496,7 @@ namespace WindowsFormsApplication1
                             if (checkBox7.Checked) sw.Write("true\r\n");
                             else sw.Write("false\r\n");
 
+                            sw.Write("knowledge_rate,"); sw.Write(numericUpDown4.Value.ToString() + "\r\n");
                             sw.Write("knowledge_file,");
                             sw.Write(prior_knowledge_file + "\r\n");
                             sw.Close();
@@ -568,6 +580,8 @@ namespace WindowsFormsApplication1
             }
 
             save_model();
+
+            label26.Text = "";
             label24.Text = "";
             error_status = 0;
             error_string = "";
@@ -770,8 +784,15 @@ namespace WindowsFormsApplication1
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
 
-                // このプログラムが終了した時に Exited イベントを発生させる
-                process.EnableRaisingEvents = true;
+                if (!(checkBox4.Checked && checkBox8.Checked))
+                {
+                    // このプログラムが終了した時に Exited イベントを発生させる
+                    process.EnableRaisingEvents = true;
+                }else
+                {
+                    process.StartInfo.RedirectStandardOutput = false;
+                    process.StartInfo.CreateNoWindow = false;
+                }
                 // Exited イベントのハンドラを追加する
                 process.Exited += new System.EventHandler(Solver_Exited);
 
@@ -787,7 +808,10 @@ namespace WindowsFormsApplication1
                 try
                 {
                     process.Start();
-                    process.BeginOutputReadLine();
+                    if (!(checkBox4.Checked && checkBox8.Checked))
+                    {
+                        process.BeginOutputReadLine();
+                    }
                 }
                 catch (Exception)
                 {
@@ -1084,6 +1108,8 @@ namespace WindowsFormsApplication1
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox1.Dock = DockStyle.Fill;
                 pictureBox1.Show();
+
+                button3_Click(null, null);
             }
         }
 
