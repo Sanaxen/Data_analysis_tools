@@ -172,6 +172,11 @@ namespace WindowsFormsApplication1
                 label1.Text = "選択モデルはXGBoost分類モデルです";
                 return;
             }
+            if (model.IndexOf("lingam.model") >= 0)
+            {
+                label1.Text = "選択モデルはLiNGAMモデルです";
+                return;
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -191,6 +196,12 @@ namespace WindowsFormsApplication1
 
             string model = Form1.curDir+"\\model\\"+listBox1.Items[idx].ToString();
 
+            if (model.IndexOf("lingam.model") >= 0)
+            {
+                form1.button50_Click_1(sender, e);
+                form1._Causal_relationship_search.load_model(model, sender, e);
+                return;
+            }
             if (model.IndexOf("tsfit_best.model") >= 0)
             {
                 form1.button37_Click(sender, e);

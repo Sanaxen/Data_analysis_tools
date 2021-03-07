@@ -8067,7 +8067,7 @@ namespace WindowsFormsApplication1
         }
 
 
-        private void button50_Click_1(object sender, EventArgs e)
+        public void button50_Click_1(object sender, EventArgs e)
         {
             form1.button50_Click(sender, e);
         }

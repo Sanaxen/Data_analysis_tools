@@ -215,7 +215,6 @@ namespace WindowsFormsApplication1
                     }
                     if (System.IO.File.Exists("confounding_factors.txt"))
                     {
-                        MessageBox.Show("未観測の潜在共通変数が存在している可能性があります");
                         label26.Text = "未観測の潜在共通変数が存在している可能性があります";
                     }
                 }
@@ -286,7 +285,8 @@ namespace WindowsFormsApplication1
                         if (ss[1].Replace("\r\n", "") == "true")
                         {
                             checkBox3.Checked = true;
-                        }else
+                        }
+                        else
                         {
                             checkBox3.Checked = false;
                         }
@@ -415,15 +415,63 @@ namespace WindowsFormsApplication1
                         textBox14.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
+                    if (ss[0].IndexOf("auto_beta") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox9.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox9.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("early_stopping") >= 0)
+                    {
+                        numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("eval_mode") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox6.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox6.Checked = false;
+                        }
+                        continue;
+                    }
                 }
                 sr.Close();
+
+                if (modelfile != "lingam.model")
+                {
+                    try
+                    {
+                        System.IO.File.Copy(modelfile + ".B.csv", "lingam.model.B.csv", true);
+                        System.IO.File.Copy(modelfile + ".B_pre_sort.csv", "lingam.model.B_pre_sort.csv", true);
+                        System.IO.File.Copy(modelfile + ".input.csv", "lingam.model.input.csv", true);
+                        System.IO.File.Copy(modelfile + ".modification_input.csv", "lingam.model.modification_input.csv", true);
+                        System.IO.File.Copy(modelfile + ".mutual_information.csv", "lingam.model.mutual_information.csv", true);
+                        System.IO.File.Copy(modelfile + ".mu.csv", "lingam.model.mu.csv", true);
+                        System.IO.File.Copy(modelfile + ".residual_error_info.csv", "lingam.model.residual_error_info.csv", true);
+                        System.IO.File.Copy(modelfile + ".residual_error.csv", "lingam.model.residual_error.csv", true);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("計算されたcsvがまだ見つかりませんでした");
+                    }
+                }
             }
 
             this.TopMost = true;
             this.TopMost = false;
         }
 
-        private void save_model()
+        private void save_model(string save_name)
         {
             //if (checkBox6.Checked) return;
             if (timer1.Enabled)
@@ -431,93 +479,81 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("今は保存できません", "", MessageBoxButtons.OK);
                 return;
             }
+            System.IO.File.AppendAllText(save_name, "\n");
 
-            string model_id = DateTime.Now.ToLongDateString() + DateTime.Now.ToShortTimeString().Replace(":", "_");
-
-            if (!System.IO.Directory.Exists("model"))
+            form1.SelectionVarWrite_(listBox1, listBox2, save_name + ".select_variables.dat");
             {
-                System.IO.Directory.CreateDirectory("model");
-            }
-
-            string base_name = "";
-
-
-            bool update = true;
-            string save_name = Form1.curDir + "\\lingam.model()" + Form1.FnameToDataFrameName(model_id, true);
-            if (base_name != "")
-            {
-                save_name = Form1.curDir + "\\lingam.model(" + base_name + ")" + Form1.FnameToDataFrameName(model_id, true);
-            }
-            save_name = Form1.curDir + "\\lingam.model";
-
-            if (System.IO.File.Exists(save_name))
-            {
-                if (MessageBox.Show("同じモデルが存在しています", "上書きしますか?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(save_name + ".options", false, Encoding.GetEncoding("SHIFT_JIS"));
+                if (sw != null)
                 {
-                    update = false;
+                    sw.Write("ica_iter,"); sw.Write(textBox1.Text+"\r\n");
+                    sw.Write("ica_tol,"); sw.Write(textBox2.Text + "\r\n");
+                    sw.Write("lasso_iter,"); sw.Write(textBox10.Text + "\r\n");
+                    sw.Write("lasso_prm,"); sw.Write(textBox4.Text + "\r\n");
+                    sw.Write("lasso_tol,"); sw.Write(textBox9.Text + "\r\n");
+                    sw.Write("lasso_chk,");
+                    if (checkBox3.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+
+                    sw.Write("corr,"); sw.Write(textBox5.Text + "\r\n");
+                    sw.Write("effect,"); sw.Write(textBox6.Text + "\r\n");
+                    sw.Write("info,"); sw.Write(textBox11.Text + "\r\n");
+                    sw.Write("info_chk,");
+                    if (checkBox5.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+                    sw.Write("effect_min,"); sw.Write(textBox7.Text + "\r\n");
+                    sw.Write("effect_max,"); sw.Write(textBox8.Text + "\r\n");
+
+                    sw.Write("latent_chk,");
+                    if (checkBox4.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+                    sw.Write("sampleing,"); sw.Write(numericUpDown3.Value.ToString() + "\r\n");
+                    sw.Write("latent_alp,"); sw.Write(textBox12.Text + "\r\n");
+                    sw.Write("latent_beta,"); sw.Write(textBox13.Text + "\r\n");
+                    sw.Write("latent_rho,"); sw.Write(textBox14.Text + "\r\n");
+
+                    sw.Write("knowledge,");
+                    if (checkBox7.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+
+                    sw.Write("knowledge_rate,"); sw.Write(numericUpDown4.Value.ToString() + "\r\n");
+                    sw.Write("knowledge_file,");
+                    sw.Write(prior_knowledge_file + "\r\n");
+
+                    sw.Write("early_stopping,"); sw.Write(numericUpDown5.Value.ToString() + "\r\n");
+                    sw.Write("auto_beta,");
+                    if (checkBox9.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+                    sw.Write("eval_mode,");
+                    if (checkBox6.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+
+                    sw.Close();
                 }
             }
-            if (update)
+            if (save_name != "lingam.model")
             {
-                if (update)
+                try
                 {
-                    form1.SelectionVarWrite_(listBox1, listBox2, save_name + ".select_variables.dat");
-                    {
-                        System.IO.StreamWriter sw = new System.IO.StreamWriter(save_name + ".options", false, Encoding.GetEncoding("SHIFT_JIS"));
-                        if (sw != null)
-                        {
-                            sw.Write("ica_iter,"); sw.Write(textBox1.Text+"\r\n");
-                            sw.Write("ica_tol,"); sw.Write(textBox2.Text + "\r\n");
-                            sw.Write("lasso_iter,"); sw.Write(textBox10.Text + "\r\n");
-                            sw.Write("lasso_prm,"); sw.Write(textBox4.Text + "\r\n");
-                            sw.Write("lasso_tol,"); sw.Write(textBox9.Text + "\r\n");
-                            sw.Write("lasso_chk,");
-                            if (checkBox3.Checked) sw.Write("true\r\n");
-                            else sw.Write("false\r\n");
-
-                            sw.Write("corr,"); sw.Write(textBox5.Text + "\r\n");
-                            sw.Write("effect,"); sw.Write(textBox6.Text + "\r\n");
-                            sw.Write("info,"); sw.Write(textBox11.Text + "\r\n");
-                            sw.Write("info_chk,");
-                            if (checkBox5.Checked) sw.Write("true\r\n");
-                            else sw.Write("false\r\n");
-                            sw.Write("effect_min,"); sw.Write(textBox7.Text + "\r\n");
-                            sw.Write("effect_max,"); sw.Write(textBox8.Text + "\r\n");
-
-                            sw.Write("latent_chk,");
-                            if (checkBox4.Checked) sw.Write("true\r\n");
-                            else sw.Write("false\r\n");
-                            sw.Write("sampleing,"); sw.Write(numericUpDown3.Value.ToString() + "\r\n");
-                            sw.Write("latent_alp,"); sw.Write(textBox12.Text + "\r\n");
-                            sw.Write("latent_beta,"); sw.Write(textBox13.Text + "\r\n");
-                            sw.Write("latent_rho,"); sw.Write(textBox14.Text + "\r\n");
-
-                            sw.Write("knowledge,");
-                            if (checkBox7.Checked) sw.Write("true\r\n");
-                            else sw.Write("false\r\n");
-
-                            sw.Write("knowledge_rate,"); sw.Write(numericUpDown4.Value.ToString() + "\r\n");
-                            sw.Write("knowledge_file,");
-                            sw.Write(prior_knowledge_file + "\r\n");
-                            sw.Close();
-                        }
-                    }
-                    if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
+                    System.IO.File.Copy("lingam.model.B.csv", save_name + ".B.csv", true);
+                    System.IO.File.Copy("lingam.model.B_pre_sort.csv", save_name + ".B_pre_sort.csv", true);
+                    System.IO.File.Copy("lingam.model.input.csv", save_name + ".input.csv", true);
+                    System.IO.File.Copy("lingam.model.modification_input.csv", save_name + ".modification_input.csv", true);
+                    System.IO.File.Copy("lingam.model.mutual_information.csv", save_name + ".mutual_information.csv", true);
+                    System.IO.File.Copy("lingam.model.mu.csv", save_name + ".mu.csv", true);
+                    System.IO.File.Copy("lingam.model.residual_error_info.csv", save_name + ".residual_error_info.csv", true);
+                    System.IO.File.Copy("lingam.model.residual_error.csv", save_name + ".residual_error.csv", true);
+                }
+                catch
+                {
+                    MessageBox.Show("計算されたcsvがまだ見つかりませんでした");
                 }
             }
+
+            if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
         }
-
-        private void eval_cur()
+        private void eval_cur0()
         {
-            if (!checkBox4.Checked)
-            {
-                return;
-            }
-            if (running != 1)
-            {
-                return;
-            }
-
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
 
             proc.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
@@ -525,15 +561,19 @@ namespace WindowsFormsApplication1
 
             System.IO.File.AppendAllText("comandline_args_tmp", " ");
             System.IO.File.AppendAllText("comandline_args_tmp", command_line);
-            System.IO.File.AppendAllText("comandline_args_tmp", " --load_model lingam", Encoding.GetEncoding("shift_jis"));
+            System.IO.File.AppendAllText("comandline_args_tmp", " --load_model lingam.model", Encoding.GetEncoding("shift_jis"));
             proc.StartInfo.Arguments = " --@ comandline_args_tmp";
 
             proc.StartInfo.CreateNoWindow = true;
-            proc.StartInfo.RedirectStandardOutput = true;
+            //proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.UseShellExecute = false;
             timer3.Enabled = true;
             timer3.Start();
 
+            var bakcolor = panel11.BackColor;
+
+            panel11.BackColor = Color.Orange;
+            panel11.Refresh();
             proc.Start();
             proc.WaitForExit();
             if (System.IO.File.Exists("Digraph.bat"))
@@ -554,7 +594,7 @@ namespace WindowsFormsApplication1
             {
                 timer3.Stop();
                 timer3.Enabled = false;
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     if (!Form1.IsFileLocked("Digraph.png"))
                     {
@@ -563,23 +603,45 @@ namespace WindowsFormsApplication1
                     System.Threading.Thread.Sleep(300);
                 }
 
+                panel11.BackColor = bakcolor;
+                panel11.Refresh();
+
                 pictureBox1.ImageLocation = "Digraph.png";
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox1.Dock = DockStyle.Fill;
                 pictureBox1.Show();
+
+                CreateImageView();
             }
             timer3.Stop();
+        }
+        private void eval_cur()
+        {
+            if (!checkBox4.Checked)
+            {
+                return;
+            }
+            if (running != 1)
+            {
+                return;
+            }
+
+            eval_cur0();
         }
 
         private void metroButton5_Click(object sender, EventArgs e)
         {
-            if (checkBox4.Checked && running == 1)
+            if (checkBox6.Checked && running == 1)
             {
                 eval_cur();
                 return;
             }
 
-            save_model();
+            try
+            {
+                save_model("lingam.model");
+            }
+            catch { }
 
             label26.Text = "";
             label24.Text = "";
@@ -727,7 +789,7 @@ namespace WindowsFormsApplication1
 
                 if ( checkBox6.Checked)
                 {
-                    process.StartInfo.Arguments += " --load_model lingam";
+                    process.StartInfo.Arguments += " --load_model lingam.model";
                 }
                 process.StartInfo.Arguments += " --temperature_alp " + textBox12.Text;
                 process.StartInfo.Arguments += " --distribution_rate " + textBox13.Text;
@@ -747,7 +809,17 @@ namespace WindowsFormsApplication1
                     }
                 }
                 process.StartInfo.Arguments += " --rho " + textBox14.Text;
+                process.StartInfo.Arguments += " --prior_knowledge_rate  " + ((double)numericUpDown4.Value * 0.01).ToString();
 
+                process.StartInfo.Arguments += " --early_stopping  " + numericUpDown5.Value.ToString();
+                if (checkBox9.Checked)
+                {
+                    process.StartInfo.Arguments += " --parameter_search  1";
+                }else
+                {
+                    process.StartInfo.Arguments += " --parameter_search  0";
+                }
+                process.StartInfo.Arguments += " --confounding_factors_upper  " + textBox15.Text;
 
                 if (typeNG )
                 {
@@ -918,8 +990,7 @@ namespace WindowsFormsApplication1
 
             }
         }
-
-        private void button3_Click(object sender, EventArgs e)
+        private void CreateImageView()
         {
             if (_ImageView == null) _ImageView = new ImageView();
             _ImageView.form1 = this.form1;
@@ -928,8 +999,13 @@ namespace WindowsFormsApplication1
                 _ImageView.pictureBox1.ImageLocation = "Digraph.png";
                 _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 _ImageView.pictureBox1.Dock = DockStyle.Fill;
-                _ImageView.Show();
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            CreateImageView();
+             _ImageView.Show();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -1109,7 +1185,11 @@ namespace WindowsFormsApplication1
                 pictureBox1.Dock = DockStyle.Fill;
                 pictureBox1.Show();
 
-                button3_Click(null, null);
+                //if (_ImageView != null)
+                //{
+                //    _ImageView.Close();
+                //}
+                //button3_Click(sender, e);
             }
         }
 
@@ -1126,6 +1206,7 @@ namespace WindowsFormsApplication1
             }else
             {
                 button6.Text = "解析";
+                checkBox10.Checked = false;
             }
         }
 
@@ -1140,14 +1221,16 @@ namespace WindowsFormsApplication1
 
         private void button13_Click(object sender, EventArgs e)
         {
-            textBox12.Text = "0.75";
-            textBox13.Text = "0.005";
-            textBox14.Text = "0.001";
+            textBox12.Text = "0.95";
+            textBox13.Text = "0.0001";
+            textBox14.Text = "0.1";
+            textBox15.Text = "0.8";
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
             load_model("lingam.model", null, null);
+            checkBox6.Checked = true;
         }
 
         private void timer4_Tick(object sender, EventArgs e)
@@ -1170,6 +1253,86 @@ namespace WindowsFormsApplication1
 
                 }
                 return;
+            }
+        }
+
+        private void textBox15_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel11_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label28_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            if (!System.IO.Directory.Exists("model"))
+            {
+                System.IO.Directory.CreateDirectory("model");
+            }
+
+            if (textBox16.Text == "")
+            {
+                textBox16.Text = DateTime.Now.ToLongDateString() + DateTime.Now.ToShortTimeString().Replace(":", "_");
+            }
+            string fname = "model/lingam.model("+Form1.FnameToDataFrameName(textBox16.Text, true) +")";
+            if (System.IO.File.Exists(fname))
+            {
+                if (MessageBox.Show("同じモデルが存在しています", "上書きしますか?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+            save_model(fname);
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            openFileDialog2.InitialDirectory = Form1.curDir + "\\model";
+            if (openFileDialog2.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            string file = openFileDialog2.FileName.Replace("\\", "/");
+            load_model(file, sender, e);
+        }
+
+        private void timer5_Tick(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked && checkBox6.Checked)
+            {
+                timer5.Stop();
+                try
+                {
+                    eval_cur0();
+                }
+                catch
+                {
+
+                }
+                timer5.Start();
+                return;
+            }
+        }
+
+        private void checkBox10_CheckedChanged(object sender, EventArgs e)
+        {
+            if ( checkBox10.Checked)
+            {
+                timer5.Enabled = true;
+                timer5.Start();
+            }else
+            {
+                timer5.Stop();
+                timer5.Enabled = false;
             }
         }
     }
