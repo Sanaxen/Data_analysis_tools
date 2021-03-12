@@ -1200,9 +1200,9 @@ namespace WindowsFormsApplication1
         private void button13_Click(object sender, EventArgs e)
         {
             textBox12.Text = "0.95";
-            textBox13.Text = "0.0001";
-            textBox14.Text = "0.1";
-            textBox15.Text = "0.8";
+            textBox13.Text = "1.0";
+            textBox14.Text = "3.0";
+            textBox15.Text = "0.9";
         }
 
         private void button14_Click(object sender, EventArgs e)
