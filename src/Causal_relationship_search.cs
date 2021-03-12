@@ -415,18 +415,6 @@ namespace WindowsFormsApplication1
                         textBox14.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
-                    if (ss[0].IndexOf("auto_beta") >= 0)
-                    {
-                        if (ss[1].Replace("\r\n", "") == "true")
-                        {
-                            checkBox9.Checked = true;
-                        }
-                        else
-                        {
-                            checkBox9.Checked = false;
-                        }
-                        continue;
-                    }
                     if (ss[0].IndexOf("early_stopping") >= 0)
                     {
                         numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
@@ -521,9 +509,6 @@ namespace WindowsFormsApplication1
                     sw.Write(prior_knowledge_file + "\r\n");
 
                     sw.Write("early_stopping,"); sw.Write(numericUpDown5.Value.ToString() + "\r\n");
-                    sw.Write("auto_beta,");
-                    if (checkBox9.Checked) sw.Write("true\r\n");
-                    else sw.Write("false\r\n");
                     sw.Write("eval_mode,");
                     if (checkBox6.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
@@ -812,13 +797,6 @@ namespace WindowsFormsApplication1
                 process.StartInfo.Arguments += " --prior_knowledge_rate  " + ((double)numericUpDown4.Value * 0.01).ToString();
 
                 process.StartInfo.Arguments += " --early_stopping  " + numericUpDown5.Value.ToString();
-                if (checkBox9.Checked)
-                {
-                    process.StartInfo.Arguments += " --parameter_search  1";
-                }else
-                {
-                    process.StartInfo.Arguments += " --parameter_search  0";
-                }
                 process.StartInfo.Arguments += " --confounding_factors_upper  " + textBox15.Text;
 
                 if (typeNG )

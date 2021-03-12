@@ -37,9 +37,9 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.textBox15 = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.label27 = new System.Windows.Forms.Label();
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
@@ -134,7 +134,6 @@
             this.timer4 = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.timer5 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -262,7 +261,6 @@
             this.panel11.Controls.Add(this.checkBox10);
             this.panel11.Controls.Add(this.textBox15);
             this.panel11.Controls.Add(this.label28);
-            this.panel11.Controls.Add(this.checkBox9);
             this.panel11.Controls.Add(this.label27);
             this.panel11.Controls.Add(this.numericUpDown5);
             this.panel11.Controls.Add(this.numericUpDown4);
@@ -288,6 +286,17 @@
             this.panel11.TabIndex = 50;
             this.panel11.Paint += new System.Windows.Forms.PaintEventHandler(this.panel11_Paint);
             // 
+            // checkBox10
+            // 
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Location = new System.Drawing.Point(84, 125);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(94, 19);
+            this.checkBox10.TabIndex = 70;
+            this.checkBox10.Text = "inspection";
+            this.checkBox10.UseVisualStyleBackColor = true;
+            this.checkBox10.CheckedChanged += new System.EventHandler(this.checkBox10_CheckedChanged);
+            // 
             // textBox15
             // 
             this.textBox15.Location = new System.Drawing.Point(413, 63);
@@ -308,19 +317,6 @@
             this.label28.Text = "交絡因子無し判定閾値";
             this.toolTip2.SetToolTip(this.label28, "交絡因子無し判定閾値\r\n残差同士の相互情報量がゼロなら交絡因子は無いものとする（LiNGAM条件）");
             this.label28.Click += new System.EventHandler(this.label28_Click);
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Checked = true;
-            this.checkBox9.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox9.Location = new System.Drawing.Point(208, 102);
-            this.checkBox9.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(92, 19);
-            this.checkBox9.TabIndex = 66;
-            this.checkBox9.Text = "β search";
-            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // label27
             // 
@@ -385,7 +381,7 @@
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(49, 22);
             this.textBox14.TabIndex = 60;
-            this.textBox14.Text = "1.0";
+            this.textBox14.Text = "3.0";
             this.toolTip2.SetToolTip(this.textBox14, "残差同士が独立を優先する場合は大きく\r\n残差の総和を小さくするのを優先する場合は小さく");
             this.textBox14.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
@@ -1334,17 +1330,6 @@
             this.timer5.Interval = 30000;
             this.timer5.Tick += new System.EventHandler(this.timer5_Tick);
             // 
-            // checkBox10
-            // 
-            this.checkBox10.AutoSize = true;
-            this.checkBox10.Location = new System.Drawing.Point(84, 125);
-            this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(94, 19);
-            this.checkBox10.TabIndex = 70;
-            this.checkBox10.Text = "inspection";
-            this.checkBox10.UseVisualStyleBackColor = true;
-            this.checkBox10.CheckedChanged += new System.EventHandler(this.checkBox10_CheckedChanged);
-            // 
             // Causal_relationship_search
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1474,7 +1459,6 @@
         private System.Windows.Forms.Timer timer4;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Panel panel11;
-        private System.Windows.Forms.CheckBox checkBox9;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.NumericUpDown numericUpDown5;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
