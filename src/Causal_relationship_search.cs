@@ -537,8 +537,19 @@ namespace WindowsFormsApplication1
 
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
         }
+
+        bool eval_cur0_execute = false;
+
         private void eval_cur0()
         {
+            if (System.IO.File.Exists("lingam.lock_"))
+            {
+                return;
+            }
+
+            if (eval_cur0_execute) return;
+            eval_cur0_execute = true;
+
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
 
             proc.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
@@ -559,46 +570,94 @@ namespace WindowsFormsApplication1
 
             panel11.BackColor = Color.Orange;
             panel11.Refresh();
-            proc.Start();
-            proc.WaitForExit();
-            if (System.IO.File.Exists("Digraph.bat"))
-            {
-                var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
-                if (ss == DialogResult.OK)
-                {
-                    if (System.IO.File.Exists("Digraph.png"))
-                    {
-                        System.IO.File.Delete("Digraph.png");
-                    }
-                    timer3.Enabled = true;
-                    timer3.Start();
-                    System.Diagnostics.Process.Start("Digraph.bat");
-                }
-            }
-            if (System.IO.File.Exists("Digraph.png"))
+
+            if (System.IO.File.Exists("lingam.lock"))
             {
                 timer3.Stop();
-                timer3.Enabled = false;
-                for (int i = 0; i < 10; i++)
-                {
-                    if (!Form1.IsFileLocked("Digraph.png"))
-                    {
-                        break;
-                    }
-                    System.Threading.Thread.Sleep(300);
-                }
-
                 panel11.BackColor = bakcolor;
                 panel11.Refresh();
-
-                pictureBox1.ImageLocation = "Digraph.png";
-                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                pictureBox1.Dock = DockStyle.Fill;
-                pictureBox1.Show();
-
-                CreateImageView();
+                eval_cur0_execute = false;
+                return;
+            } else
+            {
+                try
+                { 
+                    System.IO.FileStream fs = System.IO.File.Create("lingam.lock_");
+                    if (fs == null)
+                    {
+                        timer3.Stop();
+                        panel11.BackColor = bakcolor;
+                        panel11.Refresh();
+                        eval_cur0_execute = false;
+                        return;
+                    }
+                }
+                catch
+                {
+                    timer3.Stop();
+                    panel11.BackColor = bakcolor;
+                    panel11.Refresh();
+                    eval_cur0_execute = false;
+                    return;
+                }
             }
-            timer3.Stop();
+
+            try
+            {
+                proc.Start();
+                proc.WaitForExit();
+                eval_cur0_execute = false;
+
+                if (System.IO.File.Exists("Digraph.bat"))
+                {
+                    var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
+                    if (ss == DialogResult.OK)
+                    {
+                        if (System.IO.File.Exists("Digraph.png"))
+                        {
+                            System.IO.File.Delete("Digraph.png");
+                        }
+                        timer3.Enabled = true;
+                        timer3.Start();
+                        System.Diagnostics.Process.Start("Digraph.bat");
+                    }
+                }
+                if (System.IO.File.Exists("Digraph.png"))
+                {
+                    timer3.Stop();
+                    timer3.Enabled = false;
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if (!Form1.IsFileLocked("Digraph.png"))
+                        {
+                            break;
+                        }
+                        System.Threading.Thread.Sleep(300);
+                    }
+
+                    panel11.BackColor = bakcolor;
+                    panel11.Refresh();
+
+                    pictureBox1.ImageLocation = "Digraph.png";
+                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox1.Dock = DockStyle.Fill;
+                    pictureBox1.Show();
+
+                    CreateImageView();
+                }
+                timer3.Stop();
+            }catch
+            {
+            }
+            finally
+            {
+                timer3.Stop();
+                panel11.BackColor = bakcolor;
+                panel11.Refresh();
+                eval_cur0_execute = false;
+
+                System.IO.File.Delete("lingam.lock_");
+            }
         }
         private void eval_cur()
         {
@@ -850,7 +909,7 @@ namespace WindowsFormsApplication1
                 timer2.Enabled = true;
                 timer2.Start();
 
-                if (checkBox4.Checked)
+                if (checkBox4.Checked && !checkBox6.Checked)
                 {
                     timer4.Enabled = true;
                     timer4.Start();
@@ -1222,11 +1281,12 @@ namespace WindowsFormsApplication1
 
                     if (!process.HasExited)
                     {
-                        process.Threads.Suspend();
+                        //process.Threads.Suspend();
                         eval_cur();
-                        process.Threads.Resume();
+                        //process.Threads.Resume();
                     }
-                }catch
+                }
+                catch
                 {
 
                 }

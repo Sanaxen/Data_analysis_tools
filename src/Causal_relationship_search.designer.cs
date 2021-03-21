@@ -486,9 +486,9 @@
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(88, 35);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(126, 15);
+            this.label15.Size = new System.Drawing.Size(59, 15);
             this.label15.TabIndex = 50;
-            this.label15.Text = "パス探索サンプリング";
+            this.label15.Text = "iteration";
             // 
             // checkBox4
             // 
