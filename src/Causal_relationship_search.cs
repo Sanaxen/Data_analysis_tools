@@ -445,7 +445,7 @@ namespace WindowsFormsApplication1
                         System.IO.File.Copy(modelfile + ".modification_input.csv", "lingam.model.modification_input.csv", true);
                         System.IO.File.Copy(modelfile + ".mutual_information.csv", "lingam.model.mutual_information.csv", true);
                         System.IO.File.Copy(modelfile + ".mu.csv", "lingam.model.mu.csv", true);
-                        System.IO.File.Copy(modelfile + ".residual_error_info.csv", "lingam.model.residual_error_info.csv", true);
+                        System.IO.File.Copy(modelfile + ".residual_error_independ.csv", "lingam.model.residual_error_independ.csv", true);
                         System.IO.File.Copy(modelfile + ".residual_error.csv", "lingam.model.residual_error.csv", true);
                     }
                     catch
@@ -526,7 +526,7 @@ namespace WindowsFormsApplication1
                     System.IO.File.Copy("lingam.model.modification_input.csv", save_name + ".modification_input.csv", true);
                     System.IO.File.Copy("lingam.model.mutual_information.csv", save_name + ".mutual_information.csv", true);
                     System.IO.File.Copy("lingam.model.mu.csv", save_name + ".mu.csv", true);
-                    System.IO.File.Copy("lingam.model.residual_error_info.csv", save_name + ".residual_error_info.csv", true);
+                    System.IO.File.Copy("lingam.model.residual_error_independ.csv", save_name + ".residual_error_independ.csv", true);
                     System.IO.File.Copy("lingam.model.residual_error.csv", save_name + ".residual_error.csv", true);
                 }
                 catch
