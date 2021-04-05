@@ -31,6 +31,13 @@ namespace WindowsFormsApplication1
 
         }
 
+        private void LossPlot()
+        {
+            System.IO.Directory.SetCurrentDirectory(Form1.curDir);
+            System.IO.File.Copy(Form1.MyPath + "\\lingam_loss_plot.plt",
+                Form1.curDir + "\\lingam_loss_plot.plt", true);
+        }
+
         System.Diagnostics.Process process = null;
         public string output_string = "";
         void p_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
@@ -53,7 +60,6 @@ namespace WindowsFormsApplication1
         {
             try
             {
-                timer4.Stop();
                 timer2.Stop();
                 timer2.Enabled = false;
                 timer1.Stop();
@@ -447,6 +453,8 @@ namespace WindowsFormsApplication1
                         System.IO.File.Copy(modelfile + ".mu.csv", "lingam.model.mu.csv", true);
                         System.IO.File.Copy(modelfile + ".residual_error_independ.csv", "lingam.model.residual_error_independ.csv", true);
                         System.IO.File.Copy(modelfile + ".residual_error.csv", "lingam.model.residual_error.csv", true);
+                        System.IO.File.Copy(modelfile + ".option", "lingam.model.option", true);
+                        System.IO.File.Copy(modelfile + ".replacement", "lingam.model.replacement", true);
                     }
                     catch
                     {
@@ -509,7 +517,7 @@ namespace WindowsFormsApplication1
                     sw.Write(prior_knowledge_file + "\r\n");
 
                     sw.Write("early_stopping,"); sw.Write(numericUpDown5.Value.ToString() + "\r\n");
-                    sw.Write("eval_mode,");
+                 sw.Write("eval_mode,");
                     if (checkBox6.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
 
@@ -528,6 +536,8 @@ namespace WindowsFormsApplication1
                     System.IO.File.Copy("lingam.model.mu.csv", save_name + ".mu.csv", true);
                     System.IO.File.Copy("lingam.model.residual_error_independ.csv", save_name + ".residual_error_independ.csv", true);
                     System.IO.File.Copy("lingam.model.residual_error.csv", save_name + ".residual_error.csv", true);
+                    System.IO.File.Copy("lingam.model.option", save_name + ".option", true);
+                    System.IO.File.Copy("lingam.model.replacement", save_name + ".replacement", true);
                 }
                 catch
                 {
@@ -542,57 +552,33 @@ namespace WindowsFormsApplication1
 
         private void eval_cur0()
         {
-            if (System.IO.File.Exists("lingam.lock_"))
-            {
-                return;
-            }
-
             if (eval_cur0_execute) return;
             eval_cur0_execute = true;
 
-            System.Diagnostics.Process proc = new System.Diagnostics.Process();
-
-            proc.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
-            if (System.IO.File.Exists("comandline_args_tmp")) form1.FileDelete("comandline_args_tmp");
-
-            System.IO.File.AppendAllText("comandline_args_tmp", " ");
-            System.IO.File.AppendAllText("comandline_args_tmp", command_line);
-            System.IO.File.AppendAllText("comandline_args_tmp", " --load_model lingam.model", Encoding.GetEncoding("shift_jis"));
-            proc.StartInfo.Arguments = " --@ comandline_args_tmp";
-
-            proc.StartInfo.CreateNoWindow = true;
-            //proc.StartInfo.RedirectStandardOutput = true;
-            proc.StartInfo.UseShellExecute = false;
-            timer3.Enabled = true;
-            timer3.Start();
-
             var bakcolor = panel11.BackColor;
-
-            panel11.BackColor = Color.Orange;
-            panel11.Refresh();
-
-            if (System.IO.File.Exists("lingam.lock"))
+            try
             {
-                timer3.Stop();
-                panel11.BackColor = bakcolor;
+                System.Diagnostics.Process proc = new System.Diagnostics.Process();
+
+                proc.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
+                if (System.IO.File.Exists("comandline_args_tmp")) form1.FileDelete("comandline_args_tmp");
+
+                System.IO.File.AppendAllText("comandline_args_tmp", " ", Encoding.GetEncoding("shift_jis"));
+                System.IO.File.AppendAllText("comandline_args_tmp", command_line, Encoding.GetEncoding("shift_jis"));
+                System.IO.File.AppendAllText("comandline_args_tmp", " --load_model lingam.model", Encoding.GetEncoding("shift_jis"));
+                proc.StartInfo.Arguments = " --@ comandline_args_tmp";
+
+                //proc.StartInfo.CreateNoWindow = true;
+                //proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                timer3.Enabled = true;
+                timer3.Start();
+
+
+                panel11.BackColor = Color.Orange;
                 panel11.Refresh();
-                eval_cur0_execute = false;
-                return;
-            } else
-            {
-                try
-                { 
-                    System.IO.FileStream fs = System.IO.File.Create("lingam.lock_");
-                    if (fs == null)
-                    {
-                        timer3.Stop();
-                        panel11.BackColor = bakcolor;
-                        panel11.Refresh();
-                        eval_cur0_execute = false;
-                        return;
-                    }
-                }
-                catch
+
+                if (System.IO.File.Exists("lingam.lock"))
                 {
                     timer3.Stop();
                     panel11.BackColor = bakcolor;
@@ -600,53 +586,63 @@ namespace WindowsFormsApplication1
                     eval_cur0_execute = false;
                     return;
                 }
-            }
 
-            try
-            {
-                proc.Start();
-                proc.WaitForExit();
-                eval_cur0_execute = false;
-
-                if (System.IO.File.Exists("Digraph.bat"))
+                try
                 {
-                    var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
-                    if (ss == DialogResult.OK)
+                    proc.Start();
+                    proc.WaitForExit();
+
+                    if (System.IO.File.Exists("Digraph.bat"))
                     {
-                        if (System.IO.File.Exists("Digraph.png"))
+                        var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
+                        if (ss == DialogResult.OK)
                         {
-                            System.IO.File.Delete("Digraph.png");
+                            if (System.IO.File.Exists("Digraph.png"))
+                            {
+                                System.IO.File.Delete("Digraph.png");
+                            }
+                            timer3.Enabled = true;
+                            timer3.Start();
+                            System.Diagnostics.Process.Start("Digraph.bat");
                         }
-                        timer3.Enabled = true;
-                        timer3.Start();
-                        System.Diagnostics.Process.Start("Digraph.bat");
                     }
+                    if (System.IO.File.Exists("Digraph.png"))
+                    {
+                        timer3.Stop();
+                        timer3.Enabled = false;
+                        for (int i = 0; i < 10; i++)
+                        {
+                            if (!Form1.IsFileLocked("Digraph.png"))
+                            {
+                                break;
+                            }
+                            System.Threading.Thread.Sleep(300);
+                        }
+
+                        panel11.BackColor = bakcolor;
+                        panel11.Refresh();
+
+                        pictureBox1.ImageLocation = "Digraph.png";
+                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox1.Dock = DockStyle.Fill;
+                        pictureBox1.Show();
+
+                        CreateImageView();
+                    }
+                    timer3.Stop();
                 }
-                if (System.IO.File.Exists("Digraph.png"))
+                catch
+                {
+                }
+                finally
                 {
                     timer3.Stop();
-                    timer3.Enabled = false;
-                    for (int i = 0; i < 10; i++)
-                    {
-                        if (!Form1.IsFileLocked("Digraph.png"))
-                        {
-                            break;
-                        }
-                        System.Threading.Thread.Sleep(300);
-                    }
-
                     panel11.BackColor = bakcolor;
                     panel11.Refresh();
-
-                    pictureBox1.ImageLocation = "Digraph.png";
-                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox1.Dock = DockStyle.Fill;
-                    pictureBox1.Show();
-
-                    CreateImageView();
+                    eval_cur0_execute = false;
                 }
-                timer3.Stop();
-            }catch
+            }
+            catch
             {
             }
             finally
@@ -655,32 +651,16 @@ namespace WindowsFormsApplication1
                 panel11.BackColor = bakcolor;
                 panel11.Refresh();
                 eval_cur0_execute = false;
-
-                System.IO.File.Delete("lingam.lock_");
             }
         }
+
         private void eval_cur()
         {
-            if (!checkBox4.Checked)
-            {
-                return;
-            }
-            if (running != 1)
-            {
-                return;
-            }
-
             eval_cur0();
         }
 
         private void metroButton5_Click(object sender, EventArgs e)
         {
-            if (checkBox6.Checked && running == 1)
-            {
-                eval_cur();
-                return;
-            }
-
             try
             {
                 save_model("lingam.model");
@@ -723,6 +703,11 @@ namespace WindowsFormsApplication1
                 {
                     System.IO.File.Delete("error_cols.txt");
                 }
+                if (System.IO.File.Exists("lingam.lock_"))
+                {
+                    System.IO.File.Delete("lingam.lock_");
+                }
+
                 process = new System.Diagnostics.Process();
 
                 process.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
@@ -889,10 +874,15 @@ namespace WindowsFormsApplication1
                 pictureBox1.ImageLocation = "";
                 pictureBox2.ImageLocation = "";
 
+
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
 
+                if ( checkBox4.Checked)
+                {
+                    LossPlot();
+                }
                 if (!(checkBox4.Checked && checkBox8.Checked))
                 {
                     // このプログラムが終了した時に Exited イベントを発生させる
@@ -909,18 +899,33 @@ namespace WindowsFormsApplication1
                 timer2.Enabled = true;
                 timer2.Start();
 
-                if (checkBox4.Checked && !checkBox6.Checked)
+                button10.Enabled = true;
+                if (checkBox6.Checked )
                 {
-                    timer4.Enabled = true;
-                    timer4.Start();
+                    checkBox8.Checked = false;
+                }
+                if (checkBox8.Checked && !checkBox6.Checked)
+                {
+                    System.Diagnostics.Process process_batch = 
+                        new System.Diagnostics.Process();
+
+                    process_batch.StartInfo.FileName = process.StartInfo.FileName;
+                    process_batch.StartInfo.Arguments = process.StartInfo.Arguments;
+
+                    process_batch.StartInfo.RedirectStandardOutput = false;
+                    process_batch.StartInfo.CreateNoWindow = false;
+
+                    process = null;
+                    running = 0;
+                    checkBox6.Checked = true;
+                    button10.Enabled = false;
+                    process_batch.Start();
+                    return;
                 }
                 try
                 {
                     process.Start();
-                    if (!(checkBox4.Checked && checkBox8.Checked))
-                    {
-                        process.BeginOutputReadLine();
-                    }
+                    process.BeginOutputReadLine();
                 }
                 catch (Exception)
                 {
@@ -929,7 +934,6 @@ namespace WindowsFormsApplication1
                     running = 0;
                     timer2.Stop();
                     timer2.Enabled = false;
-                    timer4.Stop();
                     return;
                 }
                 //process.WaitForExit();
@@ -942,13 +946,16 @@ namespace WindowsFormsApplication1
                 running = 0;
                 timer2.Enabled = false;
                 timer2.Stop();
-                timer4.Stop();
             }
             finally
             {
                 timer1.Enabled = true;
                 this.TopMost = true;
                 this.TopMost = false;
+            }
+            if (checkBox4.Checked && !checkBox6.Checked)
+            {
+                Plotting_Loss();
             }
         }
 
@@ -1177,6 +1184,28 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private void Plotting_Loss()
+        {
+            System.IO.StreamReader sr = new System.IO.StreamReader(Form1.MyPath + "gnuplot_path.txt", Encoding.GetEncoding("SHIFT_JIS"));
+            string path = "";
+            if (sr != null)
+            {
+                path = sr.ReadToEnd().Replace("\r\n", "").Replace("\r", "").Replace("\"", "");
+                sr.Close();
+            }
+
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+
+            p.StartInfo.FileName = path + "\\gnuplot.exe";
+            p.StartInfo.Arguments = Form1.curDir + "\\lingam_loss_plot.plt";
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = false;
+            p.StartInfo.RedirectStandardInput = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+            //p.WaitForExit();
+        }
+
         private void timer2_Tick(object sender, EventArgs e)
         {
             if (System.IO.File.Exists("error_cols.txt"))
@@ -1240,10 +1269,14 @@ namespace WindowsFormsApplication1
             if ( checkBox6.Checked)
             {
                 button6.Text = "評価";
+                checkBox8.Checked = false;
             }else
             {
                 button6.Text = "解析";
-                checkBox10.Checked = false;
+                if ( checkBox4.Checked)
+                {
+                    checkBox8.Checked = true;
+                }
             }
         }
 
@@ -1262,6 +1295,7 @@ namespace WindowsFormsApplication1
             textBox13.Text = "1.0";
             textBox14.Text = "3.0";
             textBox15.Text = "0.9";
+            numericUpDown3.Value = 7000;
         }
 
         private void button14_Click(object sender, EventArgs e)
@@ -1345,33 +1379,23 @@ namespace WindowsFormsApplication1
 
         private void timer5_Tick(object sender, EventArgs e)
         {
-            if (checkBox4.Checked && checkBox6.Checked)
-            {
-                timer5.Stop();
-                try
-                {
-                    eval_cur0();
-                }
-                catch
-                {
-
-                }
-                timer5.Start();
-                return;
-            }
         }
 
         private void checkBox10_CheckedChanged(object sender, EventArgs e)
         {
-            if ( checkBox10.Checked)
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked)
             {
-                timer5.Enabled = true;
-                timer5.Start();
-            }else
-            {
-                timer5.Stop();
-                timer5.Enabled = false;
+                Plotting_Loss();
             }
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            if ( checkBox4.Checked) checkBox8.Checked = true;
         }
     }
 }
