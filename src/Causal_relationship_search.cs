@@ -80,11 +80,13 @@ namespace WindowsFormsApplication1
                     if (c > 1.0 && c <= 1.5)
                     {
                         label26.BackColor = Color.FromArgb(196, 0, 196);
+                        label26.ForeColor = Color.FromArgb(255, 255, 255);
                         label26.Text = "潜在共通変数(未観測交絡)が存在しています";
                     }
                     if (c > 1.5)
                     {
-                        label26.ForeColor = Color.FromArgb(111, 0, 111);
+                        label26.BackColor = Color.FromArgb(111, 0, 111);
+                        label26.ForeColor = Color.FromArgb(255, 255, 255);
                         label26.Text = "潜在共通変数(未観測交絡)が存在してるため因果関係はおそらく間違っています";
                     }
                 }
