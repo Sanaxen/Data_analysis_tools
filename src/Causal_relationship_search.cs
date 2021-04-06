@@ -1385,7 +1385,7 @@ namespace WindowsFormsApplication1
             textBox13.Text = "1.0";
             textBox14.Text = "3.0";
             textBox15.Text = "0.9";
-            numericUpDown3.Value = 7000;
+            numericUpDown3.Value = 9000;
         }
 
         private void button14_Click(object sender, EventArgs e)
