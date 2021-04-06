@@ -38,6 +38,59 @@ namespace WindowsFormsApplication1
                 Form1.curDir + "\\lingam_loss_plot.plt", true);
         }
 
+        private void confounding_factors()
+        {
+            if (System.IO.File.Exists("confounding_factors.txt"))
+            {
+                timer4.Stop();
+                timer4.Enabled = false;
+                System.IO.StreamReader sr = new System.IO.StreamReader("confounding_factors.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                string dat = "";
+                if (sr != null)
+                {
+                    dat = sr.ReadToEnd();
+                }
+                sr.Close();
+
+                dat = dat.Replace("\n", "");
+                var c = float.Parse(dat);
+                var d = float.Parse(textBox15.Text);
+                label26.ForeColor = Color.FromArgb(0, 0, 0);
+                {
+                    if (c <= 0.2)
+                    {
+                        label26.BackColor = Color.FromArgb(0, 236, 0);
+                        label26.Text = "潜在共通変数(未観測交絡)は在りません";
+                    }
+                    if (c > 0.2 && c <= 0.5)
+                    {
+                        label26.BackColor = Color.FromArgb(183, 235, 1);
+                        label26.Text = "潜在共通変数(未観測交絡)はおそらく在りません";
+                    }
+                    if (c > 0.5 && c <= 0.7)
+                    {
+                        label26.BackColor = Color.FromArgb(183, 235, 1);
+                        label26.Text = "潜在共通変数(未観測交絡)が存在している疑いがあります";
+                    }
+                    if (c > 0.7 && c <= 1.0)
+                    {
+                        label26.BackColor = Color.FromArgb(250, 29, 89);
+                        label26.Text = "潜在共通変数(未観測交絡)が存在している疑いが濃厚です";
+                    }
+                    if (c > 1.0 && c <= 1.5)
+                    {
+                        label26.BackColor = Color.FromArgb(196, 0, 196);
+                        label26.Text = "潜在共通変数(未観測交絡)が存在しています";
+                    }
+                    if (c > 1.5)
+                    {
+                        label26.ForeColor = Color.FromArgb(111, 0, 111);
+                        label26.Text = "潜在共通変数(未観測交絡)が存在してるため因果関係はおそらく間違っています";
+                    }
+                }
+            }
+        }
+
         System.Diagnostics.Process process = null;
         public string output_string = "";
         void p_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
@@ -156,8 +209,20 @@ namespace WindowsFormsApplication1
 
                     if (System.IO.File.Exists("Digraph.bat"))
                     {
-                        var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
-                        if (ss == DialogResult.OK)
+                        if (!timer4.Enabled)
+                        {
+                            var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
+                            if (ss == DialogResult.OK)
+                            {
+                                if (System.IO.File.Exists("Digraph.png"))
+                                {
+                                    System.IO.File.Delete("Digraph.png");
+                                }
+                                timer3.Enabled = true;
+                                timer3.Start();
+                                System.Diagnostics.Process.Start("Digraph.bat");
+                            }
+                        }else
                         {
                             if (System.IO.File.Exists("Digraph.png"))
                             {
@@ -221,7 +286,7 @@ namespace WindowsFormsApplication1
                     }
                     if (System.IO.File.Exists("confounding_factors.txt"))
                     {
-                        label26.Text = "未観測の潜在共通変数が存在している可能性があります";
+                        confounding_factors();
                     }
                 }
             }
@@ -259,6 +324,10 @@ namespace WindowsFormsApplication1
         private void Causal_relationship_search_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
+
+            timer4.Enabled = false;
+            timer4.Stop();
+
             if (running != 0)
             {
                 MessageBox.Show("未だ処理中のタスクが有ります\nしばらくお待ちください");
@@ -592,19 +661,31 @@ namespace WindowsFormsApplication1
                     proc.Start();
                     proc.WaitForExit();
 
-                    if (System.IO.File.Exists("Digraph.bat"))
+                    if (!timer4.Enabled)
                     {
-                        var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
-                        if (ss == DialogResult.OK)
+                        if (System.IO.File.Exists("Digraph.bat"))
                         {
-                            if (System.IO.File.Exists("Digraph.png"))
+                            var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
+                            if (ss == DialogResult.OK)
                             {
-                                System.IO.File.Delete("Digraph.png");
+                                if (System.IO.File.Exists("Digraph.png"))
+                                {
+                                    System.IO.File.Delete("Digraph.png");
+                                }
+                                timer3.Enabled = true;
+                                timer3.Start();
+                                System.Diagnostics.Process.Start("Digraph.bat");
                             }
-                            timer3.Enabled = true;
-                            timer3.Start();
-                            System.Diagnostics.Process.Start("Digraph.bat");
                         }
+                    }else
+                    {
+                        if (System.IO.File.Exists("Digraph.png"))
+                        {
+                            System.IO.File.Delete("Digraph.png");
+                        }
+                        timer3.Enabled = true;
+                        timer3.Start();
+                        System.Diagnostics.Process.Start("Digraph.bat");
                     }
                     if (System.IO.File.Exists("Digraph.png"))
                     {
@@ -663,7 +744,7 @@ namespace WindowsFormsApplication1
         {
             try
             {
-                save_model("lingam.model");
+                if ( !timer4.Enabled )save_model("lingam.model");
             }
             catch { }
 
@@ -919,13 +1000,22 @@ namespace WindowsFormsApplication1
                     running = 0;
                     checkBox6.Checked = true;
                     button10.Enabled = false;
+
+                    timer4.Start();
+                    timer4.Enabled = true;
                     process_batch.Start();
+
+                    if ( checkBox4.Checked) Plotting_Loss();
                     return;
                 }
                 try
                 {
                     process.Start();
                     process.BeginOutputReadLine();
+                    if (checkBox6.Checked && checkBox4.Checked && !checkBox8.Checked)
+                    {
+                        process.WaitForExit();
+                    }
                 }
                 catch (Exception)
                 {
@@ -952,10 +1042,6 @@ namespace WindowsFormsApplication1
                 timer1.Enabled = true;
                 this.TopMost = true;
                 this.TopMost = false;
-            }
-            if (checkBox4.Checked && !checkBox6.Checked)
-            {
-                Plotting_Loss();
             }
         }
 
@@ -1165,6 +1251,8 @@ namespace WindowsFormsApplication1
 
         private void button10_Click(object sender, EventArgs e)
         {
+            timer4.Stop();
+            timer4.Enabled = false;
             if (process != null)
             {
                 try
@@ -1272,6 +1360,8 @@ namespace WindowsFormsApplication1
                 checkBox8.Checked = false;
             }else
             {
+                timer4.Stop();
+                timer4.Enabled = false;
                 button6.Text = "解析";
                 if ( checkBox4.Checked)
                 {
@@ -1396,6 +1486,28 @@ namespace WindowsFormsApplication1
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             if ( checkBox4.Checked) checkBox8.Checked = true;
+            else checkBox8.Checked = false;
+        }
+
+        private void timer4_Tick_1(object sender, EventArgs e)
+        {
+            if ( checkBox6.Checked && checkBox8.Checked)
+            {
+                metroButton5_Click(sender, e);
+            }
+        }
+
+        private void timer4_Tick_2(object sender, EventArgs e)
+        {
+            if (checkBox6.Checked && checkBox4.Checked && !checkBox8.Checked)
+            {
+                metroButton5_Click(sender, e);
+            }
+
+            if (System.IO.File.Exists("confounding_factors.txt"))
+            {
+                confounding_factors();
+            }
         }
     }
 }
