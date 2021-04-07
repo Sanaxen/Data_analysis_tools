@@ -65,7 +65,7 @@ namespace WindowsFormsApplication1
                         label26.BackColor = Color.FromArgb(0, 236, 0);
                         label26.Text = "潜在共通変数(未観測交絡)は在りません";
                     }
-                    if (c > 0.2 && c <= 0.5)
+                    if (c > 0.2 && c <= 0.65)
                     {
                         label26.BackColor = Color.FromArgb(183, 235, 1);
                         label26.Text = "潜在共通変数(未観測交絡)はおそらく在りません";
@@ -73,7 +73,7 @@ namespace WindowsFormsApplication1
                     if (c > 0.5 && c <= 0.7)
                     {
                         label26.BackColor = Color.FromArgb(183, 235, 1);
-                        label26.Text = "潜在共通変数(未観測交絡)が存在している疑いがあります";
+                        label26.Text = "潜在共通変数(未観測交絡)がある可能性は否定できません";
                     }
                     if (c > 0.7 && c <= 1.0)
                     {
