@@ -7,6 +7,7 @@ Applications that make the most of **R** without writing **R** programs
 <img src="./images/image00.png"/>
 
 **R** is one of the most reliable data analysis tools in the world, but it requires programming in R language. I would like to use that R and its package in non-programming as a GUI application used in the backend.  
+[LiNGAM](https://github.com/Sanaxen/Statistical_analysis/blob/master/example/LiNGAM/LiNGAM_md/LiNGAM.md)
 - - -
 ## Future  
 - Advanced predictive model can be created only with GUI.
