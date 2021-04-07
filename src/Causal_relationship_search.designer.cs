@@ -521,7 +521,7 @@
             this.numericUpDown3.Size = new System.Drawing.Size(75, 22);
             this.numericUpDown3.TabIndex = 49;
             this.numericUpDown3.Value = new decimal(new int[] {
-            7000,
+            9000,
             0,
             0,
             0});
@@ -1011,7 +1011,7 @@
             this.label26.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label26.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label26.ForeColor = System.Drawing.Color.Gray;
-            this.label26.Location = new System.Drawing.Point(1181, 52);
+            this.label26.Location = new System.Drawing.Point(942, 41);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(134, 17);
             this.label26.TabIndex = 32;
