@@ -23,6 +23,7 @@ namespace WindowsFormsApplication1
         public ImageView _ImageView2;
         System.Windows.Forms.ToolTip toolTip1;
         string command_line = "";
+        bool loss_plot = false;
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
@@ -44,6 +45,8 @@ namespace WindowsFormsApplication1
             {
                 timer4.Stop();
                 timer4.Enabled = false;
+                loss_plot = false;
+
                 System.IO.StreamReader sr = new System.IO.StreamReader("confounding_factors.txt", Encoding.GetEncoding("SHIFT_JIS"));
                 string dat = "";
                 if (sr != null)
@@ -329,6 +332,7 @@ namespace WindowsFormsApplication1
 
             timer4.Enabled = false;
             timer4.Stop();
+            loss_plot = false;
 
             if (running != 0)
             {
@@ -1003,11 +1007,11 @@ namespace WindowsFormsApplication1
                     checkBox6.Checked = true;
                     button10.Enabled = false;
 
+                    loss_plot = false;
                     timer4.Start();
                     timer4.Enabled = true;
                     process_batch.Start();
 
-                    if ( checkBox4.Checked) Plotting_Loss();
                     return;
                 }
                 try
@@ -1255,6 +1259,7 @@ namespace WindowsFormsApplication1
         {
             timer4.Stop();
             timer4.Enabled = false;
+            loss_plot = false;
             if (process != null)
             {
                 try
@@ -1364,6 +1369,7 @@ namespace WindowsFormsApplication1
             {
                 timer4.Stop();
                 timer4.Enabled = false;
+                loss_plot = false;
                 button6.Text = "解析";
                 if ( checkBox4.Checked)
                 {
@@ -1501,6 +1507,12 @@ namespace WindowsFormsApplication1
 
         private void timer4_Tick_2(object sender, EventArgs e)
         {
+            if (checkBox4.Checked && !loss_plot)
+            {
+                Plotting_Loss();
+                loss_plot = true;
+            }
+
             if (checkBox6.Checked && checkBox4.Checked && !checkBox8.Checked)
             {
                 metroButton5_Click(sender, e);
