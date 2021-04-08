@@ -24,6 +24,7 @@ namespace WindowsFormsApplication1
         System.Windows.Forms.ToolTip toolTip1;
         string command_line = "";
         bool loss_plot = false;
+        int BlinkingLabel_count = 0;
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
@@ -46,6 +47,7 @@ namespace WindowsFormsApplication1
                 timer4.Stop();
                 timer4.Enabled = false;
                 loss_plot = false;
+                BlinkingLabel_count = 0;
 
                 System.IO.StreamReader sr = new System.IO.StreamReader("confounding_factors.txt", Encoding.GetEncoding("SHIFT_JIS"));
                 string dat = "";
@@ -78,6 +80,7 @@ namespace WindowsFormsApplication1
                     if (c > 0.7 && c <= 1.0)
                     {
                         label26.BackColor = Color.FromArgb(250, 29, 89);
+                        label26.ForeColor = Color.FromArgb(255, 255, 255);
                         label26.Text = "潜在共通変数(未観測交絡)が存在している疑いが濃厚です";
                     }
                     if (c > 1.0 && c <= 1.5)
@@ -93,6 +96,8 @@ namespace WindowsFormsApplication1
                         label26.Text = "潜在共通変数(未観測交絡)が存在してるため因果関係はおそらく間違っています";
                     }
                 }
+                timer5.Enabled = true;
+                timer5.Start();
             }
         }
 
@@ -1522,6 +1527,30 @@ namespace WindowsFormsApplication1
             {
                 confounding_factors();
             }
+        }
+
+        Color BlinkingLabel_Color;
+
+        private void timer5_Tick_1(object sender, EventArgs e)
+        {
+            if (BlinkingLabel_count == 0)
+            {
+                BlinkingLabel_Color = label26.BackColor;
+            }
+            if (BlinkingLabel_count > 10)
+            {
+                timer5.Stop();
+                timer5.Enabled = false;
+                BlinkingLabel_count = 0;
+                label26.BackColor = BlinkingLabel_Color;
+                return;
+            }
+            // 反転処理
+            label26.BackColor = Color.FromArgb(
+                            label26.BackColor.R ^ 0xFF,
+                            label26.BackColor.G ^ 0xFF,
+                            label26.BackColor.B ^ 0xFF);
+            BlinkingLabel_count++;
         }
     }
 }
