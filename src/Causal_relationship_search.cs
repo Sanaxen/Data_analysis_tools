@@ -1395,10 +1395,10 @@ namespace WindowsFormsApplication1
         private void button13_Click(object sender, EventArgs e)
         {
             textBox12.Text = "0.95";
-            textBox13.Text = "1.0";
+            textBox13.Text = "0.1";
             textBox14.Text = "3.0";
             textBox15.Text = "0.9";
-            numericUpDown3.Value = 9000;
+            numericUpDown3.Value = 7000;
         }
 
         private void button14_Click(object sender, EventArgs e)
@@ -1551,6 +1551,23 @@ namespace WindowsFormsApplication1
                             label26.BackColor.G ^ 0xFF,
                             label26.BackColor.B ^ 0xFF);
             BlinkingLabel_count++;
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "1000";
+            textBox2.Text = "0.0001";
+
+            textBox10.Text = "10000";
+            textBox4.Text = "0.0";
+            textBox9.Text = "0.0001";
+
+            textBox5.Text = "0.0";
+            textBox6.Text = "0.01";
+            textBox11.Text = "0.01";
+            //
+            textBox7.Text = "0.0";
+            textBox8.Text = "0.0";
         }
     }
 }
