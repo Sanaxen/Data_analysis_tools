@@ -62,22 +62,22 @@ namespace WindowsFormsApplication1
                 var d = float.Parse(textBox15.Text);
                 label26.ForeColor = Color.FromArgb(0, 0, 0);
                 {
-                    if (c <= 0.2)
+                    if (c <= 0.1)
                     {
                         label26.BackColor = Color.FromArgb(0, 236, 0);
                         label26.Text = "潜在共通変数(未観測交絡)は在りません";
                     }
-                    if (c > 0.2 && c <= 0.65)
+                    if (c > 0.1 && c <= 0.3)
                     {
                         label26.BackColor = Color.FromArgb(183, 235, 1);
                         label26.Text = "潜在共通変数(未観測交絡)はおそらく在りません";
                     }
-                    if (c > 0.5 && c <= 0.7)
+                    if (c > 0.3 && c <= 0.5)
                     {
                         label26.BackColor = Color.FromArgb(183, 235, 1);
                         label26.Text = "潜在共通変数(未観測交絡)がある可能性は否定できません";
                     }
-                    if (c > 0.7 && c <= 1.0)
+                    if (c > 0.5 && c <= 1.0)
                     {
                         label26.BackColor = Color.FromArgb(250, 29, 89);
                         label26.ForeColor = Color.FromArgb(255, 255, 255);
@@ -934,6 +934,14 @@ namespace WindowsFormsApplication1
 
                 process.StartInfo.Arguments += " --early_stopping  " + numericUpDown5.Value.ToString();
                 process.StartInfo.Arguments += " --confounding_factors_upper  " + textBox15.Text;
+
+                if (checkBox9.Checked)
+                {
+                    process.StartInfo.Arguments += " --view_confounding_factors  1";
+                }else
+                {
+                    process.StartInfo.Arguments += " --view_confounding_factors  0";
+                }
 
                 if (typeNG )
                 {
