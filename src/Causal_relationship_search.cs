@@ -67,17 +67,17 @@ namespace WindowsFormsApplication1
                         label26.BackColor = Color.FromArgb(0, 236, 0);
                         label26.Text = "潜在共通変数(未観測交絡)は在りません";
                     }
-                    if (c > 0.1 && c <= 0.3)
+                    if (c > 0.1 && c <= 0.2)
                     {
                         label26.BackColor = Color.FromArgb(183, 235, 1);
                         label26.Text = "潜在共通変数(未観測交絡)はおそらく在りません";
                     }
-                    if (c > 0.3 && c <= 0.5)
+                    if (c > 0.2 && c <= 0.6)
                     {
                         label26.BackColor = Color.FromArgb(183, 235, 1);
                         label26.Text = "潜在共通変数(未観測交絡)がある可能性は否定できません";
                     }
-                    if (c > 0.5 && c <= 1.0)
+                    if (c > 0.6 && c <= 1.0)
                     {
                         label26.BackColor = Color.FromArgb(250, 29, 89);
                         label26.ForeColor = Color.FromArgb(255, 255, 255);
@@ -101,6 +101,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+        System.Diagnostics.Process process_batch = null;
         System.Diagnostics.Process process = null;
         public string output_string = "";
         void p_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
@@ -753,6 +754,23 @@ namespace WindowsFormsApplication1
 
         private void metroButton5_Click(object sender, EventArgs e)
         {
+            if (checkBox8.Checked && !checkBox6.Checked)
+            {
+                if (process_batch != null)
+                {
+                    if (process_batch.HasExited)
+                    {
+                        MessageBox.Show("LiNGAMプロセスが実行終了しています");
+                        process_batch = null;
+                    }
+                    else
+                    {
+                        MessageBox.Show("LiNGAMプロセスが実行中です");
+                        return;
+                    }
+                }
+            }
+
             try
             {
                 if ( !timer4.Enabled )save_model("lingam.model");
@@ -1006,8 +1024,20 @@ namespace WindowsFormsApplication1
                 }
                 if (checkBox8.Checked && !checkBox6.Checked)
                 {
-                    System.Diagnostics.Process process_batch = 
-                        new System.Diagnostics.Process();
+                    if (process_batch != null)
+                    {
+                        if (process_batch.HasExited)
+                        {
+                            //MessageBox.Show("LiNGAMプロセスが実行終了しています");
+                            process_batch = null;
+                        }
+                        else
+                        {
+                            MessageBox.Show("LiNGAMプロセスが実行中です");
+                            return;
+                        }
+                    }
+                    process_batch = new System.Diagnostics.Process();
 
                     process_batch.StartInfo.FileName = process.StartInfo.FileName;
                     process_batch.StartInfo.Arguments = process.StartInfo.Arguments;
@@ -1018,11 +1048,13 @@ namespace WindowsFormsApplication1
                     process = null;
                     running = 0;
                     checkBox6.Checked = true;
-                    button10.Enabled = false;
+                    //button10.Enabled = false;
 
                     loss_plot = false;
                     timer4.Start();
                     timer4.Enabled = true;
+                    timer6.Start();
+                    timer6.Enabled = true;
                     process_batch.Start();
 
                     return;
@@ -1290,6 +1322,41 @@ namespace WindowsFormsApplication1
                     return;
                 }
             }
+            if (process_batch != null)
+            {
+                timer1.Stop();
+
+                if (process_batch.HasExited)
+                {
+
+                    //MessageBox.Show("LiNGAMプロセスが実行終了しています");
+                    process_batch = null;
+                }
+                else
+                {
+                    //MessageBox.Show("LiNGAMプロセスが実行中です");
+                    if (process_batch != null)
+                    {
+                        try
+                        {
+                            if (Form1.Send_CTRL_C(process_batch))
+                            {
+                                timer1.Stop();
+                                return;
+                            }
+                        }
+                        catch
+                        {
+                            timer1.Stop();
+                            if (!process_batch.HasExited) process_batch.Kill();
+                            return;
+                        }
+                    }
+                    process_batch = null;
+                    return;
+                }
+            }
+
         }
 
         private void Plotting_Loss()
@@ -1576,6 +1643,137 @@ namespace WindowsFormsApplication1
             //
             textBox7.Text = "0.0";
             textBox8.Text = "0.0";
+        }
+
+        private void timer6_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (process_batch != null && process_batch.HasExited)
+                {
+                    process_batch = null;
+                }
+
+                if (process_batch == null)
+                {
+                    timer6.Stop();
+                    timer6.Enabled = false;
+                    {
+                        string cmd = "error_distr <- read.csv( \"error_distr.csv\", ";
+                        cmd += "header=T";
+                        cmd += ", stringsAsFactors = F";
+                        //cmd += ", fileEncoding=\"UTF-8-BOM\"";
+                        cmd += ", na.strings=\"NULL\"";
+                        cmd += ")\r\n";
+
+                        string bak = form1.textBox1.Text;
+                        form1.textBox1.Text = cmd;
+                        try
+                        {
+                            form1.script_execute(sender, e);
+                            form1.comboBox3.Text = "error_distr";
+                            form1.comboBox1.Text = "";
+                            form1.ComboBoxItemAdd(form1.comboBox2, form1.comboBox3.Text);
+                            form1.comboBox2.Text = form1.comboBox3.Text;
+
+                        }
+                        catch { }
+                        form1.textBox1.Text = bak;
+                    }
+
+                    if (System.IO.File.Exists("Digraph.bat"))
+                    {
+                        if (!timer4.Enabled)
+                        {
+                            var ss = MessageBox.Show("グラフが複雑になる可能性があるため生成バッチを生成しました\nDigraph.bat\n実行しますか?", "", MessageBoxButtons.OKCancel);
+                            if (ss == DialogResult.OK)
+                            {
+                                if (System.IO.File.Exists("Digraph.png"))
+                                {
+                                    System.IO.File.Delete("Digraph.png");
+                                }
+                                timer3.Enabled = true;
+                                timer3.Start();
+                                System.Diagnostics.Process.Start("Digraph.bat");
+                            }
+                        }
+                        else
+                        {
+                            if (System.IO.File.Exists("Digraph.png"))
+                            {
+                                System.IO.File.Delete("Digraph.png");
+                            }
+                            timer3.Enabled = true;
+                            timer3.Start();
+                            System.Diagnostics.Process.Start("Digraph.bat");
+                        }
+                    }
+                    if (System.IO.File.Exists("Digraph.png"))
+                    {
+                        timer3.Stop();
+                        timer3.Enabled = false;
+                        for (int i = 0; i < 1000; i++)
+                        {
+                            if (!Form1.IsFileLocked("Digraph.png"))
+                            {
+                                break;
+                            }
+                            System.Threading.Thread.Sleep(300);
+                        }
+
+                        pictureBox1.ImageLocation = "Digraph.png";
+                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox1.Dock = DockStyle.Fill;
+                        pictureBox1.Show();
+                    }
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if (!Form1.IsFileLocked("causal_multi_histgram.png"))
+                        {
+                            break;
+                        }
+                        System.Threading.Thread.Sleep(300);
+                    }
+                    if (System.IO.File.Exists("causal_multi_histgram.png"))
+                    {
+                        pictureBox2.ImageLocation = "causal_multi_histgram.png";
+                        pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox2.Dock = DockStyle.Fill;
+                        pictureBox2.Show();
+                    }
+                    if (System.IO.File.Exists("select_variables.dat"))
+                    {
+                        System.IO.StreamReader sr = new System.IO.StreamReader("select_variables.dat", Encoding.GetEncoding("SHIFT_JIS"));
+                        string dat = "";
+                        if (sr != null)
+                        {
+                            dat = sr.ReadToEnd();
+                        }
+                        sr.Close();
+
+                        System.IO.StreamWriter sw = new System.IO.StreamWriter("select_variables.dat", false, Encoding.GetEncoding("SHIFT_JIS"));
+                        if (sw != null)
+                        {
+                            sw.Write("1\r\n");
+                            sw.Write(dat);
+                        }
+                        sw.Close();
+                    }
+                    if (System.IO.File.Exists("confounding_factors.txt"))
+                    {
+                        confounding_factors();
+                    }
+
+                    TopMost = true;
+                    TopMost = false;
+                }
+            }
+            catch
+            {
+            }
+            finally
+            {
+            }
         }
     }
 }
