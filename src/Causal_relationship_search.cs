@@ -519,6 +519,11 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
+                    if (ss[0].IndexOf("MI_bins") >= 0)
+                    {
+                        numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
                 }
                 sr.Close();
 
@@ -598,9 +603,10 @@ namespace WindowsFormsApplication1
                     sw.Write(prior_knowledge_file + "\r\n");
 
                     sw.Write("early_stopping,"); sw.Write(numericUpDown5.Value.ToString() + "\r\n");
-                 sw.Write("eval_mode,");
+                    sw.Write("eval_mode,");
                     if (checkBox6.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
+                    sw.Write("MI_bins,"); sw.Write(numericUpDown6.Value.ToString() + "\r\n");
 
                     sw.Close();
                 }
@@ -1474,6 +1480,7 @@ namespace WindowsFormsApplication1
             textBox14.Text = "3.0";
             textBox15.Text = "0.9";
             numericUpDown3.Value = 7000;
+            numericUpDown6.Value = 30;
         }
 
         private void button14_Click(object sender, EventArgs e)
