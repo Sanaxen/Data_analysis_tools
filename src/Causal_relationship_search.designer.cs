@@ -137,6 +137,8 @@
             this.timer4 = new System.Windows.Forms.Timer(this.components);
             this.timer5 = new System.Windows.Forms.Timer(this.components);
             this.timer6 = new System.Windows.Forms.Timer(this.components);
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.label29 = new System.Windows.Forms.Label();
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -158,6 +160,7 @@
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             this.SuspendLayout();
             // 
             // panel4
@@ -273,6 +276,8 @@
             // panel11
             // 
             this.panel11.BackColor = System.Drawing.SystemColors.Info;
+            this.panel11.Controls.Add(this.label29);
+            this.panel11.Controls.Add(this.numericUpDown6);
             this.panel11.Controls.Add(this.button17);
             this.panel11.Controls.Add(this.textBox15);
             this.panel11.Controls.Add(this.label28);
@@ -303,7 +308,7 @@
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(256, 109);
+            this.button17.Location = new System.Drawing.Point(413, 111);
             this.button17.Margin = new System.Windows.Forms.Padding(4);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(100, 29);
@@ -403,7 +408,7 @@
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(468, 62);
+            this.button13.Location = new System.Drawing.Point(596, 61);
             this.button13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(99, 22);
@@ -1368,6 +1373,32 @@
             // 
             this.timer6.Tick += new System.EventHandler(this.timer6_Tick);
             // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.Location = new System.Drawing.Point(515, 60);
+            this.numericUpDown6.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(52, 22);
+            this.numericUpDown6.TabIndex = 72;
+            this.numericUpDown6.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(472, 62);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(37, 15);
+            this.label29.TabIndex = 73;
+            this.label29.Text = "積分";
+            // 
             // Causal_relationship_search
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1413,6 +1444,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1526,5 +1558,7 @@
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.CheckBox checkBox9;
         private System.Windows.Forms.Timer timer6;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.NumericUpDown numericUpDown6;
     }
 }
