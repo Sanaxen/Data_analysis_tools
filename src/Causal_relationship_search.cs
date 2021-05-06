@@ -967,6 +967,7 @@ namespace WindowsFormsApplication1
                     process.StartInfo.Arguments += " --view_confounding_factors  0";
                 }
 
+                process.StartInfo.Arguments += " --bins " + numericUpDown6.Value.ToString();
                 if (typeNG )
                 {
                     MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
