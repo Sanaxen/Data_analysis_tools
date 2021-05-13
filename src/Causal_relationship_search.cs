@@ -364,11 +364,6 @@ namespace WindowsFormsApplication1
 
         public void load_model(string modelfile, object sender, EventArgs e)
         {
-            if ( form17_ == null)
-            {
-                form17_ = new Form17();
-                form17_.Hide();
-            }
             Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
 
             System.IO.StreamReader sr = new System.IO.StreamReader(modelfile + ".options", Encoding.GetEncoding("SHIFT_JIS"));
