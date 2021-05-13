@@ -27,7 +27,7 @@ namespace WindowsFormsApplication1
         bool loss_plot = false;
         int BlinkingLabel_count = 0;
 
-        Form17 form17_ = null;
+        public Form17 form17_ = null;
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
