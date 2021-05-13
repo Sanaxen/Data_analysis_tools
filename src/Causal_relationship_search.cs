@@ -21,10 +21,13 @@ namespace WindowsFormsApplication1
         public Form1 form1;
         public ImageView _ImageView;
         public ImageView _ImageView2;
+        public ImageView _ImageView3;
         System.Windows.Forms.ToolTip toolTip1;
         string command_line = "";
         bool loss_plot = false;
         int BlinkingLabel_count = 0;
+
+        Form17 form17_ = null;
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
@@ -59,7 +62,7 @@ namespace WindowsFormsApplication1
 
                 dat = dat.Replace("\n", "");
                 var c = float.Parse(dat);
-                var d = float.Parse(textBox15.Text);
+                var d = float.Parse(form17_.textBox15.Text);
                 label26.ForeColor = Color.FromArgb(0, 0, 0);
                 {
                     if (c <= 0.1)
@@ -326,6 +329,9 @@ namespace WindowsFormsApplication1
 "
             ;
             toolTip1.SetToolTip(label3, t);
+
+            form17_ = new Form17();
+            form17_.Hide();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -358,6 +364,11 @@ namespace WindowsFormsApplication1
 
         public void load_model(string modelfile, object sender, EventArgs e)
         {
+            if ( form17_ == null)
+            {
+                form17_ = new Form17();
+                form17_.Hide();
+            }
             Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
 
             System.IO.StreamReader sr = new System.IO.StreamReader(modelfile + ".options", Encoding.GetEncoding("SHIFT_JIS"));
@@ -406,7 +417,7 @@ namespace WindowsFormsApplication1
                     }
                     if (ss[0].IndexOf("knowledge_rate") >= 0)
                     {
-                        numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        form17_.numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
 
@@ -414,7 +425,7 @@ namespace WindowsFormsApplication1
                     {
                         prior_knowledge_file = ss[1].Replace("\r\n", "");
                         openFileDialog1.FileName = prior_knowledge_file;
-                        label23.Text = System.IO.Path.GetFileName(prior_knowledge_file);
+                        form17_.label23.Text = System.IO.Path.GetFileName(prior_knowledge_file);
                         continue;
                     }
 
@@ -422,11 +433,11 @@ namespace WindowsFormsApplication1
                     {
                         if (ss[1].Replace("\r\n", "") == "true")
                         {
-                            checkBox7.Checked = true;
+                            form17_.checkBox7.Checked = true;
                         }
                         else
                         {
-                            checkBox7.Checked = false;
+                            form17_.checkBox7.Checked = false;
                         }
                         continue;
                     }
@@ -489,22 +500,22 @@ namespace WindowsFormsApplication1
                     }
                     if (ss[0].IndexOf("latent_alp") >= 0)
                     {
-                        textBox12.Text = ss[1].Replace("\r\n", "");
+                        form17_.textBox12.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
                     if (ss[0].IndexOf("latent_beta") >= 0)
                     {
-                        textBox13.Text = ss[1].Replace("\r\n", "");
+                        form17_.textBox13.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
                     if (ss[0].IndexOf("latent_rho") >= 0)
                     {
-                        textBox14.Text = ss[1].Replace("\r\n", "");
+                        form17_.textBox14.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
                     if (ss[0].IndexOf("early_stopping") >= 0)
                     {
-                        numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        form17_.numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
                     if (ss[0].IndexOf("eval_mode") >= 0)
@@ -521,7 +532,7 @@ namespace WindowsFormsApplication1
                     }
                     if (ss[0].IndexOf("MI_bins") >= 0)
                     {
-                        numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        form17_.numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
                 }
@@ -590,23 +601,23 @@ namespace WindowsFormsApplication1
                     if (checkBox4.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
                     sw.Write("sampleing,"); sw.Write(numericUpDown3.Value.ToString() + "\r\n");
-                    sw.Write("latent_alp,"); sw.Write(textBox12.Text + "\r\n");
-                    sw.Write("latent_beta,"); sw.Write(textBox13.Text + "\r\n");
-                    sw.Write("latent_rho,"); sw.Write(textBox14.Text + "\r\n");
+                    sw.Write("latent_alp,"); sw.Write(form17_.textBox12.Text + "\r\n");
+                    sw.Write("latent_beta,"); sw.Write(form17_.textBox13.Text + "\r\n");
+                    sw.Write("latent_rho,"); sw.Write(form17_.textBox14.Text + "\r\n");
 
                     sw.Write("knowledge,");
-                    if (checkBox7.Checked) sw.Write("true\r\n");
+                    if (form17_.checkBox7.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
 
-                    sw.Write("knowledge_rate,"); sw.Write(numericUpDown4.Value.ToString() + "\r\n");
+                    sw.Write("knowledge_rate,"); sw.Write(form17_.numericUpDown4.Value.ToString() + "\r\n");
                     sw.Write("knowledge_file,");
                     sw.Write(prior_knowledge_file + "\r\n");
 
-                    sw.Write("early_stopping,"); sw.Write(numericUpDown5.Value.ToString() + "\r\n");
+                    sw.Write("early_stopping,"); sw.Write(form17_.numericUpDown5.Value.ToString() + "\r\n");
                     sw.Write("eval_mode,");
                     if (checkBox6.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
-                    sw.Write("MI_bins,"); sw.Write(numericUpDown6.Value.ToString() + "\r\n");
+                    sw.Write("MI_bins,"); sw.Write(form17_.numericUpDown6.Value.ToString() + "\r\n");
 
                     sw.Close();
                 }
@@ -823,6 +834,11 @@ namespace WindowsFormsApplication1
                 {
                     System.IO.File.Delete("lingam.lock_");
                 }
+                if (System.IO.File.Exists("input_histgram.png"))
+                {
+                    System.IO.File.Delete("input_histgram.png");
+                }
+                //
 
                 process = new System.Diagnostics.Process();
 
@@ -936,10 +952,10 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --load_model lingam.model";
                 }
-                process.StartInfo.Arguments += " --temperature_alp " + textBox12.Text;
-                process.StartInfo.Arguments += " --distribution_rate " + textBox13.Text;
+                process.StartInfo.Arguments += " --temperature_alp " + form17_.textBox12.Text;
+                process.StartInfo.Arguments += " --distribution_rate " + form17_.textBox13.Text;
 
-                if (checkBox7.Checked)
+                if (form17_.checkBox7.Checked)
                 {
                     if ( !checkBox4.Checked)
                     {
@@ -953,11 +969,11 @@ namespace WindowsFormsApplication1
                         MessageBox.Show("事前知識が設定されていません");
                     }
                 }
-                process.StartInfo.Arguments += " --rho " + textBox14.Text;
-                process.StartInfo.Arguments += " --prior_knowledge_rate  " + ((double)numericUpDown4.Value * 0.01).ToString();
+                process.StartInfo.Arguments += " --rho " + form17_.textBox14.Text;
+                process.StartInfo.Arguments += " --prior_knowledge_rate  " + ((double)form17_.numericUpDown4.Value * 0.01).ToString();
 
-                process.StartInfo.Arguments += " --early_stopping  " + numericUpDown5.Value.ToString();
-                process.StartInfo.Arguments += " --confounding_factors_upper  " + textBox15.Text;
+                process.StartInfo.Arguments += " --early_stopping  " + form17_.numericUpDown5.Value.ToString();
+                process.StartInfo.Arguments += " --confounding_factors_upper  " + form17_.textBox15.Text;
 
                 if (checkBox9.Checked)
                 {
@@ -967,10 +983,17 @@ namespace WindowsFormsApplication1
                     process.StartInfo.Arguments += " --view_confounding_factors  0";
                 }
 
-                process.StartInfo.Arguments += " --bins " + numericUpDown6.Value.ToString();
+                process.StartInfo.Arguments += " --bins " + form17_.numericUpDown6.Value.ToString();
                 if (typeNG )
                 {
                     MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
+                }
+                if (checkBox8.Checked && !checkBox6.Checked)
+                {
+                    if (checkBox7.Checked)
+                    {
+                        process.StartInfo.Arguments += " --pause 1";
+                    }
                 }
 
                 command_line = process.StartInfo.Arguments;
@@ -1028,6 +1051,7 @@ namespace WindowsFormsApplication1
                 if (checkBox6.Checked )
                 {
                     checkBox8.Checked = false;
+                    checkBox7.Checked = false;
                 }
                 if (checkBox8.Checked && !checkBox6.Checked)
                 {
@@ -1452,7 +1476,9 @@ namespace WindowsFormsApplication1
             {
                 button6.Text = "評価";
                 checkBox8.Checked = false;
-            }else
+                checkBox7.Checked = false;
+            }
+            else
             {
                 timer4.Stop();
                 timer4.Enabled = false;
@@ -1461,27 +1487,17 @@ namespace WindowsFormsApplication1
                 if ( checkBox4.Checked)
                 {
                     checkBox8.Checked = true;
+                    checkBox7.Checked = true;
                 }
             }
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                prior_knowledge_file = openFileDialog1.FileName;
-                label23.Text = System.IO.Path.GetFileName(prior_knowledge_file);
-            }
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
-            textBox12.Text = "0.95";
-            textBox13.Text = "0.1";
-            textBox14.Text = "3.0";
-            textBox15.Text = "0.9";
-            numericUpDown3.Value = 7000;
-            numericUpDown6.Value = 30;
         }
 
         private void button14_Click(object sender, EventArgs e)
@@ -1581,7 +1597,11 @@ namespace WindowsFormsApplication1
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
-            if ( checkBox4.Checked) checkBox8.Checked = true;
+            if (checkBox4.Checked)
+            {
+                checkBox8.Checked = true;
+                checkBox7.Checked = true;
+            }
             else checkBox8.Checked = false;
         }
 
@@ -1781,6 +1801,25 @@ namespace WindowsFormsApplication1
             }
             finally
             {
+            }
+        }
+
+        private void button12_Click_1(object sender, EventArgs e)
+        {
+            form17_._form = this;
+            form17_.Show();
+        }
+
+        private void button13_Click_1(object sender, EventArgs e)
+        {
+            if (_ImageView3 == null) _ImageView3 = new ImageView();
+            _ImageView3.form1 = this.form1;
+            if (System.IO.File.Exists("input_histgram.png"))
+            {
+                _ImageView3.pictureBox1.ImageLocation = "input_histgram.png";
+                _ImageView3.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                _ImageView3.pictureBox1.Dock = DockStyle.Fill;
+                _ImageView3.Show();
             }
         }
     }

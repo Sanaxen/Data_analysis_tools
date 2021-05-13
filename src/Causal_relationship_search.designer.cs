@@ -35,26 +35,13 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.splitter3 = new System.Windows.Forms.Splitter();
             this.panel9 = new System.Windows.Forms.Panel();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.button13 = new System.Windows.Forms.Button();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.panel11 = new System.Windows.Forms.Panel();
-            this.button17 = new System.Windows.Forms.Button();
-            this.textBox15 = new System.Windows.Forms.TextBox();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.textBox14 = new System.Windows.Forms.TextBox();
-            this.button13 = new System.Windows.Forms.Button();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.label23 = new System.Windows.Forms.Label();
             this.button12 = new System.Windows.Forms.Button();
-            this.label21 = new System.Windows.Forms.Label();
-            this.textBox13 = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.button17 = new System.Windows.Forms.Button();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
@@ -72,7 +59,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter2 = new System.Windows.Forms.Splitter();
@@ -81,7 +67,6 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.このグラフをレポートに追加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter1 = new System.Windows.Forms.Splitter();
@@ -137,30 +122,30 @@
             this.timer4 = new System.Windows.Forms.Timer(this.components);
             this.timer5 = new System.Windows.Forms.Timer(this.components);
             this.timer6 = new System.Windows.Forms.Timer(this.components);
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.label29 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
             this.panel11.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.contextMenuStrip2.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel4
@@ -178,7 +163,7 @@
             this.panel4.Controls.Add(this.panel1);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1857, 985);
             this.panel4.TabIndex = 9;
@@ -187,7 +172,7 @@
             // 
             this.button11.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button11.Location = new System.Drawing.Point(509, 111);
-            this.button11.Margin = new System.Windows.Forms.Padding(4);
+            this.button11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(105, 22);
             this.button11.TabIndex = 59;
@@ -202,7 +187,7 @@
             this.panel10.Controls.Add(this.splitter3);
             this.panel10.Controls.Add(this.panel9);
             this.panel10.Location = new System.Drawing.Point(619, 119);
-            this.panel10.Margin = new System.Windows.Forms.Padding(4);
+            this.panel10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(1229, 846);
             this.panel10.TabIndex = 50;
@@ -211,7 +196,7 @@
             // 
             this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox3.Location = new System.Drawing.Point(0, 648);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -224,7 +209,7 @@
             this.splitter3.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter3.Dock = System.Windows.Forms.DockStyle.Top;
             this.splitter3.Location = new System.Drawing.Point(0, 636);
-            this.splitter3.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitter3.Name = "splitter3";
             this.splitter3.Size = new System.Drawing.Size(1229, 12);
             this.splitter3.TabIndex = 50;
@@ -232,7 +217,7 @@
             // 
             // panel9
             // 
-            this.panel9.Controls.Add(this.checkBox9);
+            this.panel9.Controls.Add(this.button13);
             this.panel9.Controls.Add(this.checkBox6);
             this.panel9.Controls.Add(this.panel11);
             this.panel9.Controls.Add(this.panel2);
@@ -244,21 +229,21 @@
             this.panel9.Controls.Add(this.panel7);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel9.Location = new System.Drawing.Point(0, 0);
-            this.panel9.Margin = new System.Windows.Forms.Padding(4);
+            this.panel9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(1229, 636);
             this.panel9.TabIndex = 49;
             // 
-            // checkBox9
+            // button13
             // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(336, 160);
-            this.checkBox9.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(176, 19);
-            this.checkBox9.TabIndex = 52;
-            this.checkBox9.Text = "未観測交絡の場所推定";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.button13.Location = new System.Drawing.Point(489, 56);
+            this.button13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(137, 29);
+            this.button13.TabIndex = 61;
+            this.button13.Text = "変数の分布状況";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click_1);
             // 
             // checkBox6
             // 
@@ -276,103 +261,56 @@
             // panel11
             // 
             this.panel11.BackColor = System.Drawing.SystemColors.Info;
-            this.panel11.Controls.Add(this.label29);
-            this.panel11.Controls.Add(this.numericUpDown6);
-            this.panel11.Controls.Add(this.button17);
-            this.panel11.Controls.Add(this.textBox15);
-            this.panel11.Controls.Add(this.label28);
-            this.panel11.Controls.Add(this.label27);
-            this.panel11.Controls.Add(this.numericUpDown5);
-            this.panel11.Controls.Add(this.numericUpDown4);
-            this.panel11.Controls.Add(this.checkBox8);
-            this.panel11.Controls.Add(this.label25);
-            this.panel11.Controls.Add(this.textBox14);
-            this.panel11.Controls.Add(this.button13);
             this.panel11.Controls.Add(this.checkBox7);
-            this.panel11.Controls.Add(this.label23);
             this.panel11.Controls.Add(this.button12);
-            this.panel11.Controls.Add(this.label21);
-            this.panel11.Controls.Add(this.textBox13);
-            this.panel11.Controls.Add(this.label19);
-            this.panel11.Controls.Add(this.textBox12);
+            this.panel11.Controls.Add(this.checkBox9);
+            this.panel11.Controls.Add(this.button17);
+            this.panel11.Controls.Add(this.checkBox8);
             this.panel11.Controls.Add(this.label16);
             this.panel11.Controls.Add(this.label15);
             this.panel11.Controls.Add(this.checkBox4);
             this.panel11.Controls.Add(this.numericUpDown3);
-            this.panel11.Location = new System.Drawing.Point(496, 10);
+            this.panel11.Location = new System.Drawing.Point(689, 2);
             this.panel11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(717, 146);
+            this.panel11.Size = new System.Drawing.Size(525, 146);
             this.panel11.TabIndex = 50;
             this.panel11.Paint += new System.Windows.Forms.PaintEventHandler(this.panel11_Paint);
             // 
+            // button12
+            // 
+            this.button12.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button12.Location = new System.Drawing.Point(304, 118);
+            this.button12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(183, 29);
+            this.button12.TabIndex = 72;
+            this.button12.Text = "ハイパーパラメータ設定";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click_1);
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(324, 26);
+            this.checkBox9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(176, 19);
+            this.checkBox9.TabIndex = 52;
+            this.checkBox9.Text = "未観測交絡の場所推定";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(413, 111);
-            this.button17.Margin = new System.Windows.Forms.Padding(4);
+            this.button17.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button17.Location = new System.Drawing.Point(189, 48);
+            this.button17.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(100, 29);
+            this.button17.Size = new System.Drawing.Size(120, 29);
             this.button17.TabIndex = 71;
             this.button17.Text = "loss plot";
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // textBox15
-            // 
-            this.textBox15.Location = new System.Drawing.Point(413, 62);
-            this.textBox15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(49, 22);
-            this.textBox15.TabIndex = 69;
-            this.textBox15.Text = "0.9";
-            this.toolTip2.SetToolTip(this.textBox15, "残差同士の相互情報量の最大値でこの値を超えるときは未観測データがあると見なします。\r\nLiNGAMでは理論上はこの値はゼロで有るべきですが近似計算のため経験上１を" +
-        "超えるかどうかが閾値となります。");
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(253, 68);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(153, 15);
-            this.label28.TabIndex = 68;
-            this.label28.Text = "交絡因子無し判定閾値";
-            this.toolTip2.SetToolTip(this.label28, "交絡因子無し判定閾値\r\n残差同士の相互情報量がゼロなら交絡因子は無いものとする（LiNGAM条件）");
-            this.label28.Click += new System.EventHandler(this.label28_Click);
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(8, 102);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(94, 15);
-            this.label27.TabIndex = 65;
-            this.label27.Text = "early_stopping";
-            // 
-            // numericUpDown5
-            // 
-            this.numericUpDown5.Location = new System.Drawing.Point(117, 100);
-            this.numericUpDown5.Margin = new System.Windows.Forms.Padding(4);
-            this.numericUpDown5.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(79, 22);
-            this.numericUpDown5.TabIndex = 64;
-            // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.Location = new System.Drawing.Point(596, 10);
-            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(55, 22);
-            this.numericUpDown4.TabIndex = 63;
-            this.numericUpDown4.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
             // 
             // checkBox8
             // 
@@ -385,119 +323,13 @@
             this.checkBox8.Text = "console";
             this.checkBox8.UseVisualStyleBackColor = true;
             // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(171, 68);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(22, 15);
-            this.label25.TabIndex = 61;
-            this.label25.Text = "ρ";
-            this.toolTip2.SetToolTip(this.label25, "パラメータ探索の範囲\r\n殆どの場合は３のままでいいです。");
-            // 
-            // textBox14
-            // 
-            this.textBox14.Location = new System.Drawing.Point(199, 64);
-            this.textBox14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(49, 22);
-            this.textBox14.TabIndex = 60;
-            this.textBox14.Text = "3.0";
-            this.toolTip2.SetToolTip(this.textBox14, "残差同士が独立を優先する場合は大きく\r\n残差の総和を小さくするのを優先する場合は小さく");
-            this.textBox14.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
-            // 
-            // button13
-            // 
-            this.button13.Location = new System.Drawing.Point(596, 61);
-            this.button13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(99, 22);
-            this.button13.TabIndex = 59;
-            this.button13.Text = "デフォルト値";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
-            // 
-            // checkBox7
-            // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(501, 11);
-            this.checkBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(83, 19);
-            this.checkBox7.TabIndex = 58;
-            this.checkBox7.Text = "参照する";
-            this.checkBox7.UseVisualStyleBackColor = true;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(333, 32);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(87, 15);
-            this.label23.TabIndex = 57;
-            this.label23.Text = "----------";
-            // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(329, 9);
-            this.button12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(167, 22);
-            this.button12.TabIndex = 56;
-            this.button12.Text = "事前知識の選択";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(88, 68);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(22, 15);
-            this.label21.TabIndex = 55;
-            this.label21.Text = "β";
-            this.toolTip2.SetToolTip(this.label21, "０＜β で指定して下さい。\r\n収束経過を見て調整して下さい。ほとんどの場合は１のままで良い。");
-            // 
-            // textBox13
-            // 
-            this.textBox13.Location = new System.Drawing.Point(116, 64);
-            this.textBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(49, 22);
-            this.textBox13.TabIndex = 54;
-            this.textBox13.Text = "0.1";
-            this.toolTip2.SetToolTip(this.textBox13, "未観測データ（潜在変数）が多い場合は大きくする。\r\n未観測データ（潜在変数）が少ないと思われるなら小さくする。\r\n");
-            this.textBox13.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(7, 68);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(22, 15);
-            this.label19.TabIndex = 53;
-            this.label19.Text = "α";
-            this.toolTip2.SetToolTip(this.label19, "遷移確率関数\r\n基本的には最適な因果に繊維するが確率的に最適でない因果を採用することで局所解に落ち込むことを回避する");
-            // 
-            // textBox12
-            // 
-            this.textBox12.Location = new System.Drawing.Point(33, 64);
-            this.textBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(49, 22);
-            this.textBox12.TabIndex = 52;
-            this.textBox12.Text = "0.95";
-            this.toolTip2.SetToolTip(this.textBox12, "遷移確率関数\r\n確率的に最適でない因果を採用することで局所解に落ち込むことを回避する。\r\n0 < α < 1 の範囲で指定して下さい。\r\n大きい程広域に探索されま" +
-        "すが収束は遅くなります。");
-            this.textBox12.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
-            // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.BackColor = System.Drawing.Color.Blue;
             this.label16.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label16.ForeColor = System.Drawing.SystemColors.Info;
-            this.label16.Location = new System.Drawing.Point(611, 125);
+            this.label16.Location = new System.Drawing.Point(3, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(93, 17);
             this.label16.TabIndex = 51;
@@ -506,7 +338,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(88, 35);
+            this.label15.Location = new System.Drawing.Point(88, 54);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(59, 15);
             this.label15.TabIndex = 50;
@@ -515,7 +347,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(7, 8);
+            this.checkBox4.Location = new System.Drawing.Point(7, 26);
             this.checkBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(287, 19);
@@ -526,7 +358,12 @@
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(7, 32);
+            this.numericUpDown3.Increment = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Location = new System.Drawing.Point(7, 51);
             this.numericUpDown3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             1000000,
@@ -534,7 +371,7 @@
             0,
             0});
             this.numericUpDown3.Minimum = new decimal(new int[] {
-            1,
+            1000,
             0,
             0,
             0});
@@ -558,7 +395,7 @@
             this.panel2.Controls.Add(this.checkBox1);
             this.panel2.Controls.Add(this.checkBox2);
             this.panel2.Location = new System.Drawing.Point(3, 11);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(326, 144);
             this.panel2.TabIndex = 10;
@@ -596,7 +433,7 @@
             // numericUpDown1
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(85, 41);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(75, 22);
             this.numericUpDown1.TabIndex = 1;
@@ -609,7 +446,7 @@
             // numericUpDown2
             // 
             this.numericUpDown2.Location = new System.Drawing.Point(87, 108);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(72, 22);
             this.numericUpDown2.TabIndex = 5;
@@ -623,7 +460,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(4, 14);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(85, 19);
             this.checkBox1.TabIndex = 0;
@@ -648,7 +485,7 @@
             this.button10.BackColor = System.Drawing.Color.Red;
             this.button10.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button10.Location = new System.Drawing.Point(337, 12);
-            this.button10.Margin = new System.Windows.Forms.Padding(4);
+            this.button10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(144, 29);
             this.button10.TabIndex = 48;
@@ -664,7 +501,7 @@
             this.button6.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button6.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button6.Location = new System.Drawing.Point(337, 45);
-            this.button6.Margin = new System.Windows.Forms.Padding(4);
+            this.button6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(144, 40);
             this.button6.TabIndex = 27;
@@ -679,20 +516,20 @@
             this.label10.Location = new System.Drawing.Point(8, 161);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(64, 15);
+            this.label10.Size = new System.Drawing.Size(112, 15);
             this.label10.TabIndex = 42;
-            this.label10.Text = "Diagram";
+            this.label10.Text = "因果ダイアグラム";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label11.Location = new System.Drawing.Point(669, 159);
+            this.label11.Location = new System.Drawing.Point(669, 160);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(170, 15);
+            this.label11.Size = new System.Drawing.Size(116, 15);
             this.label11.TabIndex = 43;
-            this.label11.Text = "causal_multi_histogram";
+            this.label11.Text = "残差の分布状況";
             // 
             // panel8
             // 
@@ -702,22 +539,10 @@
             this.panel8.Controls.Add(this.splitter2);
             this.panel8.Controls.Add(this.panel6);
             this.panel8.Location = new System.Drawing.Point(672, 178);
-            this.panel8.Margin = new System.Windows.Forms.Padding(4);
+            this.panel8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(543, 450);
             this.panel8.TabIndex = 41;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.ContextMenuStrip = this.contextMenuStrip2;
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 44);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(541, 404);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 30;
-            this.pictureBox2.TabStop = false;
             // 
             // contextMenuStrip2
             // 
@@ -762,7 +587,7 @@
             this.button9.BackColor = System.Drawing.Color.Blue;
             this.button9.ForeColor = System.Drawing.Color.Yellow;
             this.button9.Location = new System.Drawing.Point(4, 4);
-            this.button9.Margin = new System.Windows.Forms.Padding(4);
+            this.button9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(131, 29);
             this.button9.TabIndex = 31;
@@ -773,7 +598,7 @@
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(251, 5);
-            this.button5.Margin = new System.Windows.Forms.Padding(4);
+            this.button5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(100, 29);
             this.button5.TabIndex = 34;
@@ -784,7 +609,7 @@
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(143, 4);
-            this.button8.Margin = new System.Windows.Forms.Padding(4);
+            this.button8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(100, 29);
             this.button8.TabIndex = 32;
@@ -800,22 +625,10 @@
             this.panel7.Controls.Add(this.splitter1);
             this.panel7.Controls.Add(this.panel5);
             this.panel7.Location = new System.Drawing.Point(11, 184);
-            this.panel7.Margin = new System.Windows.Forms.Padding(4);
+            this.panel7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(617, 444);
             this.panel7.TabIndex = 40;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 44);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(615, 398);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 30;
-            this.pictureBox1.TabStop = false;
             // 
             // contextMenuStrip1
             // 
@@ -860,7 +673,7 @@
             this.button7.BackColor = System.Drawing.Color.Blue;
             this.button7.ForeColor = System.Drawing.Color.Yellow;
             this.button7.Location = new System.Drawing.Point(4, 4);
-            this.button7.Margin = new System.Windows.Forms.Padding(4);
+            this.button7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(131, 29);
             this.button7.TabIndex = 31;
@@ -871,7 +684,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(251, 5);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 29);
             this.button3.TabIndex = 34;
@@ -882,7 +695,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(143, 4);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
+            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(100, 29);
             this.button4.TabIndex = 32;
@@ -902,7 +715,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(448, 110);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(60, 24);
             this.button1.TabIndex = 47;
@@ -913,7 +726,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(381, 110);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(61, 24);
             this.button2.TabIndex = 46;
@@ -991,7 +804,7 @@
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.textBox5);
             this.panel1.Location = new System.Drawing.Point(1, 8);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1849, 101);
             this.panel1.TabIndex = 8;
@@ -1156,7 +969,7 @@
             // 
             this.textBox4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox4.Location = new System.Drawing.Point(307, 20);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(47, 22);
             this.textBox4.TabIndex = 4;
@@ -1192,7 +1005,7 @@
             // 
             this.textBox9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox9.Location = new System.Drawing.Point(299, 50);
-            this.textBox9.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(55, 22);
             this.textBox9.TabIndex = 16;
@@ -1214,7 +1027,7 @@
             // 
             this.textBox10.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox10.Location = new System.Drawing.Point(119, 20);
-            this.textBox10.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(59, 22);
             this.textBox10.TabIndex = 20;
@@ -1253,7 +1066,7 @@
             // 
             this.textBox1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox1.Location = new System.Drawing.Point(112, 15);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(57, 22);
             this.textBox1.TabIndex = 0;
@@ -1264,7 +1077,7 @@
             // 
             this.textBox2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox2.Location = new System.Drawing.Point(112, 55);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(57, 22);
             this.textBox2.TabIndex = 1;
@@ -1373,31 +1186,39 @@
             // 
             this.timer6.Tick += new System.EventHandler(this.timer6_Tick);
             // 
-            // numericUpDown6
+            // pictureBox2
             // 
-            this.numericUpDown6.Location = new System.Drawing.Point(515, 60);
-            this.numericUpDown6.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(52, 22);
-            this.numericUpDown6.TabIndex = 72;
-            this.numericUpDown6.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
+            this.pictureBox2.ContextMenuStrip = this.contextMenuStrip2;
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 44);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(541, 404);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 30;
+            this.pictureBox2.TabStop = false;
             // 
-            // label29
+            // pictureBox1
             // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(472, 62);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(37, 15);
-            this.label29.TabIndex = 73;
-            this.label29.Text = "積分";
+            this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 44);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(615, 398);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 30;
+            this.pictureBox1.TabStop = false;
+            // 
+            // checkBox7
+            // 
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Location = new System.Drawing.Point(91, 122);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(147, 19);
+            this.checkBox7.TabIndex = 73;
+            this.checkBox7.Text = "コンソールを閉じない";
+            this.checkBox7.UseVisualStyleBackColor = true;
             // 
             // Causal_relationship_search
             // 
@@ -1406,7 +1227,7 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1857, 985);
             this.Controls.Add(this.panel4);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "Causal_relationship_search";
             this.Text = "Causal_relationship_search";
@@ -1421,8 +1242,6 @@
             this.panel9.PerformLayout();
             this.panel11.ResumeLayout(false);
             this.panel11.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -1430,12 +1249,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.contextMenuStrip2.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -1444,7 +1261,9 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1523,31 +1342,14 @@
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Panel panel11;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.NumericUpDown numericUpDown5;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
         private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.TextBox textBox14;
-        private System.Windows.Forms.Button button13;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.TextBox textBox13;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.TextBox textBox15;
-        private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.TextBox textBox16;
         private System.Windows.Forms.Button button16;
@@ -1558,7 +1360,11 @@
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.CheckBox checkBox9;
         private System.Windows.Forms.Timer timer6;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.NumericUpDown numericUpDown6;
+        private System.Windows.Forms.Button button12;
+        public System.Windows.Forms.NumericUpDown numericUpDown3;
+        public System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.CheckBox checkBox7;
     }
 }

@@ -251,6 +251,18 @@
     <Compile Include="Form12.Designer.cs">
       <DependentUpon>Form12.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form17.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form17.Designer.cs">
+      <DependentUpon>Form17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="input_text.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="input_text.Designer.cs">
+      <DependentUpon>input_text.cs</DependentUpon>
+    </Compile>
     <Compile Include="interactivePlot.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -610,6 +622,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form12.resx">
       <DependentUpon>Form12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form17.resx">
+      <DependentUpon>Form17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="input_text.resx">
+      <DependentUpon>input_text.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="interactivePlot.resx">
       <DependentUpon>interactivePlot.cs</DependentUpon>
