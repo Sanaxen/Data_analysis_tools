@@ -6560,7 +6560,12 @@ namespace WindowsFormsApplication1
             comboBox1.Text = "write.csv(df,\"tmp_Causal_relationship_search.csv\",row.names = FALSE)\r\n";
             evalute_cmd(sender, e);
 
-            if (_Causal_relationship_search == null) _Causal_relationship_search = new Causal_relationship_search();
+            if (_Causal_relationship_search == null)
+            {
+                _Causal_relationship_search = new Causal_relationship_search();
+                _Causal_relationship_search.form17_ = new Form17();
+                _Causal_relationship_search.form17_.Hide();
+            }
             _Causal_relationship_search.form1 = this;
             _Causal_relationship_search.BackColor = BackColor;
 
