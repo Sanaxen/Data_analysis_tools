@@ -530,6 +530,18 @@ namespace WindowsFormsApplication1
                         form17_.numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
+                    if (ss[0].IndexOf("intercept") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            form17_.checkBox1.Checked = true;
+                        }
+                        else
+                        {
+                            form17_.checkBox1.Checked = false;
+                        }
+                        continue;
+                    }
                 }
                 sr.Close();
 
@@ -614,6 +626,8 @@ namespace WindowsFormsApplication1
                     else sw.Write("false\r\n");
                     sw.Write("MI_bins,"); sw.Write(form17_.numericUpDown6.Value.ToString() + "\r\n");
 
+                    sw.Write("intercept,");
+                    if (form17_.checkBox1.Checked) sw.Write("true\r\n");
                     sw.Close();
                 }
             }
@@ -989,6 +1003,24 @@ namespace WindowsFormsApplication1
                     {
                         process.StartInfo.Arguments += " --pause 1";
                     }
+                }
+
+                if ( comboBox1.Text == "無し")
+                {
+                    process.StartInfo.Arguments += " --normalize_type 0";
+                }
+                if (comboBox1.Text == "正規化")
+                {
+                    process.StartInfo.Arguments += " --normalize_type 1";
+                }
+                if (comboBox1.Text == "標準化")
+                {
+                    process.StartInfo.Arguments += " --normalize_type 2";
+                }
+
+                if ( form17_.checkBox1.Checked)
+                {
+                    process.StartInfo.Arguments += " --use_intercept 1";
                 }
 
                 command_line = process.StartInfo.Arguments;

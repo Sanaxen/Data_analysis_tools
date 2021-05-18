@@ -29,7 +29,7 @@ namespace WindowsFormsApplication1
             textBox13.Text = "0.1";
             textBox14.Text = "3.0";
             textBox15.Text = "0.9";
-            _form.numericUpDown3.Value = 7000;
+            checkBox1.Checked = false;
             numericUpDown6.Value = 30;
         }
 
