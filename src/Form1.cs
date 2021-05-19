@@ -6569,6 +6569,13 @@ namespace WindowsFormsApplication1
             _Causal_relationship_search.form1 = this;
             _Causal_relationship_search.BackColor = BackColor;
 
+            _Causal_relationship_search.panel11.Enabled = false;
+            _Causal_relationship_search.label16.Text = "現時点ではご利用できません";
+            if (Environment.GetEnvironmentVariable("LINGAM_EXT") == "1")
+            {
+                _Causal_relationship_search.panel11.Enabled = true;
+                _Causal_relationship_search.label16.Text = "実験的な機能";
+            }
             string file = "tmp_Causal_relationship_search.csv";
             DateTime t = DateTime.Now;
 

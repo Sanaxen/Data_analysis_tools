@@ -362,12 +362,12 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.BackColor = System.Drawing.Color.Blue;
-            this.label16.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label16.ForeColor = System.Drawing.SystemColors.Info;
+            this.label16.BackColor = System.Drawing.Color.Lavender;
+            this.label16.Font = new System.Drawing.Font("MS UI Gothic", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label16.ForeColor = System.Drawing.Color.DarkBlue;
             this.label16.Location = new System.Drawing.Point(3, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(93, 17);
+            this.label16.Size = new System.Drawing.Size(109, 19);
             this.label16.TabIndex = 51;
             this.label16.Text = "実験的機能";
             // 
@@ -1371,9 +1371,7 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Panel panel11;
         private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.Button button15;
@@ -1394,5 +1392,7 @@
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox comboBox1;
+        public System.Windows.Forms.Panel panel11;
+        public System.Windows.Forms.Label label16;
     }
 }

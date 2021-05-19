@@ -542,6 +542,11 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
+                    if (ss[0].IndexOf("normalize_type") >= 0)
+                    {
+                        comboBox1.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
                 }
                 sr.Close();
 
@@ -628,6 +633,11 @@ namespace WindowsFormsApplication1
 
                     sw.Write("intercept,");
                     if (form17_.checkBox1.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+
+                    sw.Write("normalize_type,");
+                    sw.Write(comboBox1.Text + "\r\n");
+
                     sw.Close();
                 }
             }
