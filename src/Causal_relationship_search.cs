@@ -656,7 +656,7 @@ namespace WindowsFormsApplication1
                     System.IO.File.Copy("lingam.model.residual_error.csv", save_name + ".residual_error.csv", true);
                     System.IO.File.Copy("lingam.model.option", save_name + ".option", true);
                     System.IO.File.Copy("lingam.model.replacement", save_name + ".replacement", true);
-                    System.IO.File.Copy("lingam.model.intercept", save_name + ".intercept", true);
+                    System.IO.File.Copy("lingam.model.intercept.csv", save_name + ".intercept.csv", true);
                 }
                 catch
                 {
