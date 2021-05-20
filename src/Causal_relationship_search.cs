@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace WindowsFormsApplication1
 {
@@ -663,7 +662,24 @@ namespace WindowsFormsApplication1
                     MessageBox.Show("計算されたcsvがまだ見つかりませんでした");
                 }
             }
-
+            {
+                using (ZipArchive za = ZipFile.Open(save_name+".dds2", ZipArchiveMode.Create))
+                {
+                    za.CreateEntryFromFile(save_name + ".select_variables.dat", "lingam.model.select_variables.dat");
+                    za.CreateEntryFromFile(save_name + ".options", "lingam.model.options");
+                    za.CreateEntryFromFile(save_name + ".B.csv", "lingam.model.intercept");
+                    za.CreateEntryFromFile(save_name + ".B_pre_sort.csv", "lingam.model.B_pre_sort.csv");
+                    za.CreateEntryFromFile(save_name + ".input.csv", "lingam.model.input.csv");
+                    za.CreateEntryFromFile(save_name + ".modification_input.csv", "lingam.model.modification_input.csv");
+                    za.CreateEntryFromFile(save_name + ".mutual_information.csv", "lingam.model.mutual_information.csv");
+                    za.CreateEntryFromFile(save_name + ".mu.csv", "lingam.model.mu.csv");
+                    za.CreateEntryFromFile(save_name + ".residual_error_independ.csv", "lingam.model.residual_error_independ.csv");
+                    za.CreateEntryFromFile(save_name + ".residual_error.csv", "lingam.model.residual_error.csv");
+                    za.CreateEntryFromFile(save_name + ".option", "lingam.model.option");
+                    za.CreateEntryFromFile(save_name + ".replacement", "lingam.model.replacement");
+                    za.CreateEntryFromFile(save_name + ".intercept.csv", "lingam.model.intercept.csv");
+                }
+            }
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
         }
 
