@@ -365,210 +365,217 @@ namespace WindowsFormsApplication1
         {
             Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
 
-            System.IO.StreamReader sr = new System.IO.StreamReader(modelfile + ".options", Encoding.GetEncoding("SHIFT_JIS"));
-            if (sr != null)
+            try
             {
-                while (sr.EndOfStream == false)
+                System.IO.StreamReader sr = new System.IO.StreamReader(modelfile + ".options", Encoding.GetEncoding("SHIFT_JIS"));
+                if (sr != null)
                 {
-                    string s = sr.ReadLine();
-                    var ss = s.Split(',');
-                    if (ss[0].IndexOf("lasso_chk") >= 0)
+                    while (sr.EndOfStream == false)
                     {
-                        if (ss[1].Replace("\r\n", "") == "true")
+                        string s = sr.ReadLine();
+                        var ss = s.Split(',');
+                        if (ss[0].IndexOf("lasso_chk") >= 0)
                         {
-                            checkBox3.Checked = true;
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox3.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox3.Checked = false;
+                            }
+                            continue;
                         }
-                        else
-                        {
-                            checkBox3.Checked = false;
-                        }
-                        continue;
-                    }
 
-                    if (ss[0].IndexOf("info_chk") >= 0)
-                    {
-                        if (ss[1].Replace("\r\n", "") == "true")
+                        if (ss[0].IndexOf("info_chk") >= 0)
                         {
-                            checkBox5.Checked = true;
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox5.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox5.Checked = false;
+                            }
+                            continue;
                         }
-                        else
+                        if (ss[0].IndexOf("latent_chk") >= 0)
                         {
-                            checkBox5.Checked = false;
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox4.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox4.Checked = false;
+                            }
+                            continue;
                         }
-                        continue;
-                    }
-                    if (ss[0].IndexOf("latent_chk") >= 0)
-                    {
-                        if (ss[1].Replace("\r\n", "") == "true")
+                        if (ss[0].IndexOf("knowledge_rate") >= 0)
                         {
-                            checkBox4.Checked = true;
+                            form17_.numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                            continue;
                         }
-                        else
-                        {
-                            checkBox4.Checked = false;
-                        }
-                        continue;
-                    }
-                    if (ss[0].IndexOf("knowledge_rate") >= 0)
-                    {
-                        form17_.numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                        continue;
-                    }
 
-                    if (ss[0].IndexOf("knowledge_file") >= 0)
-                    {
-                        prior_knowledge_file = ss[1].Replace("\r\n", "");
-                        openFileDialog1.FileName = prior_knowledge_file;
-                        form17_.label23.Text = System.IO.Path.GetFileName(prior_knowledge_file);
-                        continue;
-                    }
+                        if (ss[0].IndexOf("knowledge_file") >= 0)
+                        {
+                            prior_knowledge_file = ss[1].Replace("\r\n", "");
+                            openFileDialog1.FileName = prior_knowledge_file;
+                            form17_.label23.Text = System.IO.Path.GetFileName(prior_knowledge_file);
+                            continue;
+                        }
 
-                    if (ss[0].IndexOf("knowledge") >= 0)
-                    {
-                        if (ss[1].Replace("\r\n", "") == "true")
+                        if (ss[0].IndexOf("knowledge") >= 0)
                         {
-                            form17_.checkBox7.Checked = true;
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                form17_.checkBox7.Checked = true;
+                            }
+                            else
+                            {
+                                form17_.checkBox7.Checked = false;
+                            }
+                            continue;
                         }
-                        else
-                        {
-                            form17_.checkBox7.Checked = false;
-                        }
-                        continue;
-                    }
 
-                    if (ss[0].IndexOf("sampleing") >= 0)
-                    {
-                        numericUpDown3.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                        continue;
-                    }
+                        if (ss[0].IndexOf("sampleing") >= 0)
+                        {
+                            numericUpDown3.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                            continue;
+                        }
 
-                    if (ss[0].IndexOf("ica_iter") >= 0)
-                    {
-                        textBox1.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("ica_tol") >= 0)
-                    {
-                        textBox2.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("lasso_iter") >= 0)
-                    {
-                        textBox10.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("lasso_prm") >= 0)
-                    {
-                        textBox4.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("lasso_tol") >= 0)
-                    {
-                        textBox9.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("corr") >= 0)
-                    {
-                        textBox5.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("effect_min") >= 0)
-                    {
-                        textBox7.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("effect_max") >= 0)
-                    {
-                        textBox8.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("effect") >= 0)
-                    {
-                        textBox6.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("info") >= 0)
-                    {
-                        textBox11.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("latent_alp") >= 0)
-                    {
-                        form17_.textBox12.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("latent_beta") >= 0)
-                    {
-                        form17_.textBox13.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("latent_rho") >= 0)
-                    {
-                        form17_.textBox14.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
-                    if (ss[0].IndexOf("early_stopping") >= 0)
-                    {
-                        form17_.numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                        continue;
-                    }
-                    if (ss[0].IndexOf("eval_mode") >= 0)
-                    {
-                        if (ss[1].Replace("\r\n", "") == "true")
+                        if (ss[0].IndexOf("ica_iter") >= 0)
                         {
-                            checkBox6.Checked = true;
+                            textBox1.Text = ss[1].Replace("\r\n", "");
+                            continue;
                         }
-                        else
+                        if (ss[0].IndexOf("ica_tol") >= 0)
                         {
-                            checkBox6.Checked = false;
+                            textBox2.Text = ss[1].Replace("\r\n", "");
+                            continue;
                         }
-                        continue;
-                    }
-                    if (ss[0].IndexOf("MI_bins") >= 0)
-                    {
-                        form17_.numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                        continue;
-                    }
-                    if (ss[0].IndexOf("intercept") >= 0)
-                    {
-                        if (ss[1].Replace("\r\n", "") == "true")
+                        if (ss[0].IndexOf("lasso_iter") >= 0)
                         {
-                            form17_.checkBox1.Checked = true;
+                            textBox10.Text = ss[1].Replace("\r\n", "");
+                            continue;
                         }
-                        else
+                        if (ss[0].IndexOf("lasso_prm") >= 0)
                         {
-                            form17_.checkBox1.Checked = false;
+                            textBox4.Text = ss[1].Replace("\r\n", "");
+                            continue;
                         }
-                        continue;
+                        if (ss[0].IndexOf("lasso_tol") >= 0)
+                        {
+                            textBox9.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("corr") >= 0)
+                        {
+                            textBox5.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("effect_min") >= 0)
+                        {
+                            textBox7.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("effect_max") >= 0)
+                        {
+                            textBox8.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("effect") >= 0)
+                        {
+                            textBox6.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("info") >= 0)
+                        {
+                            textBox11.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("latent_alp") >= 0)
+                        {
+                            form17_.textBox12.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("latent_beta") >= 0)
+                        {
+                            form17_.textBox13.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("latent_rho") >= 0)
+                        {
+                            form17_.textBox14.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("early_stopping") >= 0)
+                        {
+                            form17_.numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                            continue;
+                        }
+                        if (ss[0].IndexOf("eval_mode") >= 0)
+                        {
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox6.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox6.Checked = false;
+                            }
+                            continue;
+                        }
+                        if (ss[0].IndexOf("MI_bins") >= 0)
+                        {
+                            form17_.numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                            continue;
+                        }
+                        if (ss[0].IndexOf("intercept") >= 0)
+                        {
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                form17_.checkBox1.Checked = true;
+                            }
+                            else
+                            {
+                                form17_.checkBox1.Checked = false;
+                            }
+                            continue;
+                        }
+                        if (ss[0].IndexOf("normalize_type") >= 0)
+                        {
+                            comboBox1.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
                     }
-                    if (ss[0].IndexOf("normalize_type") >= 0)
-                    {
-                        comboBox1.Text = ss[1].Replace("\r\n", "");
-                        continue;
-                    }
+                    sr.Close();
                 }
-                sr.Close();
-
-                if (modelfile != "lingam.model")
+            }
+            catch
+            {
+                MessageBox.Show("計算されたoptionsが見つかりませんでした");
+            }
+            if (modelfile != "lingam.model")
+            {
+                try
                 {
-                    try
-                    {
-                        System.IO.File.Copy(modelfile + ".B.csv", "lingam.model.B.csv", true);
-                        System.IO.File.Copy(modelfile + ".B_pre_sort.csv", "lingam.model.B_pre_sort.csv", true);
-                        System.IO.File.Copy(modelfile + ".input.csv", "lingam.model.input.csv", true);
-                        System.IO.File.Copy(modelfile + ".modification_input.csv", "lingam.model.modification_input.csv", true);
-                        System.IO.File.Copy(modelfile + ".mutual_information.csv", "lingam.model.mutual_information.csv", true);
-                        System.IO.File.Copy(modelfile + ".mu.csv", "lingam.model.mu.csv", true);
-                        System.IO.File.Copy(modelfile + ".residual_error_independ.csv", "lingam.model.residual_error_independ.csv", true);
-                        System.IO.File.Copy(modelfile + ".residual_error.csv", "lingam.model.residual_error.csv", true);
-                        System.IO.File.Copy(modelfile + ".option", "lingam.model.option", true);
-                        System.IO.File.Copy(modelfile + ".replacement", "lingam.model.replacement", true);
-                        System.IO.File.Copy(modelfile + ".intercept.csv", "lingam.model.intercept.csv", true);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("計算されたcsvがまだ見つかりませんでした");
-                    }
+                    System.IO.File.Copy(modelfile + ".B.csv", "lingam.model.B.csv", true);
+                    System.IO.File.Copy(modelfile + ".B_pre_sort.csv", "lingam.model.B_pre_sort.csv", true);
+                    System.IO.File.Copy(modelfile + ".input.csv", "lingam.model.input.csv", true);
+                    System.IO.File.Copy(modelfile + ".modification_input.csv", "lingam.model.modification_input.csv", true);
+                    System.IO.File.Copy(modelfile + ".mutual_information.csv", "lingam.model.mutual_information.csv", true);
+                    System.IO.File.Copy(modelfile + ".mu.csv", "lingam.model.mu.csv", true);
+                    System.IO.File.Copy(modelfile + ".residual_error_independ.csv", "lingam.model.residual_error_independ.csv", true);
+                    System.IO.File.Copy(modelfile + ".residual_error.csv", "lingam.model.residual_error.csv", true);
+                    System.IO.File.Copy(modelfile + ".option", "lingam.model.option", true);
+                    System.IO.File.Copy(modelfile + ".replacement", "lingam.model.replacement", true);
+                    System.IO.File.Copy(modelfile + ".intercept.csv", "lingam.model.intercept.csv", true);
+                    System.IO.File.Copy(modelfile + ".lingam_loss.dat", "lingam_loss.dat", true);
+                }
+                catch
+                {
+                    MessageBox.Show("計算されたcsvがまだ見つかりませんでした");
                 }
             }
 
@@ -656,6 +663,7 @@ namespace WindowsFormsApplication1
                     System.IO.File.Copy("lingam.model.option", save_name + ".option", true);
                     System.IO.File.Copy("lingam.model.replacement", save_name + ".replacement", true);
                     System.IO.File.Copy("lingam.model.intercept.csv", save_name + ".intercept.csv", true);
+                    System.IO.File.Copy("lingam_loss.dat", save_name + ".lingam_loss.dat", true);
                 }
                 catch
                 {
@@ -678,6 +686,7 @@ namespace WindowsFormsApplication1
                     za.CreateEntryFromFile(save_name + ".option", "lingam.model.option");
                     za.CreateEntryFromFile(save_name + ".replacement", "lingam.model.replacement");
                     za.CreateEntryFromFile(save_name + ".intercept.csv", "lingam.model.intercept.csv");
+                    za.CreateEntryFromFile(save_name + ".lingam_loss.dat", "lingam_loss.dat");
                 }
             }
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
@@ -1632,6 +1641,8 @@ namespace WindowsFormsApplication1
 
             string file = openFileDialog2.FileName.Replace("\\", "/");
             load_model(file, sender, e);
+            char[] del = { '(', ')' };
+            textBox16.Text = System.IO.Path.GetFileName(file).Split(del)[1];
         }
 
         private void timer5_Tick(object sender, EventArgs e)
@@ -1876,6 +1887,11 @@ namespace WindowsFormsApplication1
                 _ImageView3.pictureBox1.Dock = DockStyle.Fill;
                 _ImageView3.Show();
             }
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            numericUpDown3.Value = 10000;
         }
     }
 }
