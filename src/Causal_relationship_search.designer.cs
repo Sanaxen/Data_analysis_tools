@@ -128,6 +128,7 @@
             this.timer5 = new System.Windows.Forms.Timer(this.components);
             this.timer6 = new System.Windows.Forms.Timer(this.components);
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.button19 = new System.Windows.Forms.Button();
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -287,6 +288,7 @@
             // panel11
             // 
             this.panel11.BackColor = System.Drawing.SystemColors.Info;
+            this.panel11.Controls.Add(this.button19);
             this.panel11.Controls.Add(this.checkBox7);
             this.panel11.Controls.Add(this.button12);
             this.panel11.Controls.Add(this.checkBox9);
@@ -415,7 +417,7 @@
             this.numericUpDown3.Size = new System.Drawing.Size(75, 22);
             this.numericUpDown3.TabIndex = 49;
             this.numericUpDown3.Value = new decimal(new int[] {
-            7000,
+            10000,
             0,
             0,
             0});
@@ -1246,6 +1248,16 @@
             // 
             this.timer6.Tick += new System.EventHandler(this.timer6_Tick);
             // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(11, 78);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(75, 23);
+            this.button19.TabIndex = 74;
+            this.button19.Text = "button19";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
             // Causal_relationship_search
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1394,5 +1406,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         public System.Windows.Forms.Panel panel11;
         public System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button button19;
     }
 }
