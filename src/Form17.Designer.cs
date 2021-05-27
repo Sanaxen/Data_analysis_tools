@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label29 = new System.Windows.Forms.Label();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
@@ -50,7 +51,6 @@
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
@@ -85,6 +85,18 @@
             this.panel11.Name = "panel11";
             this.panel11.Size = new System.Drawing.Size(717, 224);
             this.panel11.TabIndex = 51;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(8, 108);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(135, 19);
+            this.checkBox1.TabIndex = 74;
+            this.checkBox1.Text = "Explicit intercept";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -288,16 +300,6 @@
             this.label16.Size = new System.Drawing.Size(93, 17);
             this.label16.TabIndex = 51;
             this.label16.Text = "実験的機能";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(8, 108);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(135, 19);
-            this.checkBox1.TabIndex = 74;
-            this.checkBox1.Text = "Explicit intercept";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Form17
             // 

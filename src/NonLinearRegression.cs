@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices; // setforegraoundwindow
+using System.IO.Compression;
 
 namespace WindowsFormsApplication1
 {
@@ -180,14 +181,17 @@ namespace WindowsFormsApplication1
 
             bool update = true;
             string save_name = Form1.curDir + "\\model\\fit_best.model(RMSE=" + rmse + ")" + Form1.FnameToDataFrameName(model_id, true);
+            string fname = "fit_best.model(RMSE=" + rmse + ")" + Form1.FnameToDataFrameName(model_id, true);
 
             if ( checkBox5.Checked)
             {
                 save_name = Form1.curDir + "\\model\\fit_best.model(ACC=" + ACC + ")" + Form1.FnameToDataFrameName(model_id, true);
+                fname = "fit_best.model(ACC=" + ACC + ")" + Form1.FnameToDataFrameName(model_id, true);
             }
             if (base_name != "")
             {
                 save_name = Form1.curDir + "\\model\\fit_best.model(" + base_name + ")" + Form1.FnameToDataFrameName(model_id, true);
+                fname = "fit_best.model(" + base_name + ")" + Form1.FnameToDataFrameName(model_id, true);
             }
 
             if (System.IO.File.Exists(save_name))
@@ -313,6 +317,15 @@ namespace WindowsFormsApplication1
                             sw.Close();
                         }
                     }
+                    using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(save_name + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
+                    {
+                        za.CreateEntryFromFile(save_name, fname);
+                        za.CreateEntryFromFile(save_name + ".options", (fname + ".options"));
+                        za.CreateEntryFromFile(save_name + ".select_variables.dat", (fname + ".select_variables.dat"));
+                        za.CreateEntryFromFile(save_name + ".select_variables2.dat", (fname + ".select_variables2.dat"));
+                        za.CreateEntryFromFile(save_name + ".normalize_info.dat", (fname + ".normalize_info.dat"));
+                    }
+
                     if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
                 }
             }
@@ -2290,7 +2303,7 @@ namespace WindowsFormsApplication1
 
         private void button16_Click(object sender, EventArgs e)
         {
-            openFileDialog1.InitialDirectory = Form1.curDir + "\\model";
+            openFileDialog1.InitialDirectory = Form1.curDir + "\\model\\";
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
             {
                 return;

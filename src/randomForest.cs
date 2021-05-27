@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace WindowsFormsApplication1
 {
@@ -928,6 +929,14 @@ namespace WindowsFormsApplication1
 
             form1.comboBox1.Text = cmd;
             form1.evalute_cmd(sender, e);
+
+            using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(file + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
+            {
+                za.CreateEntryFromFile(file, file.Replace("model/", ""));
+                za.CreateEntryFromFile(file + ".options", (file + ".options").Replace("model/", ""));
+                za.CreateEntryFromFile(file + ".select_variables.dat", (file + ".select_variables.dat").Replace("model/", ""));
+            }
+
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(sender, e);
             this.TopMost = true;
             this.TopMost = false;
@@ -1007,7 +1016,7 @@ namespace WindowsFormsApplication1
 
         private void button6_Click(object sender, EventArgs e)
         {
-            openFileDialog1.InitialDirectory = Form1.curDir + "\\model";
+            openFileDialog1.InitialDirectory = Form1.curDir + "\\model\\";
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
             {
                 return;

@@ -548,6 +548,11 @@ namespace WindowsFormsApplication1
                             comboBox1.Text = ss[1].Replace("\r\n", "");
                             continue;
                         }
+                        if (ss[0].IndexOf("min_delete_srt") >= 0)
+                        {
+                            numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                            continue;
+                        }
                     }
                     sr.Close();
                 }
@@ -645,6 +650,7 @@ namespace WindowsFormsApplication1
                     sw.Write("normalize_type,");
                     sw.Write(comboBox1.Text + "\r\n");
 
+                    sw.Write("min_delete_srt,"); sw.Write(numericUpDown4.Value.ToString() + "\r\n");
                     sw.Close();
                 }
             }
@@ -671,22 +677,23 @@ namespace WindowsFormsApplication1
                 }
             }
             {
+                string name = save_name.Replace("model/", "");
                 using (ZipArchive za = ZipFile.Open(save_name+".dds2", ZipArchiveMode.Create))
                 {
-                    za.CreateEntryFromFile(save_name + ".select_variables.dat", "lingam.model.select_variables.dat");
-                    za.CreateEntryFromFile(save_name + ".options", "lingam.model.options");
-                    za.CreateEntryFromFile(save_name + ".B.csv", "lingam.model.intercept");
-                    za.CreateEntryFromFile(save_name + ".B_pre_sort.csv", "lingam.model.B_pre_sort.csv");
-                    za.CreateEntryFromFile(save_name + ".input.csv", "lingam.model.input.csv");
-                    za.CreateEntryFromFile(save_name + ".modification_input.csv", "lingam.model.modification_input.csv");
-                    za.CreateEntryFromFile(save_name + ".mutual_information.csv", "lingam.model.mutual_information.csv");
-                    za.CreateEntryFromFile(save_name + ".mu.csv", "lingam.model.mu.csv");
-                    za.CreateEntryFromFile(save_name + ".residual_error_independ.csv", "lingam.model.residual_error_independ.csv");
-                    za.CreateEntryFromFile(save_name + ".residual_error.csv", "lingam.model.residual_error.csv");
-                    za.CreateEntryFromFile(save_name + ".option", "lingam.model.option");
-                    za.CreateEntryFromFile(save_name + ".replacement", "lingam.model.replacement");
-                    za.CreateEntryFromFile(save_name + ".intercept.csv", "lingam.model.intercept.csv");
-                    za.CreateEntryFromFile(save_name + ".lingam_loss.dat", "lingam_loss.dat");
+                    za.CreateEntryFromFile(save_name + ".select_variables.dat", name +".select_variables.dat");
+                    za.CreateEntryFromFile(save_name + ".options", name +".options");
+                    za.CreateEntryFromFile(save_name + ".B.csv", name + ".intercept");
+                    za.CreateEntryFromFile(save_name + ".B_pre_sort.csv", name + ".B_pre_sort.csv");
+                    za.CreateEntryFromFile(save_name + ".input.csv", name + ".input.csv");
+                    za.CreateEntryFromFile(save_name + ".modification_input.csv", name + ".modification_input.csv");
+                    za.CreateEntryFromFile(save_name + ".mutual_information.csv", name + ".mutual_information.csv");
+                    za.CreateEntryFromFile(save_name + ".mu.csv", name + ".mu.csv");
+                    za.CreateEntryFromFile(save_name + ".residual_error_independ.csv", name + ".residual_error_independ.csv");
+                    za.CreateEntryFromFile(save_name + ".residual_error.csv", name + ".residual_error.csv");
+                    za.CreateEntryFromFile(save_name + ".option", name + ".option");
+                    za.CreateEntryFromFile(save_name + ".replacement", name + ".replacement");
+                    za.CreateEntryFromFile(save_name + ".intercept.csv", name + ".intercept.csv");
+                    za.CreateEntryFromFile(save_name + ".lingam_loss.dat", name + "lingam_loss.dat");
                 }
             }
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
@@ -836,7 +843,7 @@ namespace WindowsFormsApplication1
 
             try
             {
-                if ( !timer4.Enabled )save_model("lingam.model");
+                //if ( !timer4.Enabled )save_model("lingam.model");
             }
             catch { }
 
@@ -1059,6 +1066,7 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --use_intercept 1";
                 }
+                process.StartInfo.Arguments += " --min_delete_srt " + numericUpDown4.Value.ToString();
 
                 command_line = process.StartInfo.Arguments;
                 if (!checkBox6.Checked)
@@ -1633,7 +1641,7 @@ namespace WindowsFormsApplication1
 
         private void button16_Click(object sender, EventArgs e)
         {
-            openFileDialog2.InitialDirectory = Form1.curDir + "\\model";
+            openFileDialog2.InitialDirectory = Form1.curDir + "\\model\\";
             if (openFileDialog2.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -1683,13 +1691,13 @@ namespace WindowsFormsApplication1
         {
             if (checkBox4.Checked && !loss_plot)
             {
-                Plotting_Loss();
+                //Plotting_Loss();
                 loss_plot = true;
             }
 
             if (checkBox6.Checked && checkBox4.Checked && !checkBox8.Checked)
             {
-                metroButton5_Click(sender, e);
+                //metroButton5_Click(sender, e);
             }
 
             if (System.IO.File.Exists("confounding_factors.txt"))

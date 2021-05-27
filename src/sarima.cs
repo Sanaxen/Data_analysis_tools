@@ -1176,7 +1176,7 @@ namespace WindowsFormsApplication1
 
         private void button9_Click_1(object sender, EventArgs e)
         {
-            openFileDialog1.InitialDirectory = Form1.curDir + "\\model";
+            openFileDialog1.InitialDirectory = Form1.curDir + "\\model\\";
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
             {
                 return;

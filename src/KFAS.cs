@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace WindowsFormsApplication1
 {
@@ -1112,7 +1113,9 @@ namespace WindowsFormsApplication1
             {
                 System.IO.Directory.CreateDirectory("model");
             }
-            if (System.IO.File.Exists("model/KFAS.model(RMSE=" + RMSE + ")"+ Form1.FnameToDataFrameName(textBox2.Text, true)))
+
+            string fname = "model/KFAS.model(RMSE=" + RMSE + ")" + Form1.FnameToDataFrameName(textBox2.Text, true);
+            if (System.IO.File.Exists(fname))
             {
                 if (MessageBox.Show("同じモデルが存在しています", "上書きしますか?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                 {
@@ -1120,15 +1123,15 @@ namespace WindowsFormsApplication1
                 }
             }
 
-            form1.SelectionVarWrite_(listBox1, listBox3, "model/KFAS.model(RMSE=" + RMSE + ")"+Form1.FnameToDataFrameName(textBox2.Text, true)+".select_variables.dat");
-            form1.SelectionVarWrite_(listBox2, listBox2, "model/KFAS.model(RMSE=" + RMSE + ")" + Form1.FnameToDataFrameName(textBox2.Text, true) + ".select_variables2.dat");
+            form1.SelectionVarWrite_(listBox1, listBox3, fname + ".select_variables.dat");
+            form1.SelectionVarWrite_(listBox2, listBox2, fname + ".select_variables2.dat");
 
-            string cmd = "saveRDS(kfas, file = \"model/KFAS.model(RMSE=" + RMSE + ")" + Form1.FnameToDataFrameName(textBox2.Text, true) +"\")\r\n";
+            string cmd = "saveRDS(kfas, file = \"" + fname + "\")\r\n";
             form1.comboBox1.Text = cmd;
             form1.evalute_cmd(sender, e);
 
 
-            System.IO.StreamWriter sw = new System.IO.StreamWriter("model/KFAS.model(RMSE=" + RMSE + ")" + Form1.FnameToDataFrameName(textBox2.Text, true) + ".options", false, Encoding.GetEncoding("SHIFT_JIS"));
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(fname +".options", false, Encoding.GetEncoding("SHIFT_JIS"));
             if (sw != null)
             {
                 sw.Write("radioButton3,");
@@ -1138,6 +1141,13 @@ namespace WindowsFormsApplication1
             }
             sw.Close();
 
+            using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(fname + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
+            {
+                za.CreateEntryFromFile(fname, fname.Replace("model/", ""));
+                za.CreateEntryFromFile(fname + ".options", (fname + ".options").Replace("model/", ""));
+                za.CreateEntryFromFile(fname + ".select_variables.dat", (fname + ".select_variables.dat").Replace("model/", ""));
+                za.CreateEntryFromFile(fname + ".select_variables2.dat", (fname + ".select_variables2.dat").Replace("model/", ""));
+            }
             this.TopMost = true;
             this.TopMost = false;
         }
@@ -1224,7 +1234,7 @@ namespace WindowsFormsApplication1
 
         private void button9_Click_1(object sender, EventArgs e)
         {
-            openFileDialog1.InitialDirectory = Form1.curDir + "\\model";
+            openFileDialog1.InitialDirectory = Form1.curDir + "\\model\\";
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
             {
                 return;

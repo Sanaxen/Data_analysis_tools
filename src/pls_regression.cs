@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace WindowsFormsApplication1
 {
@@ -760,6 +761,12 @@ namespace WindowsFormsApplication1
                 sw.Write("ncomp_onesigma," + textBox3.Text + "\r\n");
                 sw.Close();
             }
+            using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(fname + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
+            {
+                za.CreateEntryFromFile(fname, fname.Replace("model/", ""));
+                za.CreateEntryFromFile(fname + ".options", (fname + ".options").Replace("model/", ""));
+                za.CreateEntryFromFile(fname + ".select_variables.dat", (fname + ".select_variables.dat").Replace("model/", ""));
+            }
 
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(sender, e);
             this.TopMost = true;
@@ -825,7 +832,7 @@ namespace WindowsFormsApplication1
 
         private void button6_Click(object sender, EventArgs e)
         {
-            openFileDialog1.InitialDirectory = Form1.curDir + "\\model";
+            openFileDialog1.InitialDirectory = Form1.curDir + "\\model\\";
             if ( openFileDialog1.ShowDialog() != DialogResult.OK)
             {
                 return;
