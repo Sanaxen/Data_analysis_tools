@@ -576,7 +576,10 @@ namespace WindowsFormsApplication1
                     System.IO.File.Copy(modelfile + ".option", "lingam.model.option", true);
                     System.IO.File.Copy(modelfile + ".replacement", "lingam.model.replacement", true);
                     System.IO.File.Copy(modelfile + ".intercept.csv", "lingam.model.intercept.csv", true);
-                    System.IO.File.Copy(modelfile + ".lingam_loss.dat", "lingam_loss.dat", true);
+                    if (process_batch == null)
+                    {
+                        System.IO.File.Copy(modelfile + ".lingam_loss.dat", "lingam_loss.dat", true);
+                    }
                 }
                 catch
                 {
@@ -1067,6 +1070,10 @@ namespace WindowsFormsApplication1
                     process.StartInfo.Arguments += " --use_intercept 1";
                 }
                 process.StartInfo.Arguments += " --min_delete_srt " + numericUpDown4.Value.ToString();
+                if (checkBox6.Checked )
+                {
+                    process.StartInfo.Arguments += " --loss_data_load 0";
+                }
 
                 command_line = process.StartInfo.Arguments;
                 if (!checkBox6.Checked)
