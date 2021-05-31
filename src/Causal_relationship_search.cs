@@ -574,8 +574,10 @@ namespace WindowsFormsApplication1
                     System.IO.File.Copy(modelfile + ".residual_error_independ.csv", "lingam.model.residual_error_independ.csv", true);
                     System.IO.File.Copy(modelfile + ".residual_error.csv", "lingam.model.residual_error.csv", true);
                     System.IO.File.Copy(modelfile + ".option", "lingam.model.option", true);
+                    System.IO.File.Copy(modelfile + ".options", "lingam.model.options", true);
                     System.IO.File.Copy(modelfile + ".replacement", "lingam.model.replacement", true);
                     System.IO.File.Copy(modelfile + ".intercept.csv", "lingam.model.intercept.csv", true);
+                    System.IO.File.Copy(modelfile + ".select_variables.dat", "lingam.model.select_variables.dat", true);
                     if (process_batch == null)
                     {
                         System.IO.File.Copy(modelfile + ".lingam_loss.dat", "lingam_loss.dat", true);
@@ -680,12 +682,16 @@ namespace WindowsFormsApplication1
                 }
             }
             {
+                if ( System.IO.File.Exists(save_name + ".dds2"))
+                {
+                    System.IO.File.Delete(save_name + ".dds2");
+                }
                 string name = save_name.Replace("model/", "");
                 using (ZipArchive za = ZipFile.Open(save_name+".dds2", ZipArchiveMode.Create))
                 {
                     za.CreateEntryFromFile(save_name + ".select_variables.dat", name +".select_variables.dat");
                     za.CreateEntryFromFile(save_name + ".options", name +".options");
-                    za.CreateEntryFromFile(save_name + ".B.csv", name + ".intercept");
+                    za.CreateEntryFromFile(save_name + ".B.csv", name + ".B.csv");
                     za.CreateEntryFromFile(save_name + ".B_pre_sort.csv", name + ".B_pre_sort.csv");
                     za.CreateEntryFromFile(save_name + ".input.csv", name + ".input.csv");
                     za.CreateEntryFromFile(save_name + ".modification_input.csv", name + ".modification_input.csv");
@@ -696,7 +702,11 @@ namespace WindowsFormsApplication1
                     za.CreateEntryFromFile(save_name + ".option", name + ".option");
                     za.CreateEntryFromFile(save_name + ".replacement", name + ".replacement");
                     za.CreateEntryFromFile(save_name + ".intercept.csv", name + ".intercept.csv");
-                    za.CreateEntryFromFile(save_name + ".lingam_loss.dat", name + "lingam_loss.dat");
+                    za.CreateEntryFromFile(save_name + ".lingam_loss.dat", name + ".lingam_loss.dat");
+                }
+                if (System.IO.File.Exists(save_name + ".dds2"))
+                {
+                    form1.zipModelClear(save_name);
                 }
             }
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
@@ -1648,14 +1658,34 @@ namespace WindowsFormsApplication1
 
         private void button16_Click(object sender, EventArgs e)
         {
-            openFileDialog2.InitialDirectory = Form1.curDir + "\\model\\";
+            System.Environment.CurrentDirectory = Form1.curDir + "\\model\\"; 
+            openFileDialog2.InitialDirectory = Form1.curDir + "\\model";
+
+            openFileDialog2.Filter = "DDS2|*.dds2|すべてのファイル|*.*";
+
             if (openFileDialog2.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
 
+
             string file = openFileDialog2.FileName.Replace("\\", "/");
+            if (System.IO.Path.GetExtension(openFileDialog2.FileName) == ".dds2"|| System.IO.Path.GetExtension(openFileDialog2.FileName) == ".DDS2")
+            {
+                try
+                {
+                    System.IO.Compression.ZipFile.ExtractToDirectory(openFileDialog2.FileName, Form1.curDir + "\\model", System.Text.Encoding.GetEncoding("shift_jis"));
+                }
+                catch
+                {
+
+                }
+                file = file.Replace(".dds2", "");
+                file = file.Replace(".DDS2", "");
+            }
+
             load_model(file, sender, e);
+
             char[] del = { '(', ')' };
             textBox16.Text = System.IO.Path.GetFileName(file).Split(del)[1];
         }

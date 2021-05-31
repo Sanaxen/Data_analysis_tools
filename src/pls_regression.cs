@@ -761,6 +761,11 @@ namespace WindowsFormsApplication1
                 sw.Write("ncomp_onesigma," + textBox3.Text + "\r\n");
                 sw.Close();
             }
+
+            if (System.IO.File.Exists(fname + ".dds2"))
+            {
+                System.IO.File.Delete(fname + ".dds2");
+            }
             using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(fname + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
             {
                 za.CreateEntryFromFile(fname, fname.Replace("model/", ""));
@@ -838,7 +843,27 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            load_model(openFileDialog1.FileName, sender, e);
+            string file = openFileDialog1.FileName;
+            if (System.IO.Path.GetExtension(openFileDialog1.FileName) == ".dds2" || System.IO.Path.GetExtension(openFileDialog1.FileName) == ".DDS2")
+            {
+                try
+                {
+                    System.IO.Compression.ZipFile.ExtractToDirectory(openFileDialog1.FileName, Form1.curDir + "\\model", System.Text.Encoding.GetEncoding("shift_jis"));
+                }
+                catch
+                {
+
+                }
+                file = file.Replace(".dds2", "");
+                file = file.Replace(".DDS2", "");
+            }
+
+            load_model(file, sender, e);
+            //load_model(openFileDialog1.FileName, sender, e);
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                form1.zipModelClear(file);
+            }
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

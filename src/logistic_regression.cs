@@ -704,11 +704,20 @@ namespace WindowsFormsApplication1
                 else sw.Write("false\r\n");
                 sw.Close();
             }
+
+            if (System.IO.File.Exists(fname + ".dds2"))
+            {
+                System.IO.File.Delete(fname + ".dds2");
+            }
             using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(fname + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
             {
                 za.CreateEntryFromFile(fname, fname.Replace("model/", ""));
                 za.CreateEntryFromFile(fname + ".options", (fname + ".options").Replace("model/", ""));
                 za.CreateEntryFromFile(fname + ".select_variables.dat", (fname + ".select_variables.dat").Replace("model/", ""));
+            }
+            if (System.IO.File.Exists(fname + ".dds2"))
+            {
+                form1.zipModelClear(fname);
             }
 
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(sender, e);
@@ -764,7 +773,26 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            load_model(openFileDialog1.FileName, sender, e);
+            string file = openFileDialog1.FileName;
+            if (System.IO.Path.GetExtension(openFileDialog1.FileName) == ".dds2" || System.IO.Path.GetExtension(openFileDialog1.FileName) == ".DDS2")
+            {
+                try
+                {
+                    System.IO.Compression.ZipFile.ExtractToDirectory(openFileDialog1.FileName, Form1.curDir + "\\model", System.Text.Encoding.GetEncoding("shift_jis"));
+                }
+                catch
+                {
+
+                }
+                file = file.Replace(".dds2", "");
+                file = file.Replace(".DDS2", "");
+            }
+
+            load_model(file, sender, e);
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                form1.zipModelClear(file);
+            }
         }
 
         private void button8_Click(object sender, EventArgs e)

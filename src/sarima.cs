@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace WindowsFormsApplication1
 {
@@ -1054,7 +1055,9 @@ namespace WindowsFormsApplication1
             {
                 System.IO.Directory.CreateDirectory("model");
             }
-            if (System.IO.File.Exists("model/sarima.model(AIC=" + AIC + ")"+ Form1.FnameToDataFrameName(textBox2.Text, true)))
+
+            string file = "model/sarima.model(AIC=" + AIC + ")" + Form1.FnameToDataFrameName(textBox2.Text, true);
+            if (System.IO.File.Exists(file))
             {
                 if (MessageBox.Show("同じモデルが存在しています", "上書きしますか?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                 {
@@ -1062,15 +1065,15 @@ namespace WindowsFormsApplication1
                 }
             }
 
-            form1.SelectionVarWrite_(listBox1, listBox3, "model/sarima.model(AIC=" + AIC + ")"+Form1.FnameToDataFrameName(textBox2.Text, true)+".select_variables.dat");
-            form1.SelectionVarWrite_(listBox2, listBox2, "model/sarima.model(AIC=" + AIC + ")" + Form1.FnameToDataFrameName(textBox2.Text, true) + ".select_variables2.dat");
+            form1.SelectionVarWrite_(listBox1, listBox3, file +".select_variables.dat");
+            form1.SelectionVarWrite_(listBox2, listBox2, file +".select_variables2.dat");
 
-            string cmd = "saveRDS(sarima.model, file = \"model/sarima.model(AIC=" + AIC + ")" + Form1.FnameToDataFrameName(textBox2.Text, true) +"\")\r\n";
+            string cmd = "saveRDS(sarima.model, file = \"" + file + "\")\r\n";
             form1.comboBox1.Text = cmd;
             form1.evalute_cmd(sender, e);
 
 
-            System.IO.StreamWriter sw = new System.IO.StreamWriter("model/sarima.model(AIC=" + AIC + ")" + Form1.FnameToDataFrameName(textBox2.Text, true) + ".options", false, Encoding.GetEncoding("SHIFT_JIS"));
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(file + ".options", false, Encoding.GetEncoding("SHIFT_JIS"));
             if (sw != null)
             {
                 sw.Write("train_time,");
@@ -1079,6 +1082,22 @@ namespace WindowsFormsApplication1
                 sw.Write(checkBox3.Checked.ToString() + "\r\n");
             }
             sw.Close();
+
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                System.IO.File.Delete(file + ".dds2");
+            }
+            using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(file + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
+            {
+                za.CreateEntryFromFile(file, file.Replace("model/", ""));
+                za.CreateEntryFromFile(file + ".options", (file + ".options").Replace("model/", ""));
+                za.CreateEntryFromFile(file + ".select_variables.dat", (file + ".select_variables.dat").Replace("model/", ""));
+                za.CreateEntryFromFile(file + ".select_variables2.dat", (file + ".select_variables2.dat").Replace("model/", ""));
+            }
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                form1.zipModelClear(file);
+            }
 
             this.TopMost = true;
             this.TopMost = false;
@@ -1182,7 +1201,27 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            load_model(openFileDialog1.FileName, sender, e);
+            string file = openFileDialog1.FileName;
+            if (System.IO.Path.GetExtension(openFileDialog1.FileName) == ".dds2" || System.IO.Path.GetExtension(openFileDialog1.FileName) == ".DDS2")
+            {
+                try
+                {
+                    System.IO.Compression.ZipFile.ExtractToDirectory(openFileDialog1.FileName, Form1.curDir + "\\model", System.Text.Encoding.GetEncoding("shift_jis"));
+                }
+                catch
+                {
+
+                }
+                file = file.Replace(".dds2", "");
+                file = file.Replace(".DDS2", "");
+            }
+
+            load_model(file, sender, e);
+            //load_model(openFileDialog1.FileName, sender, e);
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                form1.zipModelClear(file);
+            }
         }
 
         private void button10_Click_1(object sender, EventArgs e)

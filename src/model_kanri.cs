@@ -196,6 +196,20 @@ namespace WindowsFormsApplication1
 
             string model = Form1.curDir+"\\model\\"+listBox1.Items[idx].ToString();
 
+            if (System.IO.Path.GetExtension(model) == ".dds2" || System.IO.Path.GetExtension(model) == ".DDS2")
+            {
+                try
+                {
+                    System.IO.Compression.ZipFile.ExtractToDirectory(model, Form1.curDir + "\\model", System.Text.Encoding.GetEncoding("shift_jis"));
+                }
+                catch
+                {
+
+                }
+                model = model.Replace(".dds2", "");
+                model = model.Replace(".DDS2", "");
+            }
+
             if (model.IndexOf("lingam.model") >= 0)
             {
                 form1.button50_Click_1(sender, e);

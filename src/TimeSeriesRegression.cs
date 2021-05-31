@@ -349,6 +349,11 @@ namespace WindowsFormsApplication1
                             sw.Close();
                         }
                     }
+
+                    if (System.IO.File.Exists(save_name + ".dds2"))
+                    {
+                        System.IO.File.Delete(save_name + ".dds2");
+                    }
                     using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(save_name + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
                     {
                         za.CreateEntryFromFile(save_name, fname);
@@ -356,6 +361,10 @@ namespace WindowsFormsApplication1
                         za.CreateEntryFromFile(save_name + ".select_variables.dat", (fname + ".select_variables.dat"));
                         za.CreateEntryFromFile(save_name + ".select_variables2.dat", (fname + ".select_variables2.dat"));
                         za.CreateEntryFromFile(save_name + ".normalize_info_t.dat", (fname + ".normalize_info_t.dat"));
+                    }
+                    if (System.IO.File.Exists(save_name + ".dds2"))
+                    {
+                        form1.zipModelClear(save_name);
                     }
                     if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
                 }
@@ -2781,7 +2790,27 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            load_model(openFileDialog1.FileName, sender, e);
+            string file = openFileDialog1.FileName;
+            if (System.IO.Path.GetExtension(openFileDialog1.FileName) == ".dds2" || System.IO.Path.GetExtension(openFileDialog1.FileName) == ".DDS2")
+            {
+                try
+                {
+                    System.IO.Compression.ZipFile.ExtractToDirectory(openFileDialog1.FileName, Form1.curDir + "\\model", System.Text.Encoding.GetEncoding("shift_jis"));
+                }
+                catch
+                {
+
+                }
+                file = file.Replace(".dds2", "");
+                file = file.Replace(".DDS2", "");
+            }
+
+            load_model(file, sender, e);
+            //load_model(openFileDialog1.FileName, sender, e);
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                form1.zipModelClear(file);
+            }
         }
 
         private void button18_Click(object sender, EventArgs e)

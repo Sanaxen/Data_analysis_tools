@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace WindowsFormsApplication1
 {
@@ -722,6 +723,7 @@ namespace WindowsFormsApplication1
                     return;
                 }
             }
+            string file = fname;
 
             form1.SelectionVarWrite_(listBox1, listBox2, fname+".select_variables.dat");
             string cmd = "saveRDS(rpart.model, file = \""+ fname+"\")\r\n";
@@ -737,6 +739,20 @@ namespace WindowsFormsApplication1
                 sw.Close();
             }
 
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                System.IO.File.Delete(file + ".dds2");
+            }
+            using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(file + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
+            {
+                za.CreateEntryFromFile(file, file.Replace("model/", ""));
+                za.CreateEntryFromFile(file + ".options", (file + ".options").Replace("model/", ""));
+                za.CreateEntryFromFile(file + ".select_variables.dat", (file + ".select_variables.dat").Replace("model/", ""));
+            }
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                form1.zipModelClear(file);
+            }
             if (form1._model_kanri != null) form1._model_kanri.button1_Click(sender, e);
             this.TopMost = true;
             this.TopMost = false;
@@ -794,7 +810,27 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            load_model(openFileDialog1.FileName, sender, e);
+            string file = openFileDialog1.FileName;
+            if (System.IO.Path.GetExtension(openFileDialog1.FileName) == ".dds2" || System.IO.Path.GetExtension(openFileDialog1.FileName) == ".DDS2")
+            {
+                try
+                {
+                    System.IO.Compression.ZipFile.ExtractToDirectory(openFileDialog1.FileName, Form1.curDir + "\\model", System.Text.Encoding.GetEncoding("shift_jis"));
+                }
+                catch
+                {
+
+                }
+                file = file.Replace(".dds2", "");
+                file = file.Replace(".DDS2", "");
+            }
+
+            load_model(file, sender, e);
+            //load_model(openFileDialog1.FileName, sender, e);
+            if (System.IO.File.Exists(file + ".dds2"))
+            {
+                form1.zipModelClear(file);
+            }
         }
 
         private void checkBox2_CheckStateChanged_1(object sender, EventArgs e)
