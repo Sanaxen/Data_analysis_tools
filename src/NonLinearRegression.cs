@@ -318,9 +318,9 @@ namespace WindowsFormsApplication1
                         }
                     }
 
-                    if (System.IO.File.Exists(fname + ".dds2"))
+                    if (System.IO.File.Exists(save_name + ".dds2"))
                     {
-                        System.IO.File.Delete(fname + ".dds2");
+                        System.IO.File.Delete(save_name + ".dds2");
                     }
                     using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(save_name + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
                     {
@@ -330,9 +330,9 @@ namespace WindowsFormsApplication1
                         za.CreateEntryFromFile(save_name + ".select_variables2.dat", (fname + ".select_variables2.dat"));
                         za.CreateEntryFromFile(save_name + ".normalize_info.dat", (fname + ".normalize_info.dat"));
                     }
-                    if (System.IO.File.Exists(fname + ".dds2"))
+                    if (System.IO.File.Exists(save_name + ".dds2"))
                     {
-                        form1.zipModelClear(fname);
+                        form1.zipModelClear(save_name);
                     }
 
                     if (form1._model_kanri != null) form1._model_kanri.button1_Click(null, null);
