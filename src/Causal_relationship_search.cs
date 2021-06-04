@@ -879,6 +879,7 @@ namespace WindowsFormsApplication1
                     return;
                 }
             }
+
             running = 1;
             textBox3.Text = "";
 
@@ -1083,6 +1084,18 @@ namespace WindowsFormsApplication1
                 if (checkBox6.Checked )
                 {
                     process.StartInfo.Arguments += " --loss_data_load 0";
+                }
+
+                int rows = form1.Int_func("nrow", "df");
+                int cols = form1.Int_func("ncol", "df");
+                int select_cols = listBox2.SelectedIndices.Count;
+                if (select_cols == 0 )
+                {
+                    select_cols = cols;
+                }
+                if (rows < 5 * select_cols * select_cols)
+                {
+                    MessageBox.Show("注意：データ数（行数）が不足しています");
                 }
 
                 command_line = process.StartInfo.Arguments;
