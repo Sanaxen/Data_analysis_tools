@@ -1118,6 +1118,12 @@ namespace WindowsFormsApplication1
 
                 //process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
 
+                try
+                {
+                    save_model("lingam.model");
+                }
+                catch { }
+
                 if (System.IO.File.Exists("Digraph.bat")) form1.FileDelete("Digraph.bat");
                 if (System.IO.File.Exists("Digraph.png")) form1.FileDelete("Digraph.png");
                 if (System.IO.File.Exists("causal_multi_histgram.png")) form1.FileDelete("causal_multi_histgram.png");
