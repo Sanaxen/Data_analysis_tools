@@ -165,6 +165,11 @@
             // 
             // numericUpDown5
             // 
+            this.numericUpDown5.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.numericUpDown5.Location = new System.Drawing.Point(117, 162);
             this.numericUpDown5.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown5.Maximum = new decimal(new int[] {
@@ -197,7 +202,7 @@
             this.label25.Size = new System.Drawing.Size(22, 15);
             this.label25.TabIndex = 61;
             this.label25.Text = "ρ";
-            this.toolTip1.SetToolTip(this.label25, "解の探索範囲を正規分布する乱数で選択できます。\r\n値は正規分布の分散でこの値が大きい程探索範囲は拡大される可能性があります。");
+            this.toolTip1.SetToolTip(this.label25, "未観測データの重ね合わせの分布の平均を正規分布からサンプリングします。\r\n分散でこの値が大きい程分布の平均の探索範囲は拡大される可能性があります。");
             // 
             // textBox14
             // 
@@ -258,7 +263,7 @@
             this.label21.Size = new System.Drawing.Size(22, 15);
             this.label21.TabIndex = 55;
             this.label21.Text = "β";
-            this.toolTip1.SetToolTip(this.label21, "解の探索範囲を変更出来ます。\r\n小さい程狭くなります。");
+            this.toolTip1.SetToolTip(this.label21, "未観測データの重ね合わせの分布を一般化正規分布からサンプリングします。\r\nサンプリングした値にこの係数が乗算されます。\r\n小さい程狭くなります。");
             // 
             // textBox13
             // 
