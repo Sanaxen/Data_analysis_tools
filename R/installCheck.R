@@ -2,7 +2,8 @@ targetPackages <- c('forecast', 'ellipse', 'magrittr','randomForest','car','dply
 'tidyverse', 'makedummies', 'VIM', 'imputeMissings', 'PerformanceAnalytics', 'reshape2'
 ,'glmnet','formattable','webshot', 'epitools','kableExtra'
 ,'rpart', 'rpart.plot', 'partykit','ggpmisc', 'pls', 'e1071', 'plotly', 'xgboost'
-,'wordcloud', 'magrittr', 'tagcloud', 'mice' , 'KFAS') 
+,'wordcloud', 'magrittr', 'tagcloud', 'mice' , 'KFAS'
+, 'Ckmeans.1d.dp', 'DiagrammeR', 'ggfortify') 
 
 newPackages <- targetPackages[!(targetPackages %in% installed.packages()[,"Package"])]
 if(length(newPackages)) install.packages(newPackages, repos = "http://cran.us.r-project.org")
