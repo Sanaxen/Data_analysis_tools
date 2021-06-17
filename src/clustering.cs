@@ -13,6 +13,7 @@ namespace WindowsFormsApplication1
     public partial class clustering : Form
     {
         int running = 0;
+        interactivePlot interactivePlot = null;
         public int execute_count = 0;
         public static DateTime fileTime = DateTime.Now.AddHours(-1);
         public ImageView _ImageView;
@@ -21,6 +22,8 @@ namespace WindowsFormsApplication1
         public clustering()
         {
             InitializeComponent();
+            interactivePlot = new interactivePlot();
+            interactivePlot.Hide();
         }
 
         private void cross_Load(object sender, EventArgs e)
@@ -121,6 +124,19 @@ namespace WindowsFormsApplication1
 
                 execute_count += 1;
 
+                if (!checkBox2.Checked || !checkBox1.Checked)
+                {
+                    webBrowser1.Hide();
+                    button2.Visible = true;
+                    button3.Visible = true;
+                }
+                else
+                {
+                    webBrowser1.Show();
+                    button2.Visible = false;
+                    button3.Visible = false;
+                }
+
                 form1.comboBox2.Text = "df" + Form1.Df_count.ToString();
                 form1.ComboBoxItemAdd(form1.comboBox2, form1.comboBox2.Text);
                 form1.comboBox3.Text = "df" + Form1.Df_count.ToString();
@@ -192,6 +208,18 @@ namespace WindowsFormsApplication1
                     cmd += "," + "\"manhattan\"";
                 }
                 else
+                if (comboBox1.Text == "Mahalanobis")
+                {
+                    cmd += "," + "\"Mahalanobis\"";
+                }
+                else
+                if (comboBox1.Text == "canberra")
+                {
+                    cmd += "," + "\"canberra\"";
+                }
+                else
+
+                //
                 if (comboBox1.Text == "NULL")
                 {
                     cmd += "," + "\"\"";
@@ -207,6 +235,14 @@ namespace WindowsFormsApplication1
                 }else
                 {
                     cmd += ",0";
+                }
+                if (checkBox3.Checked)
+                {
+                    cmd += ",TRUE";
+                }
+                else
+                {
+                    cmd += ",FALSE";
                 }
                 cmd += ")\r\n";
 
@@ -224,7 +260,12 @@ namespace WindowsFormsApplication1
                 {
                     using (System.IO.StreamWriter sw = new System.IO.StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
                     {
+                        sw.Write("options(width=" + form1._setting.numericUpDown2.Value.ToString() + ")\r\n");
+                        sw.Write("sink(file = \"summary.txt\")\r\n");
+
                         sw.Write(cmd);
+
+                        sw.Write("sink()\r\n");
                         sw.Write("\r\n");
                     }
                 }
@@ -232,6 +273,12 @@ namespace WindowsFormsApplication1
                 {
                     return;
                 }
+                form1.textBox6.Text += "\r\n# [-------------------------\r\n";
+                form1.textBox6.Text += cmd;
+                form1.textBox6.Text += "\r\n# -------------------------]\r\n\r\n";
+                //テキスト最後までスクロール
+                form1.TextBoxEndposset(form1.textBox6);
+
                 string stat = form1.Execute_script(file);
                 if (stat == "$ERROR")
                 {
@@ -246,6 +293,8 @@ namespace WindowsFormsApplication1
 
                     if (Form1.RProcess.HasExited) return;
                 }
+                form1.textBox6.Text += stat;
+                form1.TextBoxEndposset(form1.textBox6);
 
                 int df_cluster_num = 0;
                 string msg = "";
@@ -275,6 +324,37 @@ namespace WindowsFormsApplication1
                     MessageBox.Show( msg, df_cluster_num.ToString() + "Files", MessageBoxButtons.OK);
                 }
 
+                {
+                    string bak = form1.textBox1.Text;
+                    for (int i = 1; i <= df_cluster_num; i++)
+                    {
+                        string df_cluster = "df_cluster_" + String.Format("{0:D3}", i);
+                        if (System.IO.File.Exists(df_cluster+".csv"))
+                        {
+                            cmd = df_cluster + "<- read.csv( \"" + df_cluster + ".csv" + "\", ";
+                            cmd += "header=T";
+                            cmd += ", stringsAsFactors = F";
+                            //cmd += ", fileEncoding=\"UTF-8-BOM\"";
+                            cmd += ", na.strings=\"NULL\"";
+                            cmd += ")\r\n";
+
+                            form1.textBox1.Text = cmd;
+                            try
+                            {
+                                form1.script_execute(sender, e);
+                                form1.comboBox3.Text = df_cluster;
+                                form1.comboBox1.Text = "";
+                                form1.ComboBoxItemAdd(form1.comboBox2, form1.comboBox3.Text);
+                                form1.comboBox2.Text = form1.comboBox3.Text;
+
+                            }
+                            catch { }
+                        }
+                    }
+                    form1.textBox1.Text = bak;
+                }
+
+
                 form1.comboBox2.Text = "df" + Form1.Df_count.ToString();
                 form1.comboBox3.Text = "df" + Form1.Df_count.ToString();
                 if (form1.checkBox7.Checked)
@@ -288,8 +368,61 @@ namespace WindowsFormsApplication1
                     pictureBox1.Image = Form1.CreateImage("cluster.png");
                 }
                 catch { }
+
+                
                 form1.textBox6.Text += stat;
                 form1.TextBoxEndposset(form1.textBox6);
+
+
+                if (checkBox2.Checked && checkBox1.Checked)
+                {
+                    cmd = "";
+                    cmd += "library(plotly)\r\n";
+                    cmd += "library(htmlwidgets)\r\n";
+                    cmd += "gp_ = autoplot(fit_, data = df, frame = TRUE, frame.type = 'norm', label = ";
+                    if (checkBox3.Checked)
+                    {
+                        cmd += "TRUE";
+                    }
+                    else
+                    {
+                        cmd += "FALSE";
+                    }
+                    cmd += ", label.size = 3)\r\n";
+
+                    if (System.IO.File.Exists("clustering_temp.html")) form1.FileDelete("clustering_temp.html");
+                    cmd += "p_<-ggplotly(gp_)\r\n";
+                    cmd += "print(p_)\r\n";
+                    cmd += "htmlwidgets::saveWidget(as_widget(p_), \"clustering_temp.html\", selfcontained = F)\r\n";
+                    form1.script_executestr(cmd);
+
+                    System.Threading.Thread.Sleep(50);
+                    if (System.IO.File.Exists("clustering_temp.html"))
+                    {
+                        string webpath = Form1.curDir + "/clustering_temp.html";
+                        webpath = webpath.Replace("\\", "/").Replace("//", "/");
+
+                        if (form1._setting.checkBox1.Checked)
+                        {
+                            System.Diagnostics.Process.Start(webpath, null);
+                        }
+                        else
+                        {
+                            interactivePlot.webBrowser1.Navigate(webpath);
+                            interactivePlot.Refresh();
+                            //interactivePlot.Show();
+                            //interactivePlot.TopMost = true;
+                            //interactivePlot.TopMost = false;
+
+                            webBrowser1.Navigate(webpath);
+                            webBrowser1.Refresh();
+                            webBrowser1.Show();
+                            TopMost = true;
+                            TopMost = false;
+                        }
+                    }
+                }
+
             }
             catch
             { }
@@ -332,6 +465,12 @@ namespace WindowsFormsApplication1
 
         private void button7_Click(object sender, EventArgs e)
         {
+            if (checkBox2.Checked && checkBox1.Checked)
+            {
+                interactivePlot.Show();
+                return;
+            }
+
             if (_ImageView == null) _ImageView = new ImageView();
             _ImageView.form1 = this.form1;
             if (System.IO.File.Exists("cluster.png"))
@@ -382,18 +521,18 @@ namespace WindowsFormsApplication1
         bool recalc = true;
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (recalc && listBox1.Items.Count < 100)
-            {
-                button1_Click(sender, e);
-            }
+            //if (recalc && listBox1.Items.Count < 100)
+            //{
+            //    button1_Click(sender, e);
+            //}
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (recalc && listBox1.Items.Count < 100)
-            {
-                button1_Click(sender, e);
-            }
+            //if (recalc && listBox1.Items.Count < 100)
+            //{
+            //    button1_Click(sender, e);
+            //}
         }
 
         private void button6_Click(object sender, EventArgs e)

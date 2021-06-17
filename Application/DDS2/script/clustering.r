@@ -4,7 +4,7 @@ clust.centroid = function(i, dat, clusters) {
 	colMeans(dat[ind,])
 }
 
-clusters_df <- function(df, index, num_clusters, use_hclust_method_name, image_size, ggplot_image) 
+clusters_df <- function(df, index, num_clusters, use_hclust_method_name, image_size, ggplot_image, label_on) 
 {
 	library(cluster)
 	library(ggfortify)
@@ -74,14 +74,17 @@ clusters_df <- function(df, index, num_clusters, use_hclust_method_name, image_s
 		{
 			png("cluster.png", height=640*image_size, width=640*image_size)
 		}
-		clusplot(df, fit$cluster, color=TRUE, shade=TRUE, labels=2, lines=0, cex=1+image_size)
-		#clusplot(df, fit$cluster, color=TRUE, shade=F, labels=2, lines=0, cex=1+image_size)
+		
+		label = 0
+		if ( label_on ) label = 2
+		clusplot(df, fit$cluster, color=TRUE, shade=TRUE, labels=label, lines=0, cex=1+image_size)
+		#clusplot(df, fit$cluster, color=TRUE, shade=F, labels=label, lines=0, cex=1+image_size)
 		dev.off()  
 	}else
 	{
 		sz = image_size;
 		if ( sz <= 0 ) sz = 1
-		g = autoplot(fit, data = df, frame = TRUE, frame.type = 'norm', label = TRUE, label.size = 3)
+		g = autoplot(fit, data = df, frame = TRUE, frame.type = 'norm', label = label_on, label.size = 3)
 		ggsave(file = "cluster.png", plot = g, dpi = 100*sz, width = 6.4, height = 4.8)
 	}
 

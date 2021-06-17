@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
@@ -43,14 +45,17 @@
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -63,6 +68,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.checkBox3);
             this.panel2.Controls.Add(this.comboBox1);
             this.panel2.Controls.Add(this.checkBox1);
             this.panel2.Controls.Add(this.label3);
@@ -84,12 +90,31 @@
             this.panel2.Size = new System.Drawing.Size(631, 618);
             this.panel2.TabIndex = 3;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "defalut",
+            "euclidean",
+            "Mahalanobis",
+            "manhattan",
+            "cosine",
+            "maximum",
+            "canberra",
+            "NULL"});
+            this.comboBox1.Location = new System.Drawing.Point(513, 354);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(100, 23);
+            this.comboBox1.TabIndex = 19;
+            this.comboBox1.Text = "default";
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(508, 328);
+            this.checkBox1.Location = new System.Drawing.Point(513, 326);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(103, 19);
@@ -114,6 +139,7 @@
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(100, 22);
             this.numericUpDown2.TabIndex = 16;
+            this.toolTip1.SetToolTip(this.numericUpDown2, "0はデフォルトで自動です。\r\n画像が荒い場合などは倍率を指定して下さい");
             // 
             // label2
             // 
@@ -134,6 +160,7 @@
             this.button8.Size = new System.Drawing.Size(107, 22);
             this.button8.TabIndex = 14;
             this.button8.Text = "指定キャンセル";
+            this.toolTip1.SetToolTip(this.button8, "指定しないとデータフレームの行インデックスを使います");
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
@@ -182,7 +209,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(505, 82);
+            this.numericUpDown1.Location = new System.Drawing.Point(513, 83);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             10000,
@@ -195,7 +222,7 @@
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(117, 22);
+            this.numericUpDown1.Size = new System.Drawing.Size(100, 22);
             this.numericUpDown1.TabIndex = 9;
             this.numericUpDown1.Value = new decimal(new int[] {
             2,
@@ -244,6 +271,7 @@
             // 
             this.panel5.AutoScroll = true;
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.webBrowser1);
             this.panel5.Controls.Add(this.pictureBox1);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(0, 54);
@@ -251,6 +279,16 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(776, 564);
             this.panel5.TabIndex = 38;
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(27, 25);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(774, 562);
+            this.webBrowser1.TabIndex = 38;
             // 
             // pictureBox1
             // 
@@ -265,6 +303,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.checkBox2);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.button7);
             this.panel1.Controls.Add(this.button2);
@@ -274,6 +313,19 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(776, 54);
             this.panel1.TabIndex = 35;
+            this.toolTip1.SetToolTip(this.panel1, "Appearanceにチェックを入れないと機能しません");
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(391, 21);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(171, 19);
+            this.checkBox2.TabIndex = 35;
+            this.checkBox2.Text = "インタラクティブ（ブラウザ）";
+            this.toolTip1.SetToolTip(this.checkBox2, "Appearanceのチェックを入れる必要があります。");
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
@@ -330,20 +382,15 @@
             this.splitter1.TabIndex = 40;
             this.splitter1.TabStop = false;
             // 
-            // comboBox1
+            // checkBox3
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "defalut",
-            "manhattan",
-            "euclidean",
-            "maximum",
-            "NULL"});
-            this.comboBox1.Location = new System.Drawing.Point(513, 354);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(100, 23);
-            this.comboBox1.TabIndex = 19;
-            this.comboBox1.Text = "default";
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(513, 407);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(63, 19);
+            this.checkBox3.TabIndex = 20;
+            this.checkBox3.Text = "ラベル";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // clustering
             // 
@@ -365,6 +412,7 @@
             this.panel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -395,5 +443,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }

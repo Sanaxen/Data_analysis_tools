@@ -604,6 +604,9 @@
     <EmbeddedResource Include="Causal_relationship_search.resx">
       <DependentUpon>Causal_relationship_search.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="clustering.resx">
+      <DependentUpon>clustering.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="cross.resx">
       <DependentUpon>cross.cs</DependentUpon>
     </EmbeddedResource>
