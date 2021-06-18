@@ -245,14 +245,14 @@ namespace WindowsFormsApplication1
                     cmd += ", cex.lab = 2.5, cex.main=2.5)\r\n";
 
                     cmd += "x_<-is.na(" + col + ")\r\n";
-                    cmd += "if (length(" + col + ") - sum(x_[x_ == FALSE]) > 2){\r\n";
-                    cmd += "lines(density(as.numeric(df$'" + form1.Names.Items[(list.SelectedIndices[i])].ToString() + "'" + "[!is.na(df$'" + form1.Names.Items[(list.SelectedIndices[i])].ToString() + "')])), col = \"orange\", lwd = 2)\r\n";
+                    cmd += "    if (length(" + col + ") - sum(x_[x_ == FALSE]) > 2){\r\n";
+                    cmd += "    lines(density(as.numeric(df$'" + form1.Names.Items[(list.SelectedIndices[i])].ToString() + "'" + "[!is.na(df$'" + form1.Names.Items[(list.SelectedIndices[i])].ToString() + "')])), col = \"orange\", lwd = 2)\r\n";
                     cmd += "}\r\n";
-                    cmd += "rect(par(\"usr\")[1],par(\"usr\")[3],par(\"usr\")[2],par(\"usr\")[4],col = \"#EEEEEE33\")\r\n";
+                    cmd += "    rect(par(\"usr\")[1],par(\"usr\")[3],par(\"usr\")[2],par(\"usr\")[4],col = \"#EEEEEE33\")\r\n";
                     cmd += "}\r\n";
                     cmd += "if ( is.factor(" + col + ") ||is.character(" + col + ")){\r\n";
-                    cmd += "plot(as.factor(" + col + "), cex.lab = 2.5, cex.main=2.5,col = \"orange\")\r\n";
-                    cmd += "rect(par(\"usr\")[1],par(\"usr\")[3],par(\"usr\")[2],par(\"usr\")[4],col = \"#EEEEEE33\")\r\n";
+                    cmd += "    plot(as.factor(" + col + "), cex.lab = 2.5, cex.main=2.5,col = \"orange\")\r\n";
+                    cmd += "    rect(par(\"usr\")[1],par(\"usr\")[3],par(\"usr\")[2],par(\"usr\")[4],col = \"#EEEEEE33\")\r\n";
                     cmd += "}\r\n";
                 }
 

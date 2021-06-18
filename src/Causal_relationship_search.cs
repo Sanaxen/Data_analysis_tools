@@ -25,6 +25,7 @@ namespace WindowsFormsApplication1
         string command_line = "";
         bool loss_plot = false;
         int BlinkingLabel_count = 0;
+        public bool exist_cluster = false;
 
         public Form17 form17_ = null;
 
@@ -879,6 +880,15 @@ namespace WindowsFormsApplication1
                     return;
                 }
             }
+            if (numericUpDown5.Value > 0 && comboBox2.Text == "")
+            {
+                MessageBox.Show("", "クラスタ番号が指定されているのにクラスタ変数が指定されていないです");
+                return;
+            }
+            //if (numericUpDown5.Value == 0 && comboBox2.Text != "")
+            //{
+            //    MessageBox.Show("", "クラスタ変数が指定されているのにクラスタ番号が指定されていないです");
+            //}
 
             running = 1;
             textBox3.Text = "";
@@ -953,6 +963,14 @@ namespace WindowsFormsApplication1
                     for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                     {
                         string var = listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                        if (numericUpDown5.Value > 0)
+                        {
+                            if (var == comboBox2.Text)
+                            {
+                                listBox1.SetSelected(listBox1.SelectedIndices[i], false);
+                                MessageBox.Show("", "クラスタ変数と重複選択は出来ません");
+                            }
+                        }
 
                         if (typename.Items[listBox1.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox1.SelectedIndices[i]].ToString() == "integer")
                         {
@@ -970,6 +988,15 @@ namespace WindowsFormsApplication1
                 {
                     for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
                     {
+                        if (numericUpDown5.Value > 0)
+                        {
+                            if (listBox2.Items[listBox2.SelectedIndices[i]].ToString() == comboBox2.Text)
+                            {
+                                listBox2.SetSelected(listBox2.SelectedIndices[i], false);
+                                MessageBox.Show("", "クラスタ変数と重複選択は出来ません");
+                            }
+                        }
+
                         if (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer")
                         {
                             string var = listBox2.Items[listBox2.SelectedIndices[i]].ToString();
@@ -1084,6 +1111,12 @@ namespace WindowsFormsApplication1
                 if (checkBox6.Checked )
                 {
                     process.StartInfo.Arguments += " --loss_data_load 0";
+                }
+
+                if ( numericUpDown5.Value > 0)
+                {
+                    process.StartInfo.Arguments += " --c_var " + "\"" + comboBox2.Text + "\"";
+                    process.StartInfo.Arguments += " --cluster " + numericUpDown5.Value.ToString();
                 }
 
                 int rows = form1.Int_func("nrow", "df");

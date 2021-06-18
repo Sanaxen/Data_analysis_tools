@@ -6600,6 +6600,7 @@ namespace WindowsFormsApplication1
                 _Causal_relationship_search.listBox1.Items.Clear();
                 _Causal_relationship_search.listBox2.Items.Clear();
                 Causal_relationship_search.fileTime = t;
+                _Causal_relationship_search.comboBox2.Items.Clear();
             }
             else
             {
@@ -6609,6 +6610,32 @@ namespace WindowsFormsApplication1
             }
 
             Names = GetNames("df");
+            ListBox types = GetTypes("df");
+            _Causal_relationship_search.comboBox2.Items.Clear();
+
+            _Causal_relationship_search.exist_cluster = false;
+            for (int i = 0; i < Names.Items.Count; i++)
+            {
+                if (Names.Items[i].ToString() == "cluster")
+                {
+                    _Causal_relationship_search.exist_cluster = true;
+                    _Causal_relationship_search.comboBox2.Text = "cluster";
+                }
+                if (types.Items[i].ToString() == "numeric" || types.Items[i].ToString() == "integer")
+                {
+                    _Causal_relationship_search.comboBox2.Items.Add(Names.Items[i]);
+                }
+                else
+                {
+                    _Causal_relationship_search.comboBox2.Items.Add(Names.Items[i] + "<-非数値です");
+                    if (Names.Items[i].ToString() == "cluster")
+                    {
+                        MessageBox.Show("", "cluster変数が非数値です");
+                        _Causal_relationship_search.comboBox2.Text = "";
+                    }
+                }
+            }
+
             for (int i = 0; i < Names.Items.Count; i++)
             {
                 _Causal_relationship_search.listBox1.Items.Add(Names.Items[i]);
