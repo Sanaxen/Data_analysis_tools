@@ -9,6 +9,7 @@ clusters_df <- function(df, index, num_clusters, use_hclust_method_name, image_s
 	library(cluster)
 	library(ggfortify)
 	library(ggplot2)
+	library(proxy)
 
 
 	n = ncol(df)
@@ -41,7 +42,7 @@ clusters_df <- function(df, index, num_clusters, use_hclust_method_name, image_s
 		method_name <- use_hclust_method_name;
 		#clusters <- cutree(hclust(dist(smat, method = "cosine"), method = "ward.D2"), k = num_clusters)
 		#clusters <- cutree(hclust(dist(smat, method = "manhattan"), method = "ward.D2"), k = num_clusters)
-		clusters <- cutree(hclust(dist(smat, method = method_name), method = "ward.D2"), k = num_clusters)
+		clusters <- cutree(hclust(proxy::dist(smat, method = method_name), method = "ward.D2"), k = num_clusters)
 		centers <- sapply(unique(clusters), clust.centroid, smat, clusters)
 		fit <- kmeans(smat, centers=t(centers)) 
 	}else
