@@ -4,7 +4,7 @@ clust.centroid = function(i, dat, clusters) {
 	colMeans(dat[ind,])
 }
 
-clusters_df <- function(df, index, num_clusters, use_hclust_method_name, image_size, ggplot_image, label_on) 
+clusters_df <- function(df, index_name, index, num_clusters, use_hclust_method_name, image_size, ggplot_image, label_on) 
 {
 	library(cluster)
 	library(ggfortify)
@@ -19,12 +19,15 @@ clusters_df <- function(df, index, num_clusters, use_hclust_method_name, image_s
 	if ( length(index) == 0 )
 	{
 		index <- data.frame(index_row=1:m)
-		rownames(df) <- index[,1]
+		index_name <- "index_row"
 	}else
 	{
-		rownames(df) <- index
+		index <- data.frame(index)
+		colnames(index) <- c(index_name)
 	}
+	rownames(df) <- index[,1]
 
+	print("---------------------")
 	#smat <- scale(df)
 	smat <- df
 
@@ -52,16 +55,25 @@ clusters_df <- function(df, index, num_clusters, use_hclust_method_name, image_s
 
 	cluster_id <- data.frame(fit$cluster)
 
+	print(num_clusters)
 	for ( k in 1:num_clusters)
 	{
 		df1 = NULL
+		df2 = NULL
+		df3 = NULL
 		for ( i in 1:m)
 		{
 			if ( cluster_id[i,] == k)
 			{
 				df1 <- rbind(df1, df[i,])
+				df2 <- rbind(df2, index[i,])
+				df3 <- rbind(df3, cluster_id[i,])
 			}
 		}
+		colnames(df2) <- c(index_name)
+		colnames(df3) <- c("cluster_id")
+		df1 <- cbind(df1, df2)
+		df1 <- cbind(df1, df3)
 		file.name <- sprintf("df_cluster_%03d.csv", k) 
 		write.csv(df1, file.name, row.names=FALSE)
 	}

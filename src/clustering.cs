@@ -142,10 +142,12 @@ namespace WindowsFormsApplication1
                 form1.comboBox3.Text = "df" + Form1.Df_count.ToString();
 
                 string arg1 = "";
+                string arg1_name = "NULL";
                 string arg2 = "";
 
                 if (listBox1.SelectedIndices.Count == 1)
                 {
+                    arg1_name = "\"" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "\"";
                     arg1 = "df$'" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "'";
                 }
                 else
@@ -188,7 +190,7 @@ namespace WindowsFormsApplication1
                     }
                 }
                 string cmd = arg2 + "\r\n";
-                cmd += "fit_ <- clusters_df(df_tmp_," + arg1 + "," + numericUpDown1.Value.ToString();
+                cmd += "fit_ <- clusters_df(df_tmp_," + arg1_name + "," + arg1 + "," + numericUpDown1.Value.ToString();
                 if ( comboBox1.Text == "default")
                 {
                     cmd += "," + "\"manhattan\"";
@@ -564,6 +566,12 @@ namespace WindowsFormsApplication1
         private void button8_Click(object sender, EventArgs e)
         {
             listBox1.SelectedIndex = -1;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show("", "Appearanceを有効にする必要があります");
+            checkBox1.Checked = true;
         }
     }
 }

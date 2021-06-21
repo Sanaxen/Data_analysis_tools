@@ -4519,6 +4519,7 @@ namespace WindowsFormsApplication1
                 _scatterplot.listBox1.Items.Clear();
                 _scatterplot.listBox2.Items.Clear();
                 _scatterplot.comboBox1.Items.Clear();
+                _scatterplot.comboBox1.Text = "";
                 scatterplot.fileTime = t;
             }
             else
@@ -4538,6 +4539,7 @@ namespace WindowsFormsApplication1
                 _scatterplot.listBox2.Items.Add(Names.Items[i]);
                 _scatterplot.comboBox1.Items.Add(Names.Items[i]);
             }
+            _scatterplot.comboBox1.Text = "";
 
             int n = Names.Items.Count;
 

@@ -462,6 +462,7 @@ namespace WindowsFormsApplication1
                     if (listBox1.SelectedIndex >= 0 && listBox2.SelectedIndex >= 0)
                     {
                         cmd = "";
+                        cmd += "library(ggplot2)\r\n";
                         cmd += "library(plotly)\r\n";
                         cmd += "library(htmlwidgets)\r\n";
 
@@ -485,13 +486,13 @@ namespace WindowsFormsApplication1
                                 {
                                     if (listBox1.SelectedIndices[i] == listBox2.SelectedIndices[j]) continue;
                                     string col2 = "df$'" + form1.Names.Items[(listBox2.SelectedIndices[j])].ToString() + "'";
-                                    cmd += "x2_<-is.na(" + col2 + ")\r\n";
+                                    cmd += "    x2_<-is.na(" + col2 + ")\r\n";
                                     //cmd += "if ((is.numeric(" + col2 + ") || is.integer(" + col2 + ")|| is.logical(" + col2 + "))){\r\n";
-                                    cmd += "if ( TRUE ){\r\n";
+                                    cmd += "    if ( TRUE ){\r\n";
 
                                     cmd += "        x_<-" + col1 +"\r\n";
                                     cmd += "        y_<-" + col2 + "\r\n";
-                                    cmd += "        df_tmp<- data.frame('" + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() + "' = x_," + "'" + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() + "'= y_)\r\n";
+                                    cmd += "        df_tmp<- data.frame('" + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() + "' = x_," + "'" + form1.Names.Items[(listBox2.SelectedIndices[j])].ToString() + "'= y_)\r\n";
                                     cmd += "        df_tmp<-na.omit(df_tmp)\r\n";
                                     cmd += "        x_<-df_tmp[,1]\r\n";
                                     cmd += "        y_<-df_tmp[,2]\r\n";
@@ -504,17 +505,21 @@ namespace WindowsFormsApplication1
 
                                     if (form1.auto_dataframe_scan)
                                     {
-                                        cmd += "    if ( abs(cor(x_, y_)) > 0.5 ){\r\n";
+                                        cmd += "        if ( abs(cor(x_, y_)) > 0.5 ){\r\n";
                                     }
-                                    cmd += "    p_<-ggplot(df_tmp" +
+                                    cmd += "        p_<-ggplot(df_tmp" +
                                         ",aes(x = " + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() +
                                         ",y = " + form1.Names.Items[(listBox2.SelectedIndices[j])].ToString() +
-                                        ",color =" + comboBox1.Text + "))+" +
+                                        ",color = df$'" + comboBox1.Text+"'" + "))+" +
                                         " geom_point()\r\n";
-                                    cmd += "    p_ <- ggplotly(p_)\r\n";
-                                    cmd += "    plotlist[[listcount_]]<-p_\r\n";
-                                    cmd += "    listcount_<-listcount_+1\r\n";
-                                    cmd += "}\r\n";
+                                    cmd += "        p_ <- p_ + labs(";
+                                    cmd += "x = \"" + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() + "\"";
+                                    cmd += ", y = \"" + form1.Names.Items[(listBox2.SelectedIndices[j])].ToString()+ "\"";
+                                    cmd += ", color = \"" + comboBox1.Text + "\")\r\n";
+                                    cmd += "        p_ <- ggplotly(p_)\r\n";
+                                    cmd += "        plotlist[[listcount_]]<-p_\r\n";
+                                    cmd += "        listcount_<-listcount_+1\r\n";
+                                    cmd += "    }\r\n";
                                     if (form1.auto_dataframe_scan)
                                     {
                                         cmd += "}\r\n";
@@ -557,12 +562,12 @@ namespace WindowsFormsApplication1
 
                                     if (form1.auto_dataframe_scan)
                                     {
-                                        cmd += "    if ( abs(cor(x_, y_)) > 0.5 ){\r\n";
+                                        cmd += "        if ( abs(cor(x_, y_)) > 0.5 ){\r\n";
                                     }
 
                                     if (checkBox7.Checked)
                                     {
-                                        cmd += "    p_<-plot_ly(df_tmp" +
+                                        cmd += "        p_<-plot_ly(df_tmp" +
                                             ",color = ~" + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() +
                                             ",y = ~" + form1.Names.Items[(listBox2.SelectedIndices[j])].ToString() +
                                             ",type = \"scatter\"" +
@@ -570,16 +575,16 @@ namespace WindowsFormsApplication1
                                             ")\r\n";
                                     }else
                                     {
-                                        cmd += "    p_<-plot_ly(df_tmp" +
+                                        cmd += "        p_<-plot_ly(df_tmp" +
                                             ",x = ~" + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() +
                                             ",y = ~" + form1.Names.Items[(listBox2.SelectedIndices[j])].ToString() +
                                             ",type = \"scatter\"" +
                                             ",name =\"" + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() + " x " + form1.Names.Items[(listBox2.SelectedIndices[j])].ToString() + "\"" +
                                             ")\r\n";
                                     }
-                                    cmd += "    plotlist[[listcount_]]<-p_\r\n";
-                                    cmd += "    listcount_<-listcount_+1\r\n";
-                                    cmd += "}\r\n";
+                                    cmd += "        plotlist[[listcount_]]<-p_\r\n";
+                                    cmd += "        listcount_<-listcount_+1\r\n";
+                                    cmd += "    }\r\n";
                                     if (form1.auto_dataframe_scan)
                                     {
                                         cmd += "}\r\n";

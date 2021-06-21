@@ -384,6 +384,7 @@ namespace WindowsFormsApplication1
                                             ",y = ~" + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() +
                                             ",type = \"box\"" +
                                             ",name =\"" + form1.Names.Items[(listBox2.SelectedIndex)].ToString() + " - " + form1.Names.Items[(listBox1.SelectedIndices[i])].ToString() + "\"" +
+                                            ",color=~" + form1.Names.Items[(listBox2.SelectedIndex)].ToString() +
                                             ")\r\n";
                                     }
                                     else
@@ -392,6 +393,7 @@ namespace WindowsFormsApplication1
                                             ",y = ~" + form1.Names.Items[(listBox2.SelectedIndex)].ToString() +
                                             ",type = \"box\"" +
                                             ",name =\"" + form1.Names.Items[(listBox2.SelectedIndex)].ToString() + "\"" +
+                                            ",color=~" + form1.Names.Items[(listBox2.SelectedIndex)].ToString() +
                                             ")\r\n";
                                     }
                                 }
