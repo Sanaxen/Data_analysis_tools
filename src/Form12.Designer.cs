@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
@@ -90,7 +91,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
@@ -173,6 +173,19 @@
             this.groupBox1.Size = new System.Drawing.Size(827, 429);
             this.groupBox1.TabIndex = 84;
             this.groupBox1.TabStop = false;
+            // 
+            // checkBox10
+            // 
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Checked = true;
+            this.checkBox10.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox10.Location = new System.Drawing.Point(270, 297);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(166, 19);
+            this.checkBox10.TabIndex = 122;
+            this.checkBox10.Text = "自己シーケンスを含める";
+            this.toolTip1.SetToolTip(this.checkBox10, "説明変数が無い場合は無視されます。\r\n説明変数がある場合は入力シーケンスは説明変数の入力シーケンスになります");
+            this.checkBox10.UseVisualStyleBackColor = true;
             // 
             // checkBox9
             // 
@@ -365,7 +378,7 @@
             this.label13.Size = new System.Drawing.Size(122, 15);
             this.label13.TabIndex = 98;
             this.label13.Text = "平均でまとめる行数";
-            this.toolTip1.SetToolTip(this.label13, "エポック数");
+            this.toolTip1.SetToolTip(this.label13, "データを平滑化します。（１を指定した場合は平滑化しません）");
             // 
             // numericUpDown11
             // 
@@ -976,19 +989,6 @@
             0,
             0,
             0});
-            // 
-            // checkBox10
-            // 
-            this.checkBox10.AutoSize = true;
-            this.checkBox10.Checked = true;
-            this.checkBox10.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox10.Location = new System.Drawing.Point(270, 297);
-            this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(166, 19);
-            this.checkBox10.TabIndex = 122;
-            this.checkBox10.Text = "自己シーケンスを含める";
-            this.toolTip1.SetToolTip(this.checkBox10, "説明変数が無い場合は無視されます。\r\n説明変数がある場合は入力シーケンスは説明変数の入力シーケンスになります");
-            this.checkBox10.UseVisualStyleBackColor = true;
             // 
             // Form12
             // 
