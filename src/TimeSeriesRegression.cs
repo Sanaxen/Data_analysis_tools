@@ -225,6 +225,34 @@ namespace WindowsFormsApplication1
                     {
                         System.IO.File.Copy(Form1.curDir + "\\normalize_info_t.txt", save_name+ ".normalize_info_t.dat", true);
                     }
+                    if (System.IO.File.Exists(Form1.curDir + "\\test_params.txt"))
+                    {
+                        System.IO.File.Copy(Form1.curDir + "\\test_params.txt", save_name + ".test_params.txt", true);
+                    }
+                    if (System.IO.File.Exists(Form1.curDir + "\\train_params.txt"))
+                    {
+                        System.IO.File.Copy(Form1.curDir + "\\train_params.txt", save_name + ".train_params.txt", true);
+                    }
+                    if (System.IO.File.Exists(Form1.curDir + "\\test_images_tr.csv"))
+                    {
+                        System.IO.File.Copy(Form1.curDir + "\\test_images_tr.csv", save_name + ".test_images_tr.csv", true);
+                    }
+                    if (System.IO.File.Exists(Form1.curDir + "\\test_images_ts.csv"))
+                    {
+                        System.IO.File.Copy(Form1.curDir + "\\test_images_ts.csv", save_name + ".test_images_ts.csv", true);
+                    }
+                    if (System.IO.File.Exists(Form1.curDir + "\\train_images_tr.csv"))
+                    {
+                        System.IO.File.Copy(Form1.curDir + "\\train_images_tr.csv", save_name + ".train_images_tr.csv", true);
+                    }
+                    if (System.IO.File.Exists(Form1.curDir + "\\train_images_ts.csv"))
+                    {
+                        System.IO.File.Copy(Form1.curDir + "\\train_images_ts.csv", save_name + ".train_images_ts.csv", true);
+                    }
+                    if (System.IO.File.Exists(Form1.curDir + "\\torch_pycode.dmp"))
+                    {
+                        System.IO.File.Copy(Form1.curDir + "\\torch_pycode.dmp", save_name + ".torch_pycode.dmp", true);
+                    }
                     form1.SelectionVarWrite_(listBox1, listBox2, save_name + ".select_variables.dat");
                     form1.SelectionVarWrite_(listBox3, listBox4, save_name + ".select_variables2.dat");
 
@@ -361,6 +389,14 @@ namespace WindowsFormsApplication1
                         za.CreateEntryFromFile(save_name + ".select_variables.dat", (fname + ".select_variables.dat"));
                         za.CreateEntryFromFile(save_name + ".select_variables2.dat", (fname + ".select_variables2.dat"));
                         za.CreateEntryFromFile(save_name + ".normalize_info_t.dat", (fname + ".normalize_info_t.dat"));
+
+                        za.CreateEntryFromFile(save_name + ".test_params.txt", (fname + ".test_params.txt"));
+                        za.CreateEntryFromFile(save_name + ".train_params.txt", (fname + ".train_params.txt"));
+                        za.CreateEntryFromFile(save_name + ".test_images_tr.csv", (fname + ".test_images_tr.csv"));
+                        za.CreateEntryFromFile(save_name + ".test_images_ts.csv", (fname + ".test_images_ts.csv"));
+                        za.CreateEntryFromFile(save_name + ".train_images_tr.csv", (fname + ".train_images_tr.csv"));
+                        za.CreateEntryFromFile(save_name + ".train_images_ts.csv", (fname + ".train_images_ts.csv"));
+                        za.CreateEntryFromFile(save_name + ".torch_pycode.dmp", (fname + ".torch_pycode.dmp"));
                     }
                     if (System.IO.File.Exists(save_name + ".dds2"))
                     {
