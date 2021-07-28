@@ -554,6 +554,18 @@ namespace WindowsFormsApplication1
                             numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
                             continue;
                         }
+                        if (ss[0].IndexOf("adaptive_lasso") >= 0)
+                        {
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox10.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox10.Checked = false;
+                            }
+                            continue;
+                        }
                     }
                     sr.Close();
                 }
@@ -657,6 +669,10 @@ namespace WindowsFormsApplication1
                     sw.Write(comboBox1.Text + "\r\n");
 
                     sw.Write("min_delete_srt,"); sw.Write(numericUpDown4.Value.ToString() + "\r\n");
+                    
+                    sw.Write("adaptive_lasso,");
+                    if (checkBox10.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
                     sw.Close();
                 }
             }
@@ -1117,6 +1133,13 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --c_var " + "\"" + comboBox2.Text + "\"";
                     process.StartInfo.Arguments += " --cluster " + numericUpDown5.Value.ToString();
+                }
+                if (checkBox10.Checked)
+                {
+                    process.StartInfo.Arguments += " --use_adaptive_lasso 1";
+                }else
+                {
+                    process.StartInfo.Arguments += " --use_adaptive_lasso 0";
                 }
 
                 int rows = form1.Int_func("nrow", "df");
