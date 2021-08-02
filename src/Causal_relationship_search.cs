@@ -566,6 +566,18 @@ namespace WindowsFormsApplication1
                             }
                             continue;
                         }
+                        if (ss[0].IndexOf("bootstrap") >= 0)
+                        {
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox11.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox11.Checked = false;
+                            }
+                            continue;
+                        }
                     }
                     sr.Close();
                 }
@@ -590,6 +602,11 @@ namespace WindowsFormsApplication1
                     System.IO.File.Copy(modelfile + ".options", "lingam.model.options", true);
                     System.IO.File.Copy(modelfile + ".replacement", "lingam.model.replacement", true);
                     System.IO.File.Copy(modelfile + ".intercept.csv", "lingam.model.intercept.csv", true);
+
+                    if (checkBox11.Checked)
+                    {
+                        System.IO.File.Copy(modelfile + ".b_probability.csv", "lingam.model.b_probability.csv", true);
+                    }
                     System.IO.File.Copy(modelfile + ".select_variables.dat", "lingam.model.select_variables.dat", true);
                     if (process_batch == null)
                     {
@@ -673,6 +690,10 @@ namespace WindowsFormsApplication1
                     sw.Write("adaptive_lasso,");
                     if (checkBox10.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
+
+                    sw.Write("bootstrap,");
+                    if (checkBox11.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
                     sw.Close();
                 }
             }
@@ -691,6 +712,12 @@ namespace WindowsFormsApplication1
                     System.IO.File.Copy("lingam.model.option", save_name + ".option", true);
                     System.IO.File.Copy("lingam.model.replacement", save_name + ".replacement", true);
                     System.IO.File.Copy("lingam.model.intercept.csv", save_name + ".intercept.csv", true);
+
+                    if (checkBox11.Checked)
+                    {
+                        System.IO.File.Copy("lingam.model.b_probability.csv", save_name + ".b_probability.csv", true);
+                    }
+
                     System.IO.File.Copy("lingam_loss.dat", save_name + ".lingam_loss.dat", true);
                 }
                 catch
@@ -719,6 +746,11 @@ namespace WindowsFormsApplication1
                     za.CreateEntryFromFile(save_name + ".option", name + ".option");
                     za.CreateEntryFromFile(save_name + ".replacement", name + ".replacement");
                     za.CreateEntryFromFile(save_name + ".intercept.csv", name + ".intercept.csv");
+                    if (checkBox11.Checked)
+                    {
+                        za.CreateEntryFromFile(save_name + ".b_probability.csv", name + ".b_probability.csv");
+                    }
+
                     za.CreateEntryFromFile(save_name + ".lingam_loss.dat", name + ".lingam_loss.dat");
                 }
                 if (System.IO.File.Exists(save_name + ".dds2"))
@@ -933,6 +965,9 @@ namespace WindowsFormsApplication1
                 }
                 //
 
+                int rows = form1.Int_func("nrow", "df");
+                int cols = form1.Int_func("ncol", "df");
+
                 process = new System.Diagnostics.Process();
 
                 process.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
@@ -950,6 +985,12 @@ namespace WindowsFormsApplication1
                     process.StartInfo.Arguments += " --diaglam_size " + numericUpDown1.Value.ToString();
                 }
                 process.StartInfo.Arguments += " --lasso " + float.Parse(textBox4.Text);
+
+                if (checkBox2.Checked && rows > 5000)
+                {
+                    MessageBox.Show("注意：shapiro wilk 検定でデータ数（行数）が多すぎるため正しい評価になりません");
+                    checkBox2.Checked = false;
+                }
 
                 if (checkBox2.Checked)
                 {
@@ -1141,9 +1182,15 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --use_adaptive_lasso 0";
                 }
+                if (checkBox11.Checked )
+                {
+                    process.StartInfo.Arguments += " --use_bootstrap 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --use_bootstrap 0";
+                }
 
-                int rows = form1.Int_func("nrow", "df");
-                int cols = form1.Int_func("ncol", "df");
                 int select_cols = listBox2.SelectedIndices.Count;
                 if (select_cols == 0 )
                 {
