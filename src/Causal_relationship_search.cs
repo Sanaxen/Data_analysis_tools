@@ -21,6 +21,7 @@ namespace WindowsFormsApplication1
         public ImageView _ImageView;
         public ImageView _ImageView2;
         public ImageView _ImageView3;
+        public ImageView _ImageView4;
         System.Windows.Forms.ToolTip toolTip1;
         string command_line = "";
         bool loss_plot = false;
@@ -206,6 +207,25 @@ namespace WindowsFormsApplication1
 
                         }
                         catch { }
+
+                        if (checkBox11.Checked)
+                        {
+                            try
+                            {
+                                if (System.IO.File.Exists("b_probability.png"))
+                                {
+                                    System.IO.File.Delete("b_probability.png");
+                                }
+
+                                cmd = "source(\"" + "b_probability_barplot.r" + "\")\r\n";
+                                form1.textBox1.Text = cmd;
+                                form1.script_execute(sender, e);
+                            }
+                            catch { }
+                            button20.BackColor = Color.Gold;
+                            button20_Click(sender, e);
+                        }
+
                         form1.textBox1.Text = bak;
                     }
 
@@ -988,8 +1008,8 @@ namespace WindowsFormsApplication1
 
                 if (checkBox2.Checked && rows > 5000)
                 {
-                    MessageBox.Show("注意：shapiro wilk 検定でデータ数（行数）が多すぎるため正しい評価になりません");
-                    checkBox2.Checked = false;
+                    //MessageBox.Show("注意：shapiro wilk 検定でデータ数（行数）が多すぎるため正しい評価になりません");
+                    //checkBox2.Checked = false;
                 }
 
                 if (checkBox2.Checked)
@@ -1000,6 +1020,7 @@ namespace WindowsFormsApplication1
                     {
                         process.StartInfo.Arguments += " --error_distr_size  " + (640 * numericUpDown2.Value).ToString() + "," + (480 * numericUpDown2.Value).ToString();
                     }
+                    //MessageBox.Show((640 * numericUpDown2.Value).ToString());
                 }
 
                 process.StartInfo.Arguments += " --min_cor_delete " + float.Parse(textBox5.Text);
@@ -1230,6 +1251,13 @@ namespace WindowsFormsApplication1
                 if (System.IO.File.Exists("Digraph.bat")) form1.FileDelete("Digraph.bat");
                 if (System.IO.File.Exists("Digraph.png")) form1.FileDelete("Digraph.png");
                 if (System.IO.File.Exists("causal_multi_histgram.png")) form1.FileDelete("causal_multi_histgram.png");
+                if (System.IO.File.Exists("b_probability.png")) form1.FileDelete("b_probability.png");
+                button20.BackColor = SystemColors.Control;
+                if ( checkBox11.Checked)
+                {
+                    button20.BackColor = Color.LightBlue;
+                }
+
                 pictureBox1.ImageLocation = "";
                 pictureBox2.ImageLocation = "";
 
@@ -1939,7 +1967,32 @@ namespace WindowsFormsApplication1
 
                         }
                         catch { }
+
+                        if (checkBox11.Checked)
+                        {
+                            try
+                            {
+                                if (System.IO.File.Exists("b_probability.png"))
+                                {
+                                    System.IO.File.Delete("b_probability.png");
+                                }
+
+                                cmd = "source(\"" + "b_probability_barplot.r" + "\")\r\n";
+                                form1.textBox1.Text = cmd;
+                                form1.script_execute(sender, e);
+                            }
+                            catch { }
+                        }
                         form1.textBox1.Text = bak;
+                    }
+
+                    if (checkBox11.Checked)
+                    {
+                        if (System.IO.File.Exists("b_probability.png"))
+                        {
+                            button20.BackColor = Color.Gold;
+                            button20_Click(sender, e);
+                        }
                     }
 
                     if (System.IO.File.Exists("Digraph.bat"))
@@ -2059,6 +2112,30 @@ namespace WindowsFormsApplication1
         private void button19_Click(object sender, EventArgs e)
         {
             numericUpDown3.Value = 10000;
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            if (_ImageView4 == null) _ImageView4 = new ImageView();
+            _ImageView4.form1 = this.form1;
+            if (System.IO.File.Exists("b_probability.png"))
+            {
+                _ImageView4.pictureBox1.ImageLocation = "b_probability.png";
+                _ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                _ImageView4.pictureBox1.Dock = DockStyle.Fill;
+                _ImageView4.Show();
+            }
+        }
+
+        private void checkBox11_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox11.Checked)
+            {
+                button20.BackColor = Color.LightBlue;
+            }else
+            {
+                button20.BackColor = SystemColors.Control;
+            }
         }
     }
 }
