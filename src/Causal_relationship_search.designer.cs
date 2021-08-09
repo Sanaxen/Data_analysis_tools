@@ -35,6 +35,7 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.splitter3 = new System.Windows.Forms.Splitter();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.button21 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -231,9 +232,11 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.button21);
             this.panel9.Controls.Add(this.button20);
             this.panel9.Controls.Add(this.checkBox11);
             this.panel9.Controls.Add(this.groupBox3);
+            this.panel9.Controls.Add(this.checkBox3);
             this.panel9.Controls.Add(this.label19);
             this.panel9.Controls.Add(this.comboBox1);
             this.panel9.Controls.Add(this.button13);
@@ -252,6 +255,18 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(1229, 636);
             this.panel9.TabIndex = 49;
+            // 
+            // button21
+            // 
+            this.button21.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button21.Location = new System.Drawing.Point(141, 146);
+            this.button21.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(116, 34);
+            this.button21.TabIndex = 67;
+            this.button21.Text = "Causal_effect";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
             // 
             // button20
             // 
@@ -274,6 +289,7 @@
             this.checkBox11.Size = new System.Drawing.Size(89, 19);
             this.checkBox11.TabIndex = 65;
             this.checkBox11.Text = "確率推定";
+            this.toolTip2.SetToolTip(this.checkBox11, "因果関係の因果効果確率を推定します。");
             this.checkBox11.UseVisualStyleBackColor = true;
             this.checkBox11.CheckedChanged += new System.EventHandler(this.checkBox11_CheckedChanged);
             // 
@@ -355,6 +371,7 @@
             this.button13.Size = new System.Drawing.Size(137, 29);
             this.button13.TabIndex = 61;
             this.button13.Text = "変数の分布状況";
+            this.toolTip2.SetToolTip(this.button13, "入力データの分布を可視化します");
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click_1);
             // 
@@ -368,6 +385,7 @@
             this.checkBox6.TabIndex = 51;
             this.checkBox6.Tag = "";
             this.checkBox6.Text = "現在のモデルを使う";
+            this.toolTip2.SetToolTip(this.checkBox6, "直前に計算されたモデルを使います（再計算しません）。");
             this.checkBox6.UseVisualStyleBackColor = true;
             this.checkBox6.CheckStateChanged += new System.EventHandler(this.checkBox6_CheckStateChanged);
             // 
@@ -445,6 +463,7 @@
             this.button17.Size = new System.Drawing.Size(120, 29);
             this.button17.TabIndex = 71;
             this.button17.Text = "loss plot";
+            this.toolTip2.SetToolTip(this.button17, "最適化計算の状況をチェックできます。\r\nグラフの値が下がっている場合は最適地に向かって収束している途中です。\r\n");
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
@@ -530,10 +549,10 @@
             this.panel2.Controls.Add(this.numericUpDown2);
             this.panel2.Controls.Add(this.checkBox1);
             this.panel2.Controls.Add(this.checkBox2);
-            this.panel2.Location = new System.Drawing.Point(3, 11);
+            this.panel2.Location = new System.Drawing.Point(3, 5);
             this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(326, 144);
+            this.panel2.Size = new System.Drawing.Size(326, 140);
             this.panel2.TabIndex = 10;
             // 
             // label9
@@ -1111,7 +1130,6 @@
             this.groupBox2.Controls.Add(this.label20);
             this.groupBox2.Controls.Add(this.textBox4);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.checkBox3);
             this.groupBox2.Controls.Add(this.textBox9);
             this.groupBox2.Controls.Add(this.label17);
             this.groupBox2.Controls.Add(this.textBox10);
@@ -1178,12 +1196,14 @@
             this.checkBox3.Checked = true;
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.checkBox3.Location = new System.Drawing.Point(5, 44);
+            this.checkBox3.Location = new System.Drawing.Point(339, 38);
             this.checkBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(207, 19);
+            this.checkBox3.Size = new System.Drawing.Size(130, 19);
             this.checkBox3.TabIndex = 15;
-            this.checkBox3.Text = "値の変化が無い列は無視する";
+            this.checkBox3.Text = "非連続値を無視";
+            this.toolTip2.SetToolTip(this.checkBox3, "値の変化が無い列またはカテゴリ値の列は無視する。\r\nチェックを外す音連続値に自動修正します。\r\nカテゴリ値は実際は連続値で記録時に整数化されて登録されていると過程" +
+        "します。");
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // textBox9
@@ -1217,6 +1237,7 @@
             this.textBox10.Size = new System.Drawing.Size(59, 22);
             this.textBox10.TabIndex = 20;
             this.textBox10.Text = "10000";
+            this.toolTip2.SetToolTip(this.textBox10, "Lasso計算における収束計算の繰り返し最大数");
             this.textBox10.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // groupBox1
@@ -1256,6 +1277,7 @@
             this.textBox1.Size = new System.Drawing.Size(57, 22);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "1000";
+            this.toolTip2.SetToolTip(this.textBox1, "ICA計算における収束計算の繰り返し最大数");
             this.textBox1.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // textBox2
@@ -1528,5 +1550,6 @@
         private System.Windows.Forms.CheckBox checkBox10;
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Button button21;
     }
 }

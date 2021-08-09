@@ -22,6 +22,7 @@ namespace WindowsFormsApplication1
         public ImageView _ImageView2;
         public ImageView _ImageView3;
         public ImageView _ImageView4;
+        public ImageView _ImageView5;
         System.Windows.Forms.ToolTip toolTip1;
         string command_line = "";
         bool loss_plot = false;
@@ -225,6 +226,21 @@ namespace WindowsFormsApplication1
                             button20.BackColor = Color.Gold;
                             button20_Click(sender, e);
                         }
+
+                        try
+                        {
+                            if (System.IO.File.Exists("Causal_effect.png"))
+                            {
+                                System.IO.File.Delete("Causal_effect.png");
+                            }
+
+                            cmd = "source(\"" + "Causal_effect.r" + "\")\r\n";
+                            form1.textBox1.Text = cmd;
+                            form1.script_execute(sender, e);
+                        }
+                        catch { }
+                        button21.BackColor = Color.Gold;
+                        button21_Click(sender, e);
 
                         form1.textBox1.Text = bak;
                     }
@@ -1252,7 +1268,9 @@ namespace WindowsFormsApplication1
                 if (System.IO.File.Exists("Digraph.png")) form1.FileDelete("Digraph.png");
                 if (System.IO.File.Exists("causal_multi_histgram.png")) form1.FileDelete("causal_multi_histgram.png");
                 if (System.IO.File.Exists("b_probability.png")) form1.FileDelete("b_probability.png");
+                if (System.IO.File.Exists("Causal_effect.png")) form1.FileDelete("Causal_effect.png");
                 button20.BackColor = SystemColors.Control;
+                button21.BackColor = SystemColors.Control;
                 if ( checkBox11.Checked)
                 {
                     button20.BackColor = Color.LightBlue;
@@ -1983,6 +2001,18 @@ namespace WindowsFormsApplication1
                             }
                             catch { }
                         }
+                        try
+                        {
+                            if (System.IO.File.Exists("Causal_effect.png"))
+                            {
+                                System.IO.File.Delete("Causal_effect.png");
+                            }
+
+                            cmd = "source(\"" + "Causal_effect.r" + "\")\r\n";
+                            form1.textBox1.Text = cmd;
+                            form1.script_execute(sender, e);
+                        }
+                        catch { }
                         form1.textBox1.Text = bak;
                     }
 
@@ -1993,6 +2023,11 @@ namespace WindowsFormsApplication1
                             button20.BackColor = Color.Gold;
                             button20_Click(sender, e);
                         }
+                    }
+                    if (System.IO.File.Exists("Causal_effect.png"))
+                    {
+                        button21.BackColor = Color.Gold;
+                        button21_Click(sender, e);
                     }
 
                     if (System.IO.File.Exists("Digraph.bat"))
@@ -2135,6 +2170,19 @@ namespace WindowsFormsApplication1
             }else
             {
                 button20.BackColor = SystemColors.Control;
+            }
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            if (_ImageView5 == null) _ImageView5 = new ImageView();
+            _ImageView5.form1 = this.form1;
+            if (System.IO.File.Exists("Causal_effect.png"))
+            {
+                _ImageView5.pictureBox1.ImageLocation = "Causal_effect.png";
+                _ImageView5.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                _ImageView5.pictureBox1.Dock = DockStyle.Fill;
+                _ImageView5.Show();
             }
         }
     }
