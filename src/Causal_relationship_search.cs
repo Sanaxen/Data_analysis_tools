@@ -1675,20 +1675,25 @@ namespace WindowsFormsApplication1
             {
                 timer2.Stop();
                 timer2.Enabled = false;
-                var s = MessageBox.Show("値の変化が無い列があり因果ダイアグラムが不正になる事があります。\n(乱数で埋めて計算しました)\n\"error_cols.txt\"を確認して下さい（除外して下さい)\n計算を続けますか?", "", MessageBoxButtons.OKCancel);
-                if ( s == DialogResult.Cancel)
-                {
-                    button10_Click(sender, e);
-                }else
-                {
-                    if ( float.Parse(textBox4.Text) > 0.0 )
-                    {
-                        s = MessageBox.Show("このまま継続するとLassの計算が収束しない場合があります", "", MessageBoxButtons.OKCancel);
-                        if (s == DialogResult.Cancel)
-                        {
-                            button10_Click(sender, e);
-                        }
 
+                if (checkBox3.Checked)
+                {
+                    var s = MessageBox.Show("値の変化が無いかカテゴリの列があり因果方向を誤る事があります。\n(ノイズを加えました)\n\"error_cols.txt\"を確認して下さい（除外して下さい)", "", MessageBoxButtons.OK);
+                    if (s == DialogResult.Cancel)
+                    {
+                        button10_Click(sender, e);
+                    }
+                    else
+                    {
+                        if (float.Parse(textBox4.Text) > 0.0)
+                        {
+                            s = MessageBox.Show("Lassの計算が収束しない場合があります", "", MessageBoxButtons.OK);
+                            if (s == DialogResult.Cancel)
+                            {
+                                button10_Click(sender, e);
+                            }
+
+                        }
                     }
                 }
             }
