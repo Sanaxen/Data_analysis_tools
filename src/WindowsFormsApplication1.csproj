@@ -571,6 +571,12 @@
     <Compile Include="valuechange.designer.cs">
       <DependentUpon>valuechange.cs</DependentUpon>
     </Compile>
+    <Compile Include="wordcloud.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wordcloud.Designer.cs">
+      <DependentUpon>wordcloud.cs</DependentUpon>
+    </Compile>
     <Compile Include="xgboost.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -802,6 +808,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="valuechange.resx">
       <DependentUpon>valuechange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wordcloud.resx">
+      <DependentUpon>wordcloud.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="xgboost.resx">
       <DependentUpon>xgboost.cs</DependentUpon>

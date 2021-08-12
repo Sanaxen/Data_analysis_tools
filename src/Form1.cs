@@ -367,6 +367,7 @@ namespace WindowsFormsApplication1
         public KFAS _KFAS = null;
 
         public clustering _clustering = null;
+        public wordcloud _wordcloud = null;
 
         public model_kanri _model_kanri = null;
 
@@ -487,6 +488,8 @@ namespace WindowsFormsApplication1
                     sw.Write("データフレームサマリー可視化,");
                     sw.Write("XGBoost,");
                     sw.Write("ラグ変数追加,");
+                    sw.Write("KFS,");
+                    sw.Write("テキストマイニング,");
                     sw.Write("END\n");
                 }
                 sw.Write(ts.TotalSeconds.ToString() + ",");
@@ -681,6 +684,10 @@ namespace WindowsFormsApplication1
 
                 if (_KFAS != null) s = _KFAS.execute_count;
                 if (_KFAS != null) sw.Write(s.ToString() + ",");
+                else sw.Write("0,");
+
+                if (_wordcloud != null) s = _wordcloud.execute_count;
+                if (_wordcloud != null) sw.Write(s.ToString() + ",");
                 else sw.Write("0,");
 
                 sw.Write("-\n");
@@ -7735,6 +7742,7 @@ namespace WindowsFormsApplication1
             if (!System.Object.ReferenceEquals(x, _xgboost)) r |= (_xgboost != null && _xgboost.running != 0);
             if (!System.Object.ReferenceEquals(x, _KFAS)) r |= (_KFAS != null && _KFAS.running != 0);
 
+            if (!System.Object.ReferenceEquals(x, _wordcloud)) r |= (_wordcloud != null && _wordcloud.running != 0);
             //if (!System.Object.ReferenceEquals(x, _AutoTrain_Test)) r |= (_AutoTrain_Test != null && _AutoTrain_Test.running != 0);
             //if (!System.Object.ReferenceEquals(x, _AutoTrain_Test2)) r |= (_AutoTrain_Test2 != null && _AutoTrain_Test2.running != 0);
 
@@ -9265,6 +9273,24 @@ upper_window、 lower_windowにはそのイベントの効果が前後何日に�
         private void button73_Click(object sender, EventArgs e)
         {
             form1.button74_Click(sender, e);
+        }
+
+        private void button74_Click_1(object sender, EventArgs e)
+        {
+            if (RProcess.HasExited)
+            {
+                Restart();
+                SendCommand("\r\n");
+            }
+
+            if (_wordcloud == null) _wordcloud = new wordcloud();
+            _wordcloud.form1 = this;
+            _wordcloud.BackColor = BackColor;
+
+            DateTime t = DateTime.Now;
+
+            _wordcloud.Activate();
+            _wordcloud.Show();
         }
     }
 }

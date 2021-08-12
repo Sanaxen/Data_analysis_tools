@@ -3,7 +3,7 @@ targetPackages <- c('forecast', 'ellipse', 'magrittr','randomForest','car','dply
 ,'glmnet','formattable','webshot', 'epitools','kableExtra'
 ,'rpart', 'rpart.plot', 'partykit','ggpmisc', 'pls', 'e1071', 'plotly', 'xgboost'
 ,'wordcloud', 'magrittr', 'tagcloud', 'mice' , 'KFAS'
-, 'Ckmeans.1d.dp', 'DiagrammeR', 'ggfortify', 'proxy') 
+, 'Ckmeans.1d.dp', 'DiagrammeR', 'ggfortify', 'proxy', 'lubridate', 'wordcloud2') 
 
 newPackages <- targetPackages[!(targetPackages %in% installed.packages()[,"Package"])]
 if(length(newPackages)) install.packages(newPackages, repos = "http://cran.us.r-project.org")
@@ -11,3 +11,8 @@ for(package in targetPackages) library(package, character.only = T)
 
 webshot::install_phantomjs()
 install.packages("RMeCab", repos = "http://rmecab.jp/R") 
+
+install.packages("wordcloud2", repo="http://cran.r-project.org", dep=T)
+install.packages("devtools")
+library(devtools)
+devtools::install_github("lchiffon/wordcloud2")
