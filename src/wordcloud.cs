@@ -358,11 +358,12 @@ namespace WindowsFormsApplication1
                 }
                 else
                 {
-                    cmd += " ,random.color=T";
+                    cmd += " ,color=brewer.pal(8, \"Dark2\")";
                 }
-                cmd += ", family = \"mono\",";
-                cmd += "scale = c(10*" + form1._setting.numericUpDown4.Value.ToString() +
-                    ", 3*" + form1._setting.numericUpDown4.Value.ToString() + "))\r\n";
+                cmd += ", family = \"mono\"";
+                cmd += ", rot.per = 0.35,random.order = FALSE";
+                cmd += ", scale = c(8*" + form1._setting.numericUpDown4.Value.ToString() +
+                    ", 2*" + form1._setting.numericUpDown4.Value.ToString() + "))\r\n";
                 cmd += "dev.off()\r\n";
             }
 
