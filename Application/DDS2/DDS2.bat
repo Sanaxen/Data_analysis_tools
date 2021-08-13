@@ -24,6 +24,8 @@ echo 1 > "%BATPATH%bin\prophet_option.txt"
 
 set PATH="%GRAPHVIZ_PATH%";%PATH%
 set PATH=%RTOOL_PATH%\bin;%RTOOL_PATH%\mingw_64\bin;%APPDATA%\PhantomJS;%PATH%
+set PATH=%MECAB_PATH%\bin;%PATH%
+set MECABRC=%MECAB_PATH%\etc\mecabrc
 
 set APPDATA=%APPDATA_DDS%
 :pause
