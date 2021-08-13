@@ -224,7 +224,7 @@ namespace WindowsFormsApplication1
                             }
                             catch { }
                             button20.BackColor = Color.Gold;
-                            button20_Click(sender, e);
+                            //button20_Click(sender, e);
                         }
 
                         try
@@ -240,7 +240,7 @@ namespace WindowsFormsApplication1
                         }
                         catch { }
                         button21.BackColor = Color.Gold;
-                        button21_Click(sender, e);
+                        //button21_Click(sender, e);
 
                         form1.textBox1.Text = bak;
                     }

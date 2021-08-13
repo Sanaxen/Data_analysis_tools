@@ -23,9 +23,52 @@ namespace WindowsFormsApplication1
         public string textFile = "";
         public string imageFile = "";
 
+        Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
+
         public wordcloud()
         {
             InitializeComponent();
+        }
+        private void textBox1_Validating(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if ((sender as TextBox).Text == "")
+                {
+                    return;
+                }
+                float.Parse((sender as TextBox).Text);
+                (sender as TextBox).ForeColor = Color.Black;
+                (sender as TextBox).Font = new Font((sender as TextBox).Font, FontStyle.Regular);
+
+                if (!textBoxSintax.ContainsKey((sender as TextBox)))
+                {
+                    textBoxSintax.Add((sender as TextBox), true);
+                }
+                else
+                {
+                    textBoxSintax[(sender as TextBox)] = true;
+                }
+            }
+            catch
+            {
+                (sender as TextBox).ForeColor = Color.Red;
+                (sender as TextBox).Font = new Font((sender as TextBox).Font, FontStyle.Bold);
+                //MessageBox.Show("設定の書式に誤りがあります");
+
+                if (!textBoxSintax.ContainsKey((sender as TextBox)))
+                {
+                    textBoxSintax.Add((sender as TextBox), false);
+                }
+                else
+                {
+                    textBoxSintax[(sender as TextBox)] = false;
+                }
+            }
+            finally
+            {
+                (sender as TextBox).Refresh();
+            }
         }
 
         private void SuppressScriptErrors()
@@ -201,6 +244,15 @@ namespace WindowsFormsApplication1
         private void button8_Click(object sender, EventArgs e)
         {
             if (running != 0) return;
+            foreach (TextBox key in textBoxSintax.Keys)
+            {
+                if (!textBoxSintax[key])
+                {
+                    MessageBox.Show("設定の書式に誤りがあります");
+                    key.Focus();
+                    return;
+                }
+            }
             if (form1.isSolverRunning(this))
             {
                 MessageBox.Show("他の計算が実行中です");
@@ -209,7 +261,7 @@ namespace WindowsFormsApplication1
             if ( textFile == "")
             {
                 MessageBox.Show("テキストファイルが選択されていません");
-                return;
+                //return;
             }
             execute_count += 1;
             running = 1;
@@ -222,7 +274,15 @@ namespace WindowsFormsApplication1
             cmd += "library(dplyr)\r\n";
             cmd += "library(stringr)\r\n";
 
-            cmd += "x_<-" + "\"" + textFile + "\"" + "\r\n";
+            if (textFile == "")
+            {
+                cmd += "source(\"" + (Form1.MyPath + "/../script/" + "/Aozora.R").Replace("\\", "/").Replace("//", "/") + "\")\r\n";
+                cmd += "x_ <- Aozora(\"http://www.aozora.gr.jp/cards/000121/files/637_ruby_4095.zip\")\r\n";
+            }
+            else
+            {
+                cmd += "x_<-" + "\"" + textFile + "\"" + "\r\n";
+            }
             //# Termに単語、Info1に品詞大分類、Info2に品詞細分類、Freqに出現回数
             cmd += "x_1 <- RMeCabFreq(x_)\r\n";
             //# 大分類の中から名詞と動詞を抽出
@@ -257,17 +317,17 @@ namespace WindowsFormsApplication1
 
                 if ( checkBox3.Checked && textBox1.Text != "")
                 {
-                    cmd += "my_graph <-letterCloud(dFreq_, word = \"" + textBox1.Text + "\"" + ", size = 1.6*" + numericUpDown2.Value.ToString();
+                    cmd += "my_graph <-letterCloud(dFreq_, word = \"" + textBox1.Text + "\"" + ", size = " + textBox2.Text;
                 }
                 else
                 if (imageFile != ""　&& checkBox2.Checked)
                 {
-                    cmd += "my_graph <-wordcloud2(dFreq_, figPath = \"" + imageFile + "\"" + ", size = 1.6*" + numericUpDown2.Value.ToString();
+                    cmd += "my_graph <-wordcloud2(dFreq_, figPath = \"" + imageFile + "\"" + ", size = " + textBox2.Text;
                     cmd += ", shape ='" + comboBox3.Text + "'";
                 }
                 else
                 {
-                    cmd += "my_graph <-wordcloud2(dFreq_, size = 1.6*" + numericUpDown2.Value.ToString();
+                    cmd += "my_graph <-wordcloud2(dFreq_, size = " + textBox2.Text;
                     cmd += ", shape ='" + comboBox3.Text + "'";
                 }
                 if (comboBox1.Text != "")
@@ -334,6 +394,8 @@ namespace WindowsFormsApplication1
 
             if ( checkBox1.Checked)
             {
+                timer1.Enabled = true;
+                timer1.Start();
                 label7.Visible = true;
             }
             //form1.script_executestr(cmd);
@@ -357,6 +419,15 @@ namespace WindowsFormsApplication1
             button8.Enabled = false;
             string stat = form1.Execute_script(file);
             button8.Enabled = true;
+            timer1.Stop();
+            timer1.Enabled = false;
+
+            label7.Visible = false;
+            running = 0;
+            this.TopMost = true;
+            this.TopMost = false;
+            webBrowser1.Visible = false;
+
             if (Form1.RProcess.HasExited)
             {
                 error_status = 1;
@@ -377,14 +448,6 @@ namespace WindowsFormsApplication1
                 }
             }
 
-            if (checkBox1.Checked)
-            {
-                label7.Visible = false;
-            }
-            running = 0;
-            this.TopMost = true;
-            this.TopMost = false;
-            webBrowser1.Visible = false;
 
             if (checkBox1.Checked)
             {
@@ -471,6 +534,11 @@ namespace WindowsFormsApplication1
             {
                 label8.Visible = false;
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            label7.Visible = !label7.Visible;
         }
     }
 }
