@@ -32,6 +32,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -58,6 +60,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.button15 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
@@ -78,7 +81,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -95,6 +98,7 @@
             // 
             // panel1
             // 
+            this.panel1.AllowDrop = true;
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.label2);
@@ -109,17 +113,19 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1615, 146);
+            this.panel1.Size = new System.Drawing.Size(1657, 146);
             this.panel1.TabIndex = 0;
+            this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.SystemColors.Info;
-            this.label8.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label8.Location = new System.Drawing.Point(1219, 8);
+            this.label8.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label8.Location = new System.Drawing.Point(1219, 9);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(388, 56);
+            this.label8.Size = new System.Drawing.Size(425, 56);
             this.label8.TabIndex = 49;
             this.label8.Text = "wordcloud2にチェックを入れた場合画像が表示されない事があります。\r\nその場合は表示されているリンクのhtmlを開いてください。\r\n※表示の更新が必要です" +
     "。\r\n※Webブラウザによっては表示できない場合があります。";
@@ -127,6 +133,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboBox4);
+            this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.textBox2);
             this.groupBox1.Controls.Add(this.comboBox3);
             this.groupBox1.Controls.Add(this.label10);
@@ -145,6 +153,33 @@
             this.groupBox1.Size = new System.Drawing.Size(832, 119);
             this.groupBox1.TabIndex = 48;
             this.groupBox1.TabStop = false;
+            this.groupBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.groupBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "mono",
+            "serif",
+            "sans",
+            "MEI"});
+            this.comboBox4.Location = new System.Drawing.Point(603, 47);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(124, 23);
+            this.comboBox4.TabIndex = 56;
+            this.comboBox4.Text = "mono";
+            this.toolTip1.SetToolTip(this.comboBox4, "文字列のフォントを選択できます");
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(564, 51);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(33, 15);
+            this.label11.TabIndex = 57;
+            this.label11.Text = "font";
+            this.toolTip1.SetToolTip(this.label11, "文字列のフォントを選択できます");
             // 
             // textBox2
             // 
@@ -223,6 +258,7 @@
             this.checkBox3.Size = new System.Drawing.Size(109, 19);
             this.checkBox3.TabIndex = 47;
             this.checkBox3.Text = "テキストを使う";
+            this.toolTip1.SetToolTip(this.checkBox3, "指定した文字列の形状に埋め込みます");
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
@@ -236,6 +272,7 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(145, 23);
             this.comboBox2.TabIndex = 44;
+            this.toolTip1.SetToolTip(this.comboBox2, "背景色を指定します");
             // 
             // textBox1
             // 
@@ -243,6 +280,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(114, 22);
             this.textBox1.TabIndex = 46;
+            this.toolTip1.SetToolTip(this.textBox1, "指定した文字列の形状に埋め込みます");
             // 
             // button9
             // 
@@ -251,6 +289,7 @@
             this.button9.Size = new System.Drawing.Size(114, 33);
             this.button9.TabIndex = 41;
             this.button9.Text = "画像";
+            this.toolTip1.SetToolTip(this.button9, "白黒の画像で黒の部分に文字を埋めていきます。\r\nshapを使うと幾つかの形状に埋め込むことが出来ます。");
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
@@ -262,6 +301,8 @@
             this.checkBox1.Size = new System.Drawing.Size(101, 19);
             this.checkBox1.TabIndex = 40;
             this.checkBox1.Text = "wordcloud2";
+            this.toolTip1.SetToolTip(this.checkBox1, "このオプションをONにすると時間はかかりますが綺麗なイメージを生成出来ます。\r\nただし、画像マスク、テキスト、背景色を使うとWebブラウザから表示させる必要がある" +
+        "事があります。\r\nWebブラウザによっては表示できない場合もあります。\r\n表示されなくても再読み込み等のリドローで表示できる場合もあります。");
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -273,6 +314,7 @@
             this.label6.Size = new System.Drawing.Size(113, 15);
             this.label6.TabIndex = 45;
             this.label6.Text = "backgroundColor";
+            this.toolTip1.SetToolTip(this.label6, "背景色を指定します");
             // 
             // checkBox2
             // 
@@ -282,6 +324,7 @@
             this.checkBox2.Size = new System.Drawing.Size(126, 19);
             this.checkBox2.TabIndex = 43;
             this.checkBox2.Text = "画像マスクを使う";
+            this.toolTip1.SetToolTip(this.checkBox2, "白黒の画像で黒の部分に文字を埋めていきます。\r\nshapを使うと幾つかの形状に埋め込むことが出来ます。\r\n");
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
@@ -293,6 +336,7 @@
             this.label2.Size = new System.Drawing.Size(108, 15);
             this.label2.TabIndex = 36;
             this.label2.Text = "wordcloud color";
+            this.toolTip1.SetToolTip(this.label2, "ワードクラウドの各文字の配色パターンを指定できます。");
             // 
             // label5
             // 
@@ -320,6 +364,7 @@
             this.label3.Size = new System.Drawing.Size(67, 15);
             this.label3.TabIndex = 38;
             this.label3.Text = "出現頻度";
+            this.toolTip1.SetToolTip(this.label3, "単語の修験頻度を指定します。\r\n指定された値未満の修験頻度の単語は無視できます。");
             // 
             // numericUpDown1
             // 
@@ -332,6 +377,7 @@
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(57, 22);
             this.numericUpDown1.TabIndex = 37;
+            this.toolTip1.SetToolTip(this.numericUpDown1, "単語の修験頻度を指定します。\r\n指定された値未満の修験頻度の単語は無視できます。");
             this.numericUpDown1.Value = new decimal(new int[] {
             4,
             0,
@@ -358,6 +404,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(145, 23);
             this.comboBox1.TabIndex = 35;
+            this.toolTip1.SetToolTip(this.comboBox1, "ワードクラウドの各文字の配色パターンを指定できます。");
             // 
             // label1
             // 
@@ -373,9 +420,10 @@
             // button8
             // 
             this.button8.BackColor = System.Drawing.Color.SandyBrown;
+            this.button8.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button8.Location = new System.Drawing.Point(1038, 3);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(175, 33);
+            this.button8.Size = new System.Drawing.Size(160, 33);
             this.button8.TabIndex = 1;
             this.button8.Text = "テキストマイニング";
             this.button8.UseVisualStyleBackColor = false;
@@ -383,6 +431,7 @@
             // 
             // button7
             // 
+            this.button7.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button7.Location = new System.Drawing.Point(3, 3);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(137, 33);
@@ -397,7 +446,7 @@
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
             this.splitter1.Location = new System.Drawing.Point(0, 146);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(1615, 8);
+            this.splitter1.Size = new System.Drawing.Size(1657, 8);
             this.splitter1.TabIndex = 1;
             this.splitter1.TabStop = false;
             // 
@@ -422,9 +471,12 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 36;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.pictureBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // panel6
             // 
+            this.panel6.AllowDrop = true;
             this.panel6.Controls.Add(this.linkLabel2);
             this.panel6.Controls.Add(this.button15);
             this.panel6.Controls.Add(this.button13);
@@ -435,6 +487,20 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(528, 54);
             this.panel6.TabIndex = 37;
+            this.panel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.panel6.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(3, 35);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(291, 15);
+            this.linkLabel2.TabIndex = 35;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "表示されない場合はこのリンクを使って見て下さい";
+            this.linkLabel2.Visible = false;
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // button15
             // 
@@ -504,9 +570,12 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 38;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.pictureBox2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // panel5
             // 
+            this.panel5.AllowDrop = true;
             this.panel5.Controls.Add(this.button1);
             this.panel5.Controls.Add(this.button2);
             this.panel5.Controls.Add(this.button3);
@@ -516,6 +585,8 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(525, 54);
             this.panel5.TabIndex = 39;
+            this.panel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.panel5.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // button1
             // 
@@ -572,7 +643,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(1073, 154);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(542, 511);
+            this.panel4.Size = new System.Drawing.Size(584, 511);
             this.panel4.TabIndex = 6;
             // 
             // pictureBox3
@@ -581,14 +652,17 @@
             this.pictureBox3.Location = new System.Drawing.Point(0, 54);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(542, 457);
+            this.pictureBox3.Size = new System.Drawing.Size(584, 457);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox3.TabIndex = 38;
             this.pictureBox3.TabStop = false;
             this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            this.pictureBox3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.pictureBox3.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // panel7
             // 
+            this.panel7.AllowDrop = true;
             this.panel7.Controls.Add(this.button4);
             this.panel7.Controls.Add(this.button5);
             this.panel7.Controls.Add(this.button6);
@@ -596,8 +670,10 @@
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(542, 54);
+            this.panel7.Size = new System.Drawing.Size(584, 54);
             this.panel7.TabIndex = 39;
+            this.panel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.panel7.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // button4
             // 
@@ -651,23 +727,18 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // linkLabel2
+            // toolTip1
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(3, 35);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(291, 15);
-            this.linkLabel2.TabIndex = 35;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "表示されない場合はこのリンクを使って見て下さい";
-            this.linkLabel2.Visible = false;
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.toolTip1.AutoPopDelay = 50000;
+            this.toolTip1.InitialDelay = 100;
+            this.toolTip1.IsBalloon = true;
+            this.toolTip1.ReshowDelay = 100;
             // 
             // wordcloud
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1615, 665);
+            this.ClientSize = new System.Drawing.Size(1657, 665);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.splitter3);
             this.Controls.Add(this.panel3);
@@ -752,5 +823,8 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
