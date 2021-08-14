@@ -32,6 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -55,7 +56,6 @@
             this.button7 = new System.Windows.Forms.Button();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.button15 = new System.Windows.Forms.Button();
@@ -77,8 +77,8 @@
             this.button6 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -146,6 +146,15 @@
             this.groupBox1.TabIndex = 48;
             this.groupBox1.TabStop = false;
             // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(308, 94);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(54, 22);
+            this.textBox2.TabIndex = 55;
+            this.textBox2.Text = "1.0";
+            this.textBox2.Validating += new System.ComponentModel.CancelEventHandler(this.textBox1_Validating);
+            // 
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
@@ -203,6 +212,7 @@
             this.linkLabel1.TabIndex = 49;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "--";
+            this.linkLabel1.Visible = false;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // checkBox3
@@ -394,7 +404,6 @@
             // panel2
             // 
             this.panel2.AutoScroll = true;
-            this.panel2.Controls.Add(this.webBrowser1);
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Controls.Add(this.panel6);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
@@ -402,17 +411,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(528, 511);
             this.panel2.TabIndex = 2;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 54);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.ScriptErrorsSuppressed = true;
-            this.webBrowser1.Size = new System.Drawing.Size(528, 457);
-            this.webBrowser1.TabIndex = 38;
-            this.webBrowser1.Visible = false;
             // 
             // pictureBox1
             // 
@@ -427,6 +425,7 @@
             // 
             // panel6
             // 
+            this.panel6.Controls.Add(this.linkLabel2);
             this.panel6.Controls.Add(this.button15);
             this.panel6.Controls.Add(this.button13);
             this.panel6.Controls.Add(this.button14);
@@ -647,19 +646,22 @@
             this.openFileDialog2.FileName = "openFileDialog2";
             this.openFileDialog2.Filter = "jpg|*.jpg|bmp|*.bmp|png|*.png";
             // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(308, 94);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(54, 22);
-            this.textBox2.TabIndex = 55;
-            this.textBox2.Text = "1.0";
-            this.textBox2.Validating += new System.ComponentModel.CancelEventHandler(this.textBox1_Validating);
-            // 
             // timer1
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(3, 35);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(291, 15);
+            this.linkLabel2.TabIndex = 35;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "表示されない場合はこのリンクを使って見て下さい";
+            this.linkLabel2.Visible = false;
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // wordcloud
             // 
@@ -685,6 +687,7 @@
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -746,8 +749,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.LinkLabel linkLabel2;
     }
 }

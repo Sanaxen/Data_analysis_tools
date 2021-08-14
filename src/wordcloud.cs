@@ -73,10 +73,10 @@ namespace WindowsFormsApplication1
 
         private void SuppressScriptErrors()
         {
-            if (webBrowser1.Document != null)
-            {
-                webBrowser1.Document.Window.Error += new HtmlElementErrorEventHandler(scriptWindow_Error);
-            }
+            //if (webBrowser1.Document != null)
+            //{
+            //    webBrowser1.Document.Window.Error += new HtmlElementErrorEventHandler(scriptWindow_Error);
+            //}
         }
 
         private void scriptWindow_Error(object sender, HtmlElementErrorEventArgs e)
@@ -94,7 +94,6 @@ namespace WindowsFormsApplication1
             textFile = openFileDialog1.FileName.Replace("\\", "/");
             label1.Text = textFile;
             running = 0;
-
         }
 
         private void wordcloud_FormClosing(object sender, FormClosingEventArgs e)
@@ -116,10 +115,13 @@ namespace WindowsFormsApplication1
                 pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
                 pictureBox1.Dock = DockStyle.None;
 
+                //webBrowser1.Dock = DockStyle.None;
                 return;
             }
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.Dock = DockStyle.Fill;
+
+            //webBrowser1.Dock = DockStyle.Fill;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -317,7 +319,7 @@ namespace WindowsFormsApplication1
 
                 if ( checkBox3.Checked && textBox1.Text != "")
                 {
-                    cmd += "my_graph <-letterCloud(dFreq_, word = \"" + textBox1.Text + "\"" + ", size = " + textBox2.Text;
+                    cmd += "my_graph <-letterCloud(dFreq_, word = \"" + textBox1.Text + "\"" + ", wordSize = " + textBox2.Text;
                 }
                 else
                 if (imageFile != ""　&& checkBox2.Checked)
@@ -344,8 +346,13 @@ namespace WindowsFormsApplication1
                 }
 
                 cmd += ")\r\n";
+
+                cmd += "path<- html_print(my_graph, background = \"white\", viewer = NULL)\r\n";
+                cmd += "url <- paste0(\"file:///\", gsub(\"\\\\\\\\\", \"/\", normalizePath(path)))\r\n";
+                cmd += "webshot(url,file = \"wordcloud.png\", delay = 15, zoom =1.0)\r\n";
+                
                 cmd += "saveWidget(my_graph, \"wordcloud2.html\", selfcontained = F)\r\n";
-                cmd += "webshot(\"wordcloud2.html\", \"wordcloud.png\", delay = 15, vwidth = 640*"+ form1._setting.numericUpDown4.Value.ToString()+", vheight = 480*"+ form1._setting.numericUpDown4.Value.ToString()+")\r\n";
+                //cmd += "webshot(\"wordcloud2.html\", \"wordcloud.png\", delay = 15, vwidth = 640*" + form1._setting.numericUpDown4.Value.ToString() + ", vheight = 480*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n";
             }
             else
             {
@@ -380,6 +387,9 @@ namespace WindowsFormsApplication1
 
             cmd += "plot(graph, vertex.label = V(graph)$name, vertex.size = 25)\r\n";
             cmd += "dev.off()\r\n";
+
+            linkLabel1.Visible = false;
+            linkLabel2.Visible = false;
 
             pictureBox1.Image = null;
             pictureBox2.Image = null;
@@ -427,7 +437,7 @@ namespace WindowsFormsApplication1
             running = 0;
             this.TopMost = true;
             this.TopMost = false;
-            webBrowser1.Visible = false;
+            //webBrowser1.Visible = false;
 
             if (Form1.RProcess.HasExited)
             {
@@ -452,21 +462,25 @@ namespace WindowsFormsApplication1
 
             if (checkBox1.Checked)
             {
-                if (System.IO.File.Exists("wordcloud.png"))
-                {
-                    MessageBox.Show( "wordcloud2.htmlを作成しました");
-                    linkLabel1.Text = (Form1.curDir + "\\wordcloud2.html").Replace("\\\\", "\\");
-                }
+                //if (System.IO.File.Exists("wordcloud.png"))
+                //{
+                //}
                 if (System.IO.File.Exists("wordcloud2.html"))
                 {
-                    webBrowser1.Visible = true;
-                    string webpath = linkLabel1.Text.Replace("\\", "/").Replace("//", "/");
-                    webBrowser1.Navigate(webpath);
-                    webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
-                    webBrowser1.Show();
-                    //webBrowser1.Update();
-                    webBrowser1.Invalidate();
-                    webBrowser1.Show();
+                    MessageBox.Show("wordcloud2.htmlを作成しました");
+                    linkLabel1.Text = (Form1.curDir + "\\wordcloud2.html").Replace("\\\\", "\\");
+                    linkLabel2.Text = linkLabel1.Text;
+                    linkLabel1.Visible = true;
+                    linkLabel2.Visible = true;
+
+                    //webBrowser1.Visible = true;
+                    //string webpath = linkLabel1.Text.Replace("\\", "/").Replace("//", "/");
+                    //webBrowser1.Navigate(webpath);
+                    //webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
+                    //webBrowser1.Show();
+                    ////webBrowser1.Update();
+                    //webBrowser1.Invalidate();
+                    //webBrowser1.Show();
                 }
 
             }
@@ -540,6 +554,11 @@ namespace WindowsFormsApplication1
         private void timer1_Tick(object sender, EventArgs e)
         {
             label7.Visible = !label7.Visible;
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(linkLabel2.Text.Replace('\\', '/'));
         }
     }
 }
