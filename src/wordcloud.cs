@@ -344,6 +344,7 @@ namespace WindowsFormsApplication1
                 {
                     cmd += ", backgroundColor=" + "\"" + comboBox2.Text + "\"";
                 }
+                cmd += ", fontFamily=\"" + comboBox4.Text + "\"";
 
                 cmd += ")\r\n";
 
@@ -367,7 +368,8 @@ namespace WindowsFormsApplication1
                 {
                     cmd += " ,color=brewer.pal(8, \"Dark2\")";
                 }
-                cmd += ", family = \"mono\"";
+                cmd += ", family=\"" + comboBox4.Text + "\"";
+
                 cmd += ", rot.per = 0.35,random.order = FALSE";
                 cmd += ", scale = c(8*" + form1._setting.numericUpDown4.Value.ToString() +
                     ", 2*" + form1._setting.numericUpDown4.Value.ToString() + "))\r\n";
@@ -559,6 +561,26 @@ namespace WindowsFormsApplication1
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(linkLabel2.Text.Replace('\\', '/'));
+        }
+
+        private void panel1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            textFile = files[0].Replace("\\", "/");
+            label1.Text = textFile;
+            running = 0;
+        }
+
+        private void panel1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
         }
     }
 }
