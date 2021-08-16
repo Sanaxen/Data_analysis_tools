@@ -4,6 +4,8 @@ set GRAPHVIZ_PATH=C:\Program Files (x86)\Graphviz2.38\bin
 set RTOOL_PATH=C:\Rtools
 set MECAB_PATH=C:\Program Files (x86)\MeCab
 
+set R_LIBS_USER=%R_INSTALL_PATH%\library
+
 :#https://github.com/Sanaxen/deepAR
 set DEEPAR_APP=C:\Users\bccat\Desktop\deepARapp\deepAR_application
 

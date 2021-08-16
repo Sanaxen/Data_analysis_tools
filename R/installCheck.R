@@ -12,7 +12,10 @@ for(package in targetPackages) library(package, character.only = T)
 webshot::install_phantomjs()
 install.packages("RMeCab", repos = "http://rmecab.jp/R") 
 
-install.packages("wordcloud2", repo="http://cran.r-project.org", dep=T)
+
 install.packages("devtools")
 library(devtools)
 devtools::install_github("lchiffon/wordcloud2")
+
+install.packages("rstan", repos = "https://cloud.r-project.org/",dependencies=TRUE)
+install.packages("prophet", repos = "https://cloud.r-project.org/")
