@@ -5738,6 +5738,7 @@ namespace WindowsFormsApplication1
             }
 
             button62_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
 
 
@@ -6350,6 +6351,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             button62_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_sarima == null) _sarima = new sarima();
             _sarima.form1 = this;
@@ -6925,6 +6927,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             button62_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_fbprophet == null) _fbprophet = new fbprophet();
             _fbprophet.form1 = this;
@@ -8494,6 +8497,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            form1.checkBox10_CheckedChanged(sender, e);
 
             if (_xgboost == null) _xgboost = new xgboost();
             _xgboost.form1 = this;
@@ -8627,7 +8631,7 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void checkBox10_CheckedChanged(object sender, EventArgs e)
+        public void checkBox10_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox10.Checked) form1.DataSplit = false;
             else form1.DataSplit = true;
@@ -9060,6 +9064,7 @@ upper_window、 lower_windowにはそのイベントの効果が前後何日に�
                 return;
             }
             form1.button62_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_KFAS == null) _KFAS = new KFAS();
             _KFAS.form1 = this;
