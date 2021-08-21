@@ -155,6 +155,8 @@
             this.button56 = new System.Windows.Forms.Button();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.button50 = new System.Windows.Forms.Button();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.button74 = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.textBox1 = new ScintillaNET.Scintilla();
             this.splitter3 = new System.Windows.Forms.Splitter();
@@ -183,8 +185,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
-            this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.button74 = new System.Windows.Forms.Button();
             this.roundButton10 = new WindowsFormsApplication1.RoundButton();
             this.roundButton6 = new WindowsFormsApplication1.RoundButton();
             this.roundButton9 = new WindowsFormsApplication1.RoundButton();
@@ -221,6 +221,7 @@
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.tabPage8.SuspendLayout();
+            this.tabPage9.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -229,7 +230,6 @@
             this.panel11.SuspendLayout();
             this.panel12.SuspendLayout();
             this.panel14.SuspendLayout();
-            this.tabPage9.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox2
@@ -2026,7 +2026,6 @@
             this.checkBox10.TabIndex = 75;
             this.checkBox10.Text = "データsplit無（推論のみ）";
             this.checkBox10.UseVisualStyleBackColor = true;
-            this.checkBox10.CheckedChanged += new System.EventHandler(this.checkBox10_CheckedChanged);
             // 
             // label9
             // 
@@ -2204,6 +2203,28 @@
             this.toolTip1.SetToolTip(this.button50, "LiNGAMを使った統計的因果探索を行います。");
             this.button50.UseVisualStyleBackColor = false;
             this.button50.Click += new System.EventHandler(this.button50_Click_1);
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.tabPage9.Controls.Add(this.button74);
+            this.tabPage9.Location = new System.Drawing.Point(4, 27);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(1527, 430);
+            this.tabPage9.TabIndex = 8;
+            this.tabPage9.Text = "その他";
+            // 
+            // button74
+            // 
+            this.button74.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
+            this.button74.Location = new System.Drawing.Point(15, 23);
+            this.button74.Name = "button74";
+            this.button74.Size = new System.Drawing.Size(173, 42);
+            this.button74.TabIndex = 0;
+            this.button74.Text = "テキストマイニング";
+            this.button74.UseVisualStyleBackColor = true;
+            this.button74.Click += new System.EventHandler(this.button74_Click_1);
             // 
             // tabPage4
             // 
@@ -2468,28 +2489,6 @@
             // 
             this.timer3.Interval = 10;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
-            // 
-            // tabPage9
-            // 
-            this.tabPage9.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.tabPage9.Controls.Add(this.button74);
-            this.tabPage9.Location = new System.Drawing.Point(4, 27);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(1527, 430);
-            this.tabPage9.TabIndex = 8;
-            this.tabPage9.Text = "その他";
-            // 
-            // button74
-            // 
-            this.button74.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button74.Location = new System.Drawing.Point(15, 23);
-            this.button74.Name = "button74";
-            this.button74.Size = new System.Drawing.Size(173, 42);
-            this.button74.TabIndex = 0;
-            this.button74.Text = "テキストマイニング";
-            this.button74.UseVisualStyleBackColor = true;
-            this.button74.Click += new System.EventHandler(this.button74_Click_1);
             // 
             // roundButton10
             // 
@@ -2890,6 +2889,7 @@
             this.tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.tabPage8.ResumeLayout(false);
+            this.tabPage9.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -2904,7 +2904,6 @@
             this.panel12.PerformLayout();
             this.panel14.ResumeLayout(false);
             this.panel14.PerformLayout();
-            this.tabPage9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
