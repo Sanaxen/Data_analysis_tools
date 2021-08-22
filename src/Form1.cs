@@ -4704,6 +4704,7 @@ namespace WindowsFormsApplication1
             }
 
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_linear_regression == null) _linear_regression = new linear_regression();
             _linear_regression.form1 = this;
@@ -4806,6 +4807,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_logistic_regression == null) _logistic_regression = new logistic_regression();
             _logistic_regression.form1 = this;
@@ -4974,6 +4976,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_randomForest == null) _randomForest = new randomForest();
             _randomForest.form1 = this;
@@ -5606,6 +5609,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_NonLinearRegression == null) _NonLinearRegression = new NonLinearRegression();
             _NonLinearRegression.form1 = this;
@@ -7042,6 +7046,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_lasso_regression == null) _lasso_regression = new lasso_regression();
             _lasso_regression.form1 = this;
@@ -7277,6 +7282,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_tree_regression == null) _tree_regression = new tree_regression();
             _tree_regression.form1 = this;
@@ -7627,6 +7633,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_pls_regression == null) _pls_regression = new pls_regression();
             _pls_regression.form1 = this;
@@ -7678,6 +7685,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_generalized_linear_regression == null) _generalized_linear_regression = new generalized_linear_regression();
             _generalized_linear_regression.form1 = this;
@@ -8254,6 +8262,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             form1.button24_Click(sender, e);
+            checkBox10_CheckedChanged(sender, e);
 
             if (_svm == null) _svm = new svm();
             _svm.form1 = this;
