@@ -307,9 +307,9 @@ namespace WindowsFormsApplication1
                 ListBox typename = form1.GetTypeNameList(listBox1);
                 if (!radioButton2.Checked)
                 {
-                    if (typename.Items[listBox1.SelectedIndex].ToString() != "numeric" && typename.Items[listBox1.SelectedIndex].ToString() != "integer")
+                    if (typename.Items[listBox1.SelectedIndex].ToString() != "numeric" && typename.Items[listBox1.SelectedIndex].ToString() != "integer" && typename.Items[listBox1.SelectedIndex].ToString() != "factor")
                     {
-                        MessageBox.Show("数値型では無い変数を選択しています");
+                        MessageBox.Show("数値/因子型では無い変数を選択しています");
                         return;
                     }
                 }
@@ -322,7 +322,7 @@ namespace WindowsFormsApplication1
                 ListBox var = new ListBox();
                 for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
                 {
-                    if (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer")
+                    if (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor")
                     {
                         var.Items.Add(listBox2.Items[listBox2.SelectedIndices[i]].ToString());
                     }
@@ -351,7 +351,7 @@ namespace WindowsFormsApplication1
                 {
                     if (typeNG)
                     {
-                        MessageBox.Show("数値以外のデータ列の選択を未選択扱いにしました");
+                        MessageBox.Show("数値/因子型以外のデータ列の選択を未選択扱いにしました");
                     }
                 }
 
@@ -1331,7 +1331,7 @@ namespace WindowsFormsApplication1
             }
 
 #if true
-                string cmd = "gr_<-xgb.plot.tree(model = xgboost.model, trees =" + numericUpDown13.Value.ToString()+", render = T )\r\n";
+                string cmd = "gr_<-xgb.plot.tree(model = xgboost.model, trees =0:" + numericUpDown13.Value.ToString()+", render = T )\r\n";
 #else
             string cmd = "gr_<-xgb.plot.multi.trees(model = xgboost.model";
             cmd += ", features_keep = 5";
@@ -1344,6 +1344,10 @@ namespace WindowsFormsApplication1
             cmd += "cat(\"\\n\")\r\n";
             cmd += "sink()\r\n";
             cmd += "webshot(url,file = \"xgb_plot.multi_trees.png\", delay = 0.2, zoom ="+ numericUpDown12.Value.ToString()+")\r\n";
+            cmd += "sink(file = \"xgb_tree_dump.txt\")\r\n";
+            cmd += "cat(xgb.dump(xgboost.model, with_stats = TRUE))\r\n";
+            cmd += "cat(\"\\n\")\r\n";
+            cmd += "sink()\r\n";
 
             System.IO.Directory.SetCurrentDirectory(Form1.curDir);
             form1.Clear_file();

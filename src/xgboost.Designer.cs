@@ -31,11 +31,13 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(xgboost));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.button17 = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.button16 = new System.Windows.Forms.Button();
             this.label29 = new System.Windows.Forms.Label();
             this.numericUpDown13 = new System.Windows.Forms.NumericUpDown();
             this.label28 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
             this.numericUpDown12 = new System.Windows.Forms.NumericUpDown();
             this.button15 = new System.Windows.Forms.Button();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
@@ -120,9 +122,6 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.button16 = new System.Windows.Forms.Button();
-            this.button17 = new System.Windows.Forms.Button();
-            this.textBox8 = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
@@ -155,7 +154,6 @@
             this.panel2.Controls.Add(this.label29);
             this.panel2.Controls.Add(this.numericUpDown13);
             this.panel2.Controls.Add(this.label28);
-            this.panel2.Controls.Add(this.label27);
             this.panel2.Controls.Add(this.numericUpDown12);
             this.panel2.Controls.Add(this.button15);
             this.panel2.Controls.Add(this.checkBox3);
@@ -226,6 +224,26 @@
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(367, 225);
+            this.textBox8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(84, 22);
+            this.textBox8.TabIndex = 131;
+            this.textBox8.Text = "1";
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(772, 29);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(87, 23);
+            this.button17.TabIndex = 47;
+            this.button17.Text = "stop";
+            this.toolTip1.SetToolTip(this.button17, "最適パラメータ探索停止");
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
@@ -238,6 +256,17 @@
             this.linkLabel1.Text = "image";
             this.linkLabel1.Visible = false;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(772, 4);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(87, 23);
+            this.button16.TabIndex = 46;
+            this.button16.Text = "auto";
+            this.toolTip1.SetToolTip(this.button16, "最適パラメータ探索開始");
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // label29
             // 
@@ -282,16 +311,6 @@
             this.label28.Size = new System.Drawing.Size(41, 15);
             this.label28.TabIndex = 127;
             this.label28.Text = "zoom";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.ForeColor = System.Drawing.Color.Black;
-            this.label27.Location = new System.Drawing.Point(738, 8);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(15, 15);
-            this.label27.TabIndex = 126;
-            this.label27.Text = "%";
             // 
             // numericUpDown12
             // 
@@ -1361,37 +1380,6 @@
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ReshowDelay = 100;
             // 
-            // button16
-            // 
-            this.button16.Location = new System.Drawing.Point(772, 4);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(87, 23);
-            this.button16.TabIndex = 46;
-            this.button16.Text = "auto";
-            this.toolTip1.SetToolTip(this.button16, "最適パラメータ探索開始");
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(772, 29);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(87, 23);
-            this.button17.TabIndex = 47;
-            this.button17.Text = "stop";
-            this.toolTip1.SetToolTip(this.button17, "最適パラメータ探索停止");
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(367, 225);
-            this.textBox8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(84, 22);
-            this.textBox8.TabIndex = 131;
-            this.textBox8.Text = "1";
-            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1523,7 +1511,6 @@
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.Button button15;
         public System.Windows.Forms.Label label28;
-        public System.Windows.Forms.Label label27;
         private System.Windows.Forms.NumericUpDown numericUpDown12;
         public System.Windows.Forms.Label label29;
         private System.Windows.Forms.NumericUpDown numericUpDown13;
