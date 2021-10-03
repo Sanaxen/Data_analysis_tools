@@ -110,6 +110,8 @@
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label27 = new System.Windows.Forms.Label();
+            this.button18 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -121,10 +123,11 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.button18 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label27 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown12)).BeginInit();
@@ -150,6 +153,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.checkBox5);
             this.panel2.Controls.Add(this.textBox8);
             this.panel2.Controls.Add(this.button17);
             this.panel2.Controls.Add(this.linkLabel1);
@@ -223,7 +227,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(867, 850);
+            this.panel2.Size = new System.Drawing.Size(881, 850);
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
@@ -238,7 +242,7 @@
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(772, 29);
+            this.button17.Location = new System.Drawing.Point(786, 29);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(87, 23);
             this.button17.TabIndex = 47;
@@ -251,7 +255,7 @@
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.linkLabel1.Location = new System.Drawing.Point(540, 31);
+            this.linkLabel1.Location = new System.Drawing.Point(554, 31);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(48, 15);
             this.linkLabel1.TabIndex = 130;
@@ -262,7 +266,7 @@
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(772, 4);
+            this.button16.Location = new System.Drawing.Point(786, 4);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(87, 23);
             this.button16.TabIndex = 46;
@@ -275,7 +279,7 @@
             // 
             this.label29.AutoSize = true;
             this.label29.ForeColor = System.Drawing.Color.Black;
-            this.label29.Location = new System.Drawing.Point(637, 34);
+            this.label29.Location = new System.Drawing.Point(651, 34);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(33, 15);
             this.label29.TabIndex = 129;
@@ -284,7 +288,7 @@
             // 
             // numericUpDown13
             // 
-            this.numericUpDown13.Location = new System.Drawing.Point(684, 29);
+            this.numericUpDown13.Location = new System.Drawing.Point(698, 29);
             this.numericUpDown13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown13.Maximum = new decimal(new int[] {
             32,
@@ -309,7 +313,7 @@
             // 
             this.label28.AutoSize = true;
             this.label28.ForeColor = System.Drawing.Color.Black;
-            this.label28.Location = new System.Drawing.Point(637, 8);
+            this.label28.Location = new System.Drawing.Point(651, 8);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(41, 15);
             this.label28.TabIndex = 127;
@@ -317,7 +321,7 @@
             // 
             // numericUpDown12
             // 
-            this.numericUpDown12.Location = new System.Drawing.Point(684, 3);
+            this.numericUpDown12.Location = new System.Drawing.Point(698, 3);
             this.numericUpDown12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown12.Maximum = new decimal(new int[] {
             10000,
@@ -341,7 +345,7 @@
             // 
             // button15
             // 
-            this.button15.Location = new System.Drawing.Point(530, 0);
+            this.button15.Location = new System.Drawing.Point(544, 0);
             this.button15.Margin = new System.Windows.Forms.Padding(4);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(100, 29);
@@ -971,7 +975,7 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button5.Location = new System.Drawing.Point(333, 33);
+            this.button5.Location = new System.Drawing.Point(347, 33);
             this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(105, 22);
@@ -997,7 +1001,7 @@
             // 
             this.panel6.Controls.Add(this.radioButton3);
             this.panel6.Controls.Add(this.radioButton4);
-            this.panel6.Location = new System.Drawing.Point(306, 0);
+            this.panel6.Location = new System.Drawing.Point(320, 0);
             this.panel6.Margin = new System.Windows.Forms.Padding(4);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(132, 32);
@@ -1033,7 +1037,7 @@
             // 
             this.panel4.Controls.Add(this.radioButton2);
             this.panel4.Controls.Add(this.radioButton1);
-            this.panel4.Location = new System.Drawing.Point(167, 0);
+            this.panel4.Location = new System.Drawing.Point(181, 0);
             this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(136, 32);
@@ -1104,7 +1108,7 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(439, 0);
+            this.button1.Location = new System.Drawing.Point(453, 0);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 29);
@@ -1195,6 +1199,7 @@
             // 
             this.panel5.AutoScroll = true;
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.webBrowser1);
             this.panel5.Controls.Add(this.pictureBox1);
             this.panel5.Controls.Add(this.splitter2);
             this.panel5.Controls.Add(this.textBox1);
@@ -1202,7 +1207,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 76);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(708, 774);
+            this.panel5.Size = new System.Drawing.Size(694, 774);
             this.panel5.TabIndex = 38;
             // 
             // contextMenuStrip1
@@ -1224,10 +1229,10 @@
             // 
             this.splitter2.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(0, 584);
+            this.splitter2.Location = new System.Drawing.Point(0, 578);
             this.splitter2.Margin = new System.Windows.Forms.Padding(4);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(706, 4);
+            this.splitter2.Size = new System.Drawing.Size(692, 10);
             this.splitter2.TabIndex = 36;
             this.splitter2.TabStop = false;
             // 
@@ -1241,12 +1246,13 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(706, 184);
+            this.textBox1.Size = new System.Drawing.Size(692, 184);
             this.textBox1.TabIndex = 31;
             this.textBox1.WordWrap = false;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.checkBox4);
             this.panel1.Controls.Add(this.label27);
             this.panel1.Controls.Add(this.button18);
             this.panel1.Controls.Add(this.button8);
@@ -1260,8 +1266,33 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(708, 76);
+            this.panel1.Size = new System.Drawing.Size(694, 76);
             this.panel1.TabIndex = 35;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.SystemColors.Control;
+            this.label27.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label27.ForeColor = System.Drawing.Color.Red;
+            this.label27.Location = new System.Drawing.Point(220, 50);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(58, 17);
+            this.label27.TabIndex = 47;
+            this.label27.Text = "-----";
+            // 
+            // button18
+            // 
+            this.button18.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.button18.Enabled = false;
+            this.button18.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button18.Location = new System.Drawing.Point(114, 45);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(100, 28);
+            this.button18.TabIndex = 46;
+            this.button18.Text = "explain";
+            this.button18.UseVisualStyleBackColor = false;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // button8
             // 
@@ -1346,15 +1377,15 @@
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.panel1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(867, 0);
+            this.panel3.Location = new System.Drawing.Point(881, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(708, 850);
+            this.panel3.Size = new System.Drawing.Size(694, 850);
             this.panel3.TabIndex = 39;
             // 
             // splitter1
             // 
-            this.splitter1.Location = new System.Drawing.Point(867, 0);
+            this.splitter1.Location = new System.Drawing.Point(881, 0);
             this.splitter1.Margin = new System.Windows.Forms.Padding(4);
             this.splitter1.Name = "splitter1";
             this.splitter1.Size = new System.Drawing.Size(4, 850);
@@ -1373,18 +1404,43 @@
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ReshowDelay = 100;
             // 
-            // button18
+            // timer1
             // 
-            this.button18.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.button18.Enabled = false;
-            this.button18.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.button18.Location = new System.Drawing.Point(35, 43);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(131, 28);
-            this.button18.TabIndex = 46;
-            this.button18.Text = "explain";
-            this.button18.UseVisualStyleBackColor = false;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(692, 578);
+            this.webBrowser1.TabIndex = 37;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.ForeColor = System.Drawing.Color.Black;
+            this.checkBox5.Location = new System.Drawing.Point(4, 23);
+            this.checkBox5.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(171, 19);
+            this.checkBox5.TabIndex = 132;
+            this.checkBox5.Text = "インタラクティブ（ブラウザ）";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.ForeColor = System.Drawing.Color.Black;
+            this.checkBox4.Location = new System.Drawing.Point(35, 50);
+            this.checkBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(72, 19);
+            this.checkBox4.TabIndex = 133;
+            this.checkBox4.Text = "explain";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
             // 
@@ -1393,26 +1449,10 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(706, 584);
+            this.pictureBox1.Size = new System.Drawing.Size(692, 578);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 35;
+            this.pictureBox1.TabIndex = 37;
             this.pictureBox1.TabStop = false;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.SystemColors.Control;
-            this.label27.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label27.ForeColor = System.Drawing.Color.Red;
-            this.label27.Location = new System.Drawing.Point(171, 53);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(58, 17);
-            this.label27.TabIndex = 47;
-            this.label27.Text = "-----";
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // xgboost
             // 
@@ -1485,7 +1525,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button5;
-        public System.Windows.Forms.PictureBox pictureBox1;
         public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
@@ -1555,5 +1594,9 @@
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.WebBrowser webBrowser1;
+        public System.Windows.Forms.CheckBox checkBox5;
+        public System.Windows.Forms.CheckBox checkBox4;
+        public System.Windows.Forms.PictureBox pictureBox1;
     }
 }

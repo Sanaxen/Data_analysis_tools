@@ -36,6 +36,7 @@ namespace WindowsFormsApplication1
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
+        interactivePlot interactivePlot = null;
         xgboost_exp xgboost_exp_ = null;
         int explain_num = 1;
         int xgboost_predict_parts_count = 0;
@@ -43,6 +44,8 @@ namespace WindowsFormsApplication1
         public xgboost()
         {
             InitializeComponent();
+            interactivePlot = new interactivePlot();
+            interactivePlot.Hide();
         }
 
         private void xgboost_Load(object sender, EventArgs e)
@@ -184,6 +187,20 @@ namespace WindowsFormsApplication1
             explain_num = 1;
             try
             {
+                form1.FileDelete("curvplot_temp.html");
+                if (!checkBox5.Checked)
+                {
+                    webBrowser1.Hide();
+                    button2.Visible = true;
+                    button3.Visible = true;
+                }
+                else
+                {
+                    webBrowser1.Show();
+                    button2.Visible = false;
+                    button3.Visible = false;
+                }
+
                 if (time_series_mode)
                 {
                     lag = (int)numericUpDown8.Value;
@@ -650,7 +667,10 @@ namespace WindowsFormsApplication1
                         cmd += "MER_ <- median(abs(me_[,1]), na.rm = TRUE)\r\n";
                     }
 
-                    cmd += explain;
+                    if (checkBox4.Checked)
+                    {
+                        cmd += explain;
+                    }
 
                     if (dup_var)
                     {
@@ -767,7 +787,7 @@ namespace WindowsFormsApplication1
                 }
                 catch { }
 
-                if( radioButton3.Enabled)
+                if( radioButton3.Enabled && checkBox4.Checked)
                 {
                     xgboost_predict_parts_count = 1;
                     timer1.Enabled = true;
@@ -998,6 +1018,9 @@ namespace WindowsFormsApplication1
                     {
                         //pictureBox1.Image = Form1.CreateImage("tmp_xgboost.png");
                         pictureBox1.Image = Form1.CreateImage("tmp_xgboost2.png");
+                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox1.Dock = DockStyle.Fill;
+                        pictureBox1.Show();
                     }
                     if (radioButton3.Checked)
                     {
@@ -1010,6 +1033,62 @@ namespace WindowsFormsApplication1
 
                 }
                 catch { }
+
+                if (checkBox5.Checked && radioButton1.Checked && radioButton3.Checked)
+                {
+                    string mode = "lines";
+                    mode = "\"lines+markers\"";
+
+                    cmd = "";
+                    cmd += "library(plotly)\r\n";
+                    cmd += "library(htmlwidgets)\r\n";
+
+                    cmd += "p1_<-plot_ly(test, alpha=0.6, type = \"scatter\", mode = " + mode +
+                             ",y = residual.error[,1]";
+                    cmd += ", name =\"" + "residual.error" + "\")\r\n";
+
+                    cmd += "p2_<-plot_ly(test, alpha=0.6, type = \"scatter\", mode = " + mode +
+                            ",y = "+
+                            "test$'" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "'";
+                    cmd += ", name =\"" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "\") %>% \r\n";
+
+                    cmd += "add_trace(test, alpha=0.6, type = \"scatter\", mode = " + mode +
+                            ",y = predict.y[,1]";
+                    cmd += ", name =\"predict\")\r\n";
+
+                    cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
+
+                    if (System.IO.File.Exists("xgboost_plot_temp.html")) form1.FileDelete("curvplot_temp.html");
+                    cmd += "print(p_)\r\n";
+                    cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_plot_temp.html\", selfcontained = F)\r\n";
+                    form1.script_executestr(cmd);
+
+                    System.Threading.Thread.Sleep(50);
+                    if (System.IO.File.Exists("xgboost_plot_temp.html"))
+                    {
+                        string webpath = Form1.curDir + "/xgboost_plot_temp.html";
+                        webpath = webpath.Replace("\\", "/").Replace("//", "/");
+
+                        if (form1._setting.checkBox1.Checked)
+                        {
+                            System.Diagnostics.Process.Start(webpath, null);
+                        }
+                        else
+                        {
+                            interactivePlot.webBrowser1.Navigate(webpath);
+                            interactivePlot.Refresh();
+                            //interactivePlot.Show();
+                            //interactivePlot.TopMost = true;
+                            //interactivePlot.TopMost = false;
+
+                            webBrowser1.Navigate(webpath);
+                            webBrowser1.Refresh();
+                            webBrowser1.Show();
+                            TopMost = true;
+                            TopMost = false;
+                        }
+                    }
+                }
             }
             catch
             { }
@@ -1084,6 +1163,11 @@ namespace WindowsFormsApplication1
 
         private void button7_Click_1(object sender, EventArgs e)
         {
+            if (checkBox5.Checked)
+            {
+                interactivePlot.Show();
+                return;
+            }
             if (_ImageView == null) _ImageView = new ImageView();
             //string file = "tmp_xgboost.png";
             string file = "tmp_xgboost2.png";
