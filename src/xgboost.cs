@@ -36,6 +36,10 @@ namespace WindowsFormsApplication1
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
+        xgboost_exp xgboost_exp_ = null;
+        int explain_num = 1;
+        int xgboost_predict_parts_count = 0;
+
         public xgboost()
         {
             InitializeComponent();
@@ -176,6 +180,8 @@ namespace WindowsFormsApplication1
             linkLabel1.Visible = false;
             linkLabel1.LinkVisited = false;
 
+            button18.Enabled = false;
+            explain_num = 1;
             try
             {
                 if (time_series_mode)
@@ -387,6 +393,10 @@ namespace WindowsFormsApplication1
 
                 cmd += "require(xgboost)\r\n";
                 cmd += "require(Matrix)\r\n";
+                cmd += "require(DALEX)\r\n";
+                cmd += "require(DALEXtra)\r\n";
+                cmd += "require(ingredients)\r\n";
+                cmd += "require(mlr)\r\n";
                 cmd += "\r\n";
                 cmd += "\r\n";
                 cmd += "previous_na_action <- options()$na.action\r\n";
@@ -452,6 +462,7 @@ namespace WindowsFormsApplication1
                 cmd += "\r\n";
                 cmd += "options(na.action=previous_na_action)\r\n";
 
+                string explain = "";
                 string file = "";
                 if (radioButton4.Checked)
                 {
@@ -509,6 +520,7 @@ namespace WindowsFormsApplication1
                         form1.TextBoxEndposset(form1.textBox6);
                     }
 
+
                     if (System.IO.File.Exists("summary.txt"))
                     {
                         form1.FileDelete("summary.txt");
@@ -550,6 +562,39 @@ namespace WindowsFormsApplication1
 
                 if (radioButton3.Checked)
                 {
+                    explain = "";
+                    explain += "colidx = grep(\"^target_$\", colnames(train) )\r\n";
+                    explain += "#data <- as.matrix(createDummyFeatures(test[, -colidx]))\r\n";
+                    if (radioButton2.Checked)
+                    {
+                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
+                    }
+                    else
+                    {
+                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+                    }
+
+                    label27.Text = string.Format("{0:D4}/{0:D4}", 1, explain_num);
+                    label27.Refresh();
+                    explain_num = form1.Int_func("nrow", "test");
+                    for (int ii = 0; ii < explain_num; ii++)
+                    {
+                        explain += string.Format("predict_parts_plt{0} = predict_parts(explainer, test_mx[{1},, drop = FALSE])\r\n", ii+1, ii + 1);
+                        string png_file = string.Format("tmp_xgboost_predict_parts{0:D4}.png", ii+1);
+                        explain += "plt_ <- " + string.Format("  plot(predict_parts_plt{0})\r\n", ii+1);
+                        explain += "ggsave(filename = \"" + png_file + "\", plot = plt_)\r\n";
+                        explain += "cat(\r\n)\r\n";
+                        explain += string.Format("cat(\"*****predict_parts_plt{0}/{1}*****\")\r\n", ii+1, explain_num);
+                        explain += "print(predict_parts_plt1)\r\n";
+                        explain += "cat(\r\n)\r\n";
+                    }
+
+                    explain += "plt_<-plot(model_performance(explainer, label=\"誤差\"),geom = \"histogram\")\r\n";
+                    explain += "ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = plt_)\r\n";
+
+                    explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square))\r\n";
+                    explain += "ggsave(filename = \"tmp_xgboost_feature_importance.png\", plot = plt_)\r\n";
+
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.y");
                     if (radioButton1.Checked)
                     {
@@ -604,6 +649,9 @@ namespace WindowsFormsApplication1
                         cmd += "me_ <- residual.error / test$target_\r\n";
                         cmd += "MER_ <- median(abs(me_[,1]), na.rm = TRUE)\r\n";
                     }
+
+                    cmd += explain;
+
                     if (dup_var)
                     {
                         MessageBox.Show("説明変数に目的変数があるので無視されました", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -635,6 +683,8 @@ namespace WindowsFormsApplication1
                             //sw.Write("print(summary(predict.y))\r\n");
                             if (radioButton1.Checked)
                             {
+                                //sw.Write("cat(\"predict_parts_plt1=\")\r\n");
+                                //sw.Write("print(predict_parts_plt1)\r\n");
                                 sw.Write("cat(\"RMSE=\")\r\n");
                                 sw.Write("cat(rmse_)\r\n");
                                 sw.Write("cat(\"\\n\")\r\n");
@@ -695,12 +745,45 @@ namespace WindowsFormsApplication1
                 }
                 form1.FileDelete("tmp_xgboost.png");
                 form1.FileDelete("tmp_xgboost_predict.png");
+                form1.FileDelete("tmp_xgboost_feature_importance.png");
+                form1.FileDelete("tmp_xgboost_model_performance.png");
+                form1.FileDelete("tmp_xgboost_predict_parts0001.png");
+
+                try
+                {
+                    for (int ii = 2; ii < 1000000; ii++)
+                    {
+                        string pngfile = string.Format("tmp_xgboost_predict_parts{0:D4}.png", ii);
+
+                        if (System.IO.File.Exists(pngfile))
+                        {
+                            System.IO.File.Delete(pngfile);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+                catch { }
+
+                if( radioButton3.Enabled)
+                {
+                    xgboost_predict_parts_count = 1;
+                    timer1.Enabled = true;
+                    timer1.Start();
+                }
                 pictureBox1.Image = null;
                 pictureBox1.Refresh();
 
                 button1.Enabled = false;
                 string stat = form1.Execute_script(file);
                 button1.Enabled = true;
+                if (radioButton3.Enabled)
+                {
+                    timer1.Stop();
+                    timer1.Enabled = false;
+                }
                 if (Form1.RProcess.HasExited)
                 {
                     error_status = 1;
@@ -919,7 +1002,12 @@ namespace WindowsFormsApplication1
                     if (radioButton3.Checked)
                     {
                         pictureBox1.Image = Form1.CreateImage("tmp_xgboost_predict.png");
+                        if (System.IO.File.Exists("tmp_xgboost_predict_parts0001.png"))
+                        {
+                            button18.Enabled = true;
+                        }
                     }
+
                 }
                 catch { }
             }
@@ -1557,6 +1645,88 @@ namespace WindowsFormsApplication1
         private void button17_Click(object sender, EventArgs e)
         {
             grid_serch_stop = 1;
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            if (xgboost_exp_ == null)
+            {
+                xgboost_exp_ = new xgboost_exp();
+
+                xgboost_exp_.form1_ = this.form1;
+                xgboost_exp_.xgboost_ = this;
+            }
+            xgboost_exp_.explain_num = explain_num;
+            xgboost_exp_.trackBar1.Minimum = 1;
+            xgboost_exp_.trackBar1.Maximum = explain_num;
+
+            xgboost_exp_.Show();
+
+
+            if (xgboost_exp_._ImageView == null) xgboost_exp_._ImageView = new ImageView();
+            if (xgboost_exp_._ImageView2 == null) xgboost_exp_._ImageView2 = new ImageView();
+            if (xgboost_exp_._ImageView3 == null) xgboost_exp_._ImageView3 = new ImageView();
+
+            xgboost_exp_._ImageView.form1 = this.form1;
+            xgboost_exp_._ImageView2.form1 = this.form1;
+            xgboost_exp_._ImageView3.form1 = this.form1;
+            if (System.IO.File.Exists("tmp_xgboost_feature_importance.png"))
+            {
+                xgboost_exp_._ImageView2.pictureBox1.ImageLocation = "tmp_xgboost_feature_importance.png";
+                xgboost_exp_._ImageView2.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                xgboost_exp_._ImageView2.pictureBox1.Dock = DockStyle.Fill;
+
+                xgboost_exp_.pictureBox2.ImageLocation = "tmp_xgboost_feature_importance.png";
+                xgboost_exp_.pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+                xgboost_exp_.pictureBox2.Dock = DockStyle.Fill;
+            }
+            else
+            {
+            }
+
+            if (System.IO.File.Exists("tmp_xgboost_model_performance.png"))
+            {
+                xgboost_exp_._ImageView3.pictureBox1.ImageLocation = "tmp_xgboost_model_performance.png";
+                xgboost_exp_._ImageView3.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                xgboost_exp_._ImageView3.pictureBox1.Dock = DockStyle.Fill;
+
+                xgboost_exp_.pictureBox3.ImageLocation = "tmp_xgboost_model_performance.png";
+                xgboost_exp_.pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
+                xgboost_exp_.pictureBox3.Dock = DockStyle.Fill;
+
+            }
+            else
+            {
+            }
+
+            if (System.IO.File.Exists("tmp_xgboost_predict_parts0001.png"))
+            {
+                xgboost_exp_._ImageView.pictureBox1.ImageLocation = "tmp_xgboost_predict_parts0001.png";
+                xgboost_exp_._ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                xgboost_exp_._ImageView.pictureBox1.Dock = DockStyle.Fill;
+
+                xgboost_exp_.pictureBox1.ImageLocation = "tmp_xgboost_predict_parts0001.png";
+                xgboost_exp_.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                xgboost_exp_.pictureBox1.Dock = DockStyle.Fill;
+            }
+            else
+            {
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (xgboost_predict_parts_count > explain_num)
+            {
+                return;
+            }
+            string file = string.Format("tmp_xgboost_predict_parts{0:D4}.png", xgboost_predict_parts_count);
+            if (System.IO.File.Exists(file))
+            {
+                label27.Text = string.Format("{0:D4}/{1:D4}", xgboost_predict_parts_count, explain_num);
+                label27.Refresh();
+                xgboost_predict_parts_count++;
+            }
         }
     }
 
