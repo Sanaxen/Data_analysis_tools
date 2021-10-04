@@ -146,9 +146,9 @@ namespace WindowsFormsApplication1
                 string file = string.Format("tmp_xgboost_predict_parts{0:D4}.png", pos);
                 if (System.IO.File.Exists(file))
                 {
-                    _ImageView3.pictureBox1.ImageLocation = file;
-                    _ImageView3.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    _ImageView3.pictureBox1.Dock = DockStyle.Fill;
+                    _ImageView.pictureBox1.ImageLocation = file;
+                    _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    _ImageView.pictureBox1.Dock = DockStyle.Fill;
 
                     pictureBox1.ImageLocation = file;
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;

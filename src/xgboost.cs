@@ -188,6 +188,7 @@ namespace WindowsFormsApplication1
             try
             {
                 form1.FileDelete("curvplot_temp.html");
+                form1.FileDelete("xgboost_plot_temp.html");
                 if (!checkBox5.Checked)
                 {
                     webBrowser1.Hide();
@@ -479,10 +480,226 @@ namespace WindowsFormsApplication1
                 cmd += "\r\n";
                 cmd += "options(na.action=previous_na_action)\r\n";
 
+                string cmd2 = "";
+                string cmd3 = "";
                 string explain = "";
                 string file = "";
                 if (radioButton4.Checked)
                 {
+                    cmd2 = "";
+                    cmd3 = "";
+                    if ( (checkBox6.Checked || checkBox7.Checked) && radioButton1.Checked)
+                    {
+                        string l_params_tmp = "l_params_tmp = list(";
+                        l_params_tmp += "booster=" + comboBox1.Text + "\r\n";
+                        l_params_tmp += ",objective=\"reg:squarederror\"\r\n";
+
+                        if (comboBox3.Text != "default")
+                        {
+                            l_params_tmp += ",eval_metric=" + comboBox3.Text + "\r\n";
+                        }
+                        l_params_tmp += ",eta=" + textBox3.Text + "\r\n";
+                        l_params_tmp += ",gamma=" + textBox4.Text + "\r\n";
+                        l_params_tmp += ",min_child_weight=" + numericUpDown4.Text + "\r\n";
+                        l_params_tmp += ",subsample=" + textBox8.Text + "\r\n";
+                        l_params_tmp += ",max_depth=" + numericUpDown6.Text + "\r\n";
+                        l_params_tmp += ",alpha=" + textBox5.Text + "\r\n";
+                        l_params_tmp += ",lambda=" + textBox6.Text + "\r\n";
+                        l_params_tmp += ",colsample_bytree=" + textBox7.Text + "*0.8\r\n";
+                        l_params_tmp += ",nthread=" + numericUpDown10.Value.ToString() + "\r\n";
+                        if (checkBox3.Checked)
+                        {
+                            l_params_tmp += ",n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+                            l_params_tmp += ",tree_method='gpu_hist'" + "\r\n";
+                        }
+
+                        if (radioButton2.Checked)
+                        {
+                            l_params_tmp += ",num_class=" + numericUpDown7.Text + "\r\n";
+                        }
+                        l_params_tmp += ")\r\n";
+
+                        cmd2 += l_params_tmp;
+                        cmd2 += "data_mean = train\r\n";
+                        cmd2 += "data_sd = train\r\n";
+                        cmd2 += "for (i in 1:ncol(train)){ \r\n";
+                        cmd2 += "	data_mean[,i] = mean(train[,i])\r\n";
+                        cmd2 += "	data_sd[,i] = sd(train[,i])\r\n";
+                        cmd2 += "} \r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "safety_factor = 2\r\n";
+                        cmd2 += "n_samples = 10\r\n";
+                        cmd2 += "set.seed(123) \r\n";
+                        cmd2 += "seeds <- runif(n_samples,1,100000) \r\n";
+                        cmd2 += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=n_samples))\r\n";
+                        cmd2 += "for (i in 1:ncol(predictions)){ #\r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "	set.seed(seeds[i]) \r\n";
+                        cmd2 += "   l_params_tmp =" + l_params_tmp + "\r\n";
+                        /*
+                        cmd2 += "	l_params_tmp= list(booster=\"gbtree\"\r\n";
+                        cmd2 += "       ,objective = \"reg:squarederror\"\r\n";
+                        cmd2 += "#		,objective=log_cosh_quantile\r\n";
+                        cmd2 += "		,eta=0.1\r\n";
+                        cmd2 += "		,gamma=0.0\r\n";
+                        cmd2 += "		,min_child_weight=2\r\n";
+                        cmd2 += "		,subsample=1\r\n";
+                        cmd2 += "		,max_depth=6\r\n";
+                        cmd2 += "		,alpha=0.0\r\n";
+                        cmd2 += "		,lambda=1.0\r\n";
+                        cmd2 += "		,colsample_bytree=0.5\r\n";
+                        cmd2 += "		,nthread=3\r\n";
+                        cmd2 += "	)\r\n";
+                        */
+                        cmd2 += "	\r\n";
+                        cmd2 += "	xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
+                        cmd2 += "	,early_stopping_rounds = 100,\r\n";
+                        cmd2 += "	params = l_params_tmp,\r\n";
+                        cmd2 += "	watchlist = list(train = train_dmat, eval = test_dmat))\r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "	predictions[,i] <- predict(xgboost_tmp.model,newdata = test_dmat) \r\n";
+                        cmd2 += "} \r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "y_upper_smooth <- predictions[,1] \r\n";
+                        cmd2 += "y_lower_smooth <- predictions[,1] \r\n";
+                        cmd2 += "y_mean_smooth <- predictions[,1] \r\n";
+                        cmd2 += "y_sd_smooth <- predictions[,1] \r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "for (i in 1:length(test$target_)){ \r\n";
+                        cmd2 += "	y_upper_smooth[i] = max(predictions[i,])\r\n";
+                        cmd2 += "	y_lower_smooth[i] = min(predictions[i,])\r\n";
+                        cmd2 += "	y_mean_smooth[i] = apply(predictions[i,], 1, mean)\r\n";
+                        cmd2 += "	y_sd_smooth[i] = apply(predictions[i,], 1, sd)\r\n";
+                        cmd2 += "} \r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "alp = 0.95\r\n";
+                        cmd2 += "q = qt(df=n_samples, alp+(1-alp)/2)\r\n";
+                        cmd2 += "#q = qnorm(alp+(1-alp)/2)\r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "up = y_upper_smooth\r\n";
+                        cmd2 += "lo = y_lower_smooth\r\n";
+                        cmd2 += "up = up + q*sqrt(y_sd_smooth + y_sd_smooth/(length(test$target_)-1))*safety_factor\r\n";
+                        cmd2 += "lo = lo - q*sqrt(y_sd_smooth + y_sd_smooth/(length(test$target_)-1))*safety_factor\r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "interval_plt<-ggplot()\r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "interval_plt <- interval_plt + geom_ribbon(aes(x=1:length(test$target_),ymin=lo,ymax=up, fill='予測区間'),alpha=0.4)+\r\n";
+                        cmd2 += "geom_line(aes(x=1:length(test$target_), y=test$target_, colour = \"観測値\"))+\r\n";
+                        cmd2 += "geom_point(aes(x=1:length(test$target_),y=test$target_,colour = \"観測値Point\"))+\r\n";
+                        cmd2 += "geom_line(aes(x=1:length(test$target_), y=y_mean_smooth,colour =\"平均値\"))\r\n";
+                        cmd2 += "\r\n";
+                        cmd2 += "\r\n";
+                    }
+                    if (checkBox7.Checked && radioButton1.Checked)
+                    {
+                        string l_params_tmp = "l_params_tmp = list(";
+                        l_params_tmp += "booster=" + comboBox1.Text + "\r\n";
+                        l_params_tmp += ",objective=log_cosh_quantile\r\n";
+
+                        if (comboBox3.Text != "default")
+                        {
+                            l_params_tmp += ",eval_metric=" + comboBox3.Text + "\r\n";
+                        }
+                        l_params_tmp += ",eta=" + textBox3.Text + "\r\n";
+                        l_params_tmp += ",gamma=" + textBox4.Text + "\r\n";
+                        l_params_tmp += ",min_child_weight=" + numericUpDown4.Text + "\r\n";
+                        l_params_tmp += ",subsample=" + textBox8.Text + "\r\n";
+                        l_params_tmp += ",max_depth=" + numericUpDown6.Text + "\r\n";
+                        l_params_tmp += ",alpha=" + textBox5.Text + "\r\n";
+                        l_params_tmp += ",lambda=" + textBox6.Text + "\r\n";
+                        l_params_tmp += ",colsample_bytree=" + textBox7.Text + "*0.8\r\n";
+                        l_params_tmp += ",nthread=" + numericUpDown10.Value.ToString() + "\r\n";
+                        if (checkBox3.Checked)
+                        {
+                            l_params_tmp += ",n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+                            l_params_tmp += ",tree_method='gpu_hist'" + "\r\n";
+                        }
+
+                        if (radioButton2.Checked)
+                        {
+                            l_params_tmp += ",num_class=" + numericUpDown7.Text + "\r\n";
+                        }
+                        l_params_tmp += ")\r\n";
+
+                        cmd3 += "log_cosh_quantile<- function(preds, dtrain){\r\n";
+                        cmd3 += "	 labels <- getinfo(dtrain, \"label\")\r\n";
+                        cmd3 += "    err = preds - labels\r\n";
+                        cmd3 += "    err = ifelse(err < 0, alpha * err, (1 - alpha) * err)\r\n";
+                        cmd3 += "    grad = tanh(err)\r\n";
+                        cmd3 += "    cosh2 = cosh(err)*cosh(err)\r\n";
+                        cmd3 += "    hess = 1 / (cosh2 + 0.00001)\r\n";
+                        cmd3 += "	return(list(grad = grad, hess = hess))\r\n";
+                        cmd3 += "}\r\n";
+
+                        cmd3 += l_params_tmp;
+                        /*
+                        cmd3 += "l_params_tmp = list(booster=\"gbtree\"\r\n";
+                        cmd3 += "   ,objective=log_cosh_quantile\r\n";
+                        cmd3 += "   ,eta=0.1\r\n";
+                        cmd3 += "   ,gamma=0.0\r\n";
+                        cmd3 += "   ,min_child_weight=2\r\n";
+                        cmd3 += "   ,subsample=1\r\n";
+                        cmd3 += "   ,max_depth=6\r\n";
+                        cmd3 += "   ,alpha=0.0\r\n";
+                        cmd3 += "   ,lambda=1.0\r\n";
+                        cmd3 += "   ,colsample_bytree=0.5 # １以下にする事で説明変数の選択が確率的になる\r\n";
+                        cmd3 += "   ,nthread=3\r\n";
+                        cmd3 += ")\r\n";
+                        */
+                        cmd3 += "\r\n";
+                        cmd3 += "#2つのモデルをトレーニングする。1つは上限用、もう1つは下限用\r\n";
+                        cmd3 += "alpha = 0.95\r\n";
+                        cmd3 += "xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
+                        cmd3 += ",early_stopping_rounds = 100,\r\n";
+                        cmd3 += "params = l_params_tmp,\r\n";
+                        cmd3 += "watchlist = list(train = train_dmat, eval = test_dmat))\r\n";
+                        cmd3 += "\r\n";
+                        cmd3 += "y_upper_smooth2 <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
+
+                        cmd3 += "if (xgboost_tmp.model$best_iteration == 1 )\r\n";
+                        cmd3 += "{\r\n";
+                        cmd3 += "   y_upper_smooth2 = y_upper_smooth\r\n";
+                        cmd3 += "}\r\n";
+
+                        cmd3 += "\r\n";
+                        cmd3 += "alpha = 1 - alpha\r\n";
+                        cmd3 += "xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
+                        cmd3 += ",early_stopping_rounds = 100,\r\n";
+                        cmd3 += "params = l_params_tmp,\r\n";
+                        cmd3 += "watchlist = list(train = train_dmat, eval = test_dmat))\r\n";
+                        cmd3 += "\r\n";
+                        cmd3 += "y_lower_smooth2  <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
+                        cmd3 += "if (xgboost_tmp.model$best_iteration == 1 )\r\n";
+                        cmd3 += "{\r\n";
+                        cmd3 += "   y_lower_smooth2 = y_lower_smooth\r\n";
+                        cmd3 += "}\r\n";
+                        cmd3 += "\r\n";
+                        cmd3 += "#plot(y_upper_smooth2)\r\n";
+                        cmd3 += "#plot(y_lower_smooth2)\r\n";
+                        cmd3 += "\r\n";
+                        cmd3 += "up2 = y_upper_smooth2\r\n";
+                        cmd3 += "lo2 = y_lower_smooth2\r\n";
+                        cmd3 += "\r\n";
+                        cmd3 += "up2 = up2 + safety_factor*mean(up2)/100\r\n";
+                        cmd3 += "lo2 = lo2 - safety_factor*mean(lo2)/100\r\n";
+                        cmd3 += "\r\n";
+                        cmd3 += "interval_plt2<-ggplot()\r\n";
+                        cmd3 += "\r\n";
+                        cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
+                        cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='信頼区間'),alpha=0.4)+\r\n";
+                        cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$target_, colour=\"観測値\"))+\r\n";
+                        cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$target_,colour = \"観測値Point\"))\r\n";
+                        cmd3 += "\r\n";
+                        cmd3 += "interval_plt3 <- interval_plt + \r\n";
+                        cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='信頼区間'),alpha=0.4)+\r\n";
+                        cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$target_, colour=\"観測値\"))+\r\n";
+                        cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$target_,colour = \"観測値Point\"))\r\n";
+                        cmd3 += "\r\n";
+                    }
+
+
+                    cmd += cmd2;
+                    cmd += cmd3;
                     if (checkBox2.Checked)
                     {
                         cmd += "xgb_cv <- xgb.cv(data = train_dmat";
@@ -567,6 +784,27 @@ namespace WindowsFormsApplication1
                                 sw.Write("plt_<-xgb.ggplot.importance(imp_, top_n = 6, measure = NULL, rel_to_first = F)\r\n");
                                 sw.Write("ggsave(\"tmp_xgboost2.png\", plt_, dpi = 100, width = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                             }
+                            if ((checkBox6.Checked || checkBox7.Checked )&& radioButton1.Checked)
+                            {
+                                if (checkBox6.Checked && !checkBox7.Checked)
+                                {
+                                    sw.Write("ggsave(filename = \"interval_plt.png\", plot = interval_plt)\r\n");
+                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, nrow = 2)\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
+                                }
+                                if (!checkBox6.Checked && checkBox7.Checked)
+                                {
+                                    sw.Write("ggsave(filename = \"interval_plt2.png\", plot = interval_plt)\r\n");
+                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, nrow = 2)\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
+                                }
+                                if (checkBox6.Checked && checkBox7.Checked)
+                                {
+                                    sw.Write("ggsave(filename = \"interval_plt3.png\", plot = interval_plt)\r\n");
+                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, interval_plt2, nrow = 3)\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
+                                }
+                            }
                             sw.Write("\r\n");
                         }
                     }
@@ -606,9 +844,15 @@ namespace WindowsFormsApplication1
                         explain += "cat(\r\n)\r\n";
                     }
 
-                    explain += "plt_<-plot(model_performance(explainer, label=\"誤差\"),geom = \"histogram\")\r\n";
-                    explain += "ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = plt_)\r\n";
-
+                    if (radioButton2.Checked && comboBox2.Text == "\"multi:softprob\"")
+                    {
+                        /// empty
+                    }
+                    else
+                    {
+                        explain += "plt_<-plot(model_performance(explainer, label=\"誤差\"),geom = \"histogram\")\r\n";
+                        explain += "ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = plt_)\r\n";
+                    }
                     explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square))\r\n";
                     explain += "ggsave(filename = \"tmp_xgboost_feature_importance.png\", plot = plt_)\r\n";
 
@@ -623,47 +867,64 @@ namespace WindowsFormsApplication1
                     cmd += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     if (radioButton2.Checked)
                     {
-                        cmd += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
-                        cmd += "x_<- data.frame(confusion_tbl[,1])\r\n";
-                        cmd += "for (i in 2:ncol(confusion_tbl)){\r\n";
-                        cmd += "x_ <- cbind(x_, confusion_tbl[,i])\r\n";
-                        cmd += "}\r\n";
-                        cmd += "if ( nrow(x_) < ncol(x_)){\r\n";
-                        cmd += "    x_ <- rbind(x_, c(1:ncol(x_)) * 0)\r\n";
-                        cmd += "}\r\n";
+                        if (comboBox2.Text == "\"multi:softprob\"")
+                        {
+                            cmd += "predict_y <- matrix(predict_y,"+ numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
+                            cmd += "predict_y<-t(predict_y)\r\n";
+                            cmd += "colnames(predict_y)<-c(";
+                            cmd += "\""+string.Format("class{0}", 1)+"\"";
+                            for ( int i = 2; i <= numericUpDown7.Value; i++)
+                            {
+                                cmd += ",\"" + string.Format("class{0}", i)+"\"";
+                            }
+                            cmd += ")\r\n";
+                        }
+                        if (comboBox2.Text == "\"multi:softmax\"")
+                        {
+                            cmd += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
+                            cmd += "x_<- data.frame(confusion_tbl[,1])\r\n";
+                            cmd += "    for (i in 2:ncol(confusion_tbl)){\r\n";
+                            cmd += "    x_ <- cbind(x_, confusion_tbl[,i])\r\n";
+                            cmd += "}\r\n";
+                            cmd += "if ( nrow(x_) < ncol(x_)){\r\n";
+                            cmd += "    x_ <- rbind(x_, c(1:ncol(x_)) * 0)\r\n";
+                            cmd += "}\r\n";
 
-                        cmd += "tryCatch({\r\n";
-                        cmd += "colnames(x_)<-rownames(x_)\r\n";
-                        cmd += "},\r\n";
-                        cmd += "error = function(e) {\r\n";
-                        cmd += " #print(e)\r\n";
-                        cmd += "})\r\n";
-                        cmd += "confusion_test <- x_\r\n";
+                            cmd += "tryCatch({\r\n";
+                            cmd += "    colnames(x_)<-rownames(x_)\r\n";
+                            cmd += "},\r\n";
+                            cmd += "error = function(e) {\r\n";
+                            cmd += " #print(e)\r\n";
+                            cmd += "})\r\n";
+                            cmd += "confusion_test <- x_\r\n";
 
-                        cmd += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
-
-                        cmd += "tmp_ <- df_\r\n";
-                        cmd += "tmp_ <- cbind(tmp_, predict_y)\r\n";
-                        cmd += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
+                            cmd += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
+                            cmd += "tmp_ <- df_\r\n";
+                            cmd += "tmp_ <- cbind(tmp_, predict_y)\r\n";
+                            cmd += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
+                        }
                     }
                     cmd += "predict.y<-as.data.frame(predict_y)\r\n";
                     cmd += "predict.xgboost<-cbind(df_,predict.y)\r\n";
-                    cmd += "names(predict.xgboost)[ncol(predict.xgboost)]<-\"Predict\"\r\n";
-                    if (radioButton1.Checked)
+                    if (comboBox2.Text == "\"multi:softmax\"")
                     {
-                        cmd += "residual.error <- predict.y - test$target_\r\n";
+                        cmd += "names(predict.xgboost)[ncol(predict.xgboost)]<-\"Predict\"\r\n";
+                    }
+                    if (radioButton1.Checked || (radioButton2.Checked && comboBox2.Text == "\"multi:softprob\""))
+                    {
+                        cmd += "residual.error <- predict.y - as.numeric(test$target_)\r\n";
                         cmd += "rmse_<- residual.error^2\r\n";
                         cmd += "rmse_<- sqrt(mean(rmse_[,1]))\r\n";
 
                         cmd += "se_<-sum((residual.error)^2)\r\n";
-                        cmd += "st_ <- test$target_ - mean(test$target_)\r\n";
+                        cmd += "st_ <- as.numeric(test$target_) - mean(as.numeric(test$target_))\r\n";
                         cmd += "st_<-sum((st_)^2)\r\n";
                         cmd += "R2_<- 1-se_/st_\r\n";
                         cmd += "p_ <- " + listBox2.SelectedIndices.Count.ToString() + "-1\r\n";
                         cmd += "n_ <- nrow(df_)\r\n";
                         cmd += "adjR2_ <- 1-(se_/(n_-p_-1))/(st_/(n_-1)) \r\n";
                         //cmd += "me_ <- residual.error / " + "df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
-                        cmd += "me_ <- residual.error / test$target_\r\n";
+                        cmd += "me_ <- residual.error / as.numeric(test$target_)\r\n";
                         cmd += "MER_ <- median(abs(me_[,1]), na.rm = TRUE)\r\n";
                     }
 
@@ -720,9 +981,27 @@ namespace WindowsFormsApplication1
                             }
                             if (radioButton2.Checked)
                             {
-                                sw.Write("cat(\"accuracy=\")\r\n");
-                                sw.Write("cat(ac_)\r\n");
-                                sw.Write("cat(\"\\n\")\r\n");
+                                if (comboBox2.Text == "\"multi:softprob\"")
+                                {
+                                    sw.Write("cat(\"RMSE=\")\r\n");
+                                    sw.Write("cat(rmse_)\r\n");
+                                    sw.Write("cat(\"\\n\")\r\n");
+                                    sw.Write("cat(\"R2=\")\r\n");
+                                    sw.Write("cat(R2_)\r\n");
+                                    sw.Write("cat(\"\\n\")\r\n");
+                                    sw.Write("cat(\"Adjr2=\")\r\n");
+                                    sw.Write("cat(adjR2_)\r\n");
+                                    sw.Write("cat(\"\\n\")\r\n");
+                                    sw.Write("cat(\"MER=\")\r\n");
+                                    sw.Write("cat(MER_)\r\n");
+                                    sw.Write("cat(\"\\n\")\r\n");
+                                }
+                                if (comboBox2.Text == "\"multi:softmax\"")
+                                {
+                                    sw.Write("cat(\"accuracy=\")\r\n");
+                                    sw.Write("cat(ac_)\r\n");
+                                    sw.Write("cat(\"\\n\")\r\n");
+                                }
                             }
                             sw.Write("\r\n");
                             sw.Write("sink()\r\n");
@@ -747,9 +1026,16 @@ namespace WindowsFormsApplication1
                             if (radioButton2.Checked)
                             {
                                 sw.Write("png(\"tmp_xgboost_predict.png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
-                                sw.Write("par(mfrow=c(1,1),lwd=2)\r\n");
-                                sw.Write("plot(df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "',col=\"blue\", pch=20)\r\n");
-                                sw.Write("points(predict.y, col=\"#FF8C00\", pch=20)\r\n");
+                                if (comboBox2.Text == "\"multi:softprob\"")
+                                {
+                                    sw.Write("hist(predict_y, breaks=seq(0,1,0.25), main=\"Histogram\", col=\"orange\", freq = F)\r\n");
+                                }
+                                if (comboBox2.Text == "\"multi:softmax\"")
+                                {
+                                    sw.Write("par(mfrow=c(1,1),lwd=2)\r\n");
+                                    sw.Write("plot(df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "',col=\"blue\", pch=20)\r\n");
+                                    sw.Write("points(predict.y, col=\"#FF8C00\", pch=20)\r\n");
+                                }
                                 sw.Write("dev.off()\r\n");
                             }
                             sw.Write("\r\n");
@@ -768,6 +1054,7 @@ namespace WindowsFormsApplication1
                 form1.FileDelete("tmp_xgboost_feature_importance.png");
                 form1.FileDelete("tmp_xgboost_model_performance.png");
                 form1.FileDelete("tmp_xgboost_predict_parts0001.png");
+                form1.FileDelete("xgboost_plot_temp.html");
 
                 try
                 {
@@ -835,14 +1122,29 @@ namespace WindowsFormsApplication1
 
                 if (radioButton2.Checked && radioButton3.Checked)
                 {
-                    form1.ComboBoxItemAdd(form1.comboBox2, "confusion_test");
-                    form1.ComboBoxItemAdd(form1.comboBox3, "confusion_tbl");
+                    //
+                    if (comboBox2.Text == "\"multi:softprob\"")
+                    {
+                        form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
+                    }
+                    if (comboBox2.Text == "\"multi:softmax\"")
+                    {
+                        form1.ComboBoxItemAdd(form1.comboBox2, "confusion_test");
+                        form1.ComboBoxItemAdd(form1.comboBox3, "confusion_tbl");
+                    }
                     form1.ComboBoxItemAdd(form1.comboBox3, "xgboost.model");
                 }
                 if (radioButton2.Checked && radioButton4.Checked)
                 {
-                    form1.ComboBoxItemAdd(form1.comboBox2, "confusion_train");
-                    form1.ComboBoxItemAdd(form1.comboBox3, "confusion_train");
+                    if (comboBox2.Text == "\"multi:softprob\"")
+                    {
+                        form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
+                    }
+                    if (comboBox2.Text == "\"multi:softmax\"")
+                    {
+                        form1.ComboBoxItemAdd(form1.comboBox2, "confusion_train");
+                        form1.ComboBoxItemAdd(form1.comboBox3, "confusion_train");
+                    }
                     form1.ComboBoxItemAdd(form1.comboBox3, "xgboost.model");
                 }
 
@@ -978,9 +1280,12 @@ namespace WindowsFormsApplication1
 
                 if (radioButton2.Checked && radioButton3.Checked)
                 {
-                    df2image tmp = new df2image();
-                    tmp.form1 = form1;
-                    tmp.dftoImage("confusion_test", "tmp_xgboost_predict.png");
+                    if (comboBox2.Text == "\"multi:softmax\"")
+                    {
+                        df2image tmp = new df2image();
+                        tmp.form1 = form1;
+                        tmp.dftoImage("confusion_test", "tmp_xgboost_predict.png");
+                    }
                 }
 
                 string y = listBox1.Items[listBox1.SelectedIndex].ToString();
@@ -1016,6 +1321,9 @@ namespace WindowsFormsApplication1
                 {
                     if (radioButton4.Checked)
                     {
+                        webBrowser1.Hide();
+                        button2.Visible = true;
+                        button3.Visible = true;
                         //pictureBox1.Image = Form1.CreateImage("tmp_xgboost.png");
                         pictureBox1.Image = Form1.CreateImage("tmp_xgboost2.png");
                         pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -1034,7 +1342,7 @@ namespace WindowsFormsApplication1
                 }
                 catch { }
 
-                if (checkBox5.Checked && radioButton1.Checked && radioButton3.Checked)
+                if (checkBox5.Checked )
                 {
                     string mode = "lines";
                     mode = "\"lines+markers\"";
@@ -1043,20 +1351,56 @@ namespace WindowsFormsApplication1
                     cmd += "library(plotly)\r\n";
                     cmd += "library(htmlwidgets)\r\n";
 
-                    cmd += "p1_<-plot_ly(test, alpha=0.6, type = \"scatter\", mode = " + mode +
-                             ",y = residual.error[,1]";
-                    cmd += ", name =\"" + "residual.error" + "\")\r\n";
+                    if (radioButton1.Checked && radioButton3.Checked)
+                    {
+                        cmd += "p1_<-plot_ly(test, alpha=0.6, type = \"scatter\", mode = " + mode +
+                                 ",y = residual.error[,1]";
+                        cmd += ", name =\"" + "residual.error" + "\")\r\n";
 
-                    cmd += "p2_<-plot_ly(test, alpha=0.6, type = \"scatter\", mode = " + mode +
-                            ",y = "+
-                            "test$'" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "'";
-                    cmd += ", name =\"" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "\") %>% \r\n";
+                        cmd += "p2_<-plot_ly(test, alpha=0.6, type = \"scatter\", mode = " + mode +
+                                ",y = " +
+                                "test$'" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "'";
+                        cmd += ", name =\"" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "\") %>% \r\n";
 
-                    cmd += "add_trace(test, alpha=0.6, type = \"scatter\", mode = " + mode +
-                            ",y = predict.y[,1]";
-                    cmd += ", name =\"predict\")\r\n";
+                        cmd += "add_trace(test, alpha=0.6, type = \"scatter\", mode = " + mode +
+                                ",y = predict.y[,1]";
+                        cmd += ", name =\"predict\")\r\n";
 
-                    cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
+                        cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
+                    }
+                    if (radioButton2.Checked && radioButton3.Checked)
+                    {
+                        cmd += "p_<-plot_ly(test, alpha=0.6, type = \"histogram\"";
+                        cmd += ",y = predict_y)\r\n";
+                    }
+                    if (radioButton1.Checked && radioButton4.Checked)
+                    {
+                        cmd += "p1<-ggplotly(plt_)\r\n";
+                        if ( checkBox6.Checked)
+                        {
+                            cmd += "p2<-ggplotly(interval_plt)\r\n";
+                        }
+                        if (checkBox7.Checked)
+                        {
+                            cmd += "p3<-ggplotly(interval_plt2)\r\n";
+                        }
+                        if (checkBox6.Checked && !checkBox7.Checked)
+                        {
+                            cmd += "p_ <-subplot(p1, p2, nrows = 2)\r\n";
+                        }
+                        if (!checkBox6.Checked && checkBox7.Checked)
+                        {
+                            cmd += "p_ <-subplot(p1, p3, nrows = 2)\r\n";
+                        }
+                        if (checkBox6.Checked && checkBox7.Checked)
+                        {
+                            cmd += "p_ <-subplot(p1, p2, p3, nrows = 3)\r\n";
+                        }
+                    }
+                    if (radioButton2.Checked && radioButton4.Checked)
+                    {
+                        cmd += "p_<-ggplotly(plt_)\r\n";
+                    }
 
                     if (System.IO.File.Exists("xgboost_plot_temp.html")) form1.FileDelete("curvplot_temp.html");
                     cmd += "print(p_)\r\n";
