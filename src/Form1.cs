@@ -8525,6 +8525,14 @@ namespace WindowsFormsApplication1
                 _xgboost.panel4.Visible = false;
                 _xgboost.label21.Visible = false;
                 _xgboost.numericUpDown7.Visible = false;
+
+                _xgboost.label30.Visible = true;
+                _xgboost.label31.Visible = true;
+                _xgboost.label32.Visible = true;
+                _xgboost.comboBox5.Visible = true;
+                _xgboost.numericUpDown5.Visible = true;
+                _xgboost.numericUpDown14.Visible = true;
+                _xgboost.checkBox5.Visible = true;
             }
             else
             {
@@ -8535,6 +8543,14 @@ namespace WindowsFormsApplication1
                 _xgboost.label23.Visible = false;
                 _xgboost.numericUpDown8.Visible = false;
                 _xgboost.panel4.Visible = true;
+
+                _xgboost.label30.Visible = false;
+                _xgboost.label31.Visible = false;
+                _xgboost.label32.Visible = false;
+                _xgboost.comboBox5.Visible = false;
+                _xgboost.numericUpDown5.Visible = false;
+                _xgboost.numericUpDown14.Visible = false;
+                _xgboost.checkBox5.Visible = false;
             }
 
             string file = targetCSV + ".csv";
