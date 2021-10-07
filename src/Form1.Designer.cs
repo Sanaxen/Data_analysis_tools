@@ -2942,7 +2942,6 @@
         public System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button button28;
         private System.Windows.Forms.Button button30;
-        private System.Windows.Forms.CheckBox checkBox4;
         public System.Windows.Forms.ComboBox comboBox2;
         public System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button33;
@@ -3081,6 +3080,7 @@
         private System.Windows.Forms.Button button73;
         private System.Windows.Forms.TabPage tabPage9;
         private System.Windows.Forms.Button button74;
+        public System.Windows.Forms.CheckBox checkBox4;
     }
 }
 

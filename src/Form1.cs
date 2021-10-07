@@ -9054,7 +9054,7 @@ namespace WindowsFormsApplication1
             form1.button67_Click(sender, e);
         }
 
-        private void button67_Click_1(object sender, EventArgs e)
+        public void button67_Click_1(object sender, EventArgs e)
         {
             reg_time_series_mode = true;
             button60_Click_2(sender, e);

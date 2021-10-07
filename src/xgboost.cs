@@ -189,23 +189,43 @@ namespace WindowsFormsApplication1
             {
                 form1.FileDelete("curvplot_temp.html");
                 form1.FileDelete("xgboost_plot_temp.html");
+
+                pictureBox1.ImageLocation = "";
+                //webBrowser1.Navigate("");
+                if (interactivePlot != null)
+                {
+                    //interactivePlot.webBrowser1.Navigate("");
+                }
                 if (!checkBox5.Checked)
                 {
                     webBrowser1.Hide();
+                    pictureBox1.Show();
                     button2.Visible = true;
                     button3.Visible = true;
                 }
                 else
                 {
                     webBrowser1.Show();
+                    pictureBox1.Hide();
                     button2.Visible = false;
                     button3.Visible = false;
                 }
+
+                form1.FileDelete("tmp_xgboost.png");
+                form1.FileDelete("tmp_xgboost_predict.png");
+                form1.FileDelete("tmp_xgboost_feature_importance.png");
+                form1.FileDelete("tmp_xgboost_model_performance.png");
+                form1.FileDelete("tmp_xgboost_predict_parts0001.png");
+                form1.FileDelete("xgboost_plot_temp.html");
 
                 if (time_series_mode)
                 {
                     lag = (int)numericUpDown8.Value;
 
+                    if ( System.IO.File.Exists("addtime_cols.csv"))
+                    {
+                        form1.FileDelete("addtime_cols.csv");
+                    }
                     string cmd1 = "df_ts_tmp <- df\r\n";
                     for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                     {
@@ -220,9 +240,30 @@ namespace WindowsFormsApplication1
                     cmd1 += "if (is.character(x)){\r\n";
                     cmd1 += "    df_ts_tmp[,1] <- as.POSIXct(df_ts_tmp[,1])\r\n";
                     cmd1 += "}\r\n";
-                    cmd1 += "if (class(x)[1] ==\"POSIXlt\" || class(x)[0] ==\"POSIXt\" ){\r\n";
-                    cmd1 += "    df_ts_tmp[,1] <- as.POSIXct(df_ts_tmp[,1])\r\n";
+                    cmd1 += "x_class = class(df_ts_tmp[1,1])\r\n";
+                    cmd1 += "for ( k in 1:length(x_class)){\r\n";
+                    cmd1 += "   if (x_class[k] ==\"POSIXlt\" || x_class[k] ==\"POSIXt\" ){\r\n";
+                    cmd1 += "       df_ts_tmp[,1] <- as.POSIXct(df_ts_tmp[,1])\r\n";
+                    cmd1 += "       break\r\n";
+                    cmd1 += "   }\r\n";
                     cmd1 += "}\r\n";
+                    cmd1 += "if ( class(df_ts_tmp[1,1])[1] != \"POSIXct\"){\r\n";
+                    cmd1 += "   tmp <- df_ts_tmp\r\n";
+                    cmd1 += "   tmp[,1] = as.Date(tmp[,1])\r\n";
+                    cmd1 += "   tmp[1,1] = Sys.Date()\r\n";
+                    cmd1 += "   for ( i in 2:nrow(tmp)){\r\n";
+                    cmd1 += "       tmp[i,1] <- tmp[i-1,1] + 1\r\n";
+                    cmd1 += "   }\r\n";
+                    cmd1 += "   df_ts_tmp2 <- cbind(tmp[,1], df[-1:-" + lag.ToString() + ",])\r\n";
+                    cmd1 += "    colnames(df_ts_tmp2)[1] <- \"ds\"\r\n";
+                    cmd1 += "   df_ts_tmp2[,1] <- as.POSIXct(df_ts_tmp2[,1])\r\n";
+                    cmd1 += "   write.csv(df_ts_tmp2, file=\"addtime_cols.csv\",row.names=F)\r\n";
+                    cmd1 += "}\r\n";
+
+                    if (System.IO.File.Exists("addtime_cols.csv"))
+                    {
+                        form1.FileDelete("addtime_cols.csv");
+                    }
 
                     if (false)
                     {
@@ -246,6 +287,28 @@ namespace WindowsFormsApplication1
                         cmd1 += "test  <- df_ts_tmp\r\n";
                     }
                     form1.script_executestr(cmd1);
+
+                    if (System.IO.File.Exists("addtime_cols.csv"))
+                    {
+                        MessageBox.Show("時間列が必要です(\"addtime_cols.csv\")");
+                        //return;
+
+                        string file2 = Form1.curDir + "\\..\\Test\\" + "addtime_cols.csv";
+                        System.IO.File.Copy("addtime_cols.csv", file2, true);
+                        form1.load_csv(file2);
+                        if (!form1.ExistObj("df"))
+                        {
+                            form1.checkBox4.Checked = !form1.checkBox4.Checked;
+                            form1.load_csv(file2);
+                            if (!form1.ExistObj("df"))
+                            {
+                                MessageBox.Show("データフレームとして読み込む事が出来ません", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+                        form1.button67_Click_1(sender, e);
+                        //button5_Click(sender, e);
+                    }
                 }
 
                 error_status = 0;
@@ -350,12 +413,12 @@ namespace WindowsFormsApplication1
                 string formuler = "";
                 formuler += "target_";
                 formuler += " ~";
-                ListBox listBox2var = new ListBox();
+                ListBox var = new ListBox();
                 for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
                 {
                     if (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor")
                     {
-                        listBox2var.Items.Add(listBox2.Items[listBox2.SelectedIndices[i]].ToString());
+                        var.Items.Add(listBox2.Items[listBox2.SelectedIndices[i]].ToString());
                     }
                     else
                     {
@@ -363,10 +426,10 @@ namespace WindowsFormsApplication1
                         listBox2.SetSelected(listBox2.SelectedIndices[i], false);
                     }
                 }
-                for (int i = 0; i < listBox2var.Items.Count; i++)
+                for (int i = 0; i < var.Items.Count; i++)
                 {
-                    formuler += listBox2var.Items[i].ToString();
-                    if (i < listBox2var.Items.Count - 1)
+                    formuler += var.Items[i].ToString();
+                    if (i < var.Items.Count - 1)
                     {
                         formuler += "+";
                     }
@@ -587,7 +650,7 @@ namespace WindowsFormsApplication1
                         cmd2 += "#up = y_mean_smooth + q*sqrt(y_sd_smooth + y_sd_smooth/(length(test$target_)-1))*safety_factor\r\n";
                         cmd2 += "#lo = y_mean_smooth - q*sqrt(y_sd_smooth + y_sd_smooth/(length(test$target_)-1))*safety_factor\r\n";
                         cmd2 += "up = y_upper_smooth + safety_factor*abs(y_upper_smooth-y_mean_smooth)/3\r\n";
-                        cmd2 += "lo = y_lower_smooth - safety_factor*abs(y_upper_smooth-y_mean_smooth)/3\r\n";
+                        cmd2 += "lo = y_lower_smooth - safety_factor*abs(y_lower_smooth-y_mean_smooth)/3\r\n";
                         cmd2 += "\r\n";
                         cmd2 += "interval_plt<-ggplot()\r\n";
                         cmd2 += "\r\n";
@@ -716,8 +779,8 @@ namespace WindowsFormsApplication1
                         cmd3 += "#up2 = y_upper_smooth2\r\n";
                         cmd3 += "#lo2 = y_lower_smooth2\r\n";
                         cmd3 += "\r\n";
-                        cmd3 += "up2 = y_upper_smooth2 + 5*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/2\r\n";
-                        cmd3 += "lo2 = y_lower_smooth2 - 5*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/2\r\n";
+                        cmd3 += "up2 = y_upper_smooth2 + 2*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/3\r\n";
+                        cmd3 += "lo2 = y_lower_smooth2 - 2*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/3\r\n";
                         cmd3 += "#q = qt(df = n_samples, alp_ + (1 - alp_) / 2)\r\n";
                         cmd3 += "#up2 = up2 + q * sqrt(y_sd_smooth + y_sd_smooth / (length(test$target_) - 1)) * safety_factor\r\n";
                         cmd3 += "#lo2 = lo2 - q * sqrt(y_sd_smooth + y_sd_smooth / (length(test$target_) - 1)) * safety_factor\r\n";
@@ -726,16 +789,34 @@ namespace WindowsFormsApplication1
                         cmd3 += "interval_plt2<-ggplot()\r\n";
                         cmd3 += "\r\n";
                         cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
-                        cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
-                        cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$target_, colour=\"観測値\"))+\r\n";
-                        cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$target_,colour = \"観測値Point\"))+\r\n";
-                        cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))\r\n";
-                        cmd3 += "\r\n";
-                        cmd3 += "interval_plt3 <- interval_plt + \r\n";
-                        cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
-                        cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$target_, colour=\"観測値\"))+\r\n";
-                        cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$target_,colour = \"観測値Point\"))+\r\n";
-                        cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))\r\n";
+                        if ( time_series_mode)
+                        {
+                            cmd3 += "geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
+                            cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$target_, colour=\"観測値\"))+\r\n";
+                            cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$target_,colour = \"観測値Point\"))+\r\n";
+                            cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=predictions[,1], colour=\"予測値\"))+\r\n";
+                            cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n";
+                            cmd3 += "\r\n";
+                            cmd3 += "interval_plt3 <- interval_plt + \r\n";
+                            cmd3 += "geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
+                            cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$target_, colour=\"観測値\"))+\r\n";
+                            cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$target_,colour = \"観測値Point\"))+\r\n";
+                            cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=predictions[,1], colour=\"予測値\"))+\r\n";
+                            cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n";
+                        }
+                        else
+                        {
+                            cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
+                            cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$target_, colour=\"観測値\"))+\r\n";
+                            cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$target_,colour = \"観測値Point\"))+\r\n";
+                            cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))+\r\n";
+                            cmd3 += "\r\n";
+                            cmd3 += "interval_plt3 <- interval_plt + \r\n";
+                            cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
+                            cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$target_, colour=\"観測値\"))+\r\n";
+                            cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$target_,colour = \"観測値Point\"))+\r\n";
+                            cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))\r\n";
+                        }
                         cmd3 += "\r\n";
                     }
 
@@ -904,6 +985,7 @@ namespace WindowsFormsApplication1
                     }
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
 
+                    cmd += "test_org <- test\r\n";
                     cmd += "df_<-test\r\n";
                     cmd += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
 
@@ -947,7 +1029,6 @@ namespace WindowsFormsApplication1
                             cmd += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
                         }
                     }
-                    cmd += "test_org <- test\r\n";
                     cmd += "predict.y<-as.data.frame(predict_y)\r\n";
                     if ( time_series_mode )
                     {
@@ -992,7 +1073,7 @@ namespace WindowsFormsApplication1
                             cmd += "                    select_var <- TRUE\r\n";
                             cmd += "                }\r\n";
                         }
-                        cmd += "                if (select_var == FALSE ) break\r\n";
+                        cmd += "                if (select_var == FALSE ) next\r\n";
                         cmd += "                skip <- FALSE\r\n";
                         cmd += "                for ( k in 1:length(colidx0)){\r\n";
                         cmd += "                    if ( i == colidx0[k] ) {\r\n";
@@ -1115,7 +1196,7 @@ namespace WindowsFormsApplication1
                     cmd += "df_ <- test\r\n";
                     cmd += "df_tmp <- rbind(train, test)\r\n";
                     cmd += "x_<- train[nrow(train),1]\r\n";
-                    cmd += "write.csv(df_tmp, file =\"時系列.csv\")\r\n";
+                    cmd += "write.csv(df_tmp, file =\"時系列.csv\",row.names=F)\r\n";
 
                     cmd += "predict.xgboost<-cbind(df_,predict.y)\r\n";
                     if (comboBox2.Text == "\"multi:softmax\"")
@@ -1242,12 +1323,12 @@ namespace WindowsFormsApplication1
                                     sw.Write("residual_plt<-ggplot()\r\n");
                                     sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=residual.error[,1], colour=\"誤差\"))+\r\n");
                                     sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=residual.error[,1], colour = \"誤差Point\"))+\r\n");
-                                    sw.Write("scale_x_datetime(name= \"time\",date_labels = \"%m/%d\")\r\n");
+                                    sw.Write("scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n");
                                     sw.Write("predict_plt<-ggplot()\r\n");
                                     sw.Write("predict_plt<-predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict.y[,1], colour=\"予測値\"))+\r\n");
                                     sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=predict.y[,1], colour = \"予測Point\"))+\r\n");
                                     sw.Write("geom_line(aes(x=as.POSIXct(test[,1]), y=test$target_, colour=\"観測値\"))+\r\n");
-                                    sw.Write("scale_x_datetime(name= \"time\",date_labels = \"%m/%d\")\r\n");
+                                    sw.Write("scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n");
                                     if (checkBox7.Checked)
                                     {
                                         sw.Write("if ( exists(\"up2\") && exists(\"lo2\")){\r\n");
@@ -1305,12 +1386,6 @@ namespace WindowsFormsApplication1
                         return;
                     }
                 }
-                form1.FileDelete("tmp_xgboost.png");
-                form1.FileDelete("tmp_xgboost_predict.png");
-                form1.FileDelete("tmp_xgboost_feature_importance.png");
-                form1.FileDelete("tmp_xgboost_model_performance.png");
-                form1.FileDelete("tmp_xgboost_predict_parts0001.png");
-                form1.FileDelete("xgboost_plot_temp.html");
 
                 try
                 {
@@ -1577,9 +1652,9 @@ namespace WindowsFormsApplication1
                 {
                     if (radioButton4.Checked)
                     {
-                        webBrowser1.Hide();
-                        button2.Visible = true;
-                        button3.Visible = true;
+                        //webBrowser1.Hide();
+                        //button2.Visible = true;
+                        //button3.Visible = true;
                         //pictureBox1.Image = Form1.CreateImage("tmp_xgboost.png");
                         pictureBox1.Image = Form1.CreateImage("tmp_xgboost2.png");
                         pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -1638,21 +1713,22 @@ namespace WindowsFormsApplication1
                     if (radioButton1.Checked && radioButton4.Checked)
                     {
                         cmd += "p1<-ggplotly(plt_)\r\n";
+                        cmd += "p_<-p1\r\n";
                         if ( checkBox7.Checked)
                         {
-                            cmd += "p2<-ggplotly(interval_plt)\r\n";
+                            cmd += "p2<-ggplotly(interval_plt2)\r\n";
                         }
                         if (checkBox6.Checked)
                         {
-                            cmd += "p3<-ggplotly(interval_plt2)\r\n";
+                            cmd += "p3<-ggplotly(interval_plt)\r\n";
                         }
                         if (checkBox6.Checked && !checkBox7.Checked)
                         {
-                            cmd += "p_ <-subplot(p1, p2, nrows = 2)\r\n";
+                            cmd += "p_ <-subplot(p1, p3, nrows = 2)\r\n";
                         }
                         if (!checkBox6.Checked && checkBox7.Checked)
                         {
-                            cmd += "p_ <-subplot(p1, p3, nrows = 2)\r\n";
+                            cmd += "p_ <-subplot(p1, p2, nrows = 2)\r\n";
                         }
                         if (checkBox6.Checked && checkBox7.Checked)
                         {
