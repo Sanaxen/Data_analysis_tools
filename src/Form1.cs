@@ -5708,34 +5708,43 @@ namespace WindowsFormsApplication1
                 {
                     cmd = "";
 
-                    cmd += "add_holidays<-function(df){\r\n";
-                    cmd += "n_<-nrow(holidays)\r\n";
-                    cmd += "for ( i in 1:n_ ) {\r\n";
-                    cmd += "    x <- grep(holidays$ds[i], df$ds)\r\n";
-                    cmd += "    if ( length(x) > 0 ){\r\n";
-                    cmd += "        y = eval(parse(text=gsub(\" \", \"\", paste(\"df$lower_window_\", holidays$holiday[i]))))\r\n";
-                    cmd += "        if ( is.null(y)){\r\n";
-                    cmd += "            eval(parse(text=gsub(\" \", \"\", paste(\"df$lower_window_\", holidays$holiday[i], \"<- 0\"))))\r\n";
-                    cmd += "            eval(parse(text=gsub(\" \", \"\", paste(\"df$upper_window_\", holidays$holiday[i], \"<- 0\"))))\r\n";
-                    cmd += "        }\r\n";
-                    cmd += "        eval(parse(text=gsub(\" \", \"\", paste(\"df[x,]$lower_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
-                    cmd += "        eval(parse(text=gsub(\" \", \"\", paste(\"df[x,]$upper_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
-                    cmd += "        if ( holidays$lower_window[i] < 0 ){\r\n";
-                    cmd += "            for ( k in 1:( -holidays$lower_window[i])){\r\n";
-                    cmd += "                eval(parse(text=gsub(\" \", \"\", paste(\"df[x-k,]$lower_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
-                    cmd += "            }\r\n";
-                    cmd += "        }\r\n";
-                    cmd += "        if ( holidays$upper_window[i] > 0 ){\r\n";
-                    cmd += "            for ( k in 1:(holidays$upper_window[i])){\r\n";
-                    cmd += "                eval(parse(text=gsub(\" \", \"\", paste(\"df[x+k,]$upper_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
-                    cmd += "            }\r\n";
-                    cmd += "        }\r\n";
-                    cmd += "    }\r\n";
-                    cmd += "}\r\n";
-                    cmd += "return (df)\r\n";
-                    cmd += "}\r\n";
+                    if (false)
+                    {
+                        cmd += "add_holidays<-function(df){\r\n";
+                        cmd += "n_<-nrow(holidays)\r\n";
+                        cmd += "for ( i in 1:n_ ) {\r\n";
+                        cmd += "    x <- grep(holidays$ds[i], df$ds)\r\n";
+                        cmd += "    if ( length(x) > 0 ){\r\n";
+                        cmd += "        y = eval(parse(text=gsub(\" \", \"\", paste(\"df$lower_window_\", holidays$holiday[i]))))\r\n";
+                        cmd += "        if ( is.null(y)){\r\n";
+                        cmd += "            eval(parse(text=gsub(\" \", \"\", paste(\"df$lower_window_\", holidays$holiday[i], \"<- 0\"))))\r\n";
+                        cmd += "            eval(parse(text=gsub(\" \", \"\", paste(\"df$upper_window_\", holidays$holiday[i], \"<- 0\"))))\r\n";
+                        cmd += "        }\r\n";
+                        cmd += "        eval(parse(text=gsub(\" \", \"\", paste(\"df[x,]$lower_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
+                        cmd += "        eval(parse(text=gsub(\" \", \"\", paste(\"df[x,]$upper_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
+                        cmd += "        if ( holidays$lower_window[i] < 0 ){\r\n";
+                        cmd += "            for ( k in 1:( -holidays$lower_window[i])){\r\n";
+                        cmd += "                eval(parse(text=gsub(\" \", \"\", paste(\"df[x-k,]$lower_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
+                        cmd += "            }\r\n";
+                        cmd += "        }\r\n";
+                        cmd += "        if ( holidays$upper_window[i] > 0 ){\r\n";
+                        cmd += "            for ( k in 1:(holidays$upper_window[i])){\r\n";
+                        cmd += "                eval(parse(text=gsub(\" \", \"\", paste(\"df[x+k,]$upper_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
+                        cmd += "            }\r\n";
+                        cmd += "        }\r\n";
+                        cmd += "    }\r\n";
+                        cmd += "}\r\n";
+                        cmd += "return (df)\r\n";
+                        cmd += "}\r\n";
 
-                    cmd += "df<-add_holidays(df)\r\n";
+                        cmd += "df<-add_holidays(df)\r\n";
+                    }else
+                    {
+                        cmd = Form1.MyPath + "..\\script\\add_event_days.r";
+                        cmd = cmd.Replace("\\", "/");
+                        form1.evalute_cmdstr("source(\"" + cmd + "\")");
+                        cmd = "df<-add_event_days(df)\r\n";
+                    }
                     script_executestr(cmd);
                     _TimeSeriesRegression.add_holidays = true;
                 }
@@ -8511,6 +8520,59 @@ namespace WindowsFormsApplication1
             if (_xgboost == null) _xgboost = new xgboost();
             _xgboost.form1 = this;
             _xgboost.BackColor = BackColor;
+            _xgboost.add_enevt_data = 0;
+
+
+            string cmd = "";
+            if (form1.ExistObj("holidays"))
+            {
+                var s = MessageBox.Show("カレントのデータフレームにイベント情報を追加しますか?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                if (s == DialogResult.Yes)
+                {
+                    if (false)
+                    {
+                        cmd = "";
+
+                        cmd += "add_holidays<-function(df){\r\n";
+                        cmd += "n_<-nrow(holidays)\r\n";
+                        cmd += "for ( i in 1:n_ ) {\r\n";
+                        cmd += "    x <- grep(holidays$ds[i], df$ds)\r\n";
+                        cmd += "    if ( length(x) > 0 ){\r\n";
+                        cmd += "        y = eval(parse(text=gsub(\" \", \"\", paste(\"df$lower_window_\", holidays$holiday[i]))))\r\n";
+                        cmd += "        if ( is.null(y)){\r\n";
+                        cmd += "            eval(parse(text=gsub(\" \", \"\", paste(\"df$lower_window_\", holidays$holiday[i], \"<- 0\"))))\r\n";
+                        cmd += "            eval(parse(text=gsub(\" \", \"\", paste(\"df$upper_window_\", holidays$holiday[i], \"<- 0\"))))\r\n";
+                        cmd += "        }\r\n";
+                        cmd += "        eval(parse(text=gsub(\" \", \"\", paste(\"df[x,]$lower_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
+                        cmd += "        eval(parse(text=gsub(\" \", \"\", paste(\"df[x,]$upper_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
+                        cmd += "        if ( holidays$lower_window[i] < 0 ){\r\n";
+                        cmd += "            for ( k in 1:( -holidays$lower_window[i])){\r\n";
+                        cmd += "                eval(parse(text=gsub(\" \", \"\", paste(\"df[x-k,]$lower_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
+                        cmd += "            }\r\n";
+                        cmd += "        }\r\n";
+                        cmd += "        if ( holidays$upper_window[i] > 0 ){\r\n";
+                        cmd += "            for ( k in 1:(holidays$upper_window[i])){\r\n";
+                        cmd += "                eval(parse(text=gsub(\" \", \"\", paste(\"df[x+k,]$upper_window_\", holidays$holiday[i], \"<- 1\"))))\r\n";
+                        cmd += "            }\r\n";
+                        cmd += "        }\r\n";
+                        cmd += "    }\r\n";
+                        cmd += "}\r\n";
+                        cmd += "return (df)\r\n";
+                        cmd += "}\r\n";
+
+                        cmd += "df<-add_holidays(df)\r\n";
+                    }else
+                    {
+                        cmd = Form1.MyPath + "..\\script\\add_event_days.r";
+                        cmd = cmd.Replace("\\", "/");
+                        form1.evalute_cmdstr("source(\"" + cmd + "\")");
+                        cmd = "df<-add_event_days(df)\r\n";
+                    }
+                    _xgboost.add_enevt_data = 1;
+                    script_executestr(cmd);
+                }
+            }
 
             if (reg_time_series_mode)
             {
