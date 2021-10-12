@@ -8588,13 +8588,19 @@ namespace WindowsFormsApplication1
                 _xgboost.label21.Visible = false;
                 _xgboost.numericUpDown7.Visible = false;
 
+                _xgboost.panel7.Visible = true;
                 _xgboost.label30.Visible = true;
                 _xgboost.label31.Visible = true;
                 _xgboost.label32.Visible = true;
                 _xgboost.comboBox5.Visible = true;
                 _xgboost.numericUpDown5.Visible = true;
                 _xgboost.numericUpDown14.Visible = true;
+                _xgboost.numericUpDown15.Visible = true;
                 _xgboost.checkBox5.Visible = true;
+                _xgboost.checkBox8.Visible = true;
+                _xgboost.checkBox9.Visible = true;
+                _xgboost.checkBox10.Visible = true;
+                _xgboost.label33.Visible = true;
             }
             else
             {
@@ -8606,13 +8612,19 @@ namespace WindowsFormsApplication1
                 _xgboost.numericUpDown8.Visible = false;
                 _xgboost.panel4.Visible = true;
 
+                _xgboost.panel7.Visible = false;
                 _xgboost.label30.Visible = false;
                 _xgboost.label31.Visible = false;
                 _xgboost.label32.Visible = false;
                 _xgboost.comboBox5.Visible = false;
                 _xgboost.numericUpDown5.Visible = false;
                 _xgboost.numericUpDown14.Visible = false;
+                _xgboost.numericUpDown15.Visible = false;
                 _xgboost.checkBox5.Visible = false;
+                _xgboost.checkBox8.Visible = false;
+                _xgboost.checkBox9.Visible = false;
+                _xgboost.checkBox10.Visible = false;
+                _xgboost.label33.Visible = false;
             }
 
             string file = targetCSV + ".csv";

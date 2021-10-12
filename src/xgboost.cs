@@ -2945,6 +2945,14 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("test区間での推論結果の信頼区間は表示されません");
             }
         }
+
+        private void checkBox9_CheckedChanged(object sender, EventArgs e)
+        {
+            if ( checkBox9.Checked)
+            {
+                checkBox10.Checked = true;
+            }
+        }
     }
 
 }
