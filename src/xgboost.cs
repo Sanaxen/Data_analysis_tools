@@ -620,7 +620,7 @@ namespace WindowsFormsApplication1
                 }
                 l_params += ",eta=" + textBox3.Text + "\r\n";
                 l_params += ",gamma=" + textBox4.Text + "\r\n";
-                l_params += ",min_child_weight=" + numericUpDown4.Text + "\r\n";
+                l_params += ",min_child_weight=" + textBox9.Text + "\r\n";
                 l_params += ",subsample=" + textBox8.Text + "\r\n";
                 l_params += ",max_depth=" + numericUpDown6.Text + "\r\n";
                 l_params += ",alpha=" + textBox5.Text + "\r\n";
@@ -752,7 +752,7 @@ namespace WindowsFormsApplication1
                         //信頼区間
                         string l_params_tmp = "l_params_tmp = list(";
                         l_params_tmp += "booster=" + comboBox1.Text + "\r\n";
-                        l_params_tmp += ",objective=\"reg:squarederror\"\r\n";
+                        l_params_tmp += "   ,objective=\"reg:squarederror\"\r\n";
 
                         if (comboBox3.Text != "default")
                         {
@@ -760,7 +760,7 @@ namespace WindowsFormsApplication1
                         }
                         l_params_tmp += "   ,eta=" + textBox3.Text + "\r\n";
                         l_params_tmp += "   ,gamma=" + textBox4.Text + "\r\n";
-                        l_params_tmp += "   ,min_child_weight=" + numericUpDown4.Text + "\r\n";
+                        l_params_tmp += "   ,min_child_weight=" + textBox9.Text + "\r\n";
                         l_params_tmp += "   ,subsample=" + textBox8.Text + "*0.8\r\n";
                         l_params_tmp += "   ,max_depth=" + numericUpDown6.Text + "\r\n";
                         l_params_tmp += "   ,alpha=" + textBox5.Text + "\r\n";
@@ -846,10 +846,12 @@ namespace WindowsFormsApplication1
                         cmd2 += "\r\n";
                         cmd2 += "#up = y_mean_smooth + q*sqrt(y_sd_smooth + y_sd_smooth/(length(test$target_)-1))*safety_factor\r\n";
                         cmd2 += "#lo = y_mean_smooth - q*sqrt(y_sd_smooth + y_sd_smooth/(length(test$target_)-1))*safety_factor\r\n";
-                        cmd2 += "up = y_upper_smooth + safety_factor*abs(y_upper_smooth-y_mean_smooth)/3\r\n";
-                        cmd2 += "lo = y_lower_smooth - safety_factor*abs(y_lower_smooth-y_mean_smooth)/3\r\n";
+                        cmd2 += "up = y_upper_smooth + safety_factor*abs(y_upper_smooth-y_lower_smooth)/5\r\n";
+                        cmd2 += "lo = y_lower_smooth - safety_factor*abs(y_upper_smooth-y_lower_smooth)/5\r\n";
                         cmd2 += "\r\n";
 
+                        cmd2 += "target_max = max(xgb_train$'" + targetName + "')\r\n";
+                        cmd2 += "target_min = min(xgb_train$'" + targetName + "')\r\n";
                         if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                         {
                             if ( numericUpDown5.Value > 2)
@@ -857,9 +859,14 @@ namespace WindowsFormsApplication1
                                 cmd2 += "for ( i in nrow(test_org):length(predictions[,1]))\r\n";
                                 cmd2 += "{\r\n";
                                 cmd2 += "	t = (i - nrow(test_org)+2)\r\n";
-                                cmd2 += "	t = t*t*t\r\n";
-                                cmd2 += "	up[i] = up[i] + t*safety_factor*abs(y_upper_smooth[i]-y_mean_smooth[i])/1000\r\n";
-                                cmd2 += "	lo[i] = lo[i] - t*safety_factor*abs(y_lower_smooth[i]-y_mean_smooth[i])/1000\r\n";
+                                cmd2 += "	#t = t*t*t\r\n";
+                                cmd2 += "	#up[i] = up[i] + t*safety_factor*abs(y_upper_smooth[i]-y_lower_smooth[i])/1000\r\n";
+                                cmd2 += "	#lo[i] = lo[i] - t*safety_factor*abs(y_upper_smooth[i]-y_lower_smooth[i])/1000\r\n";
+                                cmd2 += "	t = t*t/100\r\n";
+                                cmd2 += "	x = t*safety_factor*abs(target_max-target_min)/10\r\n";
+                                cmd2 += "   y = x*sqrt(log(1 + x))\r\n";
+                                cmd2 += "	up[i] = up[i] + y\r\n";
+                                cmd2 += "	lo[i] = lo[i] - y\r\n";
                                 cmd2 += "}\r\n";
                             }
                             cmd2 += "interval_plt<-ggplot()\r\n";
@@ -878,9 +885,14 @@ namespace WindowsFormsApplication1
                                 cmd2 += "for ( i in nrow(test_org):length(predictions[,1]))\r\n";
                                 cmd2 += "{\r\n";
                                 cmd2 += "	t = (i - nrow(test_org)+2)\r\n";
-                                cmd2 += "	t = t*t*t\r\n";
-                                cmd2 += "	up[i] = up[i] + t*safety_factor*abs(y_upper_smooth[i]-y_mean_smooth[i])/1000\r\n";
-                                cmd2 += "	lo[i] = lo[i] - t*safety_factor*abs(y_lower_smooth[i]-y_mean_smooth[i])/1000\r\n";
+                                cmd2 += "	#t = t*t*t\r\n";
+                                cmd2 += "	#up[i] = up[i] + t*safety_factor*abs(y_upper_smooth[i]-y_lower_smooth[i])/1000\r\n";
+                                cmd2 += "	#lo[i] = lo[i] - t*safety_factor*abs(y_upper_smooth[i]-y_lower_smooth[i])/1000\r\n";
+                                cmd2 += "	t = t*t/100\r\n";
+                                cmd2 += "	x = t*safety_factor*abs(target_max-target_min)/10\r\n";
+                                cmd2 += "   y = x*sqrt(log(1 + x))\r\n";
+                                cmd2 += "	up[i] = up[i] + y\r\n";
+                                cmd2 += "	lo[i] = lo[i] - y\r\n";
                                 cmd2 += "}\r\n";
                             }
                             cmd2 += "interval_plt<-ggplot()\r\n";
@@ -906,7 +918,7 @@ namespace WindowsFormsApplication1
                         }
                         l_params_tmp += "   ,eta=" + textBox3.Text + "\r\n";
                         l_params_tmp += "   ,gamma=" + textBox4.Text + "\r\n";
-                        l_params_tmp += "   ,min_child_weight=" + numericUpDown4.Text + "\r\n";
+                        l_params_tmp += "   ,min_child_weight=" + textBox9.Text + "\r\n";
                         l_params_tmp += "   ,subsample=" + textBox8.Text + "*0.8\r\n";
                         l_params_tmp += "   ,max_depth=" + numericUpDown6.Text + "\r\n";
                         l_params_tmp += "   ,alpha=" + textBox5.Text + "\r\n";
@@ -1023,13 +1035,15 @@ namespace WindowsFormsApplication1
                         cmd3 += "#up2 = y_upper_smooth2\r\n";
                         cmd3 += "#lo2 = y_lower_smooth2\r\n";
                         cmd3 += "\r\n";
-                        cmd3 += "up2 = y_upper_smooth2 + 2*safety_factor*abs(y_upper_smooth2-y_mean_smooth)/3\r\n";
-                        cmd3 += "lo2 = y_lower_smooth2 - 2*safety_factor*abs(y_lower_smooth2-y_mean_smooth)/3\r\n";
+                        cmd3 += "up2 = y_upper_smooth2 + 15*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/5\r\n";
+                        cmd3 += "lo2 = y_lower_smooth2 - 15*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/5\r\n";
                         cmd3 += "#q = qt(df = n_samples, alp_ + (1 - alp_) / 2)\r\n";
                         cmd3 += "#up2 = up2 + q * sqrt(y_sd_smooth + y_sd_smooth / (length(test$target_) - 1)) * safety_factor\r\n";
                         cmd3 += "#lo2 = lo2 - q * sqrt(y_sd_smooth + y_sd_smooth / (length(test$target_) - 1)) * safety_factor\r\n";
 
                         cmd3 += "\r\n";
+                        cmd3 += "target_max = max(xgb_train$'" + targetName + "')\r\n";
+                        cmd3 += "target_min = min(xgb_train$'" + targetName + "')\r\n";
                         if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                         {
                             if (numericUpDown5.Value > 2)
@@ -1037,9 +1051,16 @@ namespace WindowsFormsApplication1
                                 cmd3 += "for ( i in nrow(test_org):length(predictions[,1]))\r\n";
                                 cmd3 += "{\r\n";
                                 cmd3 += "	t = (i - nrow(test_org))\r\n";
-                                cmd3 += "	t = t*t*t\r\n";
-                                cmd3 += "	up2[i] = up2[i] + t*safety_factor*abs(y_upper_smooth2[i]-y_mean_smooth[i])/1000\r\n";
-                                cmd3 += "	lo2[i] = lo2[i] - t*safety_factor*abs(y_lower_smooth2[i]-y_mean_smooth[i])/1000\r\n";
+                                cmd3 += "	#t = t*t*t\r\n";
+                                cmd3 += "	#up2[i] = up2[i] + t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
+                                cmd3 += "	#lo2[i] = lo2[i] - t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
+                                cmd3 += "	#up2[i] = up2[i] + t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
+                                cmd3 += "	#lo2[i] = lo2[i] - t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
+                                cmd3 += "	t = t*t/100\r\n";
+                                cmd3 += "	x = t*safety_factor*abs(target_max-target_min)/10\r\n";
+                                cmd3 += "   y = x*sqrt(log(1 + x))\r\n";
+                                cmd3 += "	up2[i] = up2[i] + y\r\n";
+                                cmd3 += "	lo2[i] = lo2[i] - y\r\n";
                                 cmd3 += "}\r\n";
                             }
                             cmd3 += "interval_plt2<-ggplot()\r\n";
@@ -1066,9 +1087,14 @@ namespace WindowsFormsApplication1
                                 cmd3 += "for ( i in nrow(test_org):length(predictions[,1]))\r\n";
                                 cmd3 += "{\r\n";
                                 cmd3 += "	t = (i - nrow(test_org))\r\n";
-                                cmd3 += "	t = t*t*t\r\n";
-                                cmd3 += "	up2[i] = up2[i] + t*safety_factor*abs(y_upper_smooth2[i]-y_mean_smooth[i])/1000\r\n";
-                                cmd3 += "	lo2[i] = lo2[i] - t*safety_factor*abs(y_lower_smooth2[i]-y_mean_smooth[i])/1000\r\n";
+                                cmd3 += "	#t = t*t*t\r\n";
+                                cmd3 += "	#up2[i] = up2[i] + t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
+                                cmd3 += "	#lo2[i] = lo2[i] - t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
+                                cmd3 += "	t = t*t/100\r\n";
+                                cmd3 += "	x = t*safety_factor*abs(target_max-target_min)/10\r\n";
+                                cmd3 += "   y = x*sqrt(log(1 + x))\r\n";
+                                cmd3 += "	up2[i] = up2[i] + y\r\n";
+                                cmd3 += "	lo2[i] = lo2[i] - y\r\n";
                                 cmd3 += "}\r\n";
                             }
                             cmd3 += "interval_plt2<-ggplot()\r\n";
@@ -1721,7 +1747,7 @@ namespace WindowsFormsApplication1
                                     sw.Write("predict_plt<-predict_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))+\r\n");
                                     sw.Write("geom_point(aes(x=1:nrow(predict.y),y=predict.y[,1], colour = \"予測Point\"))+\r\n");
                                     sw.Write("geom_line(aes(x=1:nrow(predict.y), y=test$'"+targetName +"', colour=\"観測値\"))+");
-                                    sw.Write("geom_point(aes(x=1:nrow(predict.y),y=test$'" + targetName + "', colour = \"予測Point\"))\r\n");
+                                    sw.Write("geom_point(aes(x=1:nrow(predict.y),y=test$'" + targetName + "', colour = \"予測Point\"))");
                                     if (checkBox7.Checked)
                                     {
                                         sw.Write("+\r\n");
@@ -2700,7 +2726,14 @@ namespace WindowsFormsApplication1
             System.Diagnostics.Process.Start(image_link);
         }
 
-        void grid_serch()
+        double nomalize_float(double x)
+        {
+            int z = (int)(x * 1000.0);
+            double y = z / 1000;
+
+            return y;
+        }
+        double grid_serch(string pname, int nsample, double r2_)
         {
             string t3 = textBox3.Text;
             string t4 = textBox4.Text;
@@ -2709,34 +2742,66 @@ namespace WindowsFormsApplication1
             string t7 = textBox7.Text;
             string t8 = textBox8.Text;
 
-            string n4 = numericUpDown4.Text;
+            string n4 = textBox9.Text;
             string n6 = numericUpDown6.Text;
 
-            Random eta = new System.Random(1);
-            Random gamma = new System.Random(2);
-            Random min_child_weight = new System.Random(3);
-            Random subsample = new System.Random(4);
-            Random max_depth = new System.Random(5);
-            Random alpha = new System.Random(6);
-            Random lambda = new System.Random(7);
-            Random colsample_bytree = new System.Random(8);
+            //Random eta = new System.Random(1);
+            //Random gamma = new System.Random(2);
+            //Random min_child_weight = new System.Random(3);
+            //Random subsample = new System.Random(4);
+            //Random max_depth = new System.Random(5);
+            //Random alpha = new System.Random(6);
+            //Random lambda = new System.Random(7);
+            //Random colsample_bytree = new System.Random(8);
 
-            float r2 = 0.0f;
-            for (int i = 0; i < 100; i++)
+            double[] eta = { 0.005, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25 };
+            double[] gamma = { 0.0, 0.005, 0.01 };
+            double[] alpha = { 0.0, 0.1, 0.2, 0.3, 0.35, 0.5, 0.55, 0.7, 0.8, 0.9 };
+            double[] lambda = { 0.98, 1.0, 1.2 };
+            double[] colsample_bytree = { 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
+            double[] subsample = { 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
+            double[] min_child_weight = { 1.0, 1.5, 2.0, 2.5, 3.0 };
+            int[] max_depth = { 4, 6, 8, 9 };
+
+            double r2 = r2_;
+            for (int i = 0; i < nsample; i++)
             {
                 if (grid_serch_stop > 0) break;
-                textBox3.Text = (0.01 + eta.NextDouble() * 0.5).ToString();
-                textBox4.Text = (gamma.NextDouble() * 0.2).ToString();
-                textBox5.Text = (alpha.NextDouble() * 1.2).ToString();
-                textBox6.Text = (lambda.NextDouble()).ToString();
-                textBox7.Text = (0.001+colsample_bytree.NextDouble()).ToString();
-                textBox8.Text = subsample.NextDouble().ToString();
+                //if ( pname == "eta" ) textBox3.Text = nomalize_float(0.01 + eta.NextDouble() * 0.5).ToString();
+                //if (pname == "gamma") textBox4.Text = nomalize_float(gamma.NextDouble() * 0.2).ToString();
+                //if (pname == "alpha") textBox5.Text = nomalize_float(alpha.NextDouble() * 1.2).ToString();
+                //if (pname == "lambda") textBox6.Text = nomalize_float(lambda.NextDouble()).ToString();
+                //if (pname == "colsample_bytree") textBox7.Text = nomalize_float(0.001+colsample_bytree.NextDouble()).ToString();
+                //if (pname == "subsample") textBox8.Text = nomalize_float(subsample.NextDouble()).ToString();
+
+                if (pname == "eta" && i >= eta.Length) break;
+                if (pname == "eta") textBox3.Text = nomalize_float(eta[i]).ToString();
+
+
+                if (pname == "gamma" && i >= gamma.Length) break;
+                if (pname == "gamma") textBox4.Text = nomalize_float(gamma[i]).ToString();
+
+
+                if (pname == "alpha" && i >= alpha.Length) break;
+                if (pname == "alpha") textBox5.Text = nomalize_float(alpha[i]).ToString();
+
+                if (pname == "lambda" && i >= lambda.Length) break;
+                if (pname == "lambda") textBox6.Text = nomalize_float(lambda[i]).ToString();
+
+                if (pname == "colsample_bytree" && i >= colsample_bytree.Length) break;
+                if (pname == "colsample_bytree") textBox7.Text = nomalize_float(colsample_bytree[i]).ToString();
+               
+                if (pname == "subsample" && i >= subsample.Length) break;
+                if (pname == "subsample") textBox8.Text = nomalize_float(subsample[i]).ToString();
+
+                if (pname == "min_child_weight" && i >= min_child_weight.Length) break;
+                if (pname == "min_child_weight") textBox9.Text = nomalize_float(min_child_weight[i]).ToString();
+
+                if (pname == "max_depth" && i >= max_depth.Length) break;
+                if (pname == "max_depth") numericUpDown6.Text = max_depth[i].ToString();
 
                 try
                 {
-                    numericUpDown4.Text = min_child_weight.Next(1, 10).ToString();
-                    numericUpDown6.Text = max_depth.Next(3, 10).ToString();
-
                     //train
                     radioButton4.Checked = true;
                     radioButton3.Checked = false;
@@ -2779,7 +2844,7 @@ namespace WindowsFormsApplication1
                     t7 = textBox7.Text;
                     t8 = textBox8.Text;
 
-                    n4 = numericUpDown4.Text;
+                    n4 = textBox9.Text;
                     n6 = numericUpDown6.Text;
                 }
             }
@@ -2796,7 +2861,7 @@ namespace WindowsFormsApplication1
             textBox7.Text = t7;
             textBox8.Text = t8;
 
-            numericUpDown4.Text = n4;
+            textBox9.Text = n4;
             numericUpDown6.Text = n6;
 
             //train
@@ -2808,6 +2873,8 @@ namespace WindowsFormsApplication1
             radioButton4.Checked = false;
             radioButton3.Checked = true;
             button1_Click(null, null);
+
+            return r2;
         }
 
         private void button16_Click(object sender, EventArgs e)
@@ -2815,8 +2882,65 @@ namespace WindowsFormsApplication1
             if (running != 0) return;
             grid_serch_stop = 0;
             Form1.batch_mode = 1;
-            grid_serch();
+
+            label34.Visible = true;
+            label34.Text = "パラメータ探索開始しました";
+            label34.Refresh();
+
+            double r2 = 0.0;
+            int nsamples = 10;
+            label34.Text = "1/8 max_depth探索中";
+            label34.Refresh();
+            r2 = grid_serch("max_depth", nsamples, r2);
+            label34.Text = "1/8 max_depthが決まりました";
+            label34.Refresh();
+
+            label34.Text = "2/8 min_child_weight探索中";
+            label34.Refresh();
+            r2 = grid_serch("min_child_weight", nsamples, r2);
+            label34.Text = "2/8 min_child_weightが決まりました";
+            label34.Refresh();
+
+            label34.Text = "3/8 subsample探索中";
+            label34.Refresh();
+            r2 = grid_serch("subsample", nsamples, r2);
+            label34.Text = "3/8 subsampleが決まりました";
+            label34.Refresh();
+
+            label34.Text = "4/8 colsample_bytree探索中";
+            label34.Refresh();
+            r2 = grid_serch("colsample_bytree", nsamples, r2);
+            label34.Text = "4/8 colsample_bytreeが決まりました";
+            label34.Refresh();
+
+            label34.Text = "5/8 lambda探索中";
+            label34.Refresh();
+            r2 = grid_serch("lambda", nsamples, r2);
+            label34.Text = "5/8 lambdaが決まりました";
+            label34.Refresh();
+
+            label34.Text = "6/8 alpha探索中";
+            label34.Refresh();
+            r2 = grid_serch("alpha", nsamples, r2);
+            label34.Text = "6/8 alphaが決まりました";
+            label34.Refresh();
+
+            label34.Text = "7/8 gamma探索中";
+            label34.Refresh();
+            r2 = grid_serch("gamma", nsamples, r2);
+            label34.Text = "7/8 gammaが決まりました";
+            label34.Refresh();
+
+            label34.Text = "8/8 eta探索中";
+            label34.Refresh();
+            r2 = grid_serch("eta", nsamples, r2);
+            label34.Text = "8/8 etaが決まりました";
+            label34.Refresh();
+
             Form1.batch_mode = 0;
+            label34.Text = "終了";
+            label34.Refresh();
+            label34.Visible = false;
         }
 
         private void button17_Click(object sender, EventArgs e)
@@ -2939,7 +3063,7 @@ namespace WindowsFormsApplication1
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButton3.Checked)
+            if (radioButton3.Checked && checkBox6.Checked )
             {
                 checkBox6.Checked = false;
                 MessageBox.Show("test区間での推論結果の信頼区間は表示されません");

@@ -8620,7 +8620,7 @@ namespace WindowsFormsApplication1
                 _xgboost.numericUpDown5.Visible = false;
                 _xgboost.numericUpDown14.Visible = false;
                 _xgboost.numericUpDown15.Visible = false;
-                _xgboost.checkBox5.Visible = false;
+                _xgboost.checkBox5.Visible = true;
                 _xgboost.checkBox8.Visible = false;
                 _xgboost.checkBox9.Visible = false;
                 _xgboost.checkBox10.Visible = false;
