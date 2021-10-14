@@ -2729,7 +2729,7 @@ namespace WindowsFormsApplication1
         double nomalize_float(double x)
         {
             int z = (int)(x * 1000.0);
-            double y = z / 1000;
+            double y = (double)z / 1000.0;
 
             return y;
         }
