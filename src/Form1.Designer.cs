@@ -3057,7 +3057,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.CheckBox checkBox10;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Button button60;
         private System.Windows.Forms.Button button64;
@@ -3081,6 +3080,7 @@
         private System.Windows.Forms.Button button74;
         public System.Windows.Forms.CheckBox checkBox4;
         public System.Windows.Forms.NumericUpDown numericUpDown5;
+        public System.Windows.Forms.CheckBox checkBox10;
     }
 }
 

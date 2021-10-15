@@ -6794,6 +6794,7 @@ namespace WindowsFormsApplication1
 
         private void button53_Click(object sender, EventArgs e)
         {
+            PutResumeScript();
             string history = "command_history.txt";
             System.IO.StreamWriter sw = new System.IO.StreamWriter(history, false, System.Text.Encoding.GetEncoding("shift_jis"));
             try

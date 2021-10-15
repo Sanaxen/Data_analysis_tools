@@ -46,6 +46,7 @@ namespace WindowsFormsApplication1
         public int add_enevt_data = 0;
         int use_diff = 0;
         int use_log_diff = 0;
+        int eval = 0;
 
         public xgboost()
         {
@@ -193,6 +194,8 @@ namespace WindowsFormsApplication1
 
             button18.Enabled = false;
             explain_num = 1;
+            eval = 0;
+            if (checkBox11.Checked) eval = 1;
             try
             {
                 form1.FileDelete("curvplot_temp.html");
@@ -389,7 +392,6 @@ namespace WindowsFormsApplication1
                             cmd1 += "use_log_diff<- 1\r\n";
                             cmd1 += "min__<- min(df$'" + targetName + "')\r\n";
                         }
-                        cmd1 += "start_value <- df$'" + targetName + "'[1+"+ (lag - 1).ToString()+"] + min__\r\n";
                         cmd1 += "df_tmp <- df$'" + targetName + "'+ min__\r\n";
 
                         cmd1 += "log_diff <- mydiff(df_tmp, use_log_diff )\r\n";
@@ -397,7 +399,14 @@ namespace WindowsFormsApplication1
                         cmd1 += "colnames(df_ts_tmp)[ncol(df_ts_tmp)] <- c(\"target_\")\r\n";
 
                         cmd1 += "\r\n";
-                        cmd1 += "start_value <- df$'"+ targetName +"'[1] + min__\r\n";
+                        if (eval == 1)
+                        {
+                            cmd1 += "start_value <- df$'" + targetName + "'[1] + min__\r\n";
+                        }
+                        else
+                        {
+                            cmd1 += "start_value <- df$'" + targetName + "'[1] + min__\r\n";
+                        }
                         cmd1 += "zz_tmp<- inv_diff(log_diff, start_value, use_log_diff) - min__\r\n";
                         cmd1 += "debug_plt <- ggplot()\r\n";
                         cmd1 += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(zz_tmp)), y = df$'"+targetName + "'[-1], colour = \"org\"))+\r\n";
@@ -421,12 +430,18 @@ namespace WindowsFormsApplication1
                         cmd1 += "if ( num_ < 1 ) num_ <- 1\r\n";
                         cmd1 += "train <- df_ts_tmp[c(1:num_),]\r\n";
                         cmd1 += "test <- df_ts_tmp[-c(1:num_),]\r\n";
+
+                        if (eval == 1)
+                        {
+                            cmd1 += "train <- df_ts_tmp[c(1:num_),]\r\n";
+                            cmd1 += "test  <- df_ts_tmp[-1:-" + lag.ToString() + ",]\r\n";
+                        }
                     }
 
-                    if (form1.checkBox3.Checked)
+                    if (form1.checkBox10.Checked)
                     {
                         cmd1 += "train <- df_ts_tmp\r\n";
-                        cmd1 += "test  <- df_ts_tmp\r\n";
+                        cmd1 += "test  <- df_ts_tmp[-1:-" + lag.ToString() + ",]\r\n";
                     }
                     form1.script_executestr(cmd1);
 
@@ -742,6 +757,16 @@ namespace WindowsFormsApplication1
                 cmd += "\r\n";
                 cmd += "options(na.action=previous_na_action)\r\n";
 
+                cmd += "\r\n";
+                cmd += "\r\n";
+                cmd += "limit_cutoff<-function(x, upper, lower){\r\n";
+                cmd += "    x = ifelse( x > upper, upper, x)\r\n";
+                cmd += "    x = ifelse( x < lower, lower, x)\r\n";
+                cmd += "    return(x)\r\n";
+                cmd += "}\r\n";
+                cmd += "\r\n";
+                cmd += "\r\n";
+
                 string cmd2 = "";
                 string cmd3 = "";
                 string explain = "";
@@ -794,7 +819,13 @@ namespace WindowsFormsApplication1
                         cmd2 += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=n_samples))\r\n";
                         if (use_diff == 1)
                         {
-                            cmd2 += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                            if (eval == 1)
+                            {
+                                cmd2 += "start_value = train$'" + targetName + "'[1+"+ (lag-1).ToString()+"+1] + min__\r\n";
+                            }
+                            else {
+                                cmd2 += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                            }
                         }
                         cmd2 += "for (i in 1:ncol(predictions)){ #\r\n";
                         cmd2 += "\r\n";
@@ -824,7 +855,7 @@ namespace WindowsFormsApplication1
                         cmd2 += "	predictions[,i] <- predict(xgboost_tmp.model,newdata = test_dmat) \r\n";
                         if ( use_diff == 1)
                         {
-                            cmd2 += "predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
+                            cmd2 += "   predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
                         }
                         cmd2 += "} \r\n";
                         cmd2 += "\r\n";
@@ -869,6 +900,9 @@ namespace WindowsFormsApplication1
                                 cmd2 += "	lo[i] = lo[i] - y\r\n";
                                 cmd2 += "}\r\n";
                             }
+                            cmd2 += "up <- limit_cutoff(up, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            cmd2 += "lo <- limit_cutoff(lo, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            cmd2 += "\r\n";
                             cmd2 += "interval_plt<-ggplot()\r\n";
                             cmd2 += "\r\n";
                             cmd2 += "interval_plt <- interval_plt + geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo,ymax=up, fill='信頼区間'),alpha=0.4)+\r\n";
@@ -895,6 +929,9 @@ namespace WindowsFormsApplication1
                                 cmd2 += "	lo[i] = lo[i] - y\r\n";
                                 cmd2 += "}\r\n";
                             }
+                            cmd2 += "up <- limit_cutoff(up, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            cmd2 += "lo <- limit_cutoff(lo, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            cmd2 += "\r\n";
                             cmd2 += "interval_plt<-ggplot()\r\n";
                             cmd2 += "\r\n";
                             cmd2 += "interval_plt <- interval_plt + geom_ribbon(aes(x=1:length(test$target_),ymin=lo,ymax=up, fill='信頼区間'),alpha=0.4)+\r\n";
@@ -979,7 +1016,14 @@ namespace WindowsFormsApplication1
                         cmd3 += "alpha = alp_ + (1 - alp_)/2\r\n";
                         if (use_diff == 1)
                         {
-                            cmd3 += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                            if ( eval == 1)
+                            {
+                                cmd3 += "start_value = train$'" + targetName + "'[1+" + (lag-1).ToString() +"] + min__\r\n";
+                            }
+                            else
+                            {
+                                cmd3 += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                            }
                         }
                         cmd3 += "for ( i in 1:3 ){\r\n";
                         cmd3 += "   set.seed(seeds[i])\r\n";
@@ -1063,6 +1107,9 @@ namespace WindowsFormsApplication1
                                 cmd3 += "	lo2[i] = lo2[i] - y\r\n";
                                 cmd3 += "}\r\n";
                             }
+                            cmd3 += "up2 <- limit_cutoff(up2, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            cmd3 += "lo2 <- limit_cutoff(lo2, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            cmd3 += "\r\n";
                             cmd3 += "interval_plt2<-ggplot()\r\n";
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
@@ -1097,6 +1144,8 @@ namespace WindowsFormsApplication1
                                 cmd3 += "	lo2[i] = lo2[i] - y\r\n";
                                 cmd3 += "}\r\n";
                             }
+                            cmd3 += "up2 <- limit_cutoff(up2, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            cmd3 += "lo2 <- limit_cutoff(lo2, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
                             cmd3 += "interval_plt2<-ggplot()\r\n";
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
@@ -1236,6 +1285,47 @@ namespace WindowsFormsApplication1
                                     sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, interval_plt2, nrow = 3)\r\n");
                                     sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
                                 }
+                            }else
+                            {
+                                string cmd_tmp = "";
+                                string view_data = "test";
+                                if ( checkBox11.Checked)
+                                {
+                                    view_data = "train";
+                                }
+                                cmd_tmp += "predict_tmp <- predict(xgboost.model,newdata = "+view_data+"_dmat)\r\n";
+
+                                if (use_diff == 1)
+                                {
+                                    if (eval == 1 || view_data == "train")
+                                    {
+                                        cmd_tmp += "start_value = df$'" + targetName + "'[1+" + (lag-1).ToString() +"] + min__\r\n";
+                                    }
+                                    else
+                                    {
+                                        cmd_tmp += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                                    }
+                                    cmd_tmp += "predict_tmp<- inv_diff(predict_tmp, start_value, use_log_diff) - min__\r\n";
+                                }
+                                cmd_tmp += "interval_plt4<-ggplot()\r\n";
+
+                                if (exist_time_axis == 1 && checkBox8.Checked)
+                                {
+                                    cmd_tmp += "interval_plt4 <- interval_plt4 + geom_line(aes(x=as.POSIXct(" + view_data + "[,1]), y =" + view_data + "$'" + targetName + "', colour = \"観測値\"))+\r\n";
+                                    cmd_tmp += "geom_point(aes(x=as.POSIXct("+ view_data+"[,1]),y=" + view_data + "$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
+                                    cmd_tmp += "geom_line(aes(x=as.POSIXct(" + view_data + "[,1]), y=predict_tmp,colour =\"予測値\"))+\r\n";
+                                    cmd_tmp += "geom_point(aes(x=as.POSIXct(" + view_data + "[,1]),y=predict_tmp,colour = \"予測値Point\"))\r\n";
+                                }else
+                                {
+                                    cmd_tmp += "interval_plt4 <- interval_plt4 + geom_line(aes(x=1:length(" + view_data + "$'" + targetName + "'), y =" + view_data + "$'" + targetName + "', colour = \"観測値\"))+\r\n";
+                                    cmd_tmp += "geom_point(aes(x=1:length(" + view_data + "$target_),y=" + view_data + "$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
+                                    cmd_tmp += "geom_line(aes(x=1:length(" + view_data + "$target_), y=predict_tmp,colour =\"予測値\"))+\r\n";
+                                    cmd_tmp += "geom_point(aes(x=1:length(" + view_data + "$target_),y=predict_tmp,colour = \"予測値Point\"))\r\n";
+                                }
+                                sw.Write(cmd_tmp);
+                                sw.Write("ggsave(filename = \"interval_plt4.png\", plot = interval_plt4)\r\n");
+                                sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt4, nrow = 2)\r\n");
+                                sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
                             }
                             sw.Write("\r\n");
                         }
@@ -1299,7 +1389,14 @@ namespace WindowsFormsApplication1
                     cmd += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     if (use_diff == 1)
                     {
-                        cmd += "start_value = df$'"+targetName +"'[nrow(train)+1] + min__\r\n";
+                        if (eval == 1)
+                        {
+                            cmd += "start_value = train$'" + targetName + "'[1+"+(lag-1).ToString()+"] + min__\r\n";
+                        }
+                        else
+                        {
+                            cmd += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                        }
                         cmd += "predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
                         cmd += "\r\n";
                         cmd += "zz_tmp<- inv_diff(test$target_, start_value, use_log_diff) - min__\r\n";
@@ -1560,7 +1657,14 @@ namespace WindowsFormsApplication1
                         cmd += "        predict_y_org <- predict_y\r\n";
                         if (use_diff == 1)
                         {
-                            cmd += "        start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                            if (eval == 1)
+                            {
+                                cmd += "start_value = train$'" + targetName + "'[1+" + (lag-1).ToString() + "] + min__\r\n";
+                            }
+                            else
+                            {
+                                cmd += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                            }
                             cmd += "        predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
                         }
                         cmd += "	    predict.y<-as.data.frame(predict_y)\r\n";
@@ -1581,11 +1685,17 @@ namespace WindowsFormsApplication1
 
 
                     cmd += "df_ <- test\r\n";
-                    cmd += "df_tmp <- rbind(train, test)\r\n";
+                    if ( eval == 1)
+                    {
+                        cmd += "df_tmp <- test\r\n";
+                    }else
+                    {
+                        cmd += "df_tmp <- rbind(train, test)\r\n";
+                    }
                     cmd += "\r\n";
                     if (use_diff == 1)
                     {
-                        cmd += "start_value = df$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
+                        cmd += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
                         cmd += "zz_tmp<- inv_diff(df_tmp$target_, start_value, use_log_diff) - min__\r\n";
                         cmd += "debug_plt <- ggplot()\r\n";
                         cmd += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(df_tmp$target_)), y = df_tmp$'" + targetName + "', colour = \"org\"))+\r\n";
@@ -2156,6 +2266,11 @@ namespace WindowsFormsApplication1
                         if (checkBox6.Checked && checkBox7.Checked)
                         {
                             cmd += "p_ <-subplot(p1, p2, p3, nrows = 3)\r\n";
+                        }
+                        if (!checkBox6.Checked && !checkBox7.Checked)
+                        {
+                            cmd += "p4<-ggplotly(interval_plt4)\r\n";
+                            cmd += "p_ <-subplot(p1, p4, nrows = 2)\r\n";
                         }
                     }
                     if (radioButton2.Checked && radioButton4.Checked)
@@ -2754,13 +2869,13 @@ namespace WindowsFormsApplication1
             //Random lambda = new System.Random(7);
             //Random colsample_bytree = new System.Random(8);
 
-            double[] eta = { 0.005, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25 };
+            double[] eta = { 0.01, 0.05, 0.1, 0.3 };
             double[] gamma = { 0.0, 0.005, 0.01 };
-            double[] alpha = { 0.0, 0.1, 0.2, 0.3, 0.35, 0.5, 0.55, 0.7, 0.8, 0.9 };
-            double[] lambda = { 0.98, 1.0, 1.2 };
-            double[] colsample_bytree = { 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
-            double[] subsample = { 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
-            double[] min_child_weight = { 1.0, 1.5, 2.0, 2.5, 3.0 };
+            double[] alpha = { 0.0, 0.1, 0.2, 0.5, 0.8, 0.9 };
+            double[] lambda = { 0.2, 0.5, 0.9, 1.0, 1.2 };
+            double[] colsample_bytree = { 0.5, 0.6, 0.8, 0.9, 1.0 };
+            double[] subsample = {  0.6, 0.8, 1.0 };
+            double[] min_child_weight = { 1.0, 1.5, 2.0, 2.5 };
             int[] max_depth = { 4, 6, 8, 9 };
 
             double r2 = r2_;
@@ -2820,10 +2935,10 @@ namespace WindowsFormsApplication1
                 bool res = false;
                 if ( radioButton1.Checked)
                 {
-                    res = float.Parse(R2) > r2 && float.Parse(R2) < 1.0;
+                    res = float.Parse(R2) > r2 && float.Parse(R2) < 0.9;
                 }else
                 {
-                    res = float.Parse(ACC.Replace("%", "")) > r2 && float.Parse(ACC.Replace("%","")) < 1.0;
+                    res = float.Parse(ACC.Replace("%", "")) > r2 && float.Parse(ACC.Replace("%","")) < 0.9;
                 }
                 if ( res )
                 {
@@ -3076,6 +3191,39 @@ namespace WindowsFormsApplication1
             {
                 checkBox10.Checked = true;
             }
+        }
+
+        private void numericUpDown15_ValueChanged(object sender, EventArgs e)
+        {
+            radioButton4.Checked = true;
+            radioButton3.Checked = false;
+        }
+
+        private void checkBox9_CheckStateChanged(object sender, EventArgs e)
+        {
+            radioButton4.Checked = true;
+            radioButton3.Checked = false;
+        }
+
+        private void comboBox5_TextChanged(object sender, EventArgs e)
+        {
+            radioButton4.Checked = true;
+            radioButton3.Checked = false;
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            textBox4.Text = "0.0";
+            textBox5.Text = "0.0";
+            textBox9.Text = "1.0";
+            textBox6.Text = "1.0";
+            textBox8.Text = "1";
+            textBox7.Text = "0.8";
+            numericUpDown6.Text = "6";
+            numericUpDown7.Text = "3";
+            textBox3.Text = "0.3";
+            numericUpDown10.Text = "3";
+            numericUpDown11.Text = "2";
         }
     }
 

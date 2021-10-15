@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(xgboost));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
@@ -142,8 +144,8 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label34 = new System.Windows.Forms.Label();
-            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.checkBox11 = new System.Windows.Forms.CheckBox();
+            this.button19 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
@@ -172,6 +174,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.button19);
             this.panel2.Controls.Add(this.textBox9);
             this.panel2.Controls.Add(this.label34);
             this.panel2.Controls.Add(this.panel7);
@@ -252,9 +255,32 @@
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(368, 200);
+            this.textBox9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(83, 22);
+            this.textBox9.TabIndex = 149;
+            this.textBox9.Text = "1.0";
+            this.textBox9.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label34.ForeColor = System.Drawing.Color.Red;
+            this.label34.Location = new System.Drawing.Point(693, 57);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(58, 15);
+            this.label34.TabIndex = 148;
+            this.label34.Text = "label34";
+            this.label34.Visible = false;
+            // 
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.MistyRose;
+            this.panel7.Controls.Add(this.checkBox11);
             this.panel7.Controls.Add(this.checkBox9);
             this.panel7.Controls.Add(this.checkBox10);
             this.panel7.Controls.Add(this.numericUpDown8);
@@ -270,7 +296,7 @@
             this.panel7.Controls.Add(this.numericUpDown14);
             this.panel7.Location = new System.Drawing.Point(675, 153);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(209, 245);
+            this.panel7.Size = new System.Drawing.Size(209, 274);
             this.panel7.TabIndex = 147;
             // 
             // checkBox9
@@ -284,6 +310,7 @@
             this.toolTip1.SetToolTip(this.checkBox9, "データにトレンドがある場合はこのチェックを入れると精度が上がる場合があります");
             this.checkBox9.UseVisualStyleBackColor = true;
             this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged);
+            this.checkBox9.CheckStateChanged += new System.EventHandler(this.checkBox9_CheckStateChanged);
             // 
             // checkBox10
             // 
@@ -294,6 +321,7 @@
             this.checkBox10.TabIndex = 146;
             this.checkBox10.Text = "対数変換";
             this.checkBox10.UseVisualStyleBackColor = true;
+            this.checkBox10.CheckStateChanged += new System.EventHandler(this.checkBox9_CheckStateChanged);
             // 
             // numericUpDown8
             // 
@@ -317,6 +345,7 @@
             0,
             0,
             0});
+            this.numericUpDown8.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label23
             // 
@@ -357,6 +386,7 @@
             this.comboBox5.TabIndex = 135;
             this.comboBox5.Text = "復元抽出";
             this.toolTip1.SetToolTip(this.comboBox5, "予測延長する場合、説明変数が未設定となるため指定の方法で推定する");
+            this.comboBox5.TextChanged += new System.EventHandler(this.comboBox5_TextChanged);
             // 
             // numericUpDown15
             // 
@@ -379,6 +409,7 @@
             0,
             0,
             0});
+            this.numericUpDown15.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label30
             // 
@@ -460,6 +491,7 @@
             0,
             0,
             0});
+            this.numericUpDown14.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // checkBox7
             // 
@@ -817,7 +849,7 @@
             this.label20.Size = new System.Drawing.Size(114, 15);
             this.label20.TabIndex = 105;
             this.label20.Text = "colsample_bytree";
-            this.toolTip1.SetToolTip(this.label20, "各木においてランダムに抽出される説明変数の割合");
+            this.toolTip1.SetToolTip(this.label20, "各木においてランダムに抽出される説明変数の割合\r\ndefault 0.8");
             // 
             // textBox6
             // 
@@ -837,7 +869,7 @@
             this.label19.Size = new System.Drawing.Size(49, 15);
             this.label19.TabIndex = 103;
             this.label19.Text = "lambda";
-            this.toolTip1.SetToolTip(this.label19, "決定木の葉の重みに関するL2正則化項を意味します。\r\n値を大きくすることで過学習を防止します。");
+            this.toolTip1.SetToolTip(this.label19, "決定木の葉の重みに関するL2正則化項を意味します。\r\n値を大きくすることで過学習を防止します。\r\ndefault 1.0");
             // 
             // textBox5
             // 
@@ -857,7 +889,7 @@
             this.label18.Size = new System.Drawing.Size(39, 15);
             this.label18.TabIndex = 101;
             this.label18.Text = "alpha";
-            this.toolTip1.SetToolTip(this.label18, "決定木の葉の重みに関するL1正則化項を意味します。\r\n値を大きくすることで過学習を防止します。");
+            this.toolTip1.SetToolTip(this.label18, "決定木の葉の重みに関するL1正則化項を意味します。\r\n値を大きくすることで過学習を防止します。\r\ndefault 0.0");
             // 
             // numericUpDown6
             // 
@@ -890,7 +922,7 @@
             this.label17.Size = new System.Drawing.Size(72, 15);
             this.label17.TabIndex = 99;
             this.label17.Text = "max_depth";
-            this.toolTip1.SetToolTip(this.label17, "決定木の深さの最大値\r\n値が大きいとほどモデルが複雑になるため、過学習する可能性が高くなります。");
+            this.toolTip1.SetToolTip(this.label17, "決定木の深さの最大値\r\n値が大きいとほどモデルが複雑になるため、過学習する可能性が高くなります。\r\ndefault 6");
             // 
             // label16
             // 
@@ -900,7 +932,8 @@
             this.label16.Size = new System.Drawing.Size(72, 15);
             this.label16.TabIndex = 97;
             this.label16.Text = "subsample";
-            this.toolTip1.SetToolTip(this.label16, "各決定木においてランダムに抽出される標本(データ)の割合を意味します。\r\n小さくすることで過学習を避けることができますが、保守的なモデルとなります。");
+            this.toolTip1.SetToolTip(this.label16, "各決定木においてランダムに抽出される標本(データ)の割合を意味します。\r\n小さくすることで過学習を避けることができますが、保守的なモデルとなります。\r\ndefau" +
+        "lt 1.0");
             // 
             // label13
             // 
@@ -910,7 +943,7 @@
             this.label13.Size = new System.Drawing.Size(109, 15);
             this.label13.TabIndex = 95;
             this.label13.Text = "min_child_weight";
-            this.toolTip1.SetToolTip(this.label13, "分割中にノードの重みがこれを超えた時点で分割をやめる");
+            this.toolTip1.SetToolTip(this.label13, "分割中にノードの重みがこれを超えた時点で分割をやめる\r\ndefault 1.0");
             // 
             // textBox4
             // 
@@ -930,7 +963,7 @@
             this.label12.Size = new System.Drawing.Size(50, 15);
             this.label12.TabIndex = 93;
             this.label12.Text = "gamma";
-            this.toolTip1.SetToolTip(this.label12, "損失関数の減少がこの値を超える時にのみ分割を進める");
+            this.toolTip1.SetToolTip(this.label12, "損失関数の減少がこの値を超える時にのみ分割を進める\r\ndefault 0.0");
             // 
             // textBox3
             // 
@@ -939,7 +972,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(79, 22);
             this.textBox3.TabIndex = 92;
-            this.textBox3.Text = "0.1";
+            this.textBox3.Text = "0.3";
             this.textBox3.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label11
@@ -950,7 +983,7 @@
             this.label11.Size = new System.Drawing.Size(27, 15);
             this.label11.TabIndex = 91;
             this.label11.Text = "eta";
-            this.toolTip1.SetToolTip(this.label11, "小さくすると、モデルの分類性を高めることが可能です。\r\n過学習が進み精度が悪化する恐れがあります。");
+            this.toolTip1.SetToolTip(this.label11, "小さくすると、モデルの分類性を高めることが可能です。\r\n過学習が進み精度が悪化する恐れがあります。\r\ndefault:0.3");
             // 
             // label10
             // 
@@ -1674,27 +1707,26 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // label34
+            // checkBox11
             // 
-            this.label34.AutoSize = true;
-            this.label34.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label34.ForeColor = System.Drawing.Color.Red;
-            this.label34.Location = new System.Drawing.Point(693, 57);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(58, 15);
-            this.label34.TabIndex = 148;
-            this.label34.Text = "label34";
-            this.label34.Visible = false;
+            this.checkBox11.AutoSize = true;
+            this.checkBox11.Location = new System.Drawing.Point(89, 242);
+            this.checkBox11.Name = "checkBox11";
+            this.checkBox11.Size = new System.Drawing.Size(104, 19);
+            this.checkBox11.TabIndex = 150;
+            this.checkBox11.Text = "全区間表示";
+            this.checkBox11.UseVisualStyleBackColor = true;
             // 
-            // textBox9
+            // button19
             // 
-            this.textBox9.Location = new System.Drawing.Point(368, 200);
-            this.textBox9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(83, 22);
-            this.textBox9.TabIndex = 149;
-            this.textBox9.Text = "1.0";
-            this.textBox9.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
+            this.button19.BackColor = System.Drawing.Color.Lime;
+            this.button19.Location = new System.Drawing.Point(8, 148);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(27, 23);
+            this.button19.TabIndex = 150;
+            this.toolTip1.SetToolTip(this.button19, "パラメータリセット\r\n初期の値に戻します");
+            this.button19.UseVisualStyleBackColor = false;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // xgboost
             // 
@@ -1860,5 +1892,7 @@
         public System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.CheckBox checkBox11;
+        private System.Windows.Forms.Button button19;
     }
 }
