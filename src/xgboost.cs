@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.IO.Compression;
+using System.Text;
+using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
@@ -47,6 +44,7 @@ namespace WindowsFormsApplication1
         int use_diff = 0;
         int use_log_diff = 0;
         int eval = 0;
+        int random_serch = 1;
 
         public xgboost()
         {
@@ -2867,14 +2865,7 @@ namespace WindowsFormsApplication1
             string n4 = textBox9.Text;
             string n6 = numericUpDown6.Text;
 
-            //Random eta = new System.Random(1);
-            //Random gamma = new System.Random(2);
-            //Random min_child_weight = new System.Random(3);
-            //Random subsample = new System.Random(4);
-            //Random max_depth = new System.Random(5);
-            //Random alpha = new System.Random(6);
-            //Random lambda = new System.Random(7);
-            //Random colsample_bytree = new System.Random(8);
+
 
             double[] eta = { 0.01, 0.05, 0.1, 0.3 };
             double[] gamma = { 0.0, 0.005, 0.01 };
@@ -2885,42 +2876,57 @@ namespace WindowsFormsApplication1
             double[] min_child_weight = { 1.0, 1.5, 2.0, 2.5 };
             int[] max_depth = { 4, 6, 8, 9 };
 
+            Random r_eta = new System.Random(1);
+            Random r_gamma = new System.Random(2);
+            Random r_min_child_weight = new System.Random(3);
+            Random r_subsample = new System.Random(4);
+            Random r_max_depth = new System.Random(5);
+            Random r_alpha = new System.Random(6);
+            Random r_lambda = new System.Random(7);
+            Random r_colsample_bytree = new System.Random(8);
+            
             double r2 = r2_;
             for (int i = 0; i < nsample; i++)
             {
                 if (grid_serch_stop > 0) break;
-                //if ( pname == "eta" ) textBox3.Text = nomalize_float(0.01 + eta.NextDouble() * 0.5).ToString();
-                //if (pname == "gamma") textBox4.Text = nomalize_float(gamma.NextDouble() * 0.2).ToString();
-                //if (pname == "alpha") textBox5.Text = nomalize_float(alpha.NextDouble() * 1.2).ToString();
-                //if (pname == "lambda") textBox6.Text = nomalize_float(lambda.NextDouble()).ToString();
-                //if (pname == "colsample_bytree") textBox7.Text = nomalize_float(0.001+colsample_bytree.NextDouble()).ToString();
-                //if (pname == "subsample") textBox8.Text = nomalize_float(subsample.NextDouble()).ToString();
 
-                if (pname == "eta" && i >= eta.Length) break;
-                if (pname == "eta") textBox3.Text = nomalize_float(eta[i]).ToString();
+                if (random_serch == 1)
+                {
+                    if (pname == "eta") textBox3.Text = nomalize_float(eta[r_eta.Next(eta.Length)]).ToString();
+                    if (pname == "gamma") textBox4.Text = nomalize_float(gamma[r_gamma.Next(gamma.Length)]).ToString();
+                    if (pname == "alpha") textBox5.Text = nomalize_float(alpha[r_alpha.Next(alpha.Length)]).ToString();
+                    if (pname == "lambda") textBox6.Text = nomalize_float(lambda[r_lambda.Next(lambda.Length)]).ToString();
+                    if (pname == "colsample_bytree") textBox7.Text = nomalize_float(colsample_bytree[r_colsample_bytree.Next(colsample_bytree.Length)]).ToString();
+                    if (pname == "subsample") textBox8.Text = nomalize_float(subsample[r_subsample.Next(subsample.Length)]).ToString();
+                }
+                else
+                {
+                    if (pname == "eta" && i >= eta.Length) break;
+                    if (pname == "eta") textBox3.Text = nomalize_float(eta[i]).ToString();
 
 
-                if (pname == "gamma" && i >= gamma.Length) break;
-                if (pname == "gamma") textBox4.Text = nomalize_float(gamma[i]).ToString();
+                    if (pname == "gamma" && i >= gamma.Length) break;
+                    if (pname == "gamma") textBox4.Text = nomalize_float(gamma[i]).ToString();
 
 
-                if (pname == "alpha" && i >= alpha.Length) break;
-                if (pname == "alpha") textBox5.Text = nomalize_float(alpha[i]).ToString();
+                    if (pname == "alpha" && i >= alpha.Length) break;
+                    if (pname == "alpha") textBox5.Text = nomalize_float(alpha[i]).ToString();
 
-                if (pname == "lambda" && i >= lambda.Length) break;
-                if (pname == "lambda") textBox6.Text = nomalize_float(lambda[i]).ToString();
+                    if (pname == "lambda" && i >= lambda.Length) break;
+                    if (pname == "lambda") textBox6.Text = nomalize_float(lambda[i]).ToString();
 
-                if (pname == "colsample_bytree" && i >= colsample_bytree.Length) break;
-                if (pname == "colsample_bytree") textBox7.Text = nomalize_float(colsample_bytree[i]).ToString();
-               
-                if (pname == "subsample" && i >= subsample.Length) break;
-                if (pname == "subsample") textBox8.Text = nomalize_float(subsample[i]).ToString();
+                    if (pname == "colsample_bytree" && i >= colsample_bytree.Length) break;
+                    if (pname == "colsample_bytree") textBox7.Text = nomalize_float(colsample_bytree[i]).ToString();
 
-                if (pname == "min_child_weight" && i >= min_child_weight.Length) break;
-                if (pname == "min_child_weight") textBox9.Text = nomalize_float(min_child_weight[i]).ToString();
+                    if (pname == "subsample" && i >= subsample.Length) break;
+                    if (pname == "subsample") textBox8.Text = nomalize_float(subsample[i]).ToString();
 
-                if (pname == "max_depth" && i >= max_depth.Length) break;
-                if (pname == "max_depth") numericUpDown6.Text = max_depth[i].ToString();
+                    if (pname == "min_child_weight" && i >= min_child_weight.Length) break;
+                    if (pname == "min_child_weight") textBox9.Text = nomalize_float(min_child_weight[i]).ToString();
+
+                    if (pname == "max_depth" && i >= max_depth.Length) break;
+                    if (pname == "max_depth") numericUpDown6.Text = max_depth[i].ToString();
+                }
 
                 try
                 {
@@ -2942,10 +2948,12 @@ namespace WindowsFormsApplication1
                 bool res = false;
                 if ( radioButton1.Checked)
                 {
-                    res = float.Parse(R2) > r2 && float.Parse(R2) < 0.9;
-                }else
+                    //res = float.Parse(R2) > r2 && float.Parse(R2) < 0.95;
+                    res = float.Parse(RMSE) < r2;
+                }
+                else
                 {
-                    res = float.Parse(ACC.Replace("%", "")) > r2 && float.Parse(ACC.Replace("%","")) < 0.9;
+                    res = float.Parse(ACC.Replace("%", "")) > r2 && float.Parse(ACC.Replace("%","")) < 0.95;
                 }
                 if ( res )
                 {
@@ -3014,48 +3022,56 @@ namespace WindowsFormsApplication1
             label34.Text = "1/8 max_depth探索中";
             label34.Refresh();
             r2 = grid_serch("max_depth", nsamples, r2);
+            button16.Text = r2.ToString();
             label34.Text = "1/8 max_depthが決まりました";
             label34.Refresh();
 
             label34.Text = "2/8 min_child_weight探索中";
             label34.Refresh();
             r2 = grid_serch("min_child_weight", nsamples, r2);
+            button16.Text = r2.ToString();
             label34.Text = "2/8 min_child_weightが決まりました";
             label34.Refresh();
 
             label34.Text = "3/8 subsample探索中";
             label34.Refresh();
             r2 = grid_serch("subsample", nsamples, r2);
+            button16.Text = r2.ToString();
             label34.Text = "3/8 subsampleが決まりました";
             label34.Refresh();
 
             label34.Text = "4/8 colsample_bytree探索中";
             label34.Refresh();
             r2 = grid_serch("colsample_bytree", nsamples, r2);
+            button16.Text = r2.ToString();
             label34.Text = "4/8 colsample_bytreeが決まりました";
             label34.Refresh();
 
             label34.Text = "5/8 lambda探索中";
             label34.Refresh();
             r2 = grid_serch("lambda", nsamples, r2);
+            button16.Text = r2.ToString();
             label34.Text = "5/8 lambdaが決まりました";
             label34.Refresh();
 
             label34.Text = "6/8 alpha探索中";
             label34.Refresh();
             r2 = grid_serch("alpha", nsamples, r2);
+            button16.Text = r2.ToString();
             label34.Text = "6/8 alphaが決まりました";
             label34.Refresh();
 
             label34.Text = "7/8 gamma探索中";
             label34.Refresh();
             r2 = grid_serch("gamma", nsamples, r2);
+            button16.Text = r2.ToString();
             label34.Text = "7/8 gammaが決まりました";
             label34.Refresh();
 
             label34.Text = "8/8 eta探索中";
             label34.Refresh();
             r2 = grid_serch("eta", nsamples, r2);
+            button16.Text = r2.ToString();
             label34.Text = "8/8 etaが決まりました";
             label34.Refresh();
 
@@ -3063,6 +3079,7 @@ namespace WindowsFormsApplication1
             label34.Text = "終了";
             label34.Refresh();
             label34.Visible = false;
+            button16.Text = "auto";
         }
 
         private void button17_Click(object sender, EventArgs e)
