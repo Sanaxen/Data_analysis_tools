@@ -1538,9 +1538,21 @@ namespace WindowsFormsApplication1
                         cmd += "                    if ( sample_metod == 4){\r\n";
                         cmd += "			            df_t <- ts(test[,i],start=c(2015,1),frequency=1)\r\n";
                         cmd += "			            #ts.plot(df_t)\r\n";
-                        cmd += "			            Fit <- auto.arima(df_t, ic=\"aic\", max.p=2,max.q=2,stepwise=T, trace=T)\r\n";
-                        cmd += "			            pred <- predict(Fit,n.ahead=1)\r\n";
-                        cmd += "			            test[nrow(test),i] = pred$pred[1]\r\n";
+                        cmd += "                        tryCatch({\r\n";
+                        cmd += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
+                        cmd += "			                pred <- predict(Fit,n.ahead=1)\r\n";
+                        cmd += "			                test[nrow(test),i] = pred$pred[1]\r\n";
+                        cmd += "                        },\r\n";
+                        cmd += "                        error = function(e) {\r\n";
+                        cmd += "                            #message(e)\r\n";
+                        cmd += "                            #print(e)\r\n";
+                        cmd += "                            #復元抽出\r\n";
+                        cmd += "                            test[nrow(test), i] = sample(train[, i], 1)\r\n";
+                        cmd += "                        },\r\n";
+                        cmd += "                        finally   = {\r\n";
+                        cmd += "                        },\r\n";
+                        cmd += "                        silent = TRUE\r\n";
+                        cmd += "                        )\r\n";
                         cmd += "                    }\r\n";
                         cmd += "		        }\r\n";
                         cmd += "	        }\r\n";
@@ -3017,7 +3029,9 @@ namespace WindowsFormsApplication1
             label34.Text = "パラメータ探索開始しました";
             label34.Refresh();
 
-            double r2 = 0.0;
+            double r2 = 9999999.0;  // R2なら r2 = 0.0
+            if (radioButton2.Checked) r2 = 0.0;
+
             int nsamples = 10;
             label34.Text = "1/8 max_depth探索中";
             label34.Refresh();
