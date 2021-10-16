@@ -1477,8 +1477,8 @@ namespace WindowsFormsApplication1
                         //cmd += "test<- test_org\r\n";
                         //cmd += "test$target_[length(test$target_)] = predict_y[length(predict_y)]\r\n";
                         //cmd += "test$target_ = predict_y\r\n";
-                        cmd += "dt = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
-                        cmd += "dt = as.numeric(dt,units=\"secs\")\r\n";
+                        cmd += "dt_ = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
+                        cmd += "dt_ = as.numeric(dt_,units=\"secs\")\r\n";
 
                         cmd += "colidx0 = grep(\"^lag[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
                         cmd += "colidx1 = grep(\"^target_$\", colnames(test) )\r\n";
@@ -1491,7 +1491,7 @@ namespace WindowsFormsApplication1
                         cmd += "    for ( i in 1:"+numericUpDown5.Value.ToString()+"){\r\n";
                         cmd += "	    # 1行追加\r\n";
                         cmd += "	    test<-rbind(test, test[1,])\r\n";
-                        cmd += "        test[nrow(test),1] <- st_ + i*dt\r\n";
+                        cmd += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
                         cmd += "	    \r\n";
                         cmd += "        if ( sample_metod >= 1){\r\n";
                         cmd += "	        #追加された列の説明変数を推定\r\n";
@@ -1529,14 +1529,14 @@ namespace WindowsFormsApplication1
                         cmd += "                        test[nrow(test),i] = mean(test[(nrow(test)-3):nrow(test),i])\r\n";
                         cmd += "                    }\r\n";
                         cmd += "                    if ( sample_metod == 3){\r\n";
-                        cmd += "			            df_t <- ts(test[,i],start=c(2015,1),frequency=1)\r\n";
+                        cmd += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
                         cmd += "			            #ts.plot(df_t)\r\n";
                         cmd += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
                         cmd += "			            pred <- predict(Fit,n.ahead=1)\r\n";
                         cmd += "			            test[nrow(test),i] = pred$pred[1]\r\n";
                         cmd += "                    }\r\n";
                         cmd += "                    if ( sample_metod == 4){\r\n";
-                        cmd += "			            df_t <- ts(test[,i],start=c(2015,1),frequency=1)\r\n";
+                        cmd += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
                         cmd += "			            #ts.plot(df_t)\r\n";
                         cmd += "                        tryCatch({\r\n";
                         cmd += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
