@@ -31,9 +31,11 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(xgboost));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button19 = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
@@ -144,8 +146,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox11 = new System.Windows.Forms.CheckBox();
-            this.button19 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
@@ -255,6 +255,17 @@
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
+            // button19
+            // 
+            this.button19.BackColor = System.Drawing.Color.Lime;
+            this.button19.Location = new System.Drawing.Point(8, 148);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(27, 23);
+            this.button19.TabIndex = 150;
+            this.toolTip1.SetToolTip(this.button19, "パラメータリセット\r\n初期の値に戻します");
+            this.button19.UseVisualStyleBackColor = false;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
             // textBox9
             // 
             this.textBox9.Location = new System.Drawing.Point(368, 200);
@@ -294,10 +305,20 @@
             this.panel7.Controls.Add(this.label32);
             this.panel7.Controls.Add(this.label31);
             this.panel7.Controls.Add(this.numericUpDown14);
-            this.panel7.Location = new System.Drawing.Point(675, 153);
+            this.panel7.Location = new System.Drawing.Point(674, 169);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(209, 274);
+            this.panel7.Size = new System.Drawing.Size(208, 274);
             this.panel7.TabIndex = 147;
+            // 
+            // checkBox11
+            // 
+            this.checkBox11.AutoSize = true;
+            this.checkBox11.Location = new System.Drawing.Point(89, 242);
+            this.checkBox11.Name = "checkBox11";
+            this.checkBox11.Size = new System.Drawing.Size(104, 19);
+            this.checkBox11.TabIndex = 150;
+            this.checkBox11.Text = "全区間表示";
+            this.checkBox11.UseVisualStyleBackColor = true;
             // 
             // checkBox9
             // 
@@ -1706,27 +1727,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // checkBox11
-            // 
-            this.checkBox11.AutoSize = true;
-            this.checkBox11.Location = new System.Drawing.Point(89, 242);
-            this.checkBox11.Name = "checkBox11";
-            this.checkBox11.Size = new System.Drawing.Size(104, 19);
-            this.checkBox11.TabIndex = 150;
-            this.checkBox11.Text = "全区間表示";
-            this.checkBox11.UseVisualStyleBackColor = true;
-            // 
-            // button19
-            // 
-            this.button19.BackColor = System.Drawing.Color.Lime;
-            this.button19.Location = new System.Drawing.Point(8, 148);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(27, 23);
-            this.button19.TabIndex = 150;
-            this.toolTip1.SetToolTip(this.button19, "パラメータリセット\r\n初期の値に戻します");
-            this.button19.UseVisualStyleBackColor = false;
-            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // xgboost
             // 

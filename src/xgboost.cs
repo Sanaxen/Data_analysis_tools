@@ -222,12 +222,18 @@ namespace WindowsFormsApplication1
                     button3.Visible = false;
                 }
 
-                form1.FileDelete("tmp_xgboost.png");
-                form1.FileDelete("tmp_xgboost2.png");
-                form1.FileDelete("tmp_xgboost_predict.png");
-                form1.FileDelete("tmp_xgboost_feature_importance.png");
-                form1.FileDelete("tmp_xgboost_model_performance.png");
-                form1.FileDelete("tmp_xgboost_predict_parts0001.png");
+                if ( radioButton4.Checked)
+                {
+                    form1.FileDelete("tmp_xgboost.png");
+                    form1.FileDelete("tmp_xgboost2.png");
+                }
+                if (radioButton3.Checked)
+                {
+                    form1.FileDelete("tmp_xgboost_predict.png");
+                    form1.FileDelete("tmp_xgboost_feature_importance.png");
+                    form1.FileDelete("tmp_xgboost_model_performance.png");
+                    form1.FileDelete("tmp_xgboost_predict_parts0001.png");
+                }
                 form1.FileDelete("xgboost_plot_temp.html");
 
                 string xgb_weight = "";
@@ -824,7 +830,7 @@ namespace WindowsFormsApplication1
                                 cmd2 += "start_value = train$'" + targetName + "'[1+"+ (lag-1).ToString()+"+1] + min__\r\n";
                             }
                             else {
-                                cmd2 += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                                cmd2 += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                             }
                         }
                         cmd2 += "for (i in 1:ncol(predictions)){ #\r\n";
@@ -1022,7 +1028,7 @@ namespace WindowsFormsApplication1
                             }
                             else
                             {
-                                cmd3 += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                                cmd3 += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                             }
                         }
                         cmd3 += "for ( i in 1:3 ){\r\n";
@@ -1303,7 +1309,7 @@ namespace WindowsFormsApplication1
                                     }
                                     else
                                     {
-                                        cmd_tmp += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                                        cmd_tmp += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                                     }
                                     cmd_tmp += "predict_tmp<- inv_diff(predict_tmp, start_value, use_log_diff) - min__\r\n";
                                 }
@@ -1391,11 +1397,11 @@ namespace WindowsFormsApplication1
                     {
                         if (eval == 1)
                         {
-                            cmd += "start_value = train$'" + targetName + "'[1+"+(lag-1).ToString()+"] + min__\r\n";
+                            cmd += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
                         }
                         else
                         {
-                            cmd += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                            cmd += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                         }
                         cmd += "predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
                         cmd += "\r\n";
@@ -1473,7 +1479,8 @@ namespace WindowsFormsApplication1
                         //cmd += "test<- test_org\r\n";
                         //cmd += "test$target_[length(test$target_)] = predict_y[length(predict_y)]\r\n";
                         //cmd += "test$target_ = predict_y\r\n";
-                        cmd += "dt = as.numeric(difftime(as.Date(train[,1][2]),as.Date(train[,1][1]),units=\"sec\"))\r\n";
+                        cmd += "dt = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
+                        cmd += "dt = as.numeric(dt,units=\"secs\")\r\n";
 
                         cmd += "colidx0 = grep(\"^lag[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
                         cmd += "colidx1 = grep(\"^target_$\", colnames(test) )\r\n";
@@ -1659,15 +1666,15 @@ namespace WindowsFormsApplication1
                         {
                             if (eval == 1)
                             {
-                                cmd += "start_value = train$'" + targetName + "'[1+" + (lag-1).ToString() + "] + min__\r\n";
+                                cmd += "        start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
                             }
                             else
                             {
-                                cmd += "start_value = df$'" + targetName + "'[nrow(train)+1] + min__\r\n";
+                                cmd += "        start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                             }
                             cmd += "        predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
                         }
-                        cmd += "	    predict.y<-as.data.frame(predict_y)\r\n";
+                        cmd += "	        predict.y<-as.data.frame(predict_y)\r\n";
                         cmd += "\r\n";
                         cmd += "	    #データの最後を予測値で更新\r\n";
                         cmd += "	    test$target_[length(test$target_)] = predict_y_org[length(predict_y)]\r\n";
@@ -1695,7 +1702,7 @@ namespace WindowsFormsApplication1
                     cmd += "\r\n";
                     if (use_diff == 1)
                     {
-                        cmd += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
+                        cmd += "start_value = train$'" + targetName + "'[1] + min__\r\n";
                         cmd += "zz_tmp<- inv_diff(df_tmp$target_, start_value, use_log_diff) - min__\r\n";
                         cmd += "debug_plt <- ggplot()\r\n";
                         cmd += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(df_tmp$target_)), y = df_tmp$'" + targetName + "', colour = \"org\"))+\r\n";
