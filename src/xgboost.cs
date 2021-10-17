@@ -45,6 +45,7 @@ namespace WindowsFormsApplication1
         int use_log_diff = 0;
         int eval = 0;
         int random_serch = 1;
+        int means_n = 0;
 
         public xgboost()
         {
@@ -343,6 +344,19 @@ namespace WindowsFormsApplication1
                     cmd1 += "df_ts_tmp$'grad_" + targetName + "'" + "<- c(0, 0, diff(df$'" + targetName + "')[1:(length(df[,1])-2)])\r\n";
                     cmd1 += "df_ts_tmp$'grad2_" + targetName + "'" + "<- c(0, 0, diff(df_ts_tmp$'grad_" + targetName + "')[1:(length(df[,1])-2)])\r\n";
 
+                    if ( lag >= 3)
+                    {
+                        means_n = 3;
+                        cmd1 += "df_ts_tmp$'mean_" + targetName + "'" + "<- df_ts_tmp$'grad_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ means_n + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_n + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }
                     cmd1 += "df_ts_tmp<- df_ts_tmp[-1:-" + lag.ToString() + ",]\r\n";
 
                     if (exist_time_axis == 0)
@@ -619,6 +633,7 @@ namespace WindowsFormsApplication1
                     }
                     formuler += "+ grad_" + targetName;
                     formuler += "+ grad2_" + targetName;
+                    formuler += "+ mean_" + targetName;
                 }
                 if (Form1.batch_mode == 0)
                 {
@@ -1484,6 +1499,7 @@ namespace WindowsFormsApplication1
                         cmd += "colidx1 = grep(\"^target_$\", colnames(test) )\r\n";
                         cmd += "colidx2 = grep(\"^"+targetName+"$\", colnames(test) )\r\n";
                         cmd += "colidx3 = grep(\"^grad[0-9]?_" + targetName + "$\", colnames(test) )\r\n";
+                        cmd += "colidx4 = grep(\"^mean_" + targetName + "$\", colnames(test) )\r\n";
                         cmd += "mean_ <- apply(train[,-1],2, mean)\r\n";
                         cmd += "sd_ <- apply(train[,-1],2, sd)\r\n";
                         cmd += "st_ <- test[nrow(test),1]\r\n";
@@ -1517,7 +1533,7 @@ namespace WindowsFormsApplication1
                         cmd += "                        break\r\n";
                         cmd += "                    }\r\n";
                         cmd += "                }\r\n";
-                        cmd += "	            if ( i != colidx1 && i != colidx2 && skip != TRUE)\r\n";
+                        cmd += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && skip != TRUE)\r\n";
                         cmd += "	            {\r\n";
                         cmd += "                    test[nrow(test), i] = rnorm(mean_, sd_)[i]\r\n";
                         cmd += "                    if ( sample_metod == 1){\r\n";
@@ -1635,6 +1651,8 @@ namespace WindowsFormsApplication1
                             "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-2]\r\n";
                             cmd += "        test$'grad2_" + targetName + "'" +
                             "[length(test$target_)]<- test$'grad_" + targetName+"'[length(test$target_)-1]-test$'grad_" + targetName+"'[length(test$target_)-2]\r\n";
+                            cmd += "        test$'mean_" + targetName + "'" +
+                            "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-"+ means_n + "):(length(test$target_)-1)])\r\n";
                         }
 
                         //cmd += "		id = -1\r\n";
