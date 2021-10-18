@@ -46,6 +46,7 @@ namespace WindowsFormsApplication1
         int eval = 0;
         int random_serch = 1;
         int means_n = 0;
+        int use_AnomalyDetectionTs = 0;
 
         public xgboost()
         {
@@ -194,6 +195,11 @@ namespace WindowsFormsApplication1
             button18.Enabled = false;
             explain_num = 1;
             eval = 0;
+
+            string anomalyDetectionTs = "";
+            if (checkBox12.Checked) use_AnomalyDetectionTs = 1;
+            else use_AnomalyDetectionTs = 0;
+
             if (checkBox11.Checked) eval = 1;
             try
             {
@@ -234,6 +240,13 @@ namespace WindowsFormsApplication1
                     form1.FileDelete("tmp_xgboost_predict_parts0001.png");
                 }
                 form1.FileDelete("xgboost_plot_temp.html");
+
+                if (use_AnomalyDetectionTs == 1)
+                {
+                    anomalyDetectionTs += Form1.MyPath + "..\\script\\AnomalyDetectionTs.r";
+                    anomalyDetectionTs = anomalyDetectionTs.Replace("\\", "/");
+                    form1.evalute_cmdstr("source(\"" + anomalyDetectionTs + "\")");
+                }
 
                 string xgb_weight = "";
                 if (add_enevt_data == 1)
@@ -786,6 +799,9 @@ namespace WindowsFormsApplication1
                 cmd += "\r\n";
                 cmd += "\r\n";
 
+                string anomaly_det = "";
+
+
                 string cmd2 = "";
                 string cmd3 = "";
                 string explain = "";
@@ -928,6 +944,7 @@ namespace WindowsFormsApplication1
                             cmd2 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$target_, colour = \"観測値\"))+\r\n";
                             cmd2 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$target_,colour = \"観測値Point\"))+\r\n";
                             cmd2 += "geom_line(aes(x=as.POSIXct(test[,1]), y=y_mean_smooth,colour =\"平均値\"))+\r\n";
+                            cmd2 += "geom_vline(xintercept=test[,1][nrow(test_org])+\r\n";
                             cmd2 += "scale_x_datetime(name = \"time\", date_labels = \"%y-%m-%d\")\r\n";
                             cmd2 += "\r\n";
                         }
@@ -956,7 +973,8 @@ namespace WindowsFormsApplication1
                             cmd2 += "interval_plt <- interval_plt + geom_ribbon(aes(x=1:length(test$target_),ymin=lo,ymax=up, fill='信頼区間'),alpha=0.4)+\r\n";
                             cmd2 += "geom_line(aes(x=1:length(test$'"+ targetName+ "'), y =test$'" + targetName + "', colour = \"観測値\"))+\r\n";
                             cmd2 += "geom_point(aes(x=1:length(test$target_),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
-                            cmd2 += "geom_line(aes(x=1:length(test$target_), y=y_mean_smooth,colour =\"平均値\"))\r\n";
+                            cmd2 += "geom_line(aes(x=1:length(test$target_), y=y_mean_smooth,colour =\"平均値\"))+\r\n";
+                            cmd2 += "geom_vline(xintercept=nrow(test_org))\r\n";
                             cmd2 += "\r\n";
                         }
                         cmd2 += "\r\n";
@@ -1137,6 +1155,7 @@ namespace WindowsFormsApplication1
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
                             cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=predictions[,1], colour=\"予測値\"))+\r\n";
+                            cmd3 += "geom_vline(xintercept=test[,1][nrow(test_org])+\r\n";
                             cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n";
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt3 <- interval_plt + \r\n";
@@ -1144,6 +1163,7 @@ namespace WindowsFormsApplication1
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
                             cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=predictions[,1], colour=\"予測値\"))+\r\n";
+                            cmd3 += "geom_vline(xintercept=test[,1][nrow(test_org])+\r\n";
                             cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n";
                         }
                         else
@@ -1171,13 +1191,15 @@ namespace WindowsFormsApplication1
                             cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
                             cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
                             cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
-                            cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))\r\n";
+                            cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))+\r\n";
+                            cmd3 += "geom_vline(xintercept=nrow(test_org)+\r\n";
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt3 <- interval_plt + \r\n";
                             cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
                             cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
                             cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
-                            cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))\r\n";
+                            cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))+\r\n";
+                            cmd3 += "geom_vline(xintercept=nrow(test_org)+\r\n";
                         }
                         cmd3 += "\r\n";
                     }
@@ -1235,6 +1257,26 @@ namespace WindowsFormsApplication1
                         cmd += "xgb.dump(xgboost.model, \"xgboost.model.json\", with.stats = TRUE, dump_format =\"json\")\r\n";
                     }
 
+                    anomaly_det = "";
+                    anomaly_det += "\r\n";
+                    anomaly_det += "\r\n";
+                    if ( eval == 1)
+                    {
+                        anomaly_det += "df_tmp <- rbind(train, test)\r\n";
+                        anomaly_det += "anomaly_det <- anomaly_DetectionTs(df_tmp, \"" + targetName + "\", test[,1][nrow(test)])\r\n";
+                    }
+                    else
+                    {
+                        anomaly_det += "anomaly_det <- anomaly_DetectionTs(test, \"" + targetName + "\", test[,1][nrow(test)])\r\n";
+                    }
+                    anomaly_det += "\r\n";
+                    anomaly_det += "\r\n";
+
+                    if (use_AnomalyDetectionTs == 1)
+                    {
+                        cmd += anomaly_det;
+                    }
+
                     if (true)
                     {
                         //form1.textBox2.Text += cmd;
@@ -1275,6 +1317,10 @@ namespace WindowsFormsApplication1
                                 sw.Write("plt_<-xgb.ggplot.importance(imp_, top_n = 6, measure = NULL, rel_to_first = F)\r\n");
                                 sw.Write("ggsave(\"tmp_xgboost2.png\", plt_, dpi = 100, width = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                             }
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                sw.Write("ggsave(filename = \"anomaly_det.png\", plot = anomaly_det[[3]])\r\n");
+                            }
                             if ((checkBox6.Checked || checkBox7.Checked )&& radioButton1.Checked)
                             {
                                 if (checkBox6.Checked && !checkBox7.Checked)
@@ -1283,7 +1329,14 @@ namespace WindowsFormsApplication1
                                     sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
                                     sw.Write("}\r\n");
                                     sw.Write("ggsave(filename = \"interval_plt.png\", plot = interval_plt)\r\n");
-                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, nrow = 2)\r\n");
+                                    if (use_AnomalyDetectionTs == 1)
+                                    {
+                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, anomaly_det[[3]], nrow = 3)\r\n");
+                                    }
+                                    else
+                                    {
+                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, nrow = 2)\r\n");
+                                    }
                                     sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
                                 }
                                 if (!checkBox6.Checked && checkBox7.Checked)
@@ -1292,7 +1345,14 @@ namespace WindowsFormsApplication1
                                     sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
                                     sw.Write("}\r\n");
                                     sw.Write("ggsave(filename = \"interval_plt2.png\", plot = interval_plt2)\r\n");
-                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, nrow = 2)\r\n");
+                                    if (use_AnomalyDetectionTs == 1)
+                                    {
+                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, anomaly_det[[3]], nrow = 3)\r\n");
+                                    }
+                                    else
+                                    {
+                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, nrow = 2)\r\n");
+                                    }
                                     sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
                                 }
                                 if (checkBox6.Checked && checkBox7.Checked)
@@ -1301,10 +1361,18 @@ namespace WindowsFormsApplication1
                                     sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
                                     sw.Write("}\r\n");
                                     sw.Write("ggsave(filename = \"interval_plt3.png\", plot = interval_plt)\r\n");
-                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, interval_plt2, nrow = 3)\r\n");
+                                    if (use_AnomalyDetectionTs == 1)
+                                    {
+                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, interval_plt2, anomaly_det[[3]], nrow = 4)\r\n");
+                                    }
+                                    else
+                                    {
+                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, interval_plt2, nrow = 2)\r\n");
+                                    }
                                     sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
                                 }
-                            }else
+                            }
+                            else
                             {
                                 string cmd_tmp = "";
                                 string view_data = "test";
@@ -1343,7 +1411,14 @@ namespace WindowsFormsApplication1
                                 }
                                 sw.Write(cmd_tmp);
                                 sw.Write("ggsave(filename = \"interval_plt4.png\", plot = interval_plt4)\r\n");
-                                sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt4, nrow = 2)\r\n");
+                                if (use_AnomalyDetectionTs == 1)
+                                {
+                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt4, anomaly_det[[3]], nrow = 3)\r\n");
+                                }
+                                else
+                                {
+                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt4, nrow = 2)\r\n");
+                                }
                                 sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_)\r\n");
                             }
                             sw.Write("\r\n");
@@ -1722,11 +1797,23 @@ namespace WindowsFormsApplication1
                     cmd += "df_ <- test\r\n";
                     if ( eval == 1)
                     {
-                        cmd += "df_tmp <- test\r\n";
+                        cmd += "df_tmp <- rbind(train, test)\r\n";
                     }else
                     {
-                        cmd += "df_tmp <- rbind(train, test)\r\n";
+                        cmd += "df_tmp <- test\r\n";
                     }
+
+                    anomaly_det = "";
+                    anomaly_det += "\r\n";
+                    anomaly_det += "\r\n";
+                    anomaly_det += "anomaly_det <- anomaly_DetectionTs(df_tmp, \"" + targetName + "\",test_org[,1][nrow(test_org)])\r\n";
+                    anomaly_det += "\r\n";
+                    anomaly_det += "\r\n";
+                    if (use_AnomalyDetectionTs == 1)
+                    {
+                        cmd += anomaly_det;
+                    }
+
                     cmd += "\r\n";
                     if (use_diff == 1)
                     {
@@ -1869,7 +1956,9 @@ namespace WindowsFormsApplication1
                                     sw.Write("residual_plt<-ggplot()\r\n");
                                     sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=residual.error, colour=\"誤差\"))+\r\n");
                                     sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=residual.error, colour = \"誤差Point\"))+\r\n");
+                                    sw.Write("geom_vline(xintercept=test_org[,1][nrow(test_org)])+\r\n");
                                     sw.Write("scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n");
+                                    
                                     sw.Write("predict_plt<-ggplot()\r\n");
                                     sw.Write("predict_plt<-predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict.y[,1], colour=\"予測値\"))+\r\n");
                                     sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=predict.y[,1], colour = \"予測Point\"))+\r\n");
@@ -1879,6 +1968,7 @@ namespace WindowsFormsApplication1
                                     {
                                         sw.Write("geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n");
                                     }
+                                    sw.Write("geom_vline(xintercept=test_org[,1][nrow(test_org)])+\r\n");
                                     sw.Write("scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n");
 
                                     sw.Write("\r\n");
@@ -1887,12 +1977,15 @@ namespace WindowsFormsApplication1
                                 {
                                     sw.Write("residual_plt<-ggplot()\r\n");
                                     sw.Write("residual_plt<-residual_plt + geom_line(aes(x=(1:nrow(predict.y)), y=residual.error, colour=\"誤差\"))+\r\n");
-                                    sw.Write("geom_point(aes(x=1:nrow(predict.y),y=residual.error, colour = \"誤差Point\"))\r\n");
+                                    sw.Write("geom_point(aes(x=1:nrow(predict.y),y=residual.error, colour = \"誤差Point\"))+\r\n");
+                                    sw.Write("geom_vline(xintercept=nrow(test_org))\r\n");
+
                                     sw.Write("predict_plt<-ggplot()\r\n");
                                     sw.Write("predict_plt<-predict_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))+\r\n");
                                     sw.Write("geom_point(aes(x=1:nrow(predict.y),y=predict.y[,1], colour = \"予測Point\"))+\r\n");
                                     sw.Write("geom_line(aes(x=1:nrow(predict.y), y=test$'"+targetName +"', colour=\"観測値\"))+");
-                                    sw.Write("geom_point(aes(x=1:nrow(predict.y),y=test$'" + targetName + "', colour = \"予測Point\"))");
+                                    sw.Write("geom_point(aes(x=1:nrow(predict.y),y=test$'" + targetName + "', colour = \"予測Point\"))+");
+                                    sw.Write("geom_vline(xintercept=nrow(test_org))\r\n");
                                     if (checkBox7.Checked)
                                     {
                                         sw.Write("+\r\n");
@@ -1900,7 +1993,14 @@ namespace WindowsFormsApplication1
                                     }
                                     sw.Write("\r\n");
                                 }
-                                sw.Write("p_<-gridExtra::grid.arrange(residual_plt, predict_plt, nrow = 2)\r\n");
+                                if ( use_AnomalyDetectionTs == 1 )
+                                {
+                                    sw.Write("p_<-gridExtra::grid.arrange(residual_plt, predict_plt, anomaly_det[[3]], nrow = 3)\r\n");
+                                }
+                                else
+                                {
+                                    sw.Write("p_<-gridExtra::grid.arrange(residual_plt, predict_plt, nrow = 2)\r\n");
+                                }
                                 sw.Write("ggsave(file = \"tmp_xgboost_predict.png\", p_)\r\n");
 
                             }
@@ -2246,7 +2346,13 @@ namespace WindowsFormsApplication1
 
                         cmd += "add_trace(test, alpha=0.6, type = \"scatter\", mode = " + mode +
                                 x_axis + ",y = predict.y[,1]";
-                        cmd += ", name =\"predict\")\r\n";
+                        cmd += ", name =\"predict\")+\r\n";
+                        cmd += "geom_vline(xintercept=nrow(test_org))\r\n";
+
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "anom_p <- ggplotly(anomaly_det[[3]])\r\n";
+                        }
 
                         if (checkBox7.Checked)
                         {
@@ -2258,19 +2364,47 @@ namespace WindowsFormsApplication1
                         }
                         if (checkBox6.Checked && checkBox7.Checked)
                         {
-                            cmd += "p_ <- subplot(p1_, p2_, p2, p3, nrows = 4)\r\n";
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                cmd += "p_ <-subplot(p1_, p2_, p2, p3, anom_p, nrows = 5)\r\n";
+                            }
+                            else
+                            {
+                                cmd += "p_ <- subplot(p1_, p2_, p2, p3, nrows = 4)\r\n";
+                            }
                         }
                         if (checkBox6.Checked && !checkBox7.Checked)
                         {
-                            cmd += "p_ <- subplot(p1_, p2_, p3, nrows = 3)\r\n";
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                cmd += "p_ <-subplot(p1_, p2_, p3, anom_p, nrows = 4)\r\n";
+                            }
+                            else
+                            {
+                                cmd += "p_ <- subplot(p1_, p2_, p3, nrows = 3)\r\n";
+                            }
                         }
                         if (!checkBox6.Checked && checkBox7.Checked)
                         {
-                            cmd += "p_ <- subplot(p1_, p2_, p2, nrows = 3)\r\n";
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                cmd += "p_ <-subplot(p1_, p2_, p2, anom_p, nrows = 4)\r\n";
+                            }
+                            else
+                            {
+                                cmd += "p_ <- subplot(p1_, p2_, p2, nrows = 3)\r\n";
+                            }
                         }
                         if (!checkBox6.Checked && !checkBox7.Checked)
                         {
-                            cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                cmd += "p_ <-subplot(p1_, p2_, anom_p, nrows = 3)\r\n";
+                            }
+                            else
+                            {
+                                cmd += "p_ <- subplot(p1_, p2_, nrows = 3)\r\n";
+                            }
                         }
                     }
                     if (radioButton2.Checked && radioButton3.Checked)
@@ -2290,22 +2424,54 @@ namespace WindowsFormsApplication1
                         {
                             cmd += "p3<-ggplotly(interval_plt)\r\n";
                         }
+                        if ( use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "anom_p <- ggplotly(anomaly_det[[3]])\r\n";
+                        }
                         if (checkBox6.Checked && !checkBox7.Checked)
                         {
-                            cmd += "p_ <-subplot(p1, p3, nrows = 2)\r\n";
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                cmd += "p_ <-subplot(p1, p3, anom_p, nrows = 3)\r\n";
+                            }
+                            else
+                            {
+                                cmd += "p_ <-subplot(p1, p3, nrows = 2)\r\n";
+                            }
                         }
                         if (!checkBox6.Checked && checkBox7.Checked)
                         {
-                            cmd += "p_ <-subplot(p1, p2, nrows = 2)\r\n";
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                cmd += "p_ <-subplot(p1, p2, anom_p, nrows = 3)\r\n";
+                            }
+                            else
+                            {
+                                cmd += "p_ <-subplot(p1, p2, nrows = 2)\r\n";
+                            }
                         }
                         if (checkBox6.Checked && checkBox7.Checked)
                         {
-                            cmd += "p_ <-subplot(p1, p2, p3, nrows = 3)\r\n";
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                cmd += "p_ <-subplot(p1, p2, p3, anom_p, nrows = 4)\r\n";
+                            }
+                            else
+                            {
+                                cmd += "p_ <-subplot(p1, p2, p3, nrows = 3)\r\n";
+                            }
                         }
                         if (!checkBox6.Checked && !checkBox7.Checked)
                         {
                             cmd += "p4<-ggplotly(interval_plt4)\r\n";
-                            cmd += "p_ <-subplot(p1, p4, nrows = 2)\r\n";
+                            if (use_AnomalyDetectionTs == 1)
+                            {
+                                cmd += "p_ <-subplot(p1, p4, anom_p, nrows = 3)\r\n";
+                            }
+                            else
+                            {
+                                cmd += "p_ <-subplot(p1, p4, nrows = 2)\r\n";
+                            }
                         }
                     }
                     if (radioButton2.Checked && radioButton4.Checked)
@@ -2922,12 +3088,12 @@ namespace WindowsFormsApplication1
 
                 if (random_serch == 1)
                 {
-                    if (pname == "eta") textBox3.Text = nomalize_float(eta[r_eta.Next(eta.Length)]).ToString();
-                    if (pname == "gamma") textBox4.Text = nomalize_float(gamma[r_gamma.Next(gamma.Length)]).ToString();
-                    if (pname == "alpha") textBox5.Text = nomalize_float(alpha[r_alpha.Next(alpha.Length)]).ToString();
-                    if (pname == "lambda") textBox6.Text = nomalize_float(lambda[r_lambda.Next(lambda.Length)]).ToString();
-                    if (pname == "colsample_bytree") textBox7.Text = nomalize_float(colsample_bytree[r_colsample_bytree.Next(colsample_bytree.Length)]).ToString();
-                    if (pname == "subsample") textBox8.Text = nomalize_float(subsample[r_subsample.Next(subsample.Length)]).ToString();
+                    textBox3.Text = nomalize_float(eta[r_eta.Next(eta.Length)]).ToString();
+                    textBox4.Text = nomalize_float(gamma[r_gamma.Next(gamma.Length)]).ToString();
+                    textBox5.Text = nomalize_float(alpha[r_alpha.Next(alpha.Length)]).ToString();
+                    textBox6.Text = nomalize_float(lambda[r_lambda.Next(lambda.Length)]).ToString();
+                    textBox7.Text = nomalize_float(colsample_bytree[r_colsample_bytree.Next(colsample_bytree.Length)]).ToString();
+                    textBox8.Text = nomalize_float(subsample[r_subsample.Next(subsample.Length)]).ToString();
                 }
                 else
                 {

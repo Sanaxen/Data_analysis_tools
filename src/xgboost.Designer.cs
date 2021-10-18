@@ -146,6 +146,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
@@ -291,6 +292,7 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.MistyRose;
+            this.panel7.Controls.Add(this.checkBox12);
             this.panel7.Controls.Add(this.checkBox11);
             this.panel7.Controls.Add(this.checkBox9);
             this.panel7.Controls.Add(this.checkBox10);
@@ -307,7 +309,7 @@
             this.panel7.Controls.Add(this.numericUpDown14);
             this.panel7.Location = new System.Drawing.Point(674, 169);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(208, 274);
+            this.panel7.Size = new System.Drawing.Size(208, 326);
             this.panel7.TabIndex = 147;
             // 
             // checkBox11
@@ -319,6 +321,7 @@
             this.checkBox11.TabIndex = 150;
             this.checkBox11.Text = "全区間表示";
             this.checkBox11.UseVisualStyleBackColor = true;
+            this.checkBox11.Visible = false;
             // 
             // checkBox9
             // 
@@ -517,7 +520,7 @@
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(590, 318);
+            this.checkBox7.Location = new System.Drawing.Point(583, 313);
             this.checkBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(89, 19);
@@ -528,7 +531,7 @@
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(590, 292);
+            this.checkBox6.Location = new System.Drawing.Point(583, 287);
             this.checkBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(89, 19);
@@ -1728,6 +1731,16 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // checkBox12
+            // 
+            this.checkBox12.AutoSize = true;
+            this.checkBox12.Location = new System.Drawing.Point(89, 304);
+            this.checkBox12.Name = "checkBox12";
+            this.checkBox12.Size = new System.Drawing.Size(89, 19);
+            this.checkBox12.TabIndex = 151;
+            this.checkBox12.Text = "異常検出";
+            this.checkBox12.UseVisualStyleBackColor = true;
+            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1894,5 +1907,6 @@
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.CheckBox checkBox12;
     }
 }
