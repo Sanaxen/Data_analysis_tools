@@ -2397,7 +2397,7 @@ namespace WindowsFormsApplication1
                             }
                             else
                             {
-                                cmd += "p_ <- subplot(p1_, p2_, nrows = 3)\r\n";
+                                cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
                             }
                         }
                     }

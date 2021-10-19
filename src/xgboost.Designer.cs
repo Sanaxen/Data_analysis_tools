@@ -35,6 +35,7 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
@@ -146,7 +147,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
@@ -312,6 +312,16 @@
             this.panel7.Size = new System.Drawing.Size(208, 326);
             this.panel7.TabIndex = 147;
             // 
+            // checkBox12
+            // 
+            this.checkBox12.AutoSize = true;
+            this.checkBox12.Location = new System.Drawing.Point(89, 304);
+            this.checkBox12.Name = "checkBox12";
+            this.checkBox12.Size = new System.Drawing.Size(89, 19);
+            this.checkBox12.TabIndex = 151;
+            this.checkBox12.Text = "異常検出";
+            this.checkBox12.UseVisualStyleBackColor = true;
+            // 
             // checkBox11
             // 
             this.checkBox11.AutoSize = true;
@@ -321,7 +331,6 @@
             this.checkBox11.TabIndex = 150;
             this.checkBox11.Text = "全区間表示";
             this.checkBox11.UseVisualStyleBackColor = true;
-            this.checkBox11.Visible = false;
             // 
             // checkBox9
             // 
@@ -1730,16 +1739,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // checkBox12
-            // 
-            this.checkBox12.AutoSize = true;
-            this.checkBox12.Location = new System.Drawing.Point(89, 304);
-            this.checkBox12.Name = "checkBox12";
-            this.checkBox12.Size = new System.Drawing.Size(89, 19);
-            this.checkBox12.TabIndex = 151;
-            this.checkBox12.Text = "異常検出";
-            this.checkBox12.UseVisualStyleBackColor = true;
             // 
             // xgboost
             // 
