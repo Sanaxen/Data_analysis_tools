@@ -1,1 +1,0 @@
-df = expand.table(Titanic)

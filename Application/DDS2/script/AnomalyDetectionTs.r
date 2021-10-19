@@ -8,7 +8,7 @@ Anomalyplot <- function(df, res, vlinepos)
 	  geom_line(data=df, aes(timestamp, count), color='lightslategray') + 
 	  geom_point(data=res$anoms, aes(timestamp, anoms), color='#cb181d')+ 
 	  ggtitle("ˆÙíŒŸo")+ ylab("’l")+
-	  geom_vline(xintercept=vlinepos)
+	  geom_vline(data=res$anoms, aes(xintercept=as.numeric(vlinepos)))
 	
 	cat("anomaly_Detection start\r\n")
 	print(res$anoms)
@@ -25,7 +25,7 @@ anomaly_DetectionTs<- function(df, colname, vlinepos )
 	
 	#threshold = 'None' | 'med_max' | 'p95' | 'p99'
 	#res <- AnomalyDetectionTs(tmp, max_anoms=0.02, direction='both', threshold = 'p95', longterm = F, plot=FALSE)
-	res <- AnomalyDetectionTs(tmp, max_anoms=0.02, direction='both',  longterm = F, plot=FALSE)
+	res <- AnomalyDetectionTs(tmp, max_anoms=0.05, direction='both',  longterm = F, plot=FALSE)
 	
 	plt <- Anomalyplot(tmp, res, vlinepos)
 	return ( list(tmp,res, plt))

@@ -9,13 +9,13 @@ add_event_days <- function(df)
 
 	for ( i in 1:nrow(holidays)){
 	#i = 1
-		clidx = grep(as.Date(holidays$ds[i]), as.Date(df$ds))
-	#as.Date(holidays$ds[i])
-	#as.Date(df$ds[clidx])
+		clidx = grep(as.POSIXct(holidays$ds[i]), as.POSIXct(df$ds))
+	#as.POSIXct(holidays$ds[i])
+	#as.POSIXct(df$ds[clidx])
 
 		if ( length(clidx) == 0 )
 		{
-			print(as.Date(holidays$ds[i]))
+			print(as.POSIXct(holidays$ds[i]))
 			next
 		}
 		
