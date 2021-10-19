@@ -944,7 +944,7 @@ namespace WindowsFormsApplication1
                             cmd2 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$target_, colour = \"観測値\"))+\r\n";
                             cmd2 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$target_,colour = \"観測値Point\"))+\r\n";
                             cmd2 += "geom_line(aes(x=as.POSIXct(test[,1]), y=y_mean_smooth,colour =\"平均値\"))+\r\n";
-                            cmd2 += "geom_vline(xintercept=test[,1][nrow(test_org])+\r\n";
+                            cmd2 += "geom_vline(xintercept=test[,1][nrow(test_org)])+\r\n";
                             cmd2 += "scale_x_datetime(name = \"time\", date_labels = \"%y-%m-%d\")\r\n";
                             cmd2 += "\r\n";
                         }
@@ -1155,7 +1155,7 @@ namespace WindowsFormsApplication1
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
                             cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=predictions[,1], colour=\"予測値\"))+\r\n";
-                            cmd3 += "geom_vline(xintercept=test[,1][nrow(test_org])+\r\n";
+                            cmd3 += "geom_vline(xintercept=test[,1][nrow(test_org)])+\r\n";
                             cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n";
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt3 <- interval_plt + \r\n";
@@ -1163,7 +1163,7 @@ namespace WindowsFormsApplication1
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
                             cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=predictions[,1], colour=\"予測値\"))+\r\n";
-                            cmd3 += "geom_vline(xintercept=test[,1][nrow(test_org])+\r\n";
+                            cmd3 += "geom_vline(xintercept=test[,1][nrow(test_org)])+\r\n";
                             cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n";
                         }
                         else
@@ -1192,14 +1192,14 @@ namespace WindowsFormsApplication1
                             cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
                             cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                             cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))+\r\n";
-                            cmd3 += "geom_vline(xintercept=nrow(test_org)+\r\n";
+                            cmd3 += "geom_vline(xintercept=nrow(test_org))\r\n";
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt3 <- interval_plt + \r\n";
                             cmd3 += "geom_ribbon(aes(x=1:length(test$target_),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
                             cmd3 += "geom_line(aes(x=1:length(test$target_), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
                             cmd3 += "geom_point(aes(x=1:length(test$target_),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                             cmd3 += "geom_line(aes(x=1:length(test$target_), y=predictions[,1], colour=\"予測値\"))+\r\n";
-                            cmd3 += "geom_vline(xintercept=nrow(test_org)+\r\n";
+                            cmd3 += "geom_vline(xintercept=nrow(test_org))\r\n";
                         }
                         cmd3 += "\r\n";
                     }
@@ -1475,7 +1475,7 @@ namespace WindowsFormsApplication1
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.y");
                     if (radioButton1.Checked)
                     {
-                        form1.ComboBoxItemAdd(form1.comboBox2, "residual.error");
+                        form1.ComboBoxItemAdd(form1.comboBox2, "residual.error2");
                     }
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
 
@@ -1584,6 +1584,11 @@ namespace WindowsFormsApplication1
                         cmd += "	    test<-rbind(test, test[1,])\r\n";
                         cmd += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
                         cmd += "	    \r\n";
+                        if (add_enevt_data == 1)
+                        {
+                            cmd += "        test$event[nrow(test)] = sample(train$event, 1)\r\n";
+                        }
+                        cmd += "	    \r\n";
                         cmd += "        if ( sample_metod >= 1){\r\n";
                         cmd += "	        #追加された列の説明変数を推定\r\n";
                         cmd += "	        for ( i in 1:ncol(test)){\r\n";
@@ -1683,8 +1688,8 @@ namespace WindowsFormsApplication1
                         cmd += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] = 1\r\n";
                         cmd += "\r\n";
                         cmd += "        tryCatch({\r\n";
-                        cmd += "            m = as.integer(format(as.Date(test[nrow(test),1]),\"%m\"))\r\n";
-                        cmd += "            d = as.integer(format(as.Date(test[nrow(test),1]),\"%d\"))\r\n";
+                        cmd += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
+                        cmd += "            d = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))\r\n";
                         cmd += "        },\r\n";
                         cmd += "        error = function(e){\r\n";
                         cmd += "            #message(e)\r\n";
@@ -1838,19 +1843,19 @@ namespace WindowsFormsApplication1
                     }
                     if (radioButton1.Checked || (radioButton2.Checked && comboBox2.Text == "\"multi:softprob\""))
                     {
-                        cmd += "residual.error <- predict.y[1:nrow(test),1] - as.numeric(test$'"+targetName +"'[1:nrow(test)])\r\n";
+                        cmd += "residual.error <- predict.y[1:nrow(test_org),1] - as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)])\r\n";
                         cmd += "rmse_<- residual.error^2\r\n";
                         cmd += "rmse_<- sqrt(mean(rmse_[1]))\r\n";
 
                         cmd += "se_<-sum((residual.error)^2)\r\n";
-                        cmd += "st_ <- as.numeric(test$'" + targetName + "'[1:nrow(test)]) - mean(as.numeric(test$'" + targetName + "'[1:nrow(test)]))\r\n";
+                        cmd += "st_ <- as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)]) - mean(as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)]))\r\n";
                         cmd += "st_<-sum((st_)^2)\r\n";
                         cmd += "R2_<- 1-se_/st_\r\n";
                         cmd += "p_ <- " + listBox2.SelectedIndices.Count.ToString() + "-1\r\n";
                         cmd += "n_ <- nrow(df_)\r\n";
                         cmd += "adjR2_ <- 1-(se_/(n_-p_-1))/(st_/(n_-1)) \r\n";
                         //cmd += "me_ <- residual.error / " + "df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
-                        cmd += "me_ <- residual.error / as.numeric(test$'" + targetName + "'[1:nrow(test)])\r\n";
+                        cmd += "me_ <- residual.error / as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)])\r\n";
                         cmd += "MER_ <- median(abs(me_[1]), na.rm = TRUE)\r\n";
                     }
 
@@ -1951,11 +1956,12 @@ namespace WindowsFormsApplication1
                                 sw.Write("dev.off()\r\n");
                                 */
 
+                                sw.Write("residual.error2 <- predict.y[1:nrow(test),1] - as.numeric(test$'" + targetName + "'[1:nrow(test)])\r\n");
                                 if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                                 {
                                     sw.Write("residual_plt<-ggplot()\r\n");
-                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=residual.error, colour=\"誤差\"))+\r\n");
-                                    sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=residual.error, colour = \"誤差Point\"))+\r\n");
+                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=residual.error2, colour=\"誤差\"))+\r\n");
+                                    sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=residual.error2, colour = \"誤差Point\"))+\r\n");
                                     sw.Write("geom_vline(xintercept=test_org[,1][nrow(test_org)])+\r\n");
                                     sw.Write("scale_x_datetime(name= \"time\",date_labels = \"%y-%m-%d\")\r\n");
                                     
@@ -1976,8 +1982,8 @@ namespace WindowsFormsApplication1
                                 else
                                 {
                                     sw.Write("residual_plt<-ggplot()\r\n");
-                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=(1:nrow(predict.y)), y=residual.error, colour=\"誤差\"))+\r\n");
-                                    sw.Write("geom_point(aes(x=1:nrow(predict.y),y=residual.error, colour = \"誤差Point\"))+\r\n");
+                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=(1:nrow(predict.y)), y=residual.error2, colour=\"誤差\"))+\r\n");
+                                    sw.Write("geom_point(aes(x=1:nrow(predict.y),y=residual.error2, colour = \"誤差Point\"))+\r\n");
                                     sw.Write("geom_vline(xintercept=nrow(test_org))\r\n");
 
                                     sw.Write("predict_plt<-ggplot()\r\n");
@@ -2335,20 +2341,8 @@ namespace WindowsFormsApplication1
 
                     if (radioButton1.Checked && radioButton3.Checked)
                     {
-                        cmd += "p1_<-plot_ly(test, alpha=0.6, type = \"scatter\", mode = " + mode +
-                                 x_axis + ",y = residual.error";
-                        cmd += ", name =\"" + "residual.error" + "\")\r\n";
-
-                        cmd += "p2_<-plot_ly(test, alpha=0.6, type = \"scatter\", mode = " + mode +
-                                x_axis + ",y = " +
-                                "test$'" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "'";
-                        cmd += ", name =\"" + form1.Names.Items[listBox1.SelectedIndex].ToString() + "\") %>% \r\n";
-
-                        cmd += "add_trace(test, alpha=0.6, type = \"scatter\", mode = " + mode +
-                                x_axis + ",y = predict.y[,1]";
-                        cmd += ", name =\"predict\")+\r\n";
-                        cmd += "geom_vline(xintercept=nrow(test_org))\r\n";
-
+                        cmd += "p1_<-ggplotly(residual_plt)\r\n";
+                        cmd += "p2_<-ggplotly(predict_plt)\r\n";
                         if (use_AnomalyDetectionTs == 1)
                         {
                             cmd += "anom_p <- ggplotly(anomaly_det[[3]])\r\n";
