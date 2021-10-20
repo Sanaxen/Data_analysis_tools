@@ -23,8 +23,19 @@ add_event_days <- function(df)
 		df$lower_window[clidx] = 1
 		if ( u < 0 )
 		{
+			du = -1/u
+			x = 1
+			for ( id in (clidx+u):clidx){
+				if (clidx+u >= 1)df$lower_window[id] = du*x
+				x = x + 1
+			}
+		}else
+		{
+			du = 1/u
+			x = 1
 			for ( id in (clidx-u):clidx){
-				if (clidx-u >= 1)df$lower_window[id] = 1
+				if (clidx-u >= 1)df$lower_window[id] = du*x
+				x = x + 1
 			}
 		}
 		
@@ -32,8 +43,11 @@ add_event_days <- function(df)
 		df$upper_window[clidx] = 1
 		if ( u > 0 )
 		{
+			du = 1/u
+			x = 1
 			for ( id in clidx:(clidx+u)){
-				if (clidx+u <=nrow(df))df$upper_window[id] = 1
+				if (clidx+u <=nrow(df))df$upper_window[id] = 1 - du*x
+				x = x + 1
 			}
 		}
 	}

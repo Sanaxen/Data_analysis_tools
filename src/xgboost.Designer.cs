@@ -147,6 +147,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
@@ -170,11 +171,13 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.numericUpDown4);
             this.panel2.Controls.Add(this.button19);
             this.panel2.Controls.Add(this.textBox9);
             this.panel2.Controls.Add(this.label34);
@@ -1005,7 +1008,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(79, 22);
             this.textBox3.TabIndex = 92;
-            this.textBox3.Text = "0.3";
+            this.textBox3.Text = "0.1";
             this.textBox3.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label11
@@ -1016,7 +1019,7 @@
             this.label11.Size = new System.Drawing.Size(27, 15);
             this.label11.TabIndex = 91;
             this.label11.Text = "eta";
-            this.toolTip1.SetToolTip(this.label11, "小さくすると、モデルの分類性を高めることが可能です。\r\n過学習が進み精度が悪化する恐れがあります。\r\ndefault:0.3");
+            this.toolTip1.SetToolTip(this.label11, "小さくすると、モデルの分類性を高めることが可能です。\r\n過学習が進み精度が悪化する恐れがあります。\r\ndefault:0.1");
             // 
             // label10
             // 
@@ -1740,6 +1743,30 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(389, 93);
+            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(61, 22);
+            this.numericUpDown4.TabIndex = 151;
+            this.toolTip1.SetToolTip(this.numericUpDown4, "重みを指定倍する事が出来ます");
+            this.numericUpDown4.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1784,6 +1811,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1907,5 +1935,6 @@
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.CheckBox checkBox12;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
     }
 }

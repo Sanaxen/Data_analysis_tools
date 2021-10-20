@@ -1,14 +1,30 @@
 library(AnomalyDetection)
 library(ggplot2)
+#		  geom_rect(data = df, aes(xmin = 0, xmax = as.numeric(vlinepos2), ymin = -Inf, ymax = Inf, fill = "gray"), alpha = 0.2) + 
 
-Anomalyplot <- function(df, res, vlinepos)
+Anomalyplot <- function(df, res, vlinepos, vlinepos2)
 {
 	res$anoms$timestamp <- as.POSIXct(res$anoms$timestamp)
-	plt <- ggplot(df, aes(timestamp, count)) + 
-	  geom_line(data=df, aes(timestamp, count), color='lightslategray') + 
-	  geom_point(data=res$anoms, aes(timestamp, anoms), color='#cb181d')+ 
-	  ggtitle("異常検出")+ ylab("値")+
-	  geom_vline(data=res$anoms, aes(xintercept=as.numeric(vlinepos)))
+	if ( as.numeric(vlinepos2) > 0 )
+	{
+		plt <- ggplot(df, aes(timestamp, count)) + 
+		  geom_line(data=df, aes(timestamp, count), color='lightslategray') + 
+		  #geom_rect(data = df, aes(xmin = as.POSIXct(df[,1][1]), xmax = as.POSIXct(vlinepos2),
+		  # ymin = -Inf, ymax = Inf), fill = "blue", alpha = 0.2, inherit.aes = FALSE ) + 
+		  annotate("rect", xmin = as.POSIXct(df[,1][1]), xmax = as.POSIXct(vlinepos2), ymin = -Inf, ymax = Inf, alpha = 0.05)+
+		  geom_point(data=res$anoms, aes(timestamp, anoms), color='#cb181d')+ 
+		  geom_vline(data=res$anoms, aes(xintercept=as.numeric(vlinepos)))+
+		  geom_vline(data=res$anoms, linetype="dotdash", aes(xintercept=as.numeric(vlinepos2)))+
+		  ggtitle("異常検出")+ ylab("値")
+	}else
+	{
+		plt <- ggplot(df, aes(timestamp, count)) + 
+		  geom_line(data=df, aes(timestamp, count), color='lightslategray') + 
+		  geom_point(data=res$anoms, aes(timestamp, anoms), color='#cb181d')+ 
+		  geom_vline(data=res$anoms, aes(xintercept=as.numeric(vlinepos)))+
+		  ggtitle("異常検出")+ ylab("値")
+	}
+
 	
 	cat("anomaly_Detection start\r\n")
 	print(res$anoms)
@@ -16,7 +32,7 @@ Anomalyplot <- function(df, res, vlinepos)
 	return (plt)
 }
 
-anomaly_DetectionTs<- function(df, colname, vlinepos )
+anomaly_DetectionTs<- function(df, colname, vlinepos, vlinepos2)
 {
 	tmp <- cbind(df[,1], df[colname])
 	colnames(tmp)[1] <- c("timestamp")
@@ -27,7 +43,7 @@ anomaly_DetectionTs<- function(df, colname, vlinepos )
 	#res <- AnomalyDetectionTs(tmp, max_anoms=0.02, direction='both', threshold = 'p95', longterm = F, plot=FALSE)
 	res <- AnomalyDetectionTs(tmp, max_anoms=0.05, direction='both',  longterm = F, plot=FALSE)
 	
-	plt <- Anomalyplot(tmp, res, vlinepos)
+	plt <- Anomalyplot(tmp, res, vlinepos, vlinepos2)
 	return ( list(tmp,res, plt))
 }
 
