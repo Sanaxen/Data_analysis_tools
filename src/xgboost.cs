@@ -545,6 +545,16 @@ namespace WindowsFormsApplication1
                     checkBox8.Checked = false;
                 }
 
+                if (listBox1.SelectedIndex < 0)
+                {
+                    if (Form1.batch_mode == 1)
+                    {
+                        error_status = 2;
+                        return;
+                    }
+                    MessageBox.Show("目的変数を指定して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
                 error_status = 0;
                 execute_count += 1;
@@ -1519,8 +1529,18 @@ namespace WindowsFormsApplication1
                     for (int ii = 0; ii < explain_num; ii++)
                     {
                         explain += string.Format("predict_parts_plt{0} = predict_parts(explainer, test_mx[{1},, drop = FALSE])\r\n", ii+1, ii + 1);
-                        string png_file = string.Format("tmp_xgboost_predict_parts{0:D4}.png", ii+1);
-                        explain += "plt_ <- " + string.Format("  plot(predict_parts_plt{0})\r\n", ii+1);
+                        string png_file = Form1.curDir + string.Format("\\explain_predict\\tmp_xgboost_predict_parts{0:D4}.png", ii+1);
+                        png_file = png_file.Replace("\\", "/").Replace("//", "/");
+
+                        string path = Form1.curDir + "\\explain_predict";
+                        if (!System.IO.Directory.Exists(path))
+                        {
+                            // Try to create the directory.
+                            System.IO.Directory.CreateDirectory(path);
+                        }
+
+
+                        explain += "plt_ <- " + string.Format("  plot(predict_parts_plt{0})\r\n", ii + 1);
                         explain += "ggsave(filename = \"" + png_file + "\", plot = plt_)\r\n";
                         explain += "cat(\r\n)\r\n";
                         explain += string.Format("cat(\"*****predict_parts_plt{0}/{1}*****\")\r\n", ii+1, explain_num);
@@ -1547,29 +1567,30 @@ namespace WindowsFormsApplication1
                     }
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
 
-                    cmd += "df_<-test\r\n";
-                    cmd += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                    string cmd5 = "";
+                    cmd5 += "df_<-test\r\n";
+                    cmd5 += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     if (use_diff == 1)
                     {
                         if (eval == 1)
                         {
-                            cmd += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
+                            cmd5 += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
                         }
                         else
                         {
-                            cmd += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
+                            cmd5 += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                         }
-                        cmd += "predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
-                        cmd += "\r\n";
-                        cmd += "zz_tmp<- inv_diff(test$target_, start_value, use_log_diff) - min__\r\n";
-                        cmd += "debug_plt <- ggplot()\r\n";
-                        cmd += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
-                        cmd += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
-                        cmd += "geom_line(aes(x = (1:length(test$target_)), y = predict_y, colour = \"pred\"))\r\n";
-                        cmd += "debug_plt\r\n";
-                        cmd += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt)\r\n";
+                        cmd5 += "predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
+                        cmd5 += "\r\n";
+                        cmd5 += "zz_tmp<- inv_diff(test$target_, start_value, use_log_diff) - min__\r\n";
+                        cmd5 += "debug_plt <- ggplot()\r\n";
+                        cmd5 += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
+                        cmd5 += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
+                        cmd5 += "geom_line(aes(x = (1:length(test$target_)), y = predict_y, colour = \"pred\"))\r\n";
+                        cmd5 += "debug_plt\r\n";
+                        cmd5 += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt)\r\n";
 
-                        cmd += "\r\n";
+                        cmd5 += "\r\n";
                     }
 
 
@@ -1577,307 +1598,308 @@ namespace WindowsFormsApplication1
                     {
                         if (comboBox2.Text == "\"multi:softprob\"")
                         {
-                            cmd += "predict_y <- matrix(predict_y,"+ numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
-                            cmd += "predict_y<-t(predict_y)\r\n";
-                            cmd += "colnames(predict_y)<-c(";
-                            cmd += "\""+string.Format("class{0}", 1)+"\"";
+                            cmd5 += "predict_y <- matrix(predict_y,"+ numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
+                            cmd5 += "predict_y<-t(predict_y)\r\n";
+                            cmd5 += "colnames(predict_y)<-c(";
+                            cmd5 += "\""+string.Format("class{0}", 1)+"\"";
                             for ( int i = 2; i <= numericUpDown7.Value; i++)
                             {
-                                cmd += ",\"" + string.Format("class{0}", i)+"\"";
+                                cmd5 += ",\"" + string.Format("class{0}", i)+"\"";
                             }
-                            cmd += ")\r\n";
+                            cmd5 += ")\r\n";
                         }
                         if (comboBox2.Text == "\"multi:softmax\"")
                         {
-                            cmd += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
-                            cmd += "x_<- data.frame(confusion_tbl[,1])\r\n";
-                            cmd += "    for (i in 2:ncol(confusion_tbl)){\r\n";
-                            cmd += "    x_ <- cbind(x_, confusion_tbl[,i])\r\n";
-                            cmd += "}\r\n";
-                            cmd += "if ( nrow(x_) < ncol(x_)){\r\n";
-                            cmd += "    x_ <- rbind(x_, c(1:ncol(x_)) * 0)\r\n";
-                            cmd += "}\r\n";
+                            cmd5 += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
+                            cmd5 += "x_<- data.frame(confusion_tbl[,1])\r\n";
+                            cmd5 += "    for (i in 2:ncol(confusion_tbl)){\r\n";
+                            cmd5 += "    x_ <- cbind(x_, confusion_tbl[,i])\r\n";
+                            cmd5 += "}\r\n";
+                            cmd5 += "if ( nrow(x_) < ncol(x_)){\r\n";
+                            cmd5 += "    x_ <- rbind(x_, c(1:ncol(x_)) * 0)\r\n";
+                            cmd5 += "}\r\n";
 
-                            cmd += "tryCatch({\r\n";
-                            cmd += "    colnames(x_)<-rownames(x_)\r\n";
-                            cmd += "},\r\n";
-                            cmd += "error = function(e) {\r\n";
-                            cmd += " #print(e)\r\n";
-                            cmd += "})\r\n";
-                            cmd += "confusion_test <- x_\r\n";
+                            cmd5 += "tryCatch({\r\n";
+                            cmd5 += "    colnames(x_)<-rownames(x_)\r\n";
+                            cmd5 += "},\r\n";
+                            cmd5 += "error = function(e) {\r\n";
+                            cmd5 += " #print(e)\r\n";
+                            cmd5 += "})\r\n";
+                            cmd5 += "confusion_test <- x_\r\n";
 
-                            cmd += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
-                            cmd += "tmp_ <- df_\r\n";
-                            cmd += "tmp_ <- cbind(tmp_, predict_y)\r\n";
-                            cmd += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
+                            cmd5 += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
+                            cmd5 += "tmp_ <- df_\r\n";
+                            cmd5 += "tmp_ <- cbind(tmp_, predict_y)\r\n";
+                            cmd5 += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
                         }
                     }
-                    cmd += "predict.y<-as.data.frame(predict_y)\r\n";
+                    cmd5 += "predict.y<-as.data.frame(predict_y)\r\n";
                     if ( time_series_mode )
                     {
-                        cmd += "sample_metod <- -1\r\n";
+                        cmd5 += "sample_metod <- -1\r\n";
                         if (comboBox5.Text == "復元抽出")
                         {
-                            cmd += "sample_metod <- 1\r\n";
+                            cmd5 += "sample_metod <- 1\r\n";
                         }
                         if (comboBox5.Text == "移動平均")
                         {
-                            cmd += "sample_metod <- 2\r\n";
+                            cmd5 += "sample_metod <- 2\r\n";
                         }
                         if (comboBox5.Text == "AutoRegression")
                         {
-                            cmd += "sample_metod <- 3\r\n";
+                            cmd5 += "sample_metod <- 3\r\n";
                         }
                         if (comboBox5.Text == "auto.arima")
                         {
-                            cmd += "sample_metod <- 4\r\n";
+                            cmd5 += "sample_metod <- 4\r\n";
                         }
-                        //cmd += "test<- test_org\r\n";
-                        //cmd += "test$target_[length(test$target_)] = predict_y[length(predict_y)]\r\n";
-                        //cmd += "test$target_ = predict_y\r\n";
-                        cmd += "dt_ = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
-                        cmd += "dt_ = as.numeric(dt_,units=\"secs\")\r\n";
+                        //cmd5 += "test<- test_org\r\n";
+                        //cmd5 += "test$target_[length(test$target_)] = predict_y[length(predict_y)]\r\n";
+                        //cmd5 += "test$target_ = predict_y\r\n";
+                        cmd5 += "dt_ = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
+                        cmd5 += "dt_ = as.numeric(dt_,units=\"secs\")\r\n";
 
-                        cmd += "colidx0 = grep(\"^lag[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
-                        cmd += "colidx1 = grep(\"^target_$\", colnames(test) )\r\n";
-                        cmd += "colidx2 = grep(\"^"+targetName+"$\", colnames(test) )\r\n";
-                        cmd += "colidx3 = grep(\"^grad[0-9]?_" + targetName + "$\", colnames(test) )\r\n";
-                        cmd += "colidx4 = grep(\"^mean_" + targetName + "$\", colnames(test) )\r\n";
-                        cmd += "mean_ <- apply(train[,-1],2, mean)\r\n";
-                        cmd += "sd_ <- apply(train[,-1],2, sd)\r\n";
-                        cmd += "st_ <- test[nrow(test),1]\r\n";
-                        cmd += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
-                        cmd += "    for ( i in 1:"+numericUpDown5.Value.ToString()+"){\r\n";
-                        cmd += "	    # 1行追加\r\n";
-                        cmd += "	    test<-rbind(test, test[1,])\r\n";
-                        cmd += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
-                        cmd += "	    \r\n";
+                        cmd5 += "colidx0 = grep(\"^lag[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
+                        cmd5 += "colidx1 = grep(\"^target_$\", colnames(test) )\r\n";
+                        cmd5 += "colidx2 = grep(\"^"+targetName+"$\", colnames(test) )\r\n";
+                        cmd5 += "colidx3 = grep(\"^grad[0-9]?_" + targetName + "$\", colnames(test) )\r\n";
+                        cmd5 += "colidx4 = grep(\"^mean_" + targetName + "$\", colnames(test) )\r\n";
+                        cmd5 += "mean_ <- apply(train[,-1],2, mean)\r\n";
+                        cmd5 += "sd_ <- apply(train[,-1],2, sd)\r\n";
+                        cmd5 += "st_ <- test[nrow(test),1]\r\n";
+                        cmd5 += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
+                        cmd5 += "    for ( i in 1:"+numericUpDown5.Value.ToString()+"){\r\n";
+                        cmd5 += "	    # 1行追加\r\n";
+                        cmd5 += "	    test<-rbind(test, test[1,])\r\n";
+                        cmd5 += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
+                        cmd5 += "	    \r\n";
                         if (add_enevt_data == 1)
                         {
-                            cmd += "        test$event[nrow(test)] = sample(train$event, 1)\r\n";
+                            cmd5 += "        test$event[nrow(test)] = sample(train$event, 1)\r\n";
                         }
-                        cmd += "	    \r\n";
-                        cmd += "        if ( sample_metod >= 1){\r\n";
-                        cmd += "	        #追加された列の説明変数を推定\r\n";
-                        cmd += "	        for ( i in 1:ncol(test)){\r\n";
-                        cmd += "                select_var <- FALSE\r\n";
+                        cmd5 += "	    \r\n";
+                        cmd5 += "        if ( sample_metod >= 1){\r\n";
+                        cmd5 += "	        #追加された列の説明変数を推定\r\n";
+                        cmd5 += "	        for ( i in 1:ncol(test)){\r\n";
+                        cmd5 += "                select_var <- FALSE\r\n";
                         for (int ii = 0; ii < listBox2.SelectedIndices.Count; ii++)
                         {
-                            cmd += "                if ( i-1 == " + listBox2.SelectedIndices[ii].ToString() + "){\r\n";
-                            cmd += "                    select_var <- TRUE\r\n";
-                            cmd += "                }\r\n";
+                            cmd5 += "                if ( i-1 == " + listBox2.SelectedIndices[ii].ToString() + "){\r\n";
+                            cmd5 += "                    select_var <- TRUE\r\n";
+                            cmd5 += "                }\r\n";
                         }
-                        cmd += "                if (select_var == FALSE ) next\r\n";
-                        cmd += "                skip <- FALSE\r\n";
-                        cmd += "                for ( k in 1:length(colidx0)){\r\n";
-                        cmd += "                    if ( i == colidx0[k] ) {\r\n";
-                        cmd += "                        skip <- TRUE\r\n";
-                        cmd += "                        break\r\n";
-                        cmd += "                    }\r\n";
-                        cmd += "                }\r\n";
-                        cmd += "                for ( k in 1:length(colidx3)){\r\n";
-                        cmd += "                    if ( i == colidx3[k]) {\r\n";
-                        cmd += "                        skip <- TRUE\r\n";
-                        cmd += "                        break\r\n";
-                        cmd += "                    }\r\n";
-                        cmd += "                }\r\n";
-                        cmd += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && skip != TRUE)\r\n";
-                        cmd += "	            {\r\n";
-                        cmd += "                    test[nrow(test), i] = rnorm(mean_, sd_)[i]\r\n";
-                        cmd += "                    if ( sample_metod == 1){\r\n";
-                        cmd += "                        #復元抽出\r\n";
-                        cmd += "                        test[nrow(test), i] = sample(train[, i], 1)\r\n";
-                        cmd += "                    }\r\n";
-                        cmd += "                    if ( sample_metod == 2){\r\n";
-                        cmd += "   	        	        #移動平均\r\n";
-                        cmd += "                        test[nrow(test),i] = mean(test[(nrow(test)-3):nrow(test),i])\r\n";
-                        cmd += "                    }\r\n";
-                        cmd += "                    if ( sample_metod == 3){\r\n";
-                        cmd += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
-                        cmd += "			            #ts.plot(df_t)\r\n";
-                        cmd += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
-                        cmd += "			            pred <- predict(Fit,n.ahead=1)\r\n";
-                        cmd += "			            test[nrow(test),i] = pred$pred[1]\r\n";
-                        cmd += "                    }\r\n";
-                        cmd += "                    if ( sample_metod == 4){\r\n";
-                        cmd += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
-                        cmd += "			            #ts.plot(df_t)\r\n";
-                        cmd += "                        tryCatch({\r\n";
-                        cmd += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
-                        cmd += "			                pred <- predict(Fit,n.ahead=1)\r\n";
-                        cmd += "			                test[nrow(test),i] = pred$pred[1]\r\n";
-                        cmd += "                        },\r\n";
-                        cmd += "                        error = function(e) {\r\n";
-                        cmd += "                            #message(e)\r\n";
-                        cmd += "                            #print(e)\r\n";
-                        cmd += "                            #復元抽出\r\n";
-                        cmd += "                            test[nrow(test), i] = sample(train[, i], 1)\r\n";
-                        cmd += "                        },\r\n";
-                        cmd += "                        finally   = {\r\n";
-                        cmd += "                        },\r\n";
-                        cmd += "                        silent = TRUE\r\n";
-                        cmd += "                        )\r\n";
-                        cmd += "                    }\r\n";
-                        cmd += "		        }\r\n";
-                        cmd += "	        }\r\n";
-                        cmd += "	    }\r\n";
-                        cmd += "	    \r\n";
+                        cmd5 += "                if (select_var == FALSE ) next\r\n";
+                        cmd5 += "                skip <- FALSE\r\n";
+                        cmd5 += "                for ( k in 1:length(colidx0)){\r\n";
+                        cmd5 += "                    if ( i == colidx0[k] ) {\r\n";
+                        cmd5 += "                        skip <- TRUE\r\n";
+                        cmd5 += "                        break\r\n";
+                        cmd5 += "                    }\r\n";
+                        cmd5 += "                }\r\n";
+                        cmd5 += "                for ( k in 1:length(colidx3)){\r\n";
+                        cmd5 += "                    if ( i == colidx3[k]) {\r\n";
+                        cmd5 += "                        skip <- TRUE\r\n";
+                        cmd5 += "                        break\r\n";
+                        cmd5 += "                    }\r\n";
+                        cmd5 += "                }\r\n";
+                        cmd5 += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && skip != TRUE)\r\n";
+                        cmd5 += "	            {\r\n";
+                        cmd5 += "                    test[nrow(test), i] = rnorm(mean_, sd_)[i]\r\n";
+                        cmd5 += "                    if ( sample_metod == 1){\r\n";
+                        cmd5 += "                        #復元抽出\r\n";
+                        cmd5 += "                        test[nrow(test), i] = sample(train[, i], 1)\r\n";
+                        cmd5 += "                    }\r\n";
+                        cmd5 += "                    if ( sample_metod == 2){\r\n";
+                        cmd5 += "   	        	        #移動平均\r\n";
+                        cmd5 += "                        test[nrow(test),i] = mean(test[(nrow(test)-3):nrow(test),i])\r\n";
+                        cmd5 += "                    }\r\n";
+                        cmd5 += "                    if ( sample_metod == 3){\r\n";
+                        cmd5 += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
+                        cmd5 += "			            #ts.plot(df_t)\r\n";
+                        cmd5 += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
+                        cmd5 += "			            pred <- predict(Fit,n.ahead=1)\r\n";
+                        cmd5 += "			            test[nrow(test),i] = pred$pred[1]\r\n";
+                        cmd5 += "                    }\r\n";
+                        cmd5 += "                    if ( sample_metod == 4){\r\n";
+                        cmd5 += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
+                        cmd5 += "			            #ts.plot(df_t)\r\n";
+                        cmd5 += "                        tryCatch({\r\n";
+                        cmd5 += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
+                        cmd5 += "			                pred <- predict(Fit,n.ahead=1)\r\n";
+                        cmd5 += "			                test[nrow(test),i] = pred$pred[1]\r\n";
+                        cmd5 += "                        },\r\n";
+                        cmd5 += "                        error = function(e) {\r\n";
+                        cmd5 += "                            #message(e)\r\n";
+                        cmd5 += "                            #print(e)\r\n";
+                        cmd5 += "                            #復元抽出\r\n";
+                        cmd5 += "                            test[nrow(test), i] = sample(train[, i], 1)\r\n";
+                        cmd5 += "                        },\r\n";
+                        cmd5 += "                        finally   = {\r\n";
+                        cmd5 += "                        },\r\n";
+                        cmd5 += "                        silent = TRUE\r\n";
+                        cmd5 += "                        )\r\n";
+                        cmd5 += "                    }\r\n";
+                        cmd5 += "		        }\r\n";
+                        cmd5 += "	        }\r\n";
+                        cmd5 += "	    }\r\n";
+                        cmd5 += "	    \r\n";
 
-                        cmd += "        coln = colnames(test)\r\n";
-                        cmd += "        colidx_1 = grep(\"sunday$\",  coln)\r\n";
-                        cmd += "        colidx_2 = grep(\"monday$\", coln )\r\n";
-                        cmd += "        colidx_3 = grep(\"tuesday$\", coln )\r\n";
-                        cmd += "        colidx_4 = grep(\"wednesday$\", coln )\r\n";
-                        cmd += "        colidx_5 = grep(\"thursday$\", coln )\r\n";
-                        cmd += "        colidx_6 = grep(\"friday$\", coln )\r\n";
-                        cmd += "        colidx_7 = grep(\"saturday$\", coln )\r\n";
+                        cmd5 += "        coln = colnames(test)\r\n";
+                        cmd5 += "        colidx_1 = grep(\"sunday$\",  coln)\r\n";
+                        cmd5 += "        colidx_2 = grep(\"monday$\", coln )\r\n";
+                        cmd5 += "        colidx_3 = grep(\"tuesday$\", coln )\r\n";
+                        cmd5 += "        colidx_4 = grep(\"wednesday$\", coln )\r\n";
+                        cmd5 += "        colidx_5 = grep(\"thursday$\", coln )\r\n";
+                        cmd5 += "        colidx_6 = grep(\"friday$\", coln )\r\n";
+                        cmd5 += "        colidx_7 = grep(\"saturday$\", coln )\r\n";
 
-                        cmd += "        colidx_8 = grep(\"month$\", coln )\r\n";
-                        cmd += "        colidx_9 = grep(\"day$\", coln )\r\n";
-                        cmd += "        colidx_10 = grep(\"hour$\", coln )\r\n";
-                        cmd += "        colidx_11 = grep(\"minute$\", coln )\r\n";
-                        cmd += "        colidx_12 = grep(\"second$\", coln )\r\n";
+                        cmd5 += "        colidx_8 = grep(\"month$\", coln )\r\n";
+                        cmd5 += "        colidx_9 = grep(\"day$\", coln )\r\n";
+                        cmd5 += "        colidx_10 = grep(\"hour$\", coln )\r\n";
+                        cmd5 += "        colidx_11 = grep(\"minute$\", coln )\r\n";
+                        cmd5 += "        colidx_12 = grep(\"second$\", coln )\r\n";
 
-                        cmd += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] = 0\r\n";
-                        cmd += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] = 0\r\n";
-                        cmd += "        if ( length(colidx_3) == 1 )test[nrow(test),colidx_3] = 0\r\n";
-                        cmd += "        if ( length(colidx_4) == 1 )test[nrow(test),colidx_4] = 0\r\n";
-                        cmd += "        if ( length(colidx_5) == 1 )test[nrow(test),colidx_5] = 0\r\n";
-                        cmd += "        if ( length(colidx_6) == 1 )test[nrow(test),colidx_6] = 0\r\n";
-                        cmd += "        if ( length(colidx_7) == 1 )test[nrow(test),colidx_7] = 0\r\n";
-                        cmd += "\r\n";
-                        cmd += "        week = weekdays(as.Date(test[nrow(test),1]))\r\n";
-                        cmd += "        if ( length(colidx_1) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_1] = 1\r\n";
-                        cmd += "        if ( length(colidx_2) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_2] = 1\r\n";
-                        cmd += "        if ( length(colidx_3) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_3] = 1\r\n";
-                        cmd += "        if ( length(colidx_4) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_4] = 1\r\n";
-                        cmd += "        if ( length(colidx_5) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_5] = 1\r\n";
-                        cmd += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] = 1\r\n";
-                        cmd += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] = 1\r\n";
-                        cmd += "\r\n";
-                        cmd += "        tryCatch({\r\n";
-                        cmd += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
-                        cmd += "            d = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))\r\n";
-                        cmd += "        },\r\n";
-                        cmd += "        error = function(e){\r\n";
-                        cmd += "            #message(e)\r\n";
-                        cmd += "            #print(e)\r\n";
-                        cmd += "        },\r\n";
-                        cmd += "        finally ={\r\n";
-                        cmd += "            if ( length(colidx_8) == 1 ) test[nrow(test),colidx_8] = m\r\n";
-                        cmd += "            if ( length(colidx_9) == 1 ) test[nrow(test),colidx_9] = d\r\n";
-                        cmd += "        },\r\n";
-                        cmd += "            silent = FALSE\r\n";
-                        cmd += "        )\r\n";
-                        cmd += "\r\n";
-                        cmd += "        tryCatch({\r\n";
-                        cmd += "            h = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))\r\n";
-                        cmd += "            m = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))\r\n";
-                        cmd += "            s = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%S\"))\r\n";
-                        cmd += "        },\r\n";
-                        cmd += "        error = function(e){\r\n";
-                        cmd += "            #message(e)\r\n";
-                        cmd += "            #print(e)\r\n";
-                        cmd += "        },\r\n";
-                        cmd += "        finally ={\r\n";
-                        cmd += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] = h\r\n";
-                        cmd += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] = m\r\n";
-                        cmd += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] = s\r\n";
-                        cmd += "        },\r\n";
-                        cmd += "            silent = FALSE\r\n";
-                        cmd += "        )\r\n";
-                        cmd += "\r\n";
+                        cmd5 += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] = 0\r\n";
+                        cmd5 += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] = 0\r\n";
+                        cmd5 += "        if ( length(colidx_3) == 1 )test[nrow(test),colidx_3] = 0\r\n";
+                        cmd5 += "        if ( length(colidx_4) == 1 )test[nrow(test),colidx_4] = 0\r\n";
+                        cmd5 += "        if ( length(colidx_5) == 1 )test[nrow(test),colidx_5] = 0\r\n";
+                        cmd5 += "        if ( length(colidx_6) == 1 )test[nrow(test),colidx_6] = 0\r\n";
+                        cmd5 += "        if ( length(colidx_7) == 1 )test[nrow(test),colidx_7] = 0\r\n";
+                        cmd5 += "\r\n";
+                        cmd5 += "        week = weekdays(as.Date(test[nrow(test),1]))\r\n";
+                        cmd5 += "        if ( length(colidx_1) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_1] = 1\r\n";
+                        cmd5 += "        if ( length(colidx_2) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_2] = 1\r\n";
+                        cmd5 += "        if ( length(colidx_3) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_3] = 1\r\n";
+                        cmd5 += "        if ( length(colidx_4) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_4] = 1\r\n";
+                        cmd5 += "        if ( length(colidx_5) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_5] = 1\r\n";
+                        cmd5 += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] = 1\r\n";
+                        cmd5 += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] = 1\r\n";
+                        cmd5 += "\r\n";
+                        cmd5 += "        tryCatch({\r\n";
+                        cmd5 += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
+                        cmd5 += "            d = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))\r\n";
+                        cmd5 += "        },\r\n";
+                        cmd5 += "        error = function(e){\r\n";
+                        cmd5 += "            #message(e)\r\n";
+                        cmd5 += "            #print(e)\r\n";
+                        cmd5 += "        },\r\n";
+                        cmd5 += "        finally ={\r\n";
+                        cmd5 += "            if ( length(colidx_8) == 1 ) test[nrow(test),colidx_8] = m\r\n";
+                        cmd5 += "            if ( length(colidx_9) == 1 ) test[nrow(test),colidx_9] = d\r\n";
+                        cmd5 += "        },\r\n";
+                        cmd5 += "            silent = FALSE\r\n";
+                        cmd5 += "        )\r\n";
+                        cmd5 += "\r\n";
+                        cmd5 += "        tryCatch({\r\n";
+                        cmd5 += "            h = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))\r\n";
+                        cmd5 += "            m = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))\r\n";
+                        cmd5 += "            s = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%S\"))\r\n";
+                        cmd5 += "        },\r\n";
+                        cmd5 += "        error = function(e){\r\n";
+                        cmd5 += "            #message(e)\r\n";
+                        cmd5 += "            #print(e)\r\n";
+                        cmd5 += "        },\r\n";
+                        cmd5 += "        finally ={\r\n";
+                        cmd5 += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] = h\r\n";
+                        cmd5 += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] = m\r\n";
+                        cmd5 += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] = s\r\n";
+                        cmd5 += "        },\r\n";
+                        cmd5 += "            silent = FALSE\r\n";
+                        cmd5 += "        )\r\n";
+                        cmd5 += "\r\n";
 
                         for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                         {
                             for (int j = start_lag; j <= lag; j++)
                             {
-                                cmd += "        test$'lag"+j.ToString()+"_" + targetName + "'" +
+                                cmd5 += "        test$'lag"+j.ToString()+"_" + targetName + "'" +
                                "[length(test$target_)]<- test$'"+targetName +"'[length(test$target_)-" + j.ToString()+"]\r\n";
                             }
-                            cmd += "        test$'grad_" + targetName + "'" +
+                            cmd5 += "        test$'grad_" + targetName + "'" +
                             "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-2]\r\n";
-                            cmd += "        test$'grad2_" + targetName + "'" +
+                            cmd5 += "        test$'grad2_" + targetName + "'" +
                             "[length(test$target_)]<- test$'grad_" + targetName+"'[length(test$target_)-1]-test$'grad_" + targetName+"'[length(test$target_)-2]\r\n";
 
                             if (lag >= means_n)
                             {
-                                cmd += "        test$'mean_" + targetName + "'" +
+                                cmd5 += "        test$'mean_" + targetName + "'" +
                                "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
                             }
 
                             if (lag >= befor_day)
                             {
-                                cmd += "        test$'grad3_" + targetName + "'" +
+                                cmd5 += "        test$'grad3_" + targetName + "'" +
                                 "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_3day) + "]\r\n";
                                 
-                                cmd += "        test$'grad4_" + targetName + "'" +
+                                cmd5 += "        test$'grad4_" + targetName + "'" +
                                "[length(test$target_)]<- numdiff2_5(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
 
-                                cmd += "        min_ <- min(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
-                                cmd += "        max_ <- max(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
-                                cmd += "        test$'grad5_" + targetName + "'" +
+                                cmd5 += "        min_ <- min(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
+                                cmd5 += "        max_ <- max(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
+                                cmd5 += "        test$'grad5_" + targetName + "'" +
                                "[length(test$target_)]<- curvature(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
                             }
                         }
 
-                        //cmd += "		id = -1\r\n";
-                        //cmd += "		d_min = 9999999\r\n";
-                        //cmd += "		for ( kk in 1:nrow(train) ){\r\n";
-                        //cmd += "			d = train[kk,] - test[length(test$target_)-1,]\r\n";
-                        //cmd += "			d = sum(d*d)\r\n";
-                        //cmd += "			if ( d_min > d ){\r\n";
-                        //cmd += "				d_min = d\r\n";
-                        //cmd += "				id = k\r\n";
-                        //cmd += "			}\r\n";
-                        //cmd += "		}\r\n";
-                        //cmd += "		if ( id >= 0 ) test$target_[length(test$target_)-1] = train[kk,]$target_\r\n";
+                        //cmd5 += "		id = -1\r\n";
+                        //cmd5 += "		d_min = 9999999\r\n";
+                        //cmd5 += "		for ( kk in 1:nrow(train) ){\r\n";
+                        //cmd5 += "			d = train[kk,] - test[length(test$target_)-1,]\r\n";
+                        //cmd5 += "			d = sum(d*d)\r\n";
+                        //cmd5 += "			if ( d_min > d ){\r\n";
+                        //cmd5 += "				d_min = d\r\n";
+                        //cmd5 += "				id = k\r\n";
+                        //cmd5 += "			}\r\n";
+                        //cmd5 += "		}\r\n";
+                        //cmd5 += "		if ( id >= 0 ) test$target_[length(test$target_)-1] = train[kk,]$target_\r\n";
 
-                        cmd += "\r\n";
-                        cmd += "\r\n";
-                        cmd += "	    #xgboostデータ形式に再構築して\r\n";
-                        cmd += "        test_mx<-";
-                        cmd += "        sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        cmd += "        test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        cmd5 += "\r\n";
+                        cmd5 += "\r\n";
+                        cmd5 += "	    #xgboostデータ形式に再構築して\r\n";
+                        cmd5 += "        test_mx<-";
+                        cmd5 += "        sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        cmd5 += "        test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
                         if (comboBox4.Text != "")
                         {
-                            cmd += ",weight = test$'" + comboBox4.Text + "'";
+                            cmd5 += ",weight = test$'" + comboBox4.Text + "'";
                         }
                         else
                         {
                             if (add_enevt_data == 1)
                             {
-                                cmd += ",weight = test$event";
+                                cmd5 += ",weight = test$event";
                             }
                         }
-                        cmd += "        )\r\n";
-                        cmd += "	    df_ <- test\r\n";
-                        cmd += "	    \r\n";
-                        cmd += "	    #testデータ区間を予測\r\n";
-                        cmd += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
-                        cmd += "        predict_y_org <- predict_y\r\n";
+                        cmd5 += "        )\r\n";
+                        cmd5 += "	    df_ <- test\r\n";
+                        cmd5 += "	    \r\n";
+                        cmd5 += "	    #testデータ区間を予測\r\n";
+                        cmd5 += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        cmd5 += "        predict_y_org <- predict_y\r\n";
                         if (use_diff == 1)
                         {
                             if (eval == 1)
                             {
-                                cmd += "        start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
+                                cmd5 += "        start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
                             }
                             else
                             {
-                                cmd += "        start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
+                                cmd5 += "        start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                             }
-                            cmd += "        predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
+                            cmd5 += "        predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
                         }
-                        cmd += "	        predict.y<-as.data.frame(predict_y)\r\n";
-                        cmd += "\r\n";
-                        cmd += "	    #データの最後を予測値で更新\r\n";
-                        cmd += "	    test$target_[length(test$target_)] = predict_y_org[length(predict_y)]\r\n";
-                        cmd += "	    test$'" + targetName + "'[length(test$target_)] = predict_y[length(predict_y)]\r\n";
-                        cmd += "    }\r\n";
-                        cmd += "}\r\n";
-                        cmd += "#test<- test[-length(test$target_)]\r\n";
+                        cmd5 += "	        predict.y<-as.data.frame(predict_y)\r\n";
+                        cmd5 += "\r\n";
+                        cmd5 += "	    #データの最後を予測値で更新\r\n";
+                        cmd5 += "	    test$target_[length(test$target_)] = predict_y_org[length(predict_y)]\r\n";
+                        cmd5 += "	    test$'" + targetName + "'[length(test$target_)] = predict_y[length(predict_y)]\r\n";
+                        cmd5 += "    }\r\n";
+                        cmd5 += "}\r\n";
+                        cmd5 += "#test<- test[-length(test$target_)]\r\n";
                     }
 
+                    cmd += cmd5;
                     if (checkBox6.Checked || checkBox7.Checked)
                     {
                         cmd += cmd2;
@@ -1957,6 +1979,292 @@ namespace WindowsFormsApplication1
                         cmd += explain;
                     }
 
+                    if ( 1 == 1 )
+                    {
+                        string prob_cmd = "";
+                        prob_cmd += "test_sv <- test\r\n";
+                        prob_cmd += "nbin = 20\r\n";
+                        prob_cmd += "eval_samples = 30\r\n";
+                        for (int i = 0; i < var.Items.Count; i++)
+                        {
+                            prob_cmd += "mean_" + var.Items[i].ToString();
+                            prob_cmd += "<- mean( train$" + var.Items[i].ToString() + ")\r\n";
+                            prob_cmd += "sd_" + var.Items[i].ToString();
+                            prob_cmd += "<- sd( train$" + var.Items[i].ToString() + ")\r\n";
+                        }
+
+                        prob_cmd += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=eval_samples))\r\n";
+                        if (use_diff == 1)
+                        {
+                            if (eval == 1)
+                            {
+                                prob_cmd += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "+1] + min__\r\n";
+                            }
+                            else
+                            {
+                                prob_cmd += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
+                            }
+                        }
+
+                        prob_cmd += "std_mean <- function(x) sd(x)/sqrt(length(x))\r\n";
+                        prob_cmd += "rndsgn <- function(){\r\n";
+                        prob_cmd += "if (runif(1) > 0.5) return (1.0)\r\n";
+                        prob_cmd += "else return (-1.0)\r\n";
+                        prob_cmd += "}\r\n";
+                        prob_cmd += "alp = 0.2\r\n";
+                        prob_cmd += "for (i in 1:ncol(predictions)){\r\n";
+                        for (int i = 0; i < var.Items.Count; i++)
+                        {
+                            prob_cmd += "#   test$" + var.Items[i].ToString() +
+                                    "<- rnorm(length(test$target_), mean_" + var.Items[i].ToString() + ",sd_" + var.Items[i].ToString() + ")\r\n";
+                        }
+                        for (int i = 0; i < var.Items.Count; i++)
+                        {
+                            prob_cmd += "   if ( runif(1) > alp) test$" + var.Items[i].ToString() +
+                                   "<- test_sv$" + var.Items[i].ToString() + " +rndsgn() * runif(1) * std_mean(train$" + var.Items[i].ToString() + ")\r\n";
+                        }
+
+                        prob_cmd += "\r\n";
+                        prob_cmd += "   #xgboostデータ形式に再構築して\r\n";
+                        prob_cmd += "   test_mx<-";
+                        prob_cmd += "   sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        prob_cmd += "   test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        if (comboBox4.Text != "")
+                        {
+                            prob_cmd += ",weight = test$'" + comboBox4.Text + "'";
+                        }
+                        else
+                        {
+                            if (add_enevt_data == 1)
+                            {
+                                prob_cmd += ",weight = test$event";
+                            }
+                        }
+                        prob_cmd += "        )\r\n";
+                        prob_cmd += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
+                        if (use_diff == 1)
+                        {
+                            prob_cmd += "	predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
+                        }
+                        prob_cmd += "   test <- test_sv\r\n";
+                        prob_cmd += "} \r\n";
+                        prob_cmd += "\r\n";
+
+                        prob_cmd += "y_mean <- predictions[,1] \r\n";
+                        prob_cmd += "y_sd <- predictions[,1] \r\n";
+                        prob_cmd += "y_up <- predictions[,1] \r\n";
+                        prob_cmd += "y_lo <- predictions[,1] \r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "for (i in 1:length(test$target_)){ \r\n";
+                        prob_cmd += "   y_mean[i] = mean(t(predictions[i,]))\r\n";
+                        prob_cmd += "	y_sd[i] = sd(predictions[i,])\r\n";
+                        prob_cmd += "	y_up[i] = max(predictions[i,])\r\n";
+                        prob_cmd += "	y_lo[i] = min(predictions[i,])\r\n";
+                        prob_cmd += "} \r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "alp = 0.95\r\n";
+                        prob_cmd += "#q = qt(df=n_samples, alp+(1-alp)/2)\r\n";
+                        prob_cmd += "q = qnorm(alp+(1-alp)/2)\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "up = y_mean + q*sqrt(y_sd/(eval_samples-1))\r\n";
+                        prob_cmd += "lo = y_mean - q*sqrt(y_sd/(eval_samples-1))\r\n";
+                        prob_cmd += "\r\n";
+
+                        prob_cmd += "plot <- ggplot()\r\n";
+                        prob_cmd += "plot <- plot + \r\n";
+                        prob_cmd += "geom_line(aes(x=(1:length(up)), y=up), alpha = 0.3)+\r\n";
+                        prob_cmd += "geom_line(aes(x=(1:length(lo)), y=lo), alpha = 0.3)+\r\n";
+                        prob_cmd += "geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1]))+\r\n";
+                        prob_cmd += "geom_ribbon(aes(ymin=lo, ymax=up, x=(1:length(up)), fill = \"band\"), alpha = 0.2)+\r\n";
+                        prob_cmd += "ggtitle(\"Prediction results considering the variability of observables\")\r\n";
+                        prob_cmd += "plot\r\n";
+                        prob_cmd += "ggsave(file = \"観測値のばらつきを考慮した予測結果.png\", plot = plot)\r\n";
+
+                        prob_cmd += "\r\n";
+                        prob_cmd += "prob_value <- function(predictions, predict_y, i, bins=10)\r\n";
+                        prob_cmd += "{\r\n";
+                        prob_cmd += "	h <- t(predictions[i,])\r\n";
+                        prob_cmd += "	colnames(h)[1]<-c(\"value\")\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "	b = hist(h, breaks=bins)\r\n";
+                        prob_cmd += "	\r\n";
+                        prob_cmd += "	density = b$density/sum(b$density)\r\n";
+                        prob_cmd += "	p = 0.0\r\n";
+                        prob_cmd += "	if (b$breaks[1] > predict_y[i] )\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "			#print(0)\r\n";
+                        prob_cmd += "			return (list(-1, b$breaks[1], b$breaks[1], b))\r\n";
+                        prob_cmd += "	}\r\n";
+                        prob_cmd += "	if (b$breaks[length(b$breaks)] < predict_y[i] )\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "		#print(length(b$breaks))\r\n";
+                        prob_cmd += "		return (list(-2, b$breaks[length(b$breaks)], b$breaks[length(b$breaks)], b))\r\n";
+                        prob_cmd += "	}\r\n";
+                        prob_cmd += "	\r\n";
+                        prob_cmd += "	w = floor(bins*0.25)-1\r\n";
+                        prob_cmd += "	if ( w <= 1 ) w = 1\r\n";
+                        prob_cmd += "	\r\n";
+                        prob_cmd += "	for ( k in 1:(length(density)) ){\r\n";
+                        prob_cmd += "		if ( b$breaks[k] <= predict_y[i] && predict_y[i] <= b$breaks[k+1] )\r\n";
+                        prob_cmd += "		{\r\n";
+                        prob_cmd += "			#print(k)\r\n";
+                        prob_cmd += "			\r\n";
+                        prob_cmd += "			s_fix = 0\r\n";
+                        prob_cmd += "			s = b$breaks[1]+0.000001\r\n";
+                        prob_cmd += "			e = b$breaks[length(b$breaks)]\r\n";
+                        prob_cmd += "			p = 0.0\r\n";
+                        prob_cmd += "			#print(s)\r\n";
+                        prob_cmd += "			#print(e)\r\n";
+                        prob_cmd += "			\r\n";
+                        prob_cmd += "			for ( kk in (k-w):(k+w)){\r\n";
+                        prob_cmd += "				if ( kk < 1 ) next\r\n";
+                        prob_cmd += "				if ( kk > length(density)) break\r\n";
+                        prob_cmd += "				p = p + density[kk]\r\n";
+                        prob_cmd += "				#print(p)\r\n";
+                        prob_cmd += "				if ( s_fix == 0 )\r\n";
+                        prob_cmd += "				{\r\n";
+                        prob_cmd += "					s = b$breaks[kk]\r\n";
+                        prob_cmd += "					s_fix = 1\r\n";
+                        prob_cmd += "				}\r\n";
+                        prob_cmd += "				e = b$breaks[kk]\r\n";
+                        prob_cmd += "				print(s)\r\n";
+                        prob_cmd += "				print(e)\r\n";
+                        prob_cmd += "			}\r\n";
+                        prob_cmd += "			if ( s > predict_y[i] )\r\n";
+                        prob_cmd += "			{\r\n";
+                        prob_cmd += "				s = predict_y[i]\r\n";
+                        prob_cmd += "			}\r\n";
+                        prob_cmd += "			if ( e < predict_y[i] )\r\n";
+                        prob_cmd += "			{\r\n";
+                        prob_cmd += "				e = predict_y[i]\r\n";
+                        prob_cmd += "			}\r\n";
+                        prob_cmd += "			#print(s)\r\n";
+                        prob_cmd += "			#print(e)\r\n";
+                        prob_cmd += "			return (list (p, s,e, b))\r\n";
+                        prob_cmd += "			break\r\n";
+                        prob_cmd += "		}\r\n";
+                        prob_cmd += "	}\r\n";
+                        prob_cmd += "	return (NULL)\r\n";
+                        prob_cmd += "}\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "predict_probability <- function(predictions, predict_y, i, bins=10)\r\n";
+                        prob_cmd += "{\r\n";
+                        prob_cmd += "	prob = 0\r\n";
+                        prob_cmd += "	p = prob_value(predictions, predict_y, i, bins)\r\n";
+                        prob_cmd += "	if ( p[[1]] == -1 )\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "		prob = 0.0\r\n";
+                        prob_cmd += "	}\r\n";
+                        prob_cmd += "	if ( p[[1]] == -2 )\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "		prob = 0.0\r\n";
+                        prob_cmd += "	}\r\n";
+                        prob_cmd += "	if ( p[[1]] >= 0 )\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "		prob = p[[1]]\r\n";
+                        prob_cmd += "	}\r\n";
+                        prob_cmd += "	\r\n";
+                        prob_cmd += "	s = paste(\"probability\",sprintf(\"%.1f\",prob*100))\r\n";
+                        prob_cmd += "	s = paste(s, \"% [\")\r\n";
+                        prob_cmd += "	if ( p[[1]] == -1 )\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "		s = paste(s, \"-Inf\")\r\n";
+                        prob_cmd += "	}else\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "		s = paste(s, sprintf(\"%.2f\",p[[2]]))\r\n";
+                        prob_cmd += "	}\r\n";
+                        prob_cmd += "	s = paste(s, \" <= \")\r\n";
+                        prob_cmd += "	s = paste(s, sprintf(\"%.2f\",predict_y[i]))\r\n";
+                        prob_cmd += "	s = paste(s, \" <= \")\r\n";
+                        prob_cmd += "	if ( p[[1]] == -2 )\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "		s = paste(s, \"+Inf\")\r\n";
+                        prob_cmd += "	}else\r\n";
+                        prob_cmd += "	{\r\n";
+                        prob_cmd += "		s = paste(s, sprintf(\"%.2f\",p[[3]]))\r\n";
+                        prob_cmd += "	}\r\n";
+                        prob_cmd += "	s = paste(s, \"]\")\r\n";
+                        prob_cmd += "	print(s)\r\n";
+                        prob_cmd += "	prob_interval_s = p[[2]]\r\n";
+                        prob_cmd += "	prob_interval_e = p[[3]]\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "	h <- t(predictions[i,])\r\n";
+                        prob_cmd += "	colnames(h)[1]<-c(\"value\")\r\n";
+                        prob_cmd += "	g <- ggplot(data = as.data.frame(h), aes(x=value,y = ..density..))\r\n";
+                        prob_cmd += "	g <- g + geom_histogram(bins=bins)+\r\n";
+                        prob_cmd += "	geom_vline(xintercept = predict_y[i], colour=\"red\", size = 2)+\r\n";
+                        prob_cmd += "	geom_vline(xintercept = prob_interval_s, colour=\"red\", linetype = \"dotted\")+\r\n";
+                        prob_cmd += "	geom_vline(xintercept = prob_interval_e, colour=\"red\", linetype = \"dotted\")+\r\n";
+                        prob_cmd += "	geom_density(aes(color = value), color = \"blue\", alpha = 0.2, fill=\"blue\", show.legend = F)+\r\n";
+                        prob_cmd += "	annotate(\"rect\", xmin = prob_interval_s, xmax = prob_interval_e, ymin = 0, ymax = Inf, alpha = 0.1)+\r\n";
+                        prob_cmd += "	ggtitle(s)\r\n";
+                        prob_cmd += "	\r\n";
+                        prob_cmd += "	return (list(p, g))\r\n";
+                        prob_cmd += "}\r\n";
+
+                        prob_cmd += "predict_probability_list <- NULL\r\n";
+                        prob_cmd += "glist <- NULL\r\n";
+                        prob_cmd += "for ( i in 1:length(test$target_) ){\r\n";
+                        prob_cmd += "#for ( i in 1:1 ){\r\n";
+                        prob_cmd += "	p = predict_probability(predictions, predict_y, i, nbin)\r\n";
+                        prob_cmd += "	\r\n";
+                        prob_cmd += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
+                        prob_cmd += "	file = paste(file, \".png\")\r\n";
+                        prob_cmd += "	ggsave(file = file, plot = p[[2]])\r\n";
+                        prob_cmd += "	print(file)\r\n";
+                        prob_cmd += "	glist[[(length(glist)+1)]] = p[[2]]\r\n";
+                        prob_cmd += "   predict_probability_list[[(length(predict_probability_list)+1)]] = p[[1]]\r\n";
+                        prob_cmd += "}\r\n";
+                        prob_cmd += "predict_probability_df <- t(c(predict_probability_list[[1]][[1]],predict_probability_list[[1]][[2]],predict_probability_list[[1]][[3]]) )\r\n";
+                        prob_cmd += "for ( i in 2:length(test$target_) ){\r\n";
+                        prob_cmd += "	predict_probability_df <- rbind(predict_probability_df, t(c(predict_probability_list[[i]][[1]],predict_probability_list[[i]][[2]],predict_probability_list[[i]][[3]])) )\r\n";
+                        prob_cmd += "}\r\n";
+                        prob_cmd += "colnames(predict_probability_df) <- c(\"probability\", \"lower\", \"upper\")\r\n";
+                        prob_cmd += "predict_probability_df[,1]<-ifelse(predict_probability_df[,1] < 0, 0, predict_probability_df[,1])\r\n";
+                        prob_cmd += "predict_probability_df\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "predict_probability_df <- cbind(c(1:nrow(predict_probability_df)),predict_probability_df)\r\n";
+                        prob_cmd += "colnames(predict_probability_df)[1] <- c(\"index\")\r\n";
+                        prob_cmd += "predict_probability_df <- as.data.frame(predict_probability_df)\r\n";
+                        prob_cmd += "head(predict_probability_df)\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "predict_probability_plt <- ggplot(data = predict_probability_df, aes(x=index, y = probability, col =probability)) + geom_point(size = 5)\r\n";
+                        prob_cmd += "predict_probability_plt\r\n";
+                        prob_cmd += "write.csv(predict_probability_df, \"predict_probability.csv\", row.names=F)\r\n";
+
+                        prob_cmd += "\r\n";
+                        prob_cmd += "prob <- as.integer((predict_probability_df[,2]*100)*10)/10\r\n";
+                        prob_cmd += "predict_probability_plt<-ggplot()\r\n";
+                        prob_cmd += "predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))\r\n";
+                        prob_cmd += "#geom_line(aes(x=1:nrow(predict.y), y=test$'住宅価格', colour=\"観測値\"))+geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
+                        prob_cmd += "for ( i in 1:length(test$target_) ){\r\n";
+                        prob_cmd += "	predict_probability_plt <- predict_probability_plt + annotate(geom = \"text\", x =i, y = predict.y[,1][i], label=paste(prob[i]), size = 3.5)\r\n";
+                        prob_cmd += "}\r\n";
+                        prob_cmd += "predict_probability_plt\r\n";
+                        prob_cmd += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率.png\", plot = predict_probability_plt)\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "x <- predict_probability_df\r\n";
+                        prob_cmd += "#predict_probability_plt<-ggplot()\r\n";
+                        prob_cmd += "#predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))+\r\n";
+                        prob_cmd += "#geom_line(aes(x=1:nrow(predict.y), y=test$'住宅価格', colour=\"観測値\"))+geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "for ( i in 1:length(test$target_) ){\r\n";
+                        prob_cmd += "	if ( x[,2][i] > 0.8                   ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#1e90ff\", size = 4, alpha = 0.5)\r\n";
+                        prob_cmd += "	if ( x[,2][i] <= 0.8 && x[,2][i] > 0.6) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#adff2f\", size = 4, alpha = 0.5)\r\n";
+                        prob_cmd += "	if ( x[,2][i] <= 0.6 && x[,2][i] > 0.3) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#ffa500\", size = 4, alpha = 0.5)\r\n";
+                        prob_cmd += "	if ( x[,2][i] <= 0.3                  ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#800080\", size = 4, alpha = 0.5)\r\n";
+                        prob_cmd += "}\r\n";
+                        prob_cmd += "predict_probability_plt <- predict_probability_plt + ggtitle(\"予測値の確率\")\r\n";
+                        prob_cmd += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2.png\", plot = predict_probability_plt)\r\n";
+                        prob_cmd += "\r\n";
+                        prob_cmd += "predict_probability_plt\r\n";
+                        prob_cmd += "\r\n";
+
+                        using (System.IO.StreamWriter sw = new System.IO.StreamWriter("predict_probability.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
+                        {
+                            sw.Write(prob_cmd);
+                        }
+                    }
                     if (dup_var)
                     {
                         MessageBox.Show("説明変数に目的変数があるので無視されました", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2152,7 +2460,7 @@ namespace WindowsFormsApplication1
                 {
                     for (int ii = 2; ii < 1000000; ii++)
                     {
-                        string pngfile = string.Format("tmp_xgboost_predict_parts{0:D4}.png", ii);
+                        string pngfile = string.Format("explain_predict\\tmp_xgboost_predict_parts{0:D4}.png", ii);
 
                         if (System.IO.File.Exists(pngfile))
                         {
@@ -2166,7 +2474,25 @@ namespace WindowsFormsApplication1
                 }
                 catch { }
 
-                if( radioButton3.Enabled && checkBox4.Checked)
+                try
+                {
+                    for (int ii = 2; ii < 1000000; ii++)
+                    {
+                        string pngfile = string.Format("explain_predict\\predict_probability {0}.png", ii);
+
+                        if (System.IO.File.Exists(pngfile))
+                        {
+                            System.IO.File.Delete(pngfile);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+                catch { }
+
+                if ( radioButton3.Enabled && checkBox4.Checked)
                 {
                     xgboost_predict_parts_count = 1;
                     timer1.Enabled = true;
@@ -3172,7 +3498,7 @@ namespace WindowsFormsApplication1
             double[] lambda = { 0.2, 0.5, 0.9, 1.0, 1.2 };
             double[] colsample_bytree = { 0.5, 0.6, 0.8, 0.9, 1.0 };
             double[] subsample = {  0.6, 0.8, 1.0 };
-            double[] min_child_weight = { 1.0, 1.5, 2.0, 2.5 };
+            double[] min_child_weight = { 1.0, 2.0, 3.0, 5.0 };
             int[] max_depth = { 4, 6, 8, 9 };
 
             Random r_eta = new System.Random(1);
@@ -3191,12 +3517,14 @@ namespace WindowsFormsApplication1
 
                 if (random_serch == 1)
                 {
-                    textBox3.Text = nomalize_float(eta[r_eta.Next(eta.Length)]).ToString();
-                    textBox4.Text = nomalize_float(gamma[r_gamma.Next(gamma.Length)]).ToString();
-                    textBox5.Text = nomalize_float(alpha[r_alpha.Next(alpha.Length)]).ToString();
-                    textBox6.Text = nomalize_float(lambda[r_lambda.Next(lambda.Length)]).ToString();
+                    //textBox3.Text = nomalize_float(eta[r_eta.Next(eta.Length)]).ToString();
+                    //textBox4.Text = nomalize_float(gamma[r_gamma.Next(gamma.Length)]).ToString();
+                    //textBox5.Text = nomalize_float(alpha[r_alpha.Next(alpha.Length)]).ToString();
+                    //textBox6.Text = nomalize_float(lambda[r_lambda.Next(lambda.Length)]).ToString();
                     textBox7.Text = nomalize_float(colsample_bytree[r_colsample_bytree.Next(colsample_bytree.Length)]).ToString();
                     textBox8.Text = nomalize_float(subsample[r_subsample.Next(subsample.Length)]).ToString();
+                    textBox9.Text = nomalize_float(min_child_weight[r_min_child_weight.Next(min_child_weight.Length)]).ToString();
+                    numericUpDown6.Text = (max_depth[r_max_depth.Next(max_depth.Length)]).ToString();
                 }
                 else
                 {
@@ -3245,17 +3573,25 @@ namespace WindowsFormsApplication1
                 }
 
                 bool res = false;
-                if ( radioButton1.Checked)
+
+                try
                 {
-                    //res = float.Parse(R2) > r2 && float.Parse(R2) < 0.95;
-                    res = float.Parse(RMSE) < r2;
-                }
-                else
+                    if (radioButton1.Checked)
+                    {
+                        res = float.Parse(R2) > r2 && float.Parse(R2) < 0.95;
+                        //res = float.Parse(RMSE) < r2;
+                    }
+                    else
+                    {
+                        res = float.Parse(ACC.Replace("%", "")) > r2 && float.Parse(ACC.Replace("%", "")) < 0.95;
+                    }
+                }catch
                 {
-                    res = float.Parse(ACC.Replace("%", "")) > r2 && float.Parse(ACC.Replace("%","")) < 0.95;
+                    ;
                 }
                 if ( res )
                 {
+                    double r2_org = r2;
                     if (radioButton1.Checked)
                     {
                         button16.Text = R2;
@@ -3275,6 +3611,9 @@ namespace WindowsFormsApplication1
 
                     n4 = textBox9.Text;
                     n6 = numericUpDown6.Text;
+
+                    label34.Text = nomalize_float(r2_org) + " -> " + nomalize_float(r2);
+                    label34.Refresh();
                 }
             }
 
@@ -3316,70 +3655,85 @@ namespace WindowsFormsApplication1
             label34.Text = "パラメータ探索開始しました";
             label34.Refresh();
 
-            double r2 = 9999999.0;  // R2なら r2 = 0.0
+            //double r2 = 9999999.0;  // R2なら r2 = 0.0
+            double r2 = 0.0;
             if (radioButton2.Checked) r2 = 0.0;
 
-            int nsamples = 10;
-            label34.Text = "1/8 max_depth探索中";
-            label34.Refresh();
-            r2 = grid_serch("max_depth", nsamples, r2);
-            button16.Text = r2.ToString();
-            label34.Text = "1/8 max_depthが決まりました";
-            label34.Refresh();
+            int nsamples = 5;
 
-            label34.Text = "2/8 min_child_weight探索中";
-            label34.Refresh();
-            r2 = grid_serch("min_child_weight", nsamples, r2);
-            button16.Text = r2.ToString();
-            label34.Text = "2/8 min_child_weightが決まりました";
-            label34.Refresh();
+            double r2_org = r2;
+            if (random_serch == 1)
+            {
+                nsamples = 10;
+                label34.Text = "探索中";
+                label34.Refresh();
+                r2 = grid_serch("", nsamples, r2);
+                button16.Text = r2.ToString();
+                label34.Text = "";
+                label34.Refresh();
+            }
+            else
+            {
+                label34.Text = "1/8 max_depth探索中";
+                label34.Refresh();
+                r2 = grid_serch("max_depth", nsamples, r2);
+                button16.Text = r2.ToString();
+                label34.Text = "1/8 max_depthが決まりました";
+                label34.Refresh();
 
-            label34.Text = "3/8 subsample探索中";
-            label34.Refresh();
-            r2 = grid_serch("subsample", nsamples, r2);
-            button16.Text = r2.ToString();
-            label34.Text = "3/8 subsampleが決まりました";
-            label34.Refresh();
+                label34.Text = "2/8 min_child_weight探索中";
+                label34.Refresh();
+                r2 = grid_serch("min_child_weight", nsamples, r2);
+                button16.Text = r2.ToString();
+                label34.Text = "2/8 min_child_weightが決まりました";
+                label34.Refresh();
 
-            label34.Text = "4/8 colsample_bytree探索中";
-            label34.Refresh();
-            r2 = grid_serch("colsample_bytree", nsamples, r2);
-            button16.Text = r2.ToString();
-            label34.Text = "4/8 colsample_bytreeが決まりました";
-            label34.Refresh();
+                label34.Text = "3/8 subsample探索中";
+                label34.Refresh();
+                r2 = grid_serch("subsample", nsamples, r2);
+                button16.Text = r2.ToString();
+                label34.Text = "3/8 subsampleが決まりました";
+                label34.Refresh();
 
-            label34.Text = "5/8 lambda探索中";
-            label34.Refresh();
-            r2 = grid_serch("lambda", nsamples, r2);
-            button16.Text = r2.ToString();
-            label34.Text = "5/8 lambdaが決まりました";
-            label34.Refresh();
+                label34.Text = "4/8 colsample_bytree探索中";
+                label34.Refresh();
+                r2 = grid_serch("colsample_bytree", nsamples, r2);
+                button16.Text = r2.ToString();
+                label34.Text = "4/8 colsample_bytreeが決まりました";
+                label34.Refresh();
 
-            label34.Text = "6/8 alpha探索中";
-            label34.Refresh();
-            r2 = grid_serch("alpha", nsamples, r2);
-            button16.Text = r2.ToString();
-            label34.Text = "6/8 alphaが決まりました";
-            label34.Refresh();
+                //label34.Text = "5/8 lambda探索中";
+                //label34.Refresh();
+                //r2 = grid_serch("lambda", nsamples, r2);
+                //button16.Text = r2.ToString();
+                //label34.Text = "5/8 lambdaが決まりました";
+                //label34.Refresh();
 
-            label34.Text = "7/8 gamma探索中";
-            label34.Refresh();
-            r2 = grid_serch("gamma", nsamples, r2);
-            button16.Text = r2.ToString();
-            label34.Text = "7/8 gammaが決まりました";
-            label34.Refresh();
+                //label34.Text = "6/8 alpha探索中";
+                //label34.Refresh();
+                //r2 = grid_serch("alpha", nsamples, r2);
+                //button16.Text = r2.ToString();
+                //label34.Text = "6/8 alphaが決まりました";
+                //label34.Refresh();
 
-            label34.Text = "8/8 eta探索中";
-            label34.Refresh();
-            r2 = grid_serch("eta", nsamples, r2);
-            button16.Text = r2.ToString();
-            label34.Text = "8/8 etaが決まりました";
-            label34.Refresh();
+                //label34.Text = "7/8 gamma探索中";
+                //label34.Refresh();
+                //r2 = grid_serch("gamma", nsamples, r2);
+                //button16.Text = r2.ToString();
+                //label34.Text = "7/8 gammaが決まりました";
+                //label34.Refresh();
 
+                //label34.Text = "8/8 eta探索中";
+                //label34.Refresh();
+                //r2 = grid_serch("eta", nsamples, r2);
+                //button16.Text = r2.ToString();
+                //label34.Text = "8/8 etaが決まりました";
+                //label34.Refresh();
+            }
             Form1.batch_mode = 0;
-            label34.Text = "終了";
+            label34.Text = nomalize_float(r2_org) + " -> " + nomalize_float(r2);
             label34.Refresh();
-            label34.Visible = false;
+            //label34.Visible = false;
             button16.Text = "auto";
         }
 
