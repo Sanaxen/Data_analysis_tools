@@ -1560,6 +1560,12 @@ namespace WindowsFormsApplication1
                     explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square))\r\n";
                     explain += "ggsave(filename = \"tmp_xgboost_feature_importance.png\", plot = plt_)\r\n";
 
+                    using (System.IO.StreamWriter sw = new System.IO.StreamWriter("explain.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
+                    {
+                        sw.Write(explain);
+                    }
+
+
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.y");
                     if (radioButton1.Checked)
                     {
@@ -1567,30 +1573,30 @@ namespace WindowsFormsApplication1
                     }
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
 
-                    string cmd5 = "";
-                    cmd5 += "df_<-test\r\n";
-                    cmd5 += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                    string forecast_extension = "";
+                    forecast_extension += "df_<-test\r\n";
+                    forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     if (use_diff == 1)
                     {
                         if (eval == 1)
                         {
-                            cmd5 += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
+                            forecast_extension += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
                         }
                         else
                         {
-                            cmd5 += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
+                            forecast_extension += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                         }
-                        cmd5 += "predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
-                        cmd5 += "\r\n";
-                        cmd5 += "zz_tmp<- inv_diff(test$target_, start_value, use_log_diff) - min__\r\n";
-                        cmd5 += "debug_plt <- ggplot()\r\n";
-                        cmd5 += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
-                        cmd5 += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
-                        cmd5 += "geom_line(aes(x = (1:length(test$target_)), y = predict_y, colour = \"pred\"))\r\n";
-                        cmd5 += "debug_plt\r\n";
-                        cmd5 += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt)\r\n";
+                        forecast_extension += "predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "zz_tmp<- inv_diff(test$target_, start_value, use_log_diff) - min__\r\n";
+                        forecast_extension += "debug_plt <- ggplot()\r\n";
+                        forecast_extension += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
+                        forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
+                        forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = predict_y, colour = \"pred\"))\r\n";
+                        forecast_extension += "debug_plt\r\n";
+                        forecast_extension += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt)\r\n";
 
-                        cmd5 += "\r\n";
+                        forecast_extension += "\r\n";
                     }
 
 
@@ -1598,308 +1604,312 @@ namespace WindowsFormsApplication1
                     {
                         if (comboBox2.Text == "\"multi:softprob\"")
                         {
-                            cmd5 += "predict_y <- matrix(predict_y,"+ numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
-                            cmd5 += "predict_y<-t(predict_y)\r\n";
-                            cmd5 += "colnames(predict_y)<-c(";
-                            cmd5 += "\""+string.Format("class{0}", 1)+"\"";
+                            forecast_extension += "predict_y <- matrix(predict_y,"+ numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
+                            forecast_extension += "predict_y<-t(predict_y)\r\n";
+                            forecast_extension += "colnames(predict_y)<-c(";
+                            forecast_extension += "\""+string.Format("class{0}", 1)+"\"";
                             for ( int i = 2; i <= numericUpDown7.Value; i++)
                             {
-                                cmd5 += ",\"" + string.Format("class{0}", i)+"\"";
+                                forecast_extension += ",\"" + string.Format("class{0}", i)+"\"";
                             }
-                            cmd5 += ")\r\n";
+                            forecast_extension += ")\r\n";
                         }
                         if (comboBox2.Text == "\"multi:softmax\"")
                         {
-                            cmd5 += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
-                            cmd5 += "x_<- data.frame(confusion_tbl[,1])\r\n";
-                            cmd5 += "    for (i in 2:ncol(confusion_tbl)){\r\n";
-                            cmd5 += "    x_ <- cbind(x_, confusion_tbl[,i])\r\n";
-                            cmd5 += "}\r\n";
-                            cmd5 += "if ( nrow(x_) < ncol(x_)){\r\n";
-                            cmd5 += "    x_ <- rbind(x_, c(1:ncol(x_)) * 0)\r\n";
-                            cmd5 += "}\r\n";
+                            forecast_extension += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
+                            forecast_extension += "x_<- data.frame(confusion_tbl[,1])\r\n";
+                            forecast_extension += "    for (i in 2:ncol(confusion_tbl)){\r\n";
+                            forecast_extension += "    x_ <- cbind(x_, confusion_tbl[,i])\r\n";
+                            forecast_extension += "}\r\n";
+                            forecast_extension += "if ( nrow(x_) < ncol(x_)){\r\n";
+                            forecast_extension += "    x_ <- rbind(x_, c(1:ncol(x_)) * 0)\r\n";
+                            forecast_extension += "}\r\n";
 
-                            cmd5 += "tryCatch({\r\n";
-                            cmd5 += "    colnames(x_)<-rownames(x_)\r\n";
-                            cmd5 += "},\r\n";
-                            cmd5 += "error = function(e) {\r\n";
-                            cmd5 += " #print(e)\r\n";
-                            cmd5 += "})\r\n";
-                            cmd5 += "confusion_test <- x_\r\n";
+                            forecast_extension += "tryCatch({\r\n";
+                            forecast_extension += "    colnames(x_)<-rownames(x_)\r\n";
+                            forecast_extension += "},\r\n";
+                            forecast_extension += "error = function(e) {\r\n";
+                            forecast_extension += " #print(e)\r\n";
+                            forecast_extension += "})\r\n";
+                            forecast_extension += "confusion_test <- x_\r\n";
 
-                            cmd5 += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
-                            cmd5 += "tmp_ <- df_\r\n";
-                            cmd5 += "tmp_ <- cbind(tmp_, predict_y)\r\n";
-                            cmd5 += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
+                            forecast_extension += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
+                            forecast_extension += "tmp_ <- df_\r\n";
+                            forecast_extension += "tmp_ <- cbind(tmp_, predict_y)\r\n";
+                            forecast_extension += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
                         }
                     }
-                    cmd5 += "predict.y<-as.data.frame(predict_y)\r\n";
+                    forecast_extension += "predict.y<-as.data.frame(predict_y)\r\n";
                     if ( time_series_mode )
                     {
-                        cmd5 += "sample_metod <- -1\r\n";
+                        forecast_extension += "sample_metod <- -1\r\n";
                         if (comboBox5.Text == "復元抽出")
                         {
-                            cmd5 += "sample_metod <- 1\r\n";
+                            forecast_extension += "sample_metod <- 1\r\n";
                         }
                         if (comboBox5.Text == "移動平均")
                         {
-                            cmd5 += "sample_metod <- 2\r\n";
+                            forecast_extension += "sample_metod <- 2\r\n";
                         }
                         if (comboBox5.Text == "AutoRegression")
                         {
-                            cmd5 += "sample_metod <- 3\r\n";
+                            forecast_extension += "sample_metod <- 3\r\n";
                         }
                         if (comboBox5.Text == "auto.arima")
                         {
-                            cmd5 += "sample_metod <- 4\r\n";
+                            forecast_extension += "sample_metod <- 4\r\n";
                         }
-                        //cmd5 += "test<- test_org\r\n";
-                        //cmd5 += "test$target_[length(test$target_)] = predict_y[length(predict_y)]\r\n";
-                        //cmd5 += "test$target_ = predict_y\r\n";
-                        cmd5 += "dt_ = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
-                        cmd5 += "dt_ = as.numeric(dt_,units=\"secs\")\r\n";
+                        //forecast_extension += "test<- test_org\r\n";
+                        //forecast_extension += "test$target_[length(test$target_)] = predict_y[length(predict_y)]\r\n";
+                        //forecast_extension += "test$target_ = predict_y\r\n";
+                        forecast_extension += "dt_ = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
+                        forecast_extension += "dt_ = as.numeric(dt_,units=\"secs\")\r\n";
 
-                        cmd5 += "colidx0 = grep(\"^lag[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
-                        cmd5 += "colidx1 = grep(\"^target_$\", colnames(test) )\r\n";
-                        cmd5 += "colidx2 = grep(\"^"+targetName+"$\", colnames(test) )\r\n";
-                        cmd5 += "colidx3 = grep(\"^grad[0-9]?_" + targetName + "$\", colnames(test) )\r\n";
-                        cmd5 += "colidx4 = grep(\"^mean_" + targetName + "$\", colnames(test) )\r\n";
-                        cmd5 += "mean_ <- apply(train[,-1],2, mean)\r\n";
-                        cmd5 += "sd_ <- apply(train[,-1],2, sd)\r\n";
-                        cmd5 += "st_ <- test[nrow(test),1]\r\n";
-                        cmd5 += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
-                        cmd5 += "    for ( i in 1:"+numericUpDown5.Value.ToString()+"){\r\n";
-                        cmd5 += "	    # 1行追加\r\n";
-                        cmd5 += "	    test<-rbind(test, test[1,])\r\n";
-                        cmd5 += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
-                        cmd5 += "	    \r\n";
+                        forecast_extension += "colidx0 = grep(\"^lag[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx1 = grep(\"^target_$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx2 = grep(\"^"+targetName+"$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx3 = grep(\"^grad[0-9]?_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx4 = grep(\"^mean_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "mean_ <- apply(train[,-1],2, mean)\r\n";
+                        forecast_extension += "sd_ <- apply(train[,-1],2, sd)\r\n";
+                        forecast_extension += "st_ <- test[nrow(test),1]\r\n";
+                        forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
+                        forecast_extension += "    for ( i in 1:"+numericUpDown5.Value.ToString()+"){\r\n";
+                        forecast_extension += "	    # 1行追加\r\n";
+                        forecast_extension += "	    test<-rbind(test, test[1,])\r\n";
+                        forecast_extension += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
+                        forecast_extension += "	    \r\n";
                         if (add_enevt_data == 1)
                         {
-                            cmd5 += "        test$event[nrow(test)] = sample(train$event, 1)\r\n";
+                            forecast_extension += "        test$event[nrow(test)] = sample(train$event, 1)\r\n";
                         }
-                        cmd5 += "	    \r\n";
-                        cmd5 += "        if ( sample_metod >= 1){\r\n";
-                        cmd5 += "	        #追加された列の説明変数を推定\r\n";
-                        cmd5 += "	        for ( i in 1:ncol(test)){\r\n";
-                        cmd5 += "                select_var <- FALSE\r\n";
+                        forecast_extension += "	    \r\n";
+                        forecast_extension += "        if ( sample_metod >= 1){\r\n";
+                        forecast_extension += "	        #追加された列の説明変数を推定\r\n";
+                        forecast_extension += "	        for ( i in 1:ncol(test)){\r\n";
+                        forecast_extension += "                select_var <- FALSE\r\n";
                         for (int ii = 0; ii < listBox2.SelectedIndices.Count; ii++)
                         {
-                            cmd5 += "                if ( i-1 == " + listBox2.SelectedIndices[ii].ToString() + "){\r\n";
-                            cmd5 += "                    select_var <- TRUE\r\n";
-                            cmd5 += "                }\r\n";
+                            forecast_extension += "                if ( i-1 == " + listBox2.SelectedIndices[ii].ToString() + "){\r\n";
+                            forecast_extension += "                    select_var <- TRUE\r\n";
+                            forecast_extension += "                }\r\n";
                         }
-                        cmd5 += "                if (select_var == FALSE ) next\r\n";
-                        cmd5 += "                skip <- FALSE\r\n";
-                        cmd5 += "                for ( k in 1:length(colidx0)){\r\n";
-                        cmd5 += "                    if ( i == colidx0[k] ) {\r\n";
-                        cmd5 += "                        skip <- TRUE\r\n";
-                        cmd5 += "                        break\r\n";
-                        cmd5 += "                    }\r\n";
-                        cmd5 += "                }\r\n";
-                        cmd5 += "                for ( k in 1:length(colidx3)){\r\n";
-                        cmd5 += "                    if ( i == colidx3[k]) {\r\n";
-                        cmd5 += "                        skip <- TRUE\r\n";
-                        cmd5 += "                        break\r\n";
-                        cmd5 += "                    }\r\n";
-                        cmd5 += "                }\r\n";
-                        cmd5 += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && skip != TRUE)\r\n";
-                        cmd5 += "	            {\r\n";
-                        cmd5 += "                    test[nrow(test), i] = rnorm(mean_, sd_)[i]\r\n";
-                        cmd5 += "                    if ( sample_metod == 1){\r\n";
-                        cmd5 += "                        #復元抽出\r\n";
-                        cmd5 += "                        test[nrow(test), i] = sample(train[, i], 1)\r\n";
-                        cmd5 += "                    }\r\n";
-                        cmd5 += "                    if ( sample_metod == 2){\r\n";
-                        cmd5 += "   	        	        #移動平均\r\n";
-                        cmd5 += "                        test[nrow(test),i] = mean(test[(nrow(test)-3):nrow(test),i])\r\n";
-                        cmd5 += "                    }\r\n";
-                        cmd5 += "                    if ( sample_metod == 3){\r\n";
-                        cmd5 += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
-                        cmd5 += "			            #ts.plot(df_t)\r\n";
-                        cmd5 += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
-                        cmd5 += "			            pred <- predict(Fit,n.ahead=1)\r\n";
-                        cmd5 += "			            test[nrow(test),i] = pred$pred[1]\r\n";
-                        cmd5 += "                    }\r\n";
-                        cmd5 += "                    if ( sample_metod == 4){\r\n";
-                        cmd5 += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
-                        cmd5 += "			            #ts.plot(df_t)\r\n";
-                        cmd5 += "                        tryCatch({\r\n";
-                        cmd5 += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
-                        cmd5 += "			                pred <- predict(Fit,n.ahead=1)\r\n";
-                        cmd5 += "			                test[nrow(test),i] = pred$pred[1]\r\n";
-                        cmd5 += "                        },\r\n";
-                        cmd5 += "                        error = function(e) {\r\n";
-                        cmd5 += "                            #message(e)\r\n";
-                        cmd5 += "                            #print(e)\r\n";
-                        cmd5 += "                            #復元抽出\r\n";
-                        cmd5 += "                            test[nrow(test), i] = sample(train[, i], 1)\r\n";
-                        cmd5 += "                        },\r\n";
-                        cmd5 += "                        finally   = {\r\n";
-                        cmd5 += "                        },\r\n";
-                        cmd5 += "                        silent = TRUE\r\n";
-                        cmd5 += "                        )\r\n";
-                        cmd5 += "                    }\r\n";
-                        cmd5 += "		        }\r\n";
-                        cmd5 += "	        }\r\n";
-                        cmd5 += "	    }\r\n";
-                        cmd5 += "	    \r\n";
+                        forecast_extension += "                if (select_var == FALSE ) next\r\n";
+                        forecast_extension += "                skip <- FALSE\r\n";
+                        forecast_extension += "                for ( k in 1:length(colidx0)){\r\n";
+                        forecast_extension += "                    if ( i == colidx0[k] ) {\r\n";
+                        forecast_extension += "                        skip <- TRUE\r\n";
+                        forecast_extension += "                        break\r\n";
+                        forecast_extension += "                    }\r\n";
+                        forecast_extension += "                }\r\n";
+                        forecast_extension += "                for ( k in 1:length(colidx3)){\r\n";
+                        forecast_extension += "                    if ( i == colidx3[k]) {\r\n";
+                        forecast_extension += "                        skip <- TRUE\r\n";
+                        forecast_extension += "                        break\r\n";
+                        forecast_extension += "                    }\r\n";
+                        forecast_extension += "                }\r\n";
+                        forecast_extension += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && skip != TRUE)\r\n";
+                        forecast_extension += "	            {\r\n";
+                        forecast_extension += "                    test[nrow(test), i] = rnorm(mean_, sd_)[i]\r\n";
+                        forecast_extension += "                    if ( sample_metod == 1){\r\n";
+                        forecast_extension += "                        #復元抽出\r\n";
+                        forecast_extension += "                        test[nrow(test), i] = sample(train[, i], 1)\r\n";
+                        forecast_extension += "                    }\r\n";
+                        forecast_extension += "                    if ( sample_metod == 2){\r\n";
+                        forecast_extension += "   	        	        #移動平均\r\n";
+                        forecast_extension += "                        test[nrow(test),i] = mean(test[(nrow(test)-3):nrow(test),i])\r\n";
+                        forecast_extension += "                    }\r\n";
+                        forecast_extension += "                    if ( sample_metod == 3){\r\n";
+                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
+                        forecast_extension += "			            #ts.plot(df_t)\r\n";
+                        forecast_extension += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
+                        forecast_extension += "			            pred <- predict(Fit,n.ahead=1)\r\n";
+                        forecast_extension += "			            test[nrow(test),i] = pred$pred[1]\r\n";
+                        forecast_extension += "                    }\r\n";
+                        forecast_extension += "                    if ( sample_metod == 4){\r\n";
+                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
+                        forecast_extension += "			            #ts.plot(df_t)\r\n";
+                        forecast_extension += "                        tryCatch({\r\n";
+                        forecast_extension += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
+                        forecast_extension += "			                pred <- predict(Fit,n.ahead=1)\r\n";
+                        forecast_extension += "			                test[nrow(test),i] = pred$pred[1]\r\n";
+                        forecast_extension += "                        },\r\n";
+                        forecast_extension += "                        error = function(e) {\r\n";
+                        forecast_extension += "                            #message(e)\r\n";
+                        forecast_extension += "                            #print(e)\r\n";
+                        forecast_extension += "                            #復元抽出\r\n";
+                        forecast_extension += "                            test[nrow(test), i] = sample(train[, i], 1)\r\n";
+                        forecast_extension += "                        },\r\n";
+                        forecast_extension += "                        finally   = {\r\n";
+                        forecast_extension += "                        },\r\n";
+                        forecast_extension += "                        silent = TRUE\r\n";
+                        forecast_extension += "                        )\r\n";
+                        forecast_extension += "                    }\r\n";
+                        forecast_extension += "		        }\r\n";
+                        forecast_extension += "	        }\r\n";
+                        forecast_extension += "	    }\r\n";
+                        forecast_extension += "	    \r\n";
 
-                        cmd5 += "        coln = colnames(test)\r\n";
-                        cmd5 += "        colidx_1 = grep(\"sunday$\",  coln)\r\n";
-                        cmd5 += "        colidx_2 = grep(\"monday$\", coln )\r\n";
-                        cmd5 += "        colidx_3 = grep(\"tuesday$\", coln )\r\n";
-                        cmd5 += "        colidx_4 = grep(\"wednesday$\", coln )\r\n";
-                        cmd5 += "        colidx_5 = grep(\"thursday$\", coln )\r\n";
-                        cmd5 += "        colidx_6 = grep(\"friday$\", coln )\r\n";
-                        cmd5 += "        colidx_7 = grep(\"saturday$\", coln )\r\n";
+                        forecast_extension += "        coln = colnames(test)\r\n";
+                        forecast_extension += "        colidx_1 = grep(\"sunday$\",  coln)\r\n";
+                        forecast_extension += "        colidx_2 = grep(\"monday$\", coln )\r\n";
+                        forecast_extension += "        colidx_3 = grep(\"tuesday$\", coln )\r\n";
+                        forecast_extension += "        colidx_4 = grep(\"wednesday$\", coln )\r\n";
+                        forecast_extension += "        colidx_5 = grep(\"thursday$\", coln )\r\n";
+                        forecast_extension += "        colidx_6 = grep(\"friday$\", coln )\r\n";
+                        forecast_extension += "        colidx_7 = grep(\"saturday$\", coln )\r\n";
 
-                        cmd5 += "        colidx_8 = grep(\"month$\", coln )\r\n";
-                        cmd5 += "        colidx_9 = grep(\"day$\", coln )\r\n";
-                        cmd5 += "        colidx_10 = grep(\"hour$\", coln )\r\n";
-                        cmd5 += "        colidx_11 = grep(\"minute$\", coln )\r\n";
-                        cmd5 += "        colidx_12 = grep(\"second$\", coln )\r\n";
+                        forecast_extension += "        colidx_8 = grep(\"month$\", coln )\r\n";
+                        forecast_extension += "        colidx_9 = grep(\"day$\", coln )\r\n";
+                        forecast_extension += "        colidx_10 = grep(\"hour$\", coln )\r\n";
+                        forecast_extension += "        colidx_11 = grep(\"minute$\", coln )\r\n";
+                        forecast_extension += "        colidx_12 = grep(\"second$\", coln )\r\n";
 
-                        cmd5 += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] = 0\r\n";
-                        cmd5 += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] = 0\r\n";
-                        cmd5 += "        if ( length(colidx_3) == 1 )test[nrow(test),colidx_3] = 0\r\n";
-                        cmd5 += "        if ( length(colidx_4) == 1 )test[nrow(test),colidx_4] = 0\r\n";
-                        cmd5 += "        if ( length(colidx_5) == 1 )test[nrow(test),colidx_5] = 0\r\n";
-                        cmd5 += "        if ( length(colidx_6) == 1 )test[nrow(test),colidx_6] = 0\r\n";
-                        cmd5 += "        if ( length(colidx_7) == 1 )test[nrow(test),colidx_7] = 0\r\n";
-                        cmd5 += "\r\n";
-                        cmd5 += "        week = weekdays(as.Date(test[nrow(test),1]))\r\n";
-                        cmd5 += "        if ( length(colidx_1) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_1] = 1\r\n";
-                        cmd5 += "        if ( length(colidx_2) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_2] = 1\r\n";
-                        cmd5 += "        if ( length(colidx_3) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_3] = 1\r\n";
-                        cmd5 += "        if ( length(colidx_4) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_4] = 1\r\n";
-                        cmd5 += "        if ( length(colidx_5) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_5] = 1\r\n";
-                        cmd5 += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] = 1\r\n";
-                        cmd5 += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] = 1\r\n";
-                        cmd5 += "\r\n";
-                        cmd5 += "        tryCatch({\r\n";
-                        cmd5 += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
-                        cmd5 += "            d = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))\r\n";
-                        cmd5 += "        },\r\n";
-                        cmd5 += "        error = function(e){\r\n";
-                        cmd5 += "            #message(e)\r\n";
-                        cmd5 += "            #print(e)\r\n";
-                        cmd5 += "        },\r\n";
-                        cmd5 += "        finally ={\r\n";
-                        cmd5 += "            if ( length(colidx_8) == 1 ) test[nrow(test),colidx_8] = m\r\n";
-                        cmd5 += "            if ( length(colidx_9) == 1 ) test[nrow(test),colidx_9] = d\r\n";
-                        cmd5 += "        },\r\n";
-                        cmd5 += "            silent = FALSE\r\n";
-                        cmd5 += "        )\r\n";
-                        cmd5 += "\r\n";
-                        cmd5 += "        tryCatch({\r\n";
-                        cmd5 += "            h = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))\r\n";
-                        cmd5 += "            m = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))\r\n";
-                        cmd5 += "            s = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%S\"))\r\n";
-                        cmd5 += "        },\r\n";
-                        cmd5 += "        error = function(e){\r\n";
-                        cmd5 += "            #message(e)\r\n";
-                        cmd5 += "            #print(e)\r\n";
-                        cmd5 += "        },\r\n";
-                        cmd5 += "        finally ={\r\n";
-                        cmd5 += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] = h\r\n";
-                        cmd5 += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] = m\r\n";
-                        cmd5 += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] = s\r\n";
-                        cmd5 += "        },\r\n";
-                        cmd5 += "            silent = FALSE\r\n";
-                        cmd5 += "        )\r\n";
-                        cmd5 += "\r\n";
+                        forecast_extension += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] = 0\r\n";
+                        forecast_extension += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] = 0\r\n";
+                        forecast_extension += "        if ( length(colidx_3) == 1 )test[nrow(test),colidx_3] = 0\r\n";
+                        forecast_extension += "        if ( length(colidx_4) == 1 )test[nrow(test),colidx_4] = 0\r\n";
+                        forecast_extension += "        if ( length(colidx_5) == 1 )test[nrow(test),colidx_5] = 0\r\n";
+                        forecast_extension += "        if ( length(colidx_6) == 1 )test[nrow(test),colidx_6] = 0\r\n";
+                        forecast_extension += "        if ( length(colidx_7) == 1 )test[nrow(test),colidx_7] = 0\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "        week = weekdays(as.Date(test[nrow(test),1]))\r\n";
+                        forecast_extension += "        if ( length(colidx_1) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_1] = 1\r\n";
+                        forecast_extension += "        if ( length(colidx_2) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_2] = 1\r\n";
+                        forecast_extension += "        if ( length(colidx_3) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_3] = 1\r\n";
+                        forecast_extension += "        if ( length(colidx_4) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_4] = 1\r\n";
+                        forecast_extension += "        if ( length(colidx_5) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_5] = 1\r\n";
+                        forecast_extension += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] = 1\r\n";
+                        forecast_extension += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] = 1\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "        tryCatch({\r\n";
+                        forecast_extension += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
+                        forecast_extension += "            d = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))\r\n";
+                        forecast_extension += "        },\r\n";
+                        forecast_extension += "        error = function(e){\r\n";
+                        forecast_extension += "            #message(e)\r\n";
+                        forecast_extension += "            #print(e)\r\n";
+                        forecast_extension += "        },\r\n";
+                        forecast_extension += "        finally ={\r\n";
+                        forecast_extension += "            if ( length(colidx_8) == 1 ) test[nrow(test),colidx_8] = m\r\n";
+                        forecast_extension += "            if ( length(colidx_9) == 1 ) test[nrow(test),colidx_9] = d\r\n";
+                        forecast_extension += "        },\r\n";
+                        forecast_extension += "            silent = FALSE\r\n";
+                        forecast_extension += "        )\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "        tryCatch({\r\n";
+                        forecast_extension += "            h = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))\r\n";
+                        forecast_extension += "            m = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))\r\n";
+                        forecast_extension += "            s = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%S\"))\r\n";
+                        forecast_extension += "        },\r\n";
+                        forecast_extension += "        error = function(e){\r\n";
+                        forecast_extension += "            #message(e)\r\n";
+                        forecast_extension += "            #print(e)\r\n";
+                        forecast_extension += "        },\r\n";
+                        forecast_extension += "        finally ={\r\n";
+                        forecast_extension += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] = h\r\n";
+                        forecast_extension += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] = m\r\n";
+                        forecast_extension += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] = s\r\n";
+                        forecast_extension += "        },\r\n";
+                        forecast_extension += "            silent = FALSE\r\n";
+                        forecast_extension += "        )\r\n";
+                        forecast_extension += "\r\n";
 
                         for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                         {
                             for (int j = start_lag; j <= lag; j++)
                             {
-                                cmd5 += "        test$'lag"+j.ToString()+"_" + targetName + "'" +
+                                forecast_extension += "        test$'lag"+j.ToString()+"_" + targetName + "'" +
                                "[length(test$target_)]<- test$'"+targetName +"'[length(test$target_)-" + j.ToString()+"]\r\n";
                             }
-                            cmd5 += "        test$'grad_" + targetName + "'" +
+                            forecast_extension += "        test$'grad_" + targetName + "'" +
                             "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-2]\r\n";
-                            cmd5 += "        test$'grad2_" + targetName + "'" +
+                            forecast_extension += "        test$'grad2_" + targetName + "'" +
                             "[length(test$target_)]<- test$'grad_" + targetName+"'[length(test$target_)-1]-test$'grad_" + targetName+"'[length(test$target_)-2]\r\n";
 
                             if (lag >= means_n)
                             {
-                                cmd5 += "        test$'mean_" + targetName + "'" +
+                                forecast_extension += "        test$'mean_" + targetName + "'" +
                                "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
                             }
 
                             if (lag >= befor_day)
                             {
-                                cmd5 += "        test$'grad3_" + targetName + "'" +
+                                forecast_extension += "        test$'grad3_" + targetName + "'" +
                                 "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_3day) + "]\r\n";
                                 
-                                cmd5 += "        test$'grad4_" + targetName + "'" +
+                                forecast_extension += "        test$'grad4_" + targetName + "'" +
                                "[length(test$target_)]<- numdiff2_5(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
 
-                                cmd5 += "        min_ <- min(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
-                                cmd5 += "        max_ <- max(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
-                                cmd5 += "        test$'grad5_" + targetName + "'" +
+                                forecast_extension += "        min_ <- min(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
+                                forecast_extension += "        max_ <- max(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
+                                forecast_extension += "        test$'grad5_" + targetName + "'" +
                                "[length(test$target_)]<- curvature(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
                             }
                         }
 
-                        //cmd5 += "		id = -1\r\n";
-                        //cmd5 += "		d_min = 9999999\r\n";
-                        //cmd5 += "		for ( kk in 1:nrow(train) ){\r\n";
-                        //cmd5 += "			d = train[kk,] - test[length(test$target_)-1,]\r\n";
-                        //cmd5 += "			d = sum(d*d)\r\n";
-                        //cmd5 += "			if ( d_min > d ){\r\n";
-                        //cmd5 += "				d_min = d\r\n";
-                        //cmd5 += "				id = k\r\n";
-                        //cmd5 += "			}\r\n";
-                        //cmd5 += "		}\r\n";
-                        //cmd5 += "		if ( id >= 0 ) test$target_[length(test$target_)-1] = train[kk,]$target_\r\n";
+                        //forecast_extension += "		id = -1\r\n";
+                        //forecast_extension += "		d_min = 9999999\r\n";
+                        //forecast_extension += "		for ( kk in 1:nrow(train) ){\r\n";
+                        //forecast_extension += "			d = train[kk,] - test[length(test$target_)-1,]\r\n";
+                        //forecast_extension += "			d = sum(d*d)\r\n";
+                        //forecast_extension += "			if ( d_min > d ){\r\n";
+                        //forecast_extension += "				d_min = d\r\n";
+                        //forecast_extension += "				id = k\r\n";
+                        //forecast_extension += "			}\r\n";
+                        //forecast_extension += "		}\r\n";
+                        //forecast_extension += "		if ( id >= 0 ) test$target_[length(test$target_)-1] = train[kk,]$target_\r\n";
 
-                        cmd5 += "\r\n";
-                        cmd5 += "\r\n";
-                        cmd5 += "	    #xgboostデータ形式に再構築して\r\n";
-                        cmd5 += "        test_mx<-";
-                        cmd5 += "        sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        cmd5 += "        test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "	    #xgboostデータ形式に再構築して\r\n";
+                        forecast_extension += "        test_mx<-";
+                        forecast_extension += "        sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        forecast_extension += "        test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
                         if (comboBox4.Text != "")
                         {
-                            cmd5 += ",weight = test$'" + comboBox4.Text + "'";
+                            forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
                         }
                         else
                         {
                             if (add_enevt_data == 1)
                             {
-                                cmd5 += ",weight = test$event";
+                                forecast_extension += ",weight = test$event";
                             }
                         }
-                        cmd5 += "        )\r\n";
-                        cmd5 += "	    df_ <- test\r\n";
-                        cmd5 += "	    \r\n";
-                        cmd5 += "	    #testデータ区間を予測\r\n";
-                        cmd5 += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
-                        cmd5 += "        predict_y_org <- predict_y\r\n";
+                        forecast_extension += "        )\r\n";
+                        forecast_extension += "	    df_ <- test\r\n";
+                        forecast_extension += "	    \r\n";
+                        forecast_extension += "	    #testデータ区間を予測\r\n";
+                        forecast_extension += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "        predict_y_org <- predict_y\r\n";
                         if (use_diff == 1)
                         {
                             if (eval == 1)
                             {
-                                cmd5 += "        start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
+                                forecast_extension += "        start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
                             }
                             else
                             {
-                                cmd5 += "        start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
+                                forecast_extension += "        start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                             }
-                            cmd5 += "        predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
+                            forecast_extension += "        predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
                         }
-                        cmd5 += "	        predict.y<-as.data.frame(predict_y)\r\n";
-                        cmd5 += "\r\n";
-                        cmd5 += "	    #データの最後を予測値で更新\r\n";
-                        cmd5 += "	    test$target_[length(test$target_)] = predict_y_org[length(predict_y)]\r\n";
-                        cmd5 += "	    test$'" + targetName + "'[length(test$target_)] = predict_y[length(predict_y)]\r\n";
-                        cmd5 += "    }\r\n";
-                        cmd5 += "}\r\n";
-                        cmd5 += "#test<- test[-length(test$target_)]\r\n";
+                        forecast_extension += "	        predict.y<-as.data.frame(predict_y)\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "	    #データの最後を予測値で更新\r\n";
+                        forecast_extension += "	    test$target_[length(test$target_)] = predict_y_org[length(predict_y)]\r\n";
+                        forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] = predict_y[length(predict_y)]\r\n";
+                        forecast_extension += "    }\r\n";
+                        forecast_extension += "}\r\n";
+                        forecast_extension += "#test<- test[-length(test$target_)]\r\n";
+                    }
+                    using (System.IO.StreamWriter sw = new System.IO.StreamWriter("time_series_forecast_extension.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
+                    {
+                        sw.Write(forecast_extension);
                     }
 
-                    cmd += cmd5;
+                    cmd += forecast_extension;
                     if (checkBox6.Checked || checkBox7.Checked)
                     {
                         cmd += cmd2;
@@ -1981,288 +1991,288 @@ namespace WindowsFormsApplication1
 
                     if ( 1 == 1 )
                     {
-                        string prob_cmd = "";
-                        prob_cmd += "test_sv <- test\r\n";
-                        prob_cmd += "nbin = 20\r\n";
-                        prob_cmd += "eval_samples = 30\r\n";
+                        string predict_probability = "";
+                        predict_probability += "test_sv <- test\r\n";
+                        predict_probability += "nbin = 20\r\n";
+                        predict_probability += "eval_samples = 30\r\n";
                         for (int i = 0; i < var.Items.Count; i++)
                         {
-                            prob_cmd += "mean_" + var.Items[i].ToString();
-                            prob_cmd += "<- mean( train$" + var.Items[i].ToString() + ")\r\n";
-                            prob_cmd += "sd_" + var.Items[i].ToString();
-                            prob_cmd += "<- sd( train$" + var.Items[i].ToString() + ")\r\n";
+                            predict_probability += "mean_" + var.Items[i].ToString();
+                            predict_probability += "<- mean( train$" + var.Items[i].ToString() + ")\r\n";
+                            predict_probability += "sd_" + var.Items[i].ToString();
+                            predict_probability += "<- sd( train$" + var.Items[i].ToString() + ")\r\n";
                         }
 
-                        prob_cmd += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=eval_samples))\r\n";
+                        predict_probability += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=eval_samples))\r\n";
                         if (use_diff == 1)
                         {
                             if (eval == 1)
                             {
-                                prob_cmd += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "+1] + min__\r\n";
+                                predict_probability += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "+1] + min__\r\n";
                             }
                             else
                             {
-                                prob_cmd += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
+                                predict_probability += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                             }
                         }
 
-                        prob_cmd += "std_mean <- function(x) sd(x)/sqrt(length(x))\r\n";
-                        prob_cmd += "rndsgn <- function(){\r\n";
-                        prob_cmd += "if (runif(1) > 0.5) return (1.0)\r\n";
-                        prob_cmd += "else return (-1.0)\r\n";
-                        prob_cmd += "}\r\n";
-                        prob_cmd += "alp = 0.2\r\n";
-                        prob_cmd += "for (i in 1:ncol(predictions)){\r\n";
+                        predict_probability += "std_mean <- function(x) sd(x)/sqrt(length(x))\r\n";
+                        predict_probability += "rndsgn <- function(){\r\n";
+                        predict_probability += "if (runif(1) > 0.5) return (1.0)\r\n";
+                        predict_probability += "else return (-1.0)\r\n";
+                        predict_probability += "}\r\n";
+                        predict_probability += "alp = 0.2\r\n";
+                        predict_probability += "for (i in 1:ncol(predictions)){\r\n";
                         for (int i = 0; i < var.Items.Count; i++)
                         {
-                            prob_cmd += "#   test$" + var.Items[i].ToString() +
+                            predict_probability += "#   test$" + var.Items[i].ToString() +
                                     "<- rnorm(length(test$target_), mean_" + var.Items[i].ToString() + ",sd_" + var.Items[i].ToString() + ")\r\n";
                         }
                         for (int i = 0; i < var.Items.Count; i++)
                         {
-                            prob_cmd += "   if ( runif(1) > alp) test$" + var.Items[i].ToString() +
+                            predict_probability += "   if ( runif(1) > alp) test$" + var.Items[i].ToString() +
                                    "<- test_sv$" + var.Items[i].ToString() + " +rndsgn() * runif(1) * std_mean(train$" + var.Items[i].ToString() + ")\r\n";
                         }
 
-                        prob_cmd += "\r\n";
-                        prob_cmd += "   #xgboostデータ形式に再構築して\r\n";
-                        prob_cmd += "   test_mx<-";
-                        prob_cmd += "   sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        prob_cmd += "   test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        predict_probability += "\r\n";
+                        predict_probability += "   #xgboostデータ形式に再構築して\r\n";
+                        predict_probability += "   test_mx<-";
+                        predict_probability += "   sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        predict_probability += "   test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
                         if (comboBox4.Text != "")
                         {
-                            prob_cmd += ",weight = test$'" + comboBox4.Text + "'";
+                            predict_probability += ",weight = test$'" + comboBox4.Text + "'";
                         }
                         else
                         {
                             if (add_enevt_data == 1)
                             {
-                                prob_cmd += ",weight = test$event";
+                                predict_probability += ",weight = test$event";
                             }
                         }
-                        prob_cmd += "        )\r\n";
-                        prob_cmd += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
+                        predict_probability += "        )\r\n";
+                        predict_probability += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
                         if (use_diff == 1)
                         {
-                            prob_cmd += "	predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
+                            predict_probability += "	predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
                         }
-                        prob_cmd += "   test <- test_sv\r\n";
-                        prob_cmd += "} \r\n";
-                        prob_cmd += "\r\n";
+                        predict_probability += "   test <- test_sv\r\n";
+                        predict_probability += "} \r\n";
+                        predict_probability += "\r\n";
 
-                        prob_cmd += "y_mean <- predictions[,1] \r\n";
-                        prob_cmd += "y_sd <- predictions[,1] \r\n";
-                        prob_cmd += "y_up <- predictions[,1] \r\n";
-                        prob_cmd += "y_lo <- predictions[,1] \r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "for (i in 1:length(test$target_)){ \r\n";
-                        prob_cmd += "   y_mean[i] = mean(t(predictions[i,]))\r\n";
-                        prob_cmd += "	y_sd[i] = sd(predictions[i,])\r\n";
-                        prob_cmd += "	y_up[i] = max(predictions[i,])\r\n";
-                        prob_cmd += "	y_lo[i] = min(predictions[i,])\r\n";
-                        prob_cmd += "} \r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "alp = 0.95\r\n";
-                        prob_cmd += "#q = qt(df=n_samples, alp+(1-alp)/2)\r\n";
-                        prob_cmd += "q = qnorm(alp+(1-alp)/2)\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "up = y_mean + q*sqrt(y_sd/(eval_samples-1))\r\n";
-                        prob_cmd += "lo = y_mean - q*sqrt(y_sd/(eval_samples-1))\r\n";
-                        prob_cmd += "\r\n";
+                        predict_probability += "y_mean <- predictions[,1] \r\n";
+                        predict_probability += "y_sd <- predictions[,1] \r\n";
+                        predict_probability += "y_up <- predictions[,1] \r\n";
+                        predict_probability += "y_lo <- predictions[,1] \r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "for (i in 1:length(test$target_)){ \r\n";
+                        predict_probability += "   y_mean[i] = mean(t(predictions[i,]))\r\n";
+                        predict_probability += "	y_sd[i] = sd(predictions[i,])\r\n";
+                        predict_probability += "	y_up[i] = max(predictions[i,])\r\n";
+                        predict_probability += "	y_lo[i] = min(predictions[i,])\r\n";
+                        predict_probability += "} \r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "alp = 0.95\r\n";
+                        predict_probability += "#q = qt(df=n_samples, alp+(1-alp)/2)\r\n";
+                        predict_probability += "q = qnorm(alp+(1-alp)/2)\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "up = y_mean + q*sqrt(y_sd/(eval_samples-1))\r\n";
+                        predict_probability += "lo = y_mean - q*sqrt(y_sd/(eval_samples-1))\r\n";
+                        predict_probability += "\r\n";
 
-                        prob_cmd += "plot <- ggplot()\r\n";
-                        prob_cmd += "plot <- plot + \r\n";
-                        prob_cmd += "geom_line(aes(x=(1:length(up)), y=up), alpha = 0.3)+\r\n";
-                        prob_cmd += "geom_line(aes(x=(1:length(lo)), y=lo), alpha = 0.3)+\r\n";
-                        prob_cmd += "geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1]))+\r\n";
-                        prob_cmd += "geom_ribbon(aes(ymin=lo, ymax=up, x=(1:length(up)), fill = \"band\"), alpha = 0.2)+\r\n";
-                        prob_cmd += "ggtitle(\"Prediction results considering the variability of observables\")\r\n";
-                        prob_cmd += "plot\r\n";
-                        prob_cmd += "ggsave(file = \"観測値のばらつきを考慮した予測結果.png\", plot = plot)\r\n";
+                        predict_probability += "plot <- ggplot()\r\n";
+                        predict_probability += "plot <- plot + \r\n";
+                        predict_probability += "geom_line(aes(x=(1:length(up)), y=up), alpha = 0.3)+\r\n";
+                        predict_probability += "geom_line(aes(x=(1:length(lo)), y=lo), alpha = 0.3)+\r\n";
+                        predict_probability += "geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1]))+\r\n";
+                        predict_probability += "geom_ribbon(aes(ymin=lo, ymax=up, x=(1:length(up)), fill = \"band\"), alpha = 0.2)+\r\n";
+                        predict_probability += "ggtitle(\"Prediction results considering the variability of observables\")\r\n";
+                        predict_probability += "plot\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測結果.png\", plot = plot)\r\n";
 
-                        prob_cmd += "\r\n";
-                        prob_cmd += "prob_value <- function(predictions, predict_y, i, bins=10)\r\n";
-                        prob_cmd += "{\r\n";
-                        prob_cmd += "	h <- t(predictions[i,])\r\n";
-                        prob_cmd += "	colnames(h)[1]<-c(\"value\")\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "	b = hist(h, breaks=bins)\r\n";
-                        prob_cmd += "	\r\n";
-                        prob_cmd += "	density = b$density/sum(b$density)\r\n";
-                        prob_cmd += "	p = 0.0\r\n";
-                        prob_cmd += "	if (b$breaks[1] > predict_y[i] )\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "			#print(0)\r\n";
-                        prob_cmd += "			return (list(-1, b$breaks[1], b$breaks[1], b))\r\n";
-                        prob_cmd += "	}\r\n";
-                        prob_cmd += "	if (b$breaks[length(b$breaks)] < predict_y[i] )\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "		#print(length(b$breaks))\r\n";
-                        prob_cmd += "		return (list(-2, b$breaks[length(b$breaks)], b$breaks[length(b$breaks)], b))\r\n";
-                        prob_cmd += "	}\r\n";
-                        prob_cmd += "	\r\n";
-                        prob_cmd += "	w = floor(bins*0.25)-1\r\n";
-                        prob_cmd += "	if ( w <= 1 ) w = 1\r\n";
-                        prob_cmd += "	\r\n";
-                        prob_cmd += "	for ( k in 1:(length(density)) ){\r\n";
-                        prob_cmd += "		if ( b$breaks[k] <= predict_y[i] && predict_y[i] <= b$breaks[k+1] )\r\n";
-                        prob_cmd += "		{\r\n";
-                        prob_cmd += "			#print(k)\r\n";
-                        prob_cmd += "			\r\n";
-                        prob_cmd += "			s_fix = 0\r\n";
-                        prob_cmd += "			s = b$breaks[1]+0.000001\r\n";
-                        prob_cmd += "			e = b$breaks[length(b$breaks)]\r\n";
-                        prob_cmd += "			p = 0.0\r\n";
-                        prob_cmd += "			#print(s)\r\n";
-                        prob_cmd += "			#print(e)\r\n";
-                        prob_cmd += "			\r\n";
-                        prob_cmd += "			for ( kk in (k-w):(k+w)){\r\n";
-                        prob_cmd += "				if ( kk < 1 ) next\r\n";
-                        prob_cmd += "				if ( kk > length(density)) break\r\n";
-                        prob_cmd += "				p = p + density[kk]\r\n";
-                        prob_cmd += "				#print(p)\r\n";
-                        prob_cmd += "				if ( s_fix == 0 )\r\n";
-                        prob_cmd += "				{\r\n";
-                        prob_cmd += "					s = b$breaks[kk]\r\n";
-                        prob_cmd += "					s_fix = 1\r\n";
-                        prob_cmd += "				}\r\n";
-                        prob_cmd += "				e = b$breaks[kk]\r\n";
-                        prob_cmd += "				print(s)\r\n";
-                        prob_cmd += "				print(e)\r\n";
-                        prob_cmd += "			}\r\n";
-                        prob_cmd += "			if ( s > predict_y[i] )\r\n";
-                        prob_cmd += "			{\r\n";
-                        prob_cmd += "				s = predict_y[i]\r\n";
-                        prob_cmd += "			}\r\n";
-                        prob_cmd += "			if ( e < predict_y[i] )\r\n";
-                        prob_cmd += "			{\r\n";
-                        prob_cmd += "				e = predict_y[i]\r\n";
-                        prob_cmd += "			}\r\n";
-                        prob_cmd += "			#print(s)\r\n";
-                        prob_cmd += "			#print(e)\r\n";
-                        prob_cmd += "			return (list (p, s,e, b))\r\n";
-                        prob_cmd += "			break\r\n";
-                        prob_cmd += "		}\r\n";
-                        prob_cmd += "	}\r\n";
-                        prob_cmd += "	return (NULL)\r\n";
-                        prob_cmd += "}\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "predict_probability <- function(predictions, predict_y, i, bins=10)\r\n";
-                        prob_cmd += "{\r\n";
-                        prob_cmd += "	prob = 0\r\n";
-                        prob_cmd += "	p = prob_value(predictions, predict_y, i, bins)\r\n";
-                        prob_cmd += "	if ( p[[1]] == -1 )\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "		prob = 0.0\r\n";
-                        prob_cmd += "	}\r\n";
-                        prob_cmd += "	if ( p[[1]] == -2 )\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "		prob = 0.0\r\n";
-                        prob_cmd += "	}\r\n";
-                        prob_cmd += "	if ( p[[1]] >= 0 )\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "		prob = p[[1]]\r\n";
-                        prob_cmd += "	}\r\n";
-                        prob_cmd += "	\r\n";
-                        prob_cmd += "	s = paste(\"probability\",sprintf(\"%.1f\",prob*100))\r\n";
-                        prob_cmd += "	s = paste(s, \"% [\")\r\n";
-                        prob_cmd += "	if ( p[[1]] == -1 )\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "		s = paste(s, \"-Inf\")\r\n";
-                        prob_cmd += "	}else\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "		s = paste(s, sprintf(\"%.2f\",p[[2]]))\r\n";
-                        prob_cmd += "	}\r\n";
-                        prob_cmd += "	s = paste(s, \" <= \")\r\n";
-                        prob_cmd += "	s = paste(s, sprintf(\"%.2f\",predict_y[i]))\r\n";
-                        prob_cmd += "	s = paste(s, \" <= \")\r\n";
-                        prob_cmd += "	if ( p[[1]] == -2 )\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "		s = paste(s, \"+Inf\")\r\n";
-                        prob_cmd += "	}else\r\n";
-                        prob_cmd += "	{\r\n";
-                        prob_cmd += "		s = paste(s, sprintf(\"%.2f\",p[[3]]))\r\n";
-                        prob_cmd += "	}\r\n";
-                        prob_cmd += "	s = paste(s, \"]\")\r\n";
-                        prob_cmd += "	print(s)\r\n";
-                        prob_cmd += "	prob_interval_s = p[[2]]\r\n";
-                        prob_cmd += "	prob_interval_e = p[[3]]\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "	h <- t(predictions[i,])\r\n";
-                        prob_cmd += "	colnames(h)[1]<-c(\"value\")\r\n";
-                        prob_cmd += "	g <- ggplot(data = as.data.frame(h), aes(x=value,y = ..density..))\r\n";
-                        prob_cmd += "	g <- g + geom_histogram(bins=bins)+\r\n";
-                        prob_cmd += "	geom_vline(xintercept = predict_y[i], colour=\"red\", size = 2)+\r\n";
-                        prob_cmd += "	geom_vline(xintercept = prob_interval_s, colour=\"red\", linetype = \"dotted\")+\r\n";
-                        prob_cmd += "	geom_vline(xintercept = prob_interval_e, colour=\"red\", linetype = \"dotted\")+\r\n";
-                        prob_cmd += "	geom_density(aes(color = value), color = \"blue\", alpha = 0.2, fill=\"blue\", show.legend = F)+\r\n";
-                        prob_cmd += "	annotate(\"rect\", xmin = prob_interval_s, xmax = prob_interval_e, ymin = 0, ymax = Inf, alpha = 0.1)+\r\n";
-                        prob_cmd += "	ggtitle(s)\r\n";
-                        prob_cmd += "	\r\n";
-                        prob_cmd += "	return (list(p, g))\r\n";
-                        prob_cmd += "}\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "prob_value <- function(predictions, predict_y, i, bins=10)\r\n";
+                        predict_probability += "{\r\n";
+                        predict_probability += "	h <- t(predictions[i,])\r\n";
+                        predict_probability += "	colnames(h)[1]<-c(\"value\")\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "	b = hist(h, breaks=bins)\r\n";
+                        predict_probability += "	\r\n";
+                        predict_probability += "	density = b$density/sum(b$density)\r\n";
+                        predict_probability += "	p = 0.0\r\n";
+                        predict_probability += "	if (b$breaks[1] > predict_y[i] )\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "			#print(0)\r\n";
+                        predict_probability += "			return (list(-1, b$breaks[1], b$breaks[1], b))\r\n";
+                        predict_probability += "	}\r\n";
+                        predict_probability += "	if (b$breaks[length(b$breaks)] < predict_y[i] )\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "		#print(length(b$breaks))\r\n";
+                        predict_probability += "		return (list(-2, b$breaks[length(b$breaks)], b$breaks[length(b$breaks)], b))\r\n";
+                        predict_probability += "	}\r\n";
+                        predict_probability += "	\r\n";
+                        predict_probability += "	w = floor(bins*0.25)-1\r\n";
+                        predict_probability += "	if ( w <= 1 ) w = 1\r\n";
+                        predict_probability += "	\r\n";
+                        predict_probability += "	for ( k in 1:(length(density)) ){\r\n";
+                        predict_probability += "		if ( b$breaks[k] <= predict_y[i] && predict_y[i] <= b$breaks[k+1] )\r\n";
+                        predict_probability += "		{\r\n";
+                        predict_probability += "			#print(k)\r\n";
+                        predict_probability += "			\r\n";
+                        predict_probability += "			s_fix = 0\r\n";
+                        predict_probability += "			s = b$breaks[1]+0.000001\r\n";
+                        predict_probability += "			e = b$breaks[length(b$breaks)]\r\n";
+                        predict_probability += "			p = 0.0\r\n";
+                        predict_probability += "			#print(s)\r\n";
+                        predict_probability += "			#print(e)\r\n";
+                        predict_probability += "			\r\n";
+                        predict_probability += "			for ( kk in (k-w):(k+w)){\r\n";
+                        predict_probability += "				if ( kk < 1 ) next\r\n";
+                        predict_probability += "				if ( kk > length(density)) break\r\n";
+                        predict_probability += "				p = p + density[kk]\r\n";
+                        predict_probability += "				#print(p)\r\n";
+                        predict_probability += "				if ( s_fix == 0 )\r\n";
+                        predict_probability += "				{\r\n";
+                        predict_probability += "					s = b$breaks[kk]\r\n";
+                        predict_probability += "					s_fix = 1\r\n";
+                        predict_probability += "				}\r\n";
+                        predict_probability += "				e = b$breaks[kk]\r\n";
+                        predict_probability += "				print(s)\r\n";
+                        predict_probability += "				print(e)\r\n";
+                        predict_probability += "			}\r\n";
+                        predict_probability += "			if ( s > predict_y[i] )\r\n";
+                        predict_probability += "			{\r\n";
+                        predict_probability += "				s = predict_y[i]\r\n";
+                        predict_probability += "			}\r\n";
+                        predict_probability += "			if ( e < predict_y[i] )\r\n";
+                        predict_probability += "			{\r\n";
+                        predict_probability += "				e = predict_y[i]\r\n";
+                        predict_probability += "			}\r\n";
+                        predict_probability += "			#print(s)\r\n";
+                        predict_probability += "			#print(e)\r\n";
+                        predict_probability += "			return (list (p, s,e, b))\r\n";
+                        predict_probability += "			break\r\n";
+                        predict_probability += "		}\r\n";
+                        predict_probability += "	}\r\n";
+                        predict_probability += "	return (NULL)\r\n";
+                        predict_probability += "}\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "predict_probability <- function(predictions, predict_y, i, bins=10)\r\n";
+                        predict_probability += "{\r\n";
+                        predict_probability += "	prob = 0\r\n";
+                        predict_probability += "	p = prob_value(predictions, predict_y, i, bins)\r\n";
+                        predict_probability += "	if ( p[[1]] == -1 )\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "		prob = 0.0\r\n";
+                        predict_probability += "	}\r\n";
+                        predict_probability += "	if ( p[[1]] == -2 )\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "		prob = 0.0\r\n";
+                        predict_probability += "	}\r\n";
+                        predict_probability += "	if ( p[[1]] >= 0 )\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "		prob = p[[1]]\r\n";
+                        predict_probability += "	}\r\n";
+                        predict_probability += "	\r\n";
+                        predict_probability += "	s = paste(\"probability\",sprintf(\"%.1f\",prob*100))\r\n";
+                        predict_probability += "	s = paste(s, \"% [\")\r\n";
+                        predict_probability += "	if ( p[[1]] == -1 )\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "		s = paste(s, \"-Inf\")\r\n";
+                        predict_probability += "	}else\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "		s = paste(s, sprintf(\"%.2f\",p[[2]]))\r\n";
+                        predict_probability += "	}\r\n";
+                        predict_probability += "	s = paste(s, \" <= \")\r\n";
+                        predict_probability += "	s = paste(s, sprintf(\"%.2f\",predict_y[i]))\r\n";
+                        predict_probability += "	s = paste(s, \" <= \")\r\n";
+                        predict_probability += "	if ( p[[1]] == -2 )\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "		s = paste(s, \"+Inf\")\r\n";
+                        predict_probability += "	}else\r\n";
+                        predict_probability += "	{\r\n";
+                        predict_probability += "		s = paste(s, sprintf(\"%.2f\",p[[3]]))\r\n";
+                        predict_probability += "	}\r\n";
+                        predict_probability += "	s = paste(s, \"]\")\r\n";
+                        predict_probability += "	print(s)\r\n";
+                        predict_probability += "	prob_interval_s = p[[2]]\r\n";
+                        predict_probability += "	prob_interval_e = p[[3]]\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "	h <- t(predictions[i,])\r\n";
+                        predict_probability += "	colnames(h)[1]<-c(\"value\")\r\n";
+                        predict_probability += "	g <- ggplot(data = as.data.frame(h), aes(x=value,y = ..density..))\r\n";
+                        predict_probability += "	g <- g + geom_histogram(bins=bins)+\r\n";
+                        predict_probability += "	geom_vline(xintercept = predict_y[i], colour=\"red\", size = 2)+\r\n";
+                        predict_probability += "	geom_vline(xintercept = prob_interval_s, colour=\"red\", linetype = \"dotted\")+\r\n";
+                        predict_probability += "	geom_vline(xintercept = prob_interval_e, colour=\"red\", linetype = \"dotted\")+\r\n";
+                        predict_probability += "	geom_density(aes(color = value), color = \"blue\", alpha = 0.2, fill=\"blue\", show.legend = F)+\r\n";
+                        predict_probability += "	annotate(\"rect\", xmin = prob_interval_s, xmax = prob_interval_e, ymin = 0, ymax = Inf, alpha = 0.1)+\r\n";
+                        predict_probability += "	ggtitle(s)\r\n";
+                        predict_probability += "	\r\n";
+                        predict_probability += "	return (list(p, g))\r\n";
+                        predict_probability += "}\r\n";
 
-                        prob_cmd += "predict_probability_list <- NULL\r\n";
-                        prob_cmd += "glist <- NULL\r\n";
-                        prob_cmd += "for ( i in 1:length(test$target_) ){\r\n";
-                        prob_cmd += "#for ( i in 1:1 ){\r\n";
-                        prob_cmd += "	p = predict_probability(predictions, predict_y, i, nbin)\r\n";
-                        prob_cmd += "	\r\n";
-                        prob_cmd += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
-                        prob_cmd += "	file = paste(file, \".png\")\r\n";
-                        prob_cmd += "	ggsave(file = file, plot = p[[2]])\r\n";
-                        prob_cmd += "	print(file)\r\n";
-                        prob_cmd += "	glist[[(length(glist)+1)]] = p[[2]]\r\n";
-                        prob_cmd += "   predict_probability_list[[(length(predict_probability_list)+1)]] = p[[1]]\r\n";
-                        prob_cmd += "}\r\n";
-                        prob_cmd += "predict_probability_df <- t(c(predict_probability_list[[1]][[1]],predict_probability_list[[1]][[2]],predict_probability_list[[1]][[3]]) )\r\n";
-                        prob_cmd += "for ( i in 2:length(test$target_) ){\r\n";
-                        prob_cmd += "	predict_probability_df <- rbind(predict_probability_df, t(c(predict_probability_list[[i]][[1]],predict_probability_list[[i]][[2]],predict_probability_list[[i]][[3]])) )\r\n";
-                        prob_cmd += "}\r\n";
-                        prob_cmd += "colnames(predict_probability_df) <- c(\"probability\", \"lower\", \"upper\")\r\n";
-                        prob_cmd += "predict_probability_df[,1]<-ifelse(predict_probability_df[,1] < 0, 0, predict_probability_df[,1])\r\n";
-                        prob_cmd += "predict_probability_df\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "predict_probability_df <- cbind(c(1:nrow(predict_probability_df)),predict_probability_df)\r\n";
-                        prob_cmd += "colnames(predict_probability_df)[1] <- c(\"index\")\r\n";
-                        prob_cmd += "predict_probability_df <- as.data.frame(predict_probability_df)\r\n";
-                        prob_cmd += "head(predict_probability_df)\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "predict_probability_plt <- ggplot(data = predict_probability_df, aes(x=index, y = probability, col =probability)) + geom_point(size = 5)\r\n";
-                        prob_cmd += "predict_probability_plt\r\n";
-                        prob_cmd += "write.csv(predict_probability_df, \"predict_probability.csv\", row.names=F)\r\n";
+                        predict_probability += "predict_probability_list <- NULL\r\n";
+                        predict_probability += "glist <- NULL\r\n";
+                        predict_probability += "for ( i in 1:length(test$target_) ){\r\n";
+                        predict_probability += "#for ( i in 1:1 ){\r\n";
+                        predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin)\r\n";
+                        predict_probability += "	\r\n";
+                        predict_probability += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
+                        predict_probability += "	file = paste(file, \".png\")\r\n";
+                        predict_probability += "	ggsave(file = file, plot = p[[2]])\r\n";
+                        predict_probability += "	print(file)\r\n";
+                        predict_probability += "	glist[[(length(glist)+1)]] = p[[2]]\r\n";
+                        predict_probability += "   predict_probability_list[[(length(predict_probability_list)+1)]] = p[[1]]\r\n";
+                        predict_probability += "}\r\n";
+                        predict_probability += "predict_probability_df <- t(c(predict_probability_list[[1]][[1]],predict_probability_list[[1]][[2]],predict_probability_list[[1]][[3]]) )\r\n";
+                        predict_probability += "for ( i in 2:length(test$target_) ){\r\n";
+                        predict_probability += "	predict_probability_df <- rbind(predict_probability_df, t(c(predict_probability_list[[i]][[1]],predict_probability_list[[i]][[2]],predict_probability_list[[i]][[3]])) )\r\n";
+                        predict_probability += "}\r\n";
+                        predict_probability += "colnames(predict_probability_df) <- c(\"probability\", \"lower\", \"upper\")\r\n";
+                        predict_probability += "predict_probability_df[,1]<-ifelse(predict_probability_df[,1] < 0, 0, predict_probability_df[,1])\r\n";
+                        predict_probability += "predict_probability_df\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "predict_probability_df <- cbind(c(1:nrow(predict_probability_df)),predict_probability_df)\r\n";
+                        predict_probability += "colnames(predict_probability_df)[1] <- c(\"index\")\r\n";
+                        predict_probability += "predict_probability_df <- as.data.frame(predict_probability_df)\r\n";
+                        predict_probability += "head(predict_probability_df)\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "predict_probability_plt <- ggplot(data = predict_probability_df, aes(x=index, y = probability, col =probability)) + geom_point(size = 5)\r\n";
+                        predict_probability += "predict_probability_plt\r\n";
+                        predict_probability += "write.csv(predict_probability_df, \"predict_probability.csv\", row.names=F)\r\n";
 
-                        prob_cmd += "\r\n";
-                        prob_cmd += "prob <- as.integer((predict_probability_df[,2]*100)*10)/10\r\n";
-                        prob_cmd += "predict_probability_plt<-ggplot()\r\n";
-                        prob_cmd += "predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))\r\n";
-                        prob_cmd += "#geom_line(aes(x=1:nrow(predict.y), y=test$'住宅価格', colour=\"観測値\"))+geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
-                        prob_cmd += "for ( i in 1:length(test$target_) ){\r\n";
-                        prob_cmd += "	predict_probability_plt <- predict_probability_plt + annotate(geom = \"text\", x =i, y = predict.y[,1][i], label=paste(prob[i]), size = 3.5)\r\n";
-                        prob_cmd += "}\r\n";
-                        prob_cmd += "predict_probability_plt\r\n";
-                        prob_cmd += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率.png\", plot = predict_probability_plt)\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "x <- predict_probability_df\r\n";
-                        prob_cmd += "#predict_probability_plt<-ggplot()\r\n";
-                        prob_cmd += "#predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))+\r\n";
-                        prob_cmd += "#geom_line(aes(x=1:nrow(predict.y), y=test$'住宅価格', colour=\"観測値\"))+geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "for ( i in 1:length(test$target_) ){\r\n";
-                        prob_cmd += "	if ( x[,2][i] > 0.8                   ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#1e90ff\", size = 4, alpha = 0.5)\r\n";
-                        prob_cmd += "	if ( x[,2][i] <= 0.8 && x[,2][i] > 0.6) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#adff2f\", size = 4, alpha = 0.5)\r\n";
-                        prob_cmd += "	if ( x[,2][i] <= 0.6 && x[,2][i] > 0.3) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#ffa500\", size = 4, alpha = 0.5)\r\n";
-                        prob_cmd += "	if ( x[,2][i] <= 0.3                  ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#800080\", size = 4, alpha = 0.5)\r\n";
-                        prob_cmd += "}\r\n";
-                        prob_cmd += "predict_probability_plt <- predict_probability_plt + ggtitle(\"予測値の確率\")\r\n";
-                        prob_cmd += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2.png\", plot = predict_probability_plt)\r\n";
-                        prob_cmd += "\r\n";
-                        prob_cmd += "predict_probability_plt\r\n";
-                        prob_cmd += "\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "prob <- as.integer((predict_probability_df[,2]*100)*10)/10\r\n";
+                        predict_probability += "predict_probability_plt<-ggplot()\r\n";
+                        predict_probability += "predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))\r\n";
+                        predict_probability += "#geom_line(aes(x=1:nrow(predict.y), y=test$'住宅価格', colour=\"観測値\"))+geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
+                        predict_probability += "for ( i in 1:length(test$target_) ){\r\n";
+                        predict_probability += "	predict_probability_plt <- predict_probability_plt + annotate(geom = \"text\", x =i, y = predict.y[,1][i], label=paste(prob[i]), size = 3.5)\r\n";
+                        predict_probability += "}\r\n";
+                        predict_probability += "predict_probability_plt\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率.png\", plot = predict_probability_plt)\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "x <- predict_probability_df\r\n";
+                        predict_probability += "#predict_probability_plt<-ggplot()\r\n";
+                        predict_probability += "#predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))+\r\n";
+                        predict_probability += "#geom_line(aes(x=1:nrow(predict.y), y=test$'住宅価格', colour=\"観測値\"))+geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "for ( i in 1:length(test$target_) ){\r\n";
+                        predict_probability += "	if ( x[,2][i] > 0.8                   ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#1e90ff\", size = 4, alpha = 0.5)\r\n";
+                        predict_probability += "	if ( x[,2][i] <= 0.8 && x[,2][i] > 0.6) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#adff2f\", size = 4, alpha = 0.5)\r\n";
+                        predict_probability += "	if ( x[,2][i] <= 0.6 && x[,2][i] > 0.3) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#ffa500\", size = 4, alpha = 0.5)\r\n";
+                        predict_probability += "	if ( x[,2][i] <= 0.3                  ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#800080\", size = 4, alpha = 0.5)\r\n";
+                        predict_probability += "}\r\n";
+                        predict_probability += "predict_probability_plt <- predict_probability_plt + ggtitle(\"予測値の確率\")\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2.png\", plot = predict_probability_plt)\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "predict_probability_plt\r\n";
+                        predict_probability += "\r\n";
 
                         using (System.IO.StreamWriter sw = new System.IO.StreamWriter("predict_probability.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
                         {
-                            sw.Write(prob_cmd);
+                            sw.Write(predict_probability);
                         }
                     }
                     if (dup_var)
