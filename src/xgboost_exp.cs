@@ -17,6 +17,7 @@ namespace WindowsFormsApplication1
         public ImageView _ImageView;
         public ImageView _ImageView2;
         public ImageView _ImageView3;
+        public ImageView _ImageView4;
 
         public int explain_num = 1;
         public xgboost_exp()
@@ -143,7 +144,7 @@ namespace WindowsFormsApplication1
             try
             {
                 int pos = trackBar1.Value;
-                string file = string.Format("tmp_xgboost_predict_parts{0:D4}.png", pos);
+                string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", pos);
                 if (System.IO.File.Exists(file))
                 {
                     _ImageView.pictureBox1.ImageLocation = file;
@@ -154,9 +155,42 @@ namespace WindowsFormsApplication1
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox1.Dock = DockStyle.Fill;
                 }
+                
+                file = string.Format("explain_predict\\predict_probability{0}.png", pos);
+                if (System.IO.File.Exists(file))
+                {
+                    _ImageView.pictureBox1.ImageLocation = file;
+                    _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    _ImageView.pictureBox1.Dock = DockStyle.Fill;
+
+                    pictureBox4.ImageLocation = file;
+                    pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox4.Dock = DockStyle.Fill;
+                }
             }
             catch { }
 
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                Bitmap bmp = new Bitmap(pictureBox4.Image);
+                Clipboard.SetImage(bmp);
+
+                //後片付け
+                bmp.Dispose();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            _ImageView4.Show();
         }
     }
 }

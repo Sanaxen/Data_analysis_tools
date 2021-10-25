@@ -6764,7 +6764,7 @@ namespace WindowsFormsApplication1
 
         private void PutResumeScript()
         {
-            string history = "resume.txt";
+            string history = "resume.r";
 
             var sw = new System.IO.StreamWriter(history, false, System.Text.Encoding.GetEncoding("shift_jis"));
             try

@@ -7,7 +7,7 @@ targetPackages <- c('forecast', 'ellipse', 'magrittr','randomForest','car','dply
 ,'rpart', 'rpart.plot', 'partykit','ggpmisc', 'pls', 'e1071', 'plotly', 'xgboost'
 ,'wordcloud', 'magrittr', 'tagcloud', 'mice' , 'KFAS'
 , 'Ckmeans.1d.dp', 'DiagrammeR', 'ggfortify', 'proxy', 'lubridate', 'wordcloud2'
-, 'ggplotify', 'DALEX', 'DALEXtra', 'mlr')
+, 'ggplotify', 'DALEX', 'DALEXtra', 'mlr', 'doParallel')
 
 newPackages <- targetPackages[!(targetPackages %in% installed.packages()[,"Package"])]
 if(length(newPackages)) install.packages(newPackages, repos = "http://cran.us.r-project.org")
@@ -29,3 +29,4 @@ devtools::install_github("twitter/AnomalyDetection", lib=install_libpath)
 
 install.packages("rstan", repos = "https://cloud.r-project.org/",dependencies=TRUE)
 install.packages("prophet", repos = "https://cloud.r-project.org/")
+

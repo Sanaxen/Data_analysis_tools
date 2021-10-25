@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(xgboost));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.button19 = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
@@ -147,8 +148,9 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox13 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown15)).BeginInit();
@@ -171,7 +173,6 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -258,6 +259,30 @@
             this.panel2.Size = new System.Drawing.Size(881, 850);
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(389, 93);
+            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(61, 22);
+            this.numericUpDown4.TabIndex = 151;
+            this.toolTip1.SetToolTip(this.numericUpDown4, "重みを指定倍する事が出来ます");
+            this.numericUpDown4.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // button19
             // 
@@ -578,7 +603,7 @@
             this.button17.Location = new System.Drawing.Point(787, 29);
             this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(87, 22);
+            this.button17.Size = new System.Drawing.Size(87, 26);
             this.button17.TabIndex = 47;
             this.button17.Text = "stop";
             this.toolTip1.SetToolTip(this.button17, "最適パラメータ探索停止");
@@ -1490,7 +1515,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 76);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(694, 774);
+            this.panel5.Size = new System.Drawing.Size(728, 774);
             this.panel5.TabIndex = 38;
             // 
             // webBrowser1
@@ -1500,7 +1525,7 @@
             this.webBrowser1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(692, 578);
+            this.webBrowser1.Size = new System.Drawing.Size(726, 578);
             this.webBrowser1.TabIndex = 37;
             // 
             // pictureBox1
@@ -1510,7 +1535,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(692, 578);
+            this.pictureBox1.Size = new System.Drawing.Size(726, 578);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 37;
             this.pictureBox1.TabStop = false;
@@ -1537,7 +1562,7 @@
             this.splitter2.Location = new System.Drawing.Point(0, 578);
             this.splitter2.Margin = new System.Windows.Forms.Padding(4);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(692, 10);
+            this.splitter2.Size = new System.Drawing.Size(726, 10);
             this.splitter2.TabIndex = 36;
             this.splitter2.TabStop = false;
             // 
@@ -1551,12 +1576,13 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(692, 184);
+            this.textBox1.Size = new System.Drawing.Size(726, 184);
             this.textBox1.TabIndex = 31;
             this.textBox1.WordWrap = false;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.checkBox13);
             this.panel1.Controls.Add(this.linkLabel2);
             this.panel1.Controls.Add(this.checkBox4);
             this.panel1.Controls.Add(this.label27);
@@ -1572,14 +1598,14 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(694, 76);
+            this.panel1.Size = new System.Drawing.Size(728, 76);
             this.panel1.TabIndex = 35;
             // 
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.linkLabel2.Location = new System.Drawing.Point(335, 41);
+            this.linkLabel2.Location = new System.Drawing.Point(369, 37);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(48, 15);
             this.linkLabel2.TabIndex = 134;
@@ -1591,11 +1617,12 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
+            this.checkBox4.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.checkBox4.ForeColor = System.Drawing.Color.Black;
             this.checkBox4.Location = new System.Drawing.Point(12, 50);
             this.checkBox4.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(101, 19);
+            this.checkBox4.Size = new System.Drawing.Size(96, 18);
             this.checkBox4.TabIndex = 133;
             this.checkBox4.Text = "予測の説明";
             this.toolTip1.SetToolTip(this.checkBox4, "予測結果がどのような関係で算出されたかを可視化");
@@ -1607,7 +1634,7 @@
             this.label27.BackColor = System.Drawing.SystemColors.Control;
             this.label27.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label27.ForeColor = System.Drawing.Color.Red;
-            this.label27.Location = new System.Drawing.Point(220, 50);
+            this.label27.Location = new System.Drawing.Point(305, 52);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(58, 17);
             this.label27.TabIndex = 47;
@@ -1618,11 +1645,12 @@
             this.button18.BackColor = System.Drawing.SystemColors.Control;
             this.button18.Enabled = false;
             this.button18.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button18.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button18.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button18.Location = new System.Drawing.Point(115, 45);
+            this.button18.Location = new System.Drawing.Point(173, 43);
             this.button18.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(100, 28);
+            this.button18.Size = new System.Drawing.Size(92, 28);
             this.button18.TabIndex = 46;
             this.button18.Text = "予測の説明";
             this.toolTip1.SetToolTip(this.button18, "予測結果がどのような関係で算出されたかを可視化");
@@ -1632,7 +1660,7 @@
             // button8
             // 
             this.button8.BackColor = System.Drawing.Color.Red;
-            this.button8.Location = new System.Drawing.Point(699, 2);
+            this.button8.Location = new System.Drawing.Point(723, 2);
             this.button8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(21, 22);
@@ -1644,7 +1672,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(399, 39);
+            this.button6.Location = new System.Drawing.Point(433, 35);
             this.button6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(115, 25);
@@ -1655,7 +1683,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(520, 12);
+            this.textBox2.Location = new System.Drawing.Point(552, 7);
             this.textBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(173, 22);
@@ -1663,7 +1691,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(399, 8);
+            this.button4.Location = new System.Drawing.Point(433, 4);
             this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(115, 26);
@@ -1687,7 +1715,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(283, 8);
+            this.button7.Location = new System.Drawing.Point(317, 4);
             this.button7.Margin = new System.Windows.Forms.Padding(4);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(100, 29);
@@ -1715,7 +1743,7 @@
             this.panel3.Location = new System.Drawing.Point(881, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(694, 850);
+            this.panel3.Size = new System.Drawing.Size(728, 850);
             this.panel3.TabIndex = 39;
             // 
             // splitter1
@@ -1738,40 +1766,31 @@
             this.toolTip1.InitialDelay = 50;
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ReshowDelay = 100;
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // numericUpDown4
+            // checkBox13
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(389, 93);
-            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numericUpDown4.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown4.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(61, 22);
-            this.numericUpDown4.TabIndex = 151;
-            this.toolTip1.SetToolTip(this.numericUpDown4, "重みを指定倍する事が出来ます");
-            this.numericUpDown4.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            this.checkBox13.AutoSize = true;
+            this.checkBox13.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.checkBox13.ForeColor = System.Drawing.Color.Black;
+            this.checkBox13.Location = new System.Drawing.Point(109, 50);
+            this.checkBox13.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox13.Name = "checkBox13";
+            this.checkBox13.Size = new System.Drawing.Size(57, 18);
+            this.checkBox13.TabIndex = 135;
+            this.checkBox13.Text = "確率";
+            this.toolTip1.SetToolTip(this.checkBox13, "予測結果がどのような関係で算出されたかを可視化");
+            this.checkBox13.UseVisualStyleBackColor = true;
             // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1575, 850);
+            this.ClientSize = new System.Drawing.Size(1609, 850);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -1784,6 +1803,7 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.xgboost_MouseMove);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
@@ -1811,7 +1831,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1936,5 +1955,6 @@
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.CheckBox checkBox12;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
+        public System.Windows.Forms.CheckBox checkBox13;
     }
 }

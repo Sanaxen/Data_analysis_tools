@@ -39,6 +39,7 @@ namespace WindowsFormsApplication1
         xgboost_exp xgboost_exp_ = null;
         int explain_num = 1;
         int xgboost_predict_parts_count = 0;
+        int xgboost_predict_probability_count = 0;
         int exist_time_axis = 0;
         public int add_enevt_data = 0;
         int use_diff = 0;
@@ -753,90 +754,93 @@ namespace WindowsFormsApplication1
                 cmd += "\r\n";
                 cmd += "\r\n";
 
+                string xgboost_initial_cmd = "";
                 if (radioButton3.Checked)
                 {
-                    cmd += "train <- xgb_train\r\n";
+                    xgboost_initial_cmd += "train <- xgb_train\r\n";
                 }
 
                 if (use_diff == 1)
                 {
-                    cmd += "y_ <- train$target_\r\n";
+                    xgboost_initial_cmd += "y_ <- train$target_\r\n";
                 }
                 else
                 {
-                    cmd += "y_ <- train$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
+                    xgboost_initial_cmd += "y_ <- train$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
                 }
                 if (radioButton2.Checked)
                 {
-                    cmd += "if ( is.character(y_)){\r\n";
-                    cmd += "    y_  <- as.factor(y_)\r\n";
-                    cmd += "}\r\n";
-                    cmd += "if ( is.factor(y_)){\r\n";
-                    cmd += "    y_  <- as.integer(y_)\r\n";
-                    cmd += "}\r\n";
-                    cmd += "if ( min(y_) > 0){\r\n";
-                    cmd += "   y_ <- y_ - min(y_)\r\n";
-                    cmd += "}\r\n";
+                    xgboost_initial_cmd += "if ( is.character(y_)){\r\n";
+                    xgboost_initial_cmd += "    y_  <- as.factor(y_)\r\n";
+                    xgboost_initial_cmd += "}\r\n";
+                    xgboost_initial_cmd += "if ( is.factor(y_)){\r\n";
+                    xgboost_initial_cmd += "    y_  <- as.integer(y_)\r\n";
+                    xgboost_initial_cmd += "}\r\n";
+                    xgboost_initial_cmd += "if ( min(y_) > 0){\r\n";
+                    xgboost_initial_cmd += "   y_ <- y_ - min(y_)\r\n";
+                    xgboost_initial_cmd += "}\r\n";
                 }
-                cmd += "train$target_<- y_\r\n";
+                xgboost_initial_cmd += "train$target_<- y_\r\n";
 
-                cmd += "train_mx<-";
-                cmd += "sparse.model.matrix(" + formuler + ", data = train)\r\n";
-                cmd += "train_dmat <- xgb.DMatrix(train_mx, label = train$target_";
+                xgboost_initial_cmd += "train_mx<-";
+                xgboost_initial_cmd += "sparse.model.matrix(" + formuler + ", data = train)\r\n";
+                xgboost_initial_cmd += "train_dmat <- xgb.DMatrix(train_mx, label = train$target_";
                 if (comboBox4.Text != "")
                 {
-                    cmd += ",weight = train$'" + comboBox4.Text + "'";
+                    xgboost_initial_cmd += ",weight = train$'" + comboBox4.Text + "'";
                 }
                 else
                 {
                     if (add_enevt_data == 1)
                     {
-                        cmd += ",weight = train$event";
+                        xgboost_initial_cmd += ",weight = train$event";
                     }
                 }
-                cmd += ")\r\n";
-                cmd += "\r\n";
-                cmd += "\r\n";
+                xgboost_initial_cmd += ")\r\n";
+                xgboost_initial_cmd += "\r\n";
+                xgboost_initial_cmd += "\r\n";
 
                 if (use_diff == 1)
                 {
-                    cmd += "y_ <- test$target_\r\n";
+                    xgboost_initial_cmd += "y_ <- test$target_\r\n";
                 }
                 else
                 {
-                    cmd += "y_ <- test$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
+                    xgboost_initial_cmd += "y_ <- test$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
                 }
                 if (radioButton2.Checked)
                 {
-                    cmd += "if ( is.character(y_)){\r\n";
-                    cmd += "    y_  <- as.factor(y_)\r\n";
-                    cmd += "}\r\n";
-                    cmd += "if ( is.factor(y_)){\r\n";
-                    cmd += "    y_  <- as.integer(y_)\r\n";
-                    cmd += "}\r\n";
-                    cmd += "if ( min(y_) > 0){\r\n";
-                    cmd += "   y_ <- y_ - min(y_)\r\n";
-                    cmd += "}\r\n";
+                    xgboost_initial_cmd += "if ( is.character(y_)){\r\n";
+                    xgboost_initial_cmd += "    y_  <- as.factor(y_)\r\n";
+                    xgboost_initial_cmd += "}\r\n";
+                    xgboost_initial_cmd += "if ( is.factor(y_)){\r\n";
+                    xgboost_initial_cmd += "    y_  <- as.integer(y_)\r\n";
+                    xgboost_initial_cmd += "}\r\n";
+                    xgboost_initial_cmd += "if ( min(y_) > 0){\r\n";
+                    xgboost_initial_cmd += "   y_ <- y_ - min(y_)\r\n";
+                    xgboost_initial_cmd += "}\r\n";
                 }
-                cmd += "test$target_<- y_\r\n";
+                xgboost_initial_cmd += "test$target_<- y_\r\n";
 
-                cmd += "test_mx<-";
-                cmd += "sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                cmd += "test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                xgboost_initial_cmd += "test_mx<-";
+                xgboost_initial_cmd += "sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                xgboost_initial_cmd += "test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
                 if (comboBox4.Text != "")
                 {
-                    cmd += ",weight = test$'" + comboBox4.Text + "'";
+                    xgboost_initial_cmd += ",weight = test$'" + comboBox4.Text + "'";
                 }
                 else
                 {
                     if (add_enevt_data == 1)
                     {
-                        cmd += ",weight = test$event";
+                        xgboost_initial_cmd += ",weight = test$event";
                     }
                 }
-                cmd += ")\r\n";
-                cmd += "\r\n";
-                cmd += "\r\n";
+                xgboost_initial_cmd += ")\r\n";
+                xgboost_initial_cmd += "\r\n";
+                xgboost_initial_cmd += "\r\n";
+
+                cmd += xgboost_initial_cmd;
 
                 cmd += "l_params=" + l_params + "\r\n";
                 cmd += "\r\n";
@@ -1526,28 +1530,57 @@ namespace WindowsFormsApplication1
                     label27.Text = string.Format("{0:D4}/{0:D4}", 1, explain_num);
                     label27.Refresh();
                     explain_num = form1.Int_func("nrow", "test");
-                    for (int ii = 0; ii < explain_num; ii++)
+
+                    string path = Form1.curDir + "\\explain_predict";
+                    if (!System.IO.Directory.Exists(path))
                     {
-                        explain += string.Format("predict_parts_plt{0} = predict_parts(explainer, test_mx[{1},, drop = FALSE])\r\n", ii+1, ii + 1);
-                        string png_file = Form1.curDir + string.Format("\\explain_predict\\tmp_xgboost_predict_parts{0:D4}.png", ii+1);
-                        png_file = png_file.Replace("\\", "/").Replace("//", "/");
-
-                        string path = Form1.curDir + "\\explain_predict";
-                        if (!System.IO.Directory.Exists(path))
-                        {
-                            // Try to create the directory.
-                            System.IO.Directory.CreateDirectory(path);
-                        }
-
-
-                        explain += "plt_ <- " + string.Format("  plot(predict_parts_plt{0})\r\n", ii + 1);
-                        explain += "ggsave(filename = \"" + png_file + "\", plot = plt_)\r\n";
-                        explain += "cat(\r\n)\r\n";
-                        explain += string.Format("cat(\"*****predict_parts_plt{0}/{1}*****\")\r\n", ii+1, explain_num);
-                        explain += "print(predict_parts_plt1)\r\n";
-                        explain += "cat(\r\n)\r\n";
+                        // Try to create the directory.
+                        System.IO.Directory.CreateDirectory(path);
                     }
 
+
+                    if (1 == 1)
+                    {
+                        explain += "\r\n";
+                        explain += "\r\n";
+                        explain += "library(doParallel)\r\n";
+                        explain += "cluster = makeCluster(getOption(\"mc.cores\", 3L), type = \"PSOCK\")\r\n";
+                        explain += "registerDoParallel(cluster)\r\n";
+                        explain += "\r\n";
+                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+                        explain += "\r\n";
+                        explain += "foreach(x = seq(1, "+ explain_num+"), .export =c('ggplot', 'predict_parts', 'ggsave')) %dopar% {\r\n";
+                        explain += "	predict_parts_plt = predict_parts(explainer, test_mx[x,, drop = FALSE])\r\n";
+                        explain += "	plt_ <-   plot(predict_parts_plt)\r\n";
+
+                        string png_file = Form1.curDir + string.Format("\\explain_predict\\tmp_xgboost_predict_parts");
+                        png_file = png_file.Replace("\\", "/").Replace("//", "/");
+                        explain += "	pngfile = paste("+"\"" + png_file + "\",x)\r\n";
+                        explain += "	pngfile = paste( pngfile, \".png\")\r\n";
+                        explain += "	pngfile = gsub(\" \", \"\", pngfile, fixed = TRUE)\r\n";
+                        explain += "	ggsave(filename = pngfile, plot = plt_)\r\n";
+                        explain += "	#print(predict_parts_plt)\r\n";
+                        explain += "}\r\n";
+                        explain += "\r\n";
+                        explain += "stopCluster(cluster)\r\n\r\n";
+                    }
+                    else
+                    {
+                        for (int ii = 0; ii < explain_num; ii++)
+                        {
+                            explain += string.Format("predict_parts_plt = predict_parts(explainer, test_mx[{1},, drop = FALSE])\r\n");
+                            string png_file = Form1.curDir + string.Format("\\explain_predict\\tmp_xgboost_predict_parts{0}.png", ii + 1);
+                            png_file = png_file.Replace("\\", "/").Replace("//", "/");
+
+
+                            explain += "plt_ <- " + string.Format("  plot(predict_parts_plt)\r\n");
+                            explain += "ggsave(filename = \"" + png_file + "\", plot = plt_)\r\n";
+                            explain += "cat(\\n)\r\n";
+                            explain += string.Format("cat(\"*****predict_parts_plt{0}/{1}*****\")\r\n", ii + 1, explain_num);
+                            explain += "print(predict_parts_plt)\r\n";
+                            explain += "cat(\\n)\r\n";
+                        }
+                    }
                     if (radioButton2.Checked && comboBox2.Text == "\"multi:softprob\"")
                     {
                         /// empty
@@ -1574,8 +1607,8 @@ namespace WindowsFormsApplication1
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
 
                     string forecast_extension = "";
-                    forecast_extension += "df_<-test\r\n";
-                    forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                    forecast_extension += "df_<<-test\r\n";
+                    forecast_extension += "predict_y<<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     if (use_diff == 1)
                     {
                         if (eval == 1)
@@ -1586,7 +1619,7 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                         }
-                        forecast_extension += "predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
+                        forecast_extension += "predict_y<<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "zz_tmp<- inv_diff(test$target_, start_value, use_log_diff) - min__\r\n";
                         forecast_extension += "debug_plt <- ggplot()\r\n";
@@ -1604,9 +1637,9 @@ namespace WindowsFormsApplication1
                     {
                         if (comboBox2.Text == "\"multi:softprob\"")
                         {
-                            forecast_extension += "predict_y <- matrix(predict_y,"+ numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
-                            forecast_extension += "predict_y<-t(predict_y)\r\n";
-                            forecast_extension += "colnames(predict_y)<-c(";
+                            forecast_extension += "predict_y <<- matrix(predict_y," + numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
+                            forecast_extension += "predict_y<<-t(predict_y)\r\n";
+                            forecast_extension += "colnames(predict_y)<<-c(";
                             forecast_extension += "\""+string.Format("class{0}", 1)+"\"";
                             for ( int i = 2; i <= numericUpDown7.Value; i++)
                             {
@@ -1616,7 +1649,7 @@ namespace WindowsFormsApplication1
                         }
                         if (comboBox2.Text == "\"multi:softmax\"")
                         {
-                            forecast_extension += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
+                            forecast_extension += "confusion_tbl<<-table(predict_y, " + "test$target_)\r\n";
                             forecast_extension += "x_<- data.frame(confusion_tbl[,1])\r\n";
                             forecast_extension += "    for (i in 2:ncol(confusion_tbl)){\r\n";
                             forecast_extension += "    x_ <- cbind(x_, confusion_tbl[,i])\r\n";
@@ -1631,15 +1664,15 @@ namespace WindowsFormsApplication1
                             forecast_extension += "error = function(e) {\r\n";
                             forecast_extension += " #print(e)\r\n";
                             forecast_extension += "})\r\n";
-                            forecast_extension += "confusion_test <- x_\r\n";
+                            forecast_extension += "confusion_test <<- x_\r\n";
 
-                            forecast_extension += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
+                            forecast_extension += "ac_ <<- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
                             forecast_extension += "tmp_ <- df_\r\n";
                             forecast_extension += "tmp_ <- cbind(tmp_, predict_y)\r\n";
-                            forecast_extension += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
+                            forecast_extension += "predict.xgboost <<- cbind(tmp_, predict_y)\r\n";
                         }
                     }
-                    forecast_extension += "predict.y<-as.data.frame(predict_y)\r\n";
+                    forecast_extension += "predict.y<<-as.data.frame(predict_y)\r\n";
                     if ( time_series_mode )
                     {
                         forecast_extension += "sample_metod <- -1\r\n";
@@ -1676,12 +1709,12 @@ namespace WindowsFormsApplication1
                         forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
                         forecast_extension += "    for ( i in 1:"+numericUpDown5.Value.ToString()+"){\r\n";
                         forecast_extension += "	    # 1行追加\r\n";
-                        forecast_extension += "	    test<-rbind(test, test[1,])\r\n";
-                        forecast_extension += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
+                        forecast_extension += "	    test<<-rbind(test, test[1,])\r\n";
+                        forecast_extension += "        test[nrow(test),1] <<- st_ + i*dt_\r\n";
                         forecast_extension += "	    \r\n";
                         if (add_enevt_data == 1)
                         {
-                            forecast_extension += "        test$event[nrow(test)] = sample(train$event, 1)\r\n";
+                            forecast_extension += "        test$event[nrow(test)] <<- sample(train$event, 1)\r\n";
                         }
                         forecast_extension += "	    \r\n";
                         forecast_extension += "        if ( sample_metod >= 1){\r\n";
@@ -1710,21 +1743,21 @@ namespace WindowsFormsApplication1
                         forecast_extension += "                }\r\n";
                         forecast_extension += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && skip != TRUE)\r\n";
                         forecast_extension += "	            {\r\n";
-                        forecast_extension += "                    test[nrow(test), i] = rnorm(mean_, sd_)[i]\r\n";
+                        forecast_extension += "                    test[nrow(test), i] <<- rnorm(mean_, sd_)[i]\r\n";
                         forecast_extension += "                    if ( sample_metod == 1){\r\n";
                         forecast_extension += "                        #復元抽出\r\n";
-                        forecast_extension += "                        test[nrow(test), i] = sample(train[, i], 1)\r\n";
+                        forecast_extension += "                        test[nrow(test), i] <<- sample(train[, i], 1)\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 2){\r\n";
                         forecast_extension += "   	        	        #移動平均\r\n";
-                        forecast_extension += "                        test[nrow(test),i] = mean(test[(nrow(test)-3):nrow(test),i])\r\n";
+                        forecast_extension += "                        test[nrow(test),i] <<- mean(test[(nrow(test)-3):nrow(test),i])\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 3){\r\n";
                         forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
                         forecast_extension += "			            #ts.plot(df_t)\r\n";
                         forecast_extension += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
                         forecast_extension += "			            pred <- predict(Fit,n.ahead=1)\r\n";
-                        forecast_extension += "			            test[nrow(test),i] = pred$pred[1]\r\n";
+                        forecast_extension += "			            test[nrow(test),i] <<- pred$pred[1]\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 4){\r\n";
                         forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
@@ -1732,13 +1765,13 @@ namespace WindowsFormsApplication1
                         forecast_extension += "                        tryCatch({\r\n";
                         forecast_extension += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
                         forecast_extension += "			                pred <- predict(Fit,n.ahead=1)\r\n";
-                        forecast_extension += "			                test[nrow(test),i] = pred$pred[1]\r\n";
+                        forecast_extension += "			                test[nrow(test),i] <<- pred$pred[1]\r\n";
                         forecast_extension += "                        },\r\n";
                         forecast_extension += "                        error = function(e) {\r\n";
                         forecast_extension += "                            #message(e)\r\n";
                         forecast_extension += "                            #print(e)\r\n";
                         forecast_extension += "                            #復元抽出\r\n";
-                        forecast_extension += "                            test[nrow(test), i] = sample(train[, i], 1)\r\n";
+                        forecast_extension += "                            test[nrow(test), i] <<- sample(train[, i], 1)\r\n";
                         forecast_extension += "                        },\r\n";
                         forecast_extension += "                        finally   = {\r\n";
                         forecast_extension += "                        },\r\n";
@@ -1765,22 +1798,22 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        colidx_11 = grep(\"minute$\", coln )\r\n";
                         forecast_extension += "        colidx_12 = grep(\"second$\", coln )\r\n";
 
-                        forecast_extension += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] = 0\r\n";
-                        forecast_extension += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] = 0\r\n";
-                        forecast_extension += "        if ( length(colidx_3) == 1 )test[nrow(test),colidx_3] = 0\r\n";
-                        forecast_extension += "        if ( length(colidx_4) == 1 )test[nrow(test),colidx_4] = 0\r\n";
-                        forecast_extension += "        if ( length(colidx_5) == 1 )test[nrow(test),colidx_5] = 0\r\n";
-                        forecast_extension += "        if ( length(colidx_6) == 1 )test[nrow(test),colidx_6] = 0\r\n";
-                        forecast_extension += "        if ( length(colidx_7) == 1 )test[nrow(test),colidx_7] = 0\r\n";
+                        forecast_extension += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] <<- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] <<- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_3) == 1 )test[nrow(test),colidx_3] <<- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_4) == 1 )test[nrow(test),colidx_4] <<- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_5) == 1 )test[nrow(test),colidx_5] <<- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_6) == 1 )test[nrow(test),colidx_6] <<- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_7) == 1 )test[nrow(test),colidx_7] <<- 0\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "        week = weekdays(as.Date(test[nrow(test),1]))\r\n";
-                        forecast_extension += "        if ( length(colidx_1) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_1] = 1\r\n";
-                        forecast_extension += "        if ( length(colidx_2) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_2] = 1\r\n";
-                        forecast_extension += "        if ( length(colidx_3) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_3] = 1\r\n";
-                        forecast_extension += "        if ( length(colidx_4) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_4] = 1\r\n";
-                        forecast_extension += "        if ( length(colidx_5) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_5] = 1\r\n";
-                        forecast_extension += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] = 1\r\n";
-                        forecast_extension += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] = 1\r\n";
+                        forecast_extension += "        if ( length(colidx_1) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_1] <<- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_2) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_2] <<- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_3) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_3] <<- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_4) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_4] <<- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_5) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_5] <<- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] <<- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] <<- 1\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "        tryCatch({\r\n";
                         forecast_extension += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
@@ -1807,9 +1840,9 @@ namespace WindowsFormsApplication1
                         forecast_extension += "            #print(e)\r\n";
                         forecast_extension += "        },\r\n";
                         forecast_extension += "        finally ={\r\n";
-                        forecast_extension += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] = h\r\n";
-                        forecast_extension += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] = m\r\n";
-                        forecast_extension += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] = s\r\n";
+                        forecast_extension += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] <<- h\r\n";
+                        forecast_extension += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] <<- m\r\n";
+                        forecast_extension += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] <<- s\r\n";
                         forecast_extension += "        },\r\n";
                         forecast_extension += "            silent = FALSE\r\n";
                         forecast_extension += "        )\r\n";
@@ -1820,31 +1853,31 @@ namespace WindowsFormsApplication1
                             for (int j = start_lag; j <= lag; j++)
                             {
                                 forecast_extension += "        test$'lag"+j.ToString()+"_" + targetName + "'" +
-                               "[length(test$target_)]<- test$'"+targetName +"'[length(test$target_)-" + j.ToString()+"]\r\n";
+                               "[length(test$target_)]<<- test$'" + targetName +"'[length(test$target_)-" + j.ToString()+"]\r\n";
                             }
                             forecast_extension += "        test$'grad_" + targetName + "'" +
-                            "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-2]\r\n";
+                            "[length(test$target_)]<<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-2]\r\n";
                             forecast_extension += "        test$'grad2_" + targetName + "'" +
-                            "[length(test$target_)]<- test$'grad_" + targetName+"'[length(test$target_)-1]-test$'grad_" + targetName+"'[length(test$target_)-2]\r\n";
+                            "[length(test$target_)]<<- test$'grad_" + targetName+"'[length(test$target_)-1]-test$'grad_" + targetName+"'[length(test$target_)-2]\r\n";
 
                             if (lag >= means_n)
                             {
                                 forecast_extension += "        test$'mean_" + targetName + "'" +
-                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
                             }
 
                             if (lag >= befor_day)
                             {
                                 forecast_extension += "        test$'grad3_" + targetName + "'" +
-                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_3day) + "]\r\n";
+                                "[length(test$target_)]<<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_3day) + "]\r\n";
                                 
                                 forecast_extension += "        test$'grad4_" + targetName + "'" +
-                               "[length(test$target_)]<- numdiff2_5(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
+                               "[length(test$target_)]<<- numdiff2_5(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
 
                                 forecast_extension += "        min_ <- min(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
                                 forecast_extension += "        max_ <- max(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
                                 forecast_extension += "        test$'grad5_" + targetName + "'" +
-                               "[length(test$target_)]<- curvature(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
+                               "[length(test$target_)]<<- curvature(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
                             }
                         }
 
@@ -1863,9 +1896,9 @@ namespace WindowsFormsApplication1
                         forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "	    #xgboostデータ形式に再構築して\r\n";
-                        forecast_extension += "        test_mx<-";
+                        forecast_extension += "        test_mx<<-";
                         forecast_extension += "        sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        forecast_extension += "        test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        forecast_extension += "        test_dmat <<- xgb.DMatrix(test_mx, label = test$target_";
                         if (comboBox4.Text != "")
                         {
                             forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
@@ -1878,11 +1911,11 @@ namespace WindowsFormsApplication1
                             }
                         }
                         forecast_extension += "        )\r\n";
-                        forecast_extension += "	    df_ <- test\r\n";
+                        forecast_extension += "	    df_ <<- test\r\n";
                         forecast_extension += "	    \r\n";
                         forecast_extension += "	    #testデータ区間を予測\r\n";
-                        forecast_extension += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
-                        forecast_extension += "        predict_y_org <- predict_y\r\n";
+                        forecast_extension += "	    predict_y<<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "     predict_y_org <<- predict_y\r\n";
                         if (use_diff == 1)
                         {
                             if (eval == 1)
@@ -1893,23 +1926,35 @@ namespace WindowsFormsApplication1
                             {
                                 forecast_extension += "        start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
                             }
-                            forecast_extension += "        predict_y<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
+                            forecast_extension += "        predict_y<<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
                         }
-                        forecast_extension += "	        predict.y<-as.data.frame(predict_y)\r\n";
+                        forecast_extension += "	        predict.y<<-as.data.frame(predict_y)\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "	    #データの最後を予測値で更新\r\n";
-                        forecast_extension += "	    test$target_[length(test$target_)] = predict_y_org[length(predict_y)]\r\n";
-                        forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] = predict_y[length(predict_y)]\r\n";
+                        forecast_extension += "	    test$target_[length(test$target_)] <<- predict_y_org[length(predict_y)]\r\n";
+                        forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] <<- predict_y[length(predict_y)]\r\n";
                         forecast_extension += "    }\r\n";
                         forecast_extension += "}\r\n";
+                        forecast_extension += "    return(predict_y)\r\n";
                         forecast_extension += "#test<- test[-length(test$target_)]\r\n";
                     }
+
+                    string forecast_extension_f = "";
+                    forecast_extension_f += "forecast_extension <- function(){\r\n";
+                    forecast_extension = forecast_extension.Replace("\r\n", "\r\n\t");
+
+                    forecast_extension_f += forecast_extension;
+                    forecast_extension_f += "}\r\n";
+                    forecast_extension = forecast_extension_f;
+
                     using (System.IO.StreamWriter sw = new System.IO.StreamWriter("time_series_forecast_extension.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
                     {
                         sw.Write(forecast_extension);
                     }
 
-                    cmd += forecast_extension;
+                    cmd += "source(\"time_series_forecast_extension.r\")\r\n";
+                    cmd += "forecast_extension()\r\n";
+
                     if (checkBox6.Checked || checkBox7.Checked)
                     {
                         cmd += cmd2;
@@ -1989,9 +2034,11 @@ namespace WindowsFormsApplication1
                         cmd += explain;
                     }
 
+                    string predict_probability = "";
                     if ( 1 == 1 )
                     {
-                        string predict_probability = "";
+                        predict_probability += "test<-test_org\r\n";
+                        predict_probability += xgboost_initial_cmd;
                         predict_probability += "test_sv <- test\r\n";
                         predict_probability += "nbin = 20\r\n";
                         predict_probability += "eval_samples = 30\r\n";
@@ -2003,7 +2050,15 @@ namespace WindowsFormsApplication1
                             predict_probability += "<- sd( train$" + var.Items[i].ToString() + ")\r\n";
                         }
 
-                        predict_probability += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=eval_samples))\r\n";
+                        if (time_series_mode)
+                        {
+                            predict_probability += "predictions = data.frame(matrix(nrow=length(test$target_)+" + numericUpDown5.Value.ToString() + ", ncol=eval_samples))\r\n";
+                        }else
+                        {
+                            predict_probability += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=eval_samples))\r\n";
+                        }
+
+
                         if (use_diff == 1)
                         {
                             if (eval == 1)
@@ -2022,6 +2077,8 @@ namespace WindowsFormsApplication1
                         predict_probability += "else return (-1.0)\r\n";
                         predict_probability += "}\r\n";
                         predict_probability += "alp = 0.2\r\n";
+                        predict_probability += "predict_y = forecast_extension()\r\n";
+                        predict_probability += "test<-test_sv\r\n";
                         predict_probability += "for (i in 1:ncol(predictions)){\r\n";
                         for (int i = 0; i < var.Items.Count; i++)
                         {
@@ -2051,15 +2108,29 @@ namespace WindowsFormsApplication1
                             }
                         }
                         predict_probability += "        )\r\n";
-                        predict_probability += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
-                        if (use_diff == 1)
+
+                        if ( time_series_mode && numericUpDown5.Value >= 1)
                         {
-                            predict_probability += "	predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
+                            predict_probability += "	predictions[,i] <- forecast_extension()\r\n";
+                            predict_probability += "test_ext <- test\r\n";
+                        }
+                        else
+                        {
+                            predict_probability += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
+                            if (use_diff == 1)
+                            {
+                                predict_probability += "	predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
+                            }
                         }
                         predict_probability += "   test <- test_sv\r\n";
                         predict_probability += "} \r\n";
                         predict_probability += "\r\n";
 
+
+                        if (time_series_mode && numericUpDown5.Value >= 1)
+                        {
+                            predict_probability += "test <- test_ext\r\n";
+                        }
                         predict_probability += "y_mean <- predictions[,1] \r\n";
                         predict_probability += "y_sd <- predictions[,1] \r\n";
                         predict_probability += "y_up <- predictions[,1] \r\n";
@@ -2137,8 +2208,8 @@ namespace WindowsFormsApplication1
                         predict_probability += "					s_fix = 1\r\n";
                         predict_probability += "				}\r\n";
                         predict_probability += "				e = b$breaks[kk]\r\n";
-                        predict_probability += "				print(s)\r\n";
-                        predict_probability += "				print(e)\r\n";
+                        predict_probability += "				#print(s)\r\n";
+                        predict_probability += "				#print(e)\r\n";
                         predict_probability += "			}\r\n";
                         predict_probability += "			if ( s > predict_y[i] )\r\n";
                         predict_probability += "			{\r\n";
@@ -2214,22 +2285,58 @@ namespace WindowsFormsApplication1
 
                         predict_probability += "predict_probability_list <- NULL\r\n";
                         predict_probability += "glist <- NULL\r\n";
-                        predict_probability += "for ( i in 1:length(test$target_) ){\r\n";
-                        predict_probability += "#for ( i in 1:1 ){\r\n";
-                        predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin)\r\n";
-                        predict_probability += "	\r\n";
-                        predict_probability += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
-                        predict_probability += "	file = paste(file, \".png\")\r\n";
-                        predict_probability += "	ggsave(file = file, plot = p[[2]])\r\n";
-                        predict_probability += "	print(file)\r\n";
-                        predict_probability += "	glist[[(length(glist)+1)]] = p[[2]]\r\n";
-                        predict_probability += "   predict_probability_list[[(length(predict_probability_list)+1)]] = p[[1]]\r\n";
-                        predict_probability += "}\r\n";
+
+                        if (1 == 1)
+                        {
+                            predict_probability += "\r\n";
+                            predict_probability += "\r\n";
+                            predict_probability += "library(doParallel)\r\n";
+                            predict_probability += "cluster = makeCluster(getOption(\"mc.cores\", 3L), type = \"PSOCK\")\r\n";
+                            predict_probability += "registerDoParallel(cluster)\r\n";
+                            predict_probability += "\r\n";
+                            predict_probability += "#.export=c('ggplot','ggsave','aes','geom_histogram','geom_vline', 'geom_density','annotate')) %dopar% {\r\n";
+                            predict_probability += "\r\n";
+                            predict_probability += "foreach( i = 1:length(test$target_),.packages=c('ggplot2')) %dopar% {\r\n";
+                            predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin)\r\n";
+                            predict_probability += "	\r\n";
+                            predict_probability += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
+                            predict_probability += "	file = paste(file, \".png\")\r\n";
+                            predict_probability += "    file = gsub(\" \", \"\", file, fixed = TRUE)\r\n";
+                            predict_probability += "	ggsave(file = file, plot = p[[2]])\r\n";
+                            predict_probability += "	print(file)\r\n";
+                            predict_probability += "	glist[[(i)]] = p[[2]]\r\n";
+                            predict_probability += "    predict_probability_list[[(i)]] = p[[1]]\r\n";
+                            predict_probability += "}\r\n";
+                            predict_probability += "stopCluster(cluster)\r\n";
+                            predict_probability += "\r\n";
+                            predict_probability += "\r\n";
+                        }
+                        else
+                        {
+                            predict_probability += "\r\n";
+                            predict_probability += "\r\n";
+                            predict_probability += "for ( i in 1:length(test$target_) ){\r\n";
+                            predict_probability += "#for ( i in 1:1 ){\r\n";
+                            predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin)\r\n";
+                            predict_probability += "	\r\n";
+                            predict_probability += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
+                            predict_probability += "	file = paste(file, \".png\")\r\n";
+                            predict_probability += "    file = gsub(\" \", \"\", file, fixed = TRUE)\r\n";
+                            predict_probability += "	ggsave(file = file, plot = p[[2]])\r\n";
+                            predict_probability += "	print(file)\r\n";
+                            predict_probability += "	glist[[(length(glist)+1)]] = p[[2]]\r\n";
+                            predict_probability += "   predict_probability_list[[(length(predict_probability_list)+1)]] = p[[1]]\r\n";
+                            predict_probability += "}\r\n";
+                            predict_probability += "\r\n";
+                            predict_probability += "\r\n";
+                        }
+
                         predict_probability += "predict_probability_df <- t(c(predict_probability_list[[1]][[1]],predict_probability_list[[1]][[2]],predict_probability_list[[1]][[3]]) )\r\n";
                         predict_probability += "for ( i in 2:length(test$target_) ){\r\n";
                         predict_probability += "	predict_probability_df <- rbind(predict_probability_df, t(c(predict_probability_list[[i]][[1]],predict_probability_list[[i]][[2]],predict_probability_list[[i]][[3]])) )\r\n";
                         predict_probability += "}\r\n";
-                        predict_probability += "colnames(predict_probability_df) <- c(\"probability\", \"lower\", \"upper\")\r\n";
+                        predict_probability += "predict_probability_df<-cbind(predict_probability_df, predict_y)\r\n";
+                        predict_probability += "colnames(predict_probability_df) <- c(\"probability\", \"lower\", \"upper\", \"predict\")\r\n";
                         predict_probability += "predict_probability_df[,1]<-ifelse(predict_probability_df[,1] < 0, 0, predict_probability_df[,1])\r\n";
                         predict_probability += "predict_probability_df\r\n";
                         predict_probability += "\r\n";
@@ -2245,10 +2352,25 @@ namespace WindowsFormsApplication1
                         predict_probability += "\r\n";
                         predict_probability += "prob <- as.integer((predict_probability_df[,2]*100)*10)/10\r\n";
                         predict_probability += "predict_probability_plt<-ggplot()\r\n";
-                        predict_probability += "predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))\r\n";
+                        if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
+                        {
+                            predict_probability += "predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(as.POSIXct(test[,1])), y=predict.y[,1], colour=\"予測値\"))\r\n";
+                        }
+                        else
+                        {
+                            predict_probability += "predict_probability_plt<-predict_probability_plt + geom_line(aes(x=(1:nrow(predict.y)), y=predict.y[,1], colour=\"予測値\"))\r\n";
+                        }
+
                         predict_probability += "#geom_line(aes(x=1:nrow(predict.y), y=test$'住宅価格', colour=\"観測値\"))+geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
                         predict_probability += "for ( i in 1:length(test$target_) ){\r\n";
-                        predict_probability += "	predict_probability_plt <- predict_probability_plt + annotate(geom = \"text\", x =i, y = predict.y[,1][i], label=paste(prob[i]), size = 3.5)\r\n";
+                        if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
+                        {
+                            predict_probability += "	predict_probability_plt <- predict_probability_plt + annotate(geom = \"text\", x =as.POSIXct(test[,1])[i], y = predict.y[,1][i], label=paste(prob[i]), size = 3.5)\r\n";
+                        }
+                        else
+                        {
+                            predict_probability += "	predict_probability_plt <- predict_probability_plt + annotate(geom = \"text\", x =i, y = predict.y[,1][i], label=paste(prob[i]), size = 3.5)\r\n";
+                        }
                         predict_probability += "}\r\n";
                         predict_probability += "predict_probability_plt\r\n";
                         predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率.png\", plot = predict_probability_plt)\r\n";
@@ -2259,10 +2381,20 @@ namespace WindowsFormsApplication1
                         predict_probability += "#geom_line(aes(x=1:nrow(predict.y), y=test$'住宅価格', colour=\"観測値\"))+geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
                         predict_probability += "\r\n";
                         predict_probability += "for ( i in 1:length(test$target_) ){\r\n";
-                        predict_probability += "	if ( x[,2][i] > 0.8                   ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#1e90ff\", size = 4, alpha = 0.5)\r\n";
-                        predict_probability += "	if ( x[,2][i] <= 0.8 && x[,2][i] > 0.6) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#adff2f\", size = 4, alpha = 0.5)\r\n";
-                        predict_probability += "	if ( x[,2][i] <= 0.6 && x[,2][i] > 0.3) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#ffa500\", size = 4, alpha = 0.5)\r\n";
-                        predict_probability += "	if ( x[,2][i] <= 0.3                  ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#800080\", size = 4, alpha = 0.5)\r\n";
+                        if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
+                        {
+                            predict_probability += "	if ( x[,2][i] > 0.8                   ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =as.POSIXct(test[,1])[i], y = predict.y[,1][i], color =\"#1e90ff\", size = 4, alpha = 0.5)\r\n";
+                            predict_probability += "	if ( x[,2][i] <= 0.8 && x[,2][i] > 0.6) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =as.POSIXct(test[,1])[i], y = predict.y[,1][i], color =\"#adff2f\", size = 4, alpha = 0.5)\r\n";
+                            predict_probability += "	if ( x[,2][i] <= 0.6 && x[,2][i] > 0.3) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =as.POSIXct(test[,1])[i], y = predict.y[,1][i], color =\"#ffa500\", size = 4, alpha = 0.5)\r\n";
+                            predict_probability += "	if ( x[,2][i] <= 0.3                  ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =as.POSIXct(test[,1])[i], y = predict.y[,1][i], color =\"#800080\", size = 4, alpha = 0.5)\r\n";
+                        }
+                        else
+                        {
+                            predict_probability += "	if ( x[,2][i] > 0.8                   ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#1e90ff\", size = 4, alpha = 0.5)\r\n";
+                            predict_probability += "	if ( x[,2][i] <= 0.8 && x[,2][i] > 0.6) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#adff2f\", size = 4, alpha = 0.5)\r\n";
+                            predict_probability += "	if ( x[,2][i] <= 0.6 && x[,2][i] > 0.3) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#ffa500\", size = 4, alpha = 0.5)\r\n";
+                            predict_probability += "	if ( x[,2][i] <= 0.3                  ) predict_probability_plt <- predict_probability_plt + annotate(geom = \"point\", x =i, y = predict.y[,1][i], color =\"#800080\", size = 4, alpha = 0.5)\r\n";
+                        }
                         predict_probability += "}\r\n";
                         predict_probability += "predict_probability_plt <- predict_probability_plt + ggtitle(\"予測値の確率\")\r\n";
                         predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2.png\", plot = predict_probability_plt)\r\n";
@@ -2344,6 +2476,11 @@ namespace WindowsFormsApplication1
                                     sw.Write("cat(ac_)\r\n");
                                     sw.Write("cat(\"\\n\")\r\n");
                                 }
+                            }
+                            sw.Write("\r\n");
+                            if (checkBox13.Checked)
+                            {
+                                sw.Write(predict_probability);
                             }
                             sw.Write("\r\n");
                             sw.Write("sink()\r\n");
@@ -2470,7 +2607,7 @@ namespace WindowsFormsApplication1
                 {
                     for (int ii = 2; ii < 1000000; ii++)
                     {
-                        string pngfile = string.Format("explain_predict\\tmp_xgboost_predict_parts{0:D4}.png", ii);
+                        string pngfile = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", ii);
 
                         if (System.IO.File.Exists(pngfile))
                         {
@@ -2488,7 +2625,7 @@ namespace WindowsFormsApplication1
                 {
                     for (int ii = 2; ii < 1000000; ii++)
                     {
-                        string pngfile = string.Format("explain_predict\\predict_probability {0}.png", ii);
+                        string pngfile = string.Format("explain_predict\\predict_probability{0}.png", ii);
 
                         if (System.IO.File.Exists(pngfile))
                         {
@@ -2502,9 +2639,10 @@ namespace WindowsFormsApplication1
                 }
                 catch { }
 
-                if ( radioButton3.Enabled && checkBox4.Checked)
+                if ( radioButton3.Enabled && (checkBox4.Checked || checkBox13.Checked))
                 {
-                    xgboost_predict_parts_count = 1;
+                    if (checkBox13.Checked) xgboost_predict_probability_count = 1;
+                    if (checkBox4.Checked) xgboost_predict_parts_count = 1;
                     timer1.Enabled = true;
                     timer1.Start();
                 }
@@ -2761,7 +2899,12 @@ namespace WindowsFormsApplication1
                     if (radioButton3.Checked)
                     {
                         pictureBox1.Image = Form1.CreateImage("tmp_xgboost_predict.png");
-                        if (System.IO.File.Exists("tmp_xgboost_predict_parts0001.png"))
+                        if (System.IO.File.Exists("explain_predict\\tmp_xgboost_predict_parts1.png"))
+                        {
+                            button18.Enabled = true;
+                        }
+                        pictureBox1.Image = Form1.CreateImage("tmp_xgboost_predict.png");
+                        if (System.IO.File.Exists("explain_predict\\predict_probability1.png"))
                         {
                             button18.Enabled = true;
                         }
@@ -3771,10 +3914,12 @@ namespace WindowsFormsApplication1
             if (xgboost_exp_._ImageView == null) xgboost_exp_._ImageView = new ImageView();
             if (xgboost_exp_._ImageView2 == null) xgboost_exp_._ImageView2 = new ImageView();
             if (xgboost_exp_._ImageView3 == null) xgboost_exp_._ImageView3 = new ImageView();
+            if (xgboost_exp_._ImageView4 == null) xgboost_exp_._ImageView4 = new ImageView();
 
             xgboost_exp_._ImageView.form1 = this.form1;
             xgboost_exp_._ImageView2.form1 = this.form1;
             xgboost_exp_._ImageView3.form1 = this.form1;
+            xgboost_exp_._ImageView4.form1 = this.form1;
             if (System.IO.File.Exists("tmp_xgboost_feature_importance.png"))
             {
                 xgboost_exp_._ImageView2.pictureBox1.ImageLocation = "tmp_xgboost_feature_importance.png";
@@ -3804,15 +3949,28 @@ namespace WindowsFormsApplication1
             {
             }
 
-            if (System.IO.File.Exists("tmp_xgboost_predict_parts0001.png"))
+            if (System.IO.File.Exists("explain_predict\\tmp_xgboost_predict_parts1.png"))
             {
-                xgboost_exp_._ImageView.pictureBox1.ImageLocation = "tmp_xgboost_predict_parts0001.png";
+                xgboost_exp_._ImageView.pictureBox1.ImageLocation = "explain_predict\\tmp_xgboost_predict_parts1.png";
                 xgboost_exp_._ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_._ImageView.pictureBox1.Dock = DockStyle.Fill;
 
-                xgboost_exp_.pictureBox1.ImageLocation = "tmp_xgboost_predict_parts0001.png";
+                xgboost_exp_.pictureBox1.ImageLocation = "explain_predict\tmp_xgboost_predict_parts1.png";
                 xgboost_exp_.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_.pictureBox1.Dock = DockStyle.Fill;
+            }
+            else
+            {
+            }
+            if (System.IO.File.Exists("explain_predict\\predict_probability1.png"))
+            {
+                xgboost_exp_._ImageView4.pictureBox1.ImageLocation = "explain_predict\\predict_probability1.png";
+                xgboost_exp_._ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                xgboost_exp_._ImageView4.pictureBox1.Dock = DockStyle.Fill;
+
+                xgboost_exp_.pictureBox4.ImageLocation = "explain_predict\\predict_probability1.png";
+                xgboost_exp_.pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
+                xgboost_exp_.pictureBox4.Dock = DockStyle.Fill;
             }
             else
             {
@@ -3821,16 +3979,25 @@ namespace WindowsFormsApplication1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (xgboost_predict_parts_count > explain_num)
+            if (checkBox4.Checked && xgboost_predict_parts_count <= explain_num)
             {
-                return;
+                string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", xgboost_predict_parts_count);
+                if (System.IO.File.Exists(file))
+                {
+                    label27.Text = string.Format("{0:D4}/{1:D4}", xgboost_predict_parts_count, explain_num);
+                    label27.Refresh();
+                    xgboost_predict_parts_count++;
+                }
             }
-            string file = string.Format("tmp_xgboost_predict_parts{0:D4}.png", xgboost_predict_parts_count);
-            if (System.IO.File.Exists(file))
+            if (checkBox13.Checked && xgboost_predict_probability_count <= explain_num)
             {
-                label27.Text = string.Format("{0:D4}/{1:D4}", xgboost_predict_parts_count, explain_num);
-                label27.Refresh();
-                xgboost_predict_parts_count++;
+                string file = string.Format("explain_predict\\predict_probability{0}.png", xgboost_predict_probability_count);
+                if (System.IO.File.Exists(file))
+                {
+                    label27.Text = string.Format("{0:D4}/{1:D4}", xgboost_predict_probability_count, explain_num);
+                    label27.Refresh();
+                    xgboost_predict_probability_count++;
+                }
             }
         }
 
@@ -3913,6 +4080,11 @@ namespace WindowsFormsApplication1
             textBox3.Text = "0.1";
             numericUpDown10.Text = "3";
             numericUpDown11.Text = "2";
+        }
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
         }
     }
 
