@@ -36,6 +36,13 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.numericUpDown16 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox14 = new System.Windows.Forms.CheckBox();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
@@ -147,16 +154,11 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox14 = new System.Windows.Forms.CheckBox();
-            this.label36 = new System.Windows.Forms.Label();
-            this.numericUpDown16 = new System.Windows.Forms.NumericUpDown();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
@@ -178,8 +180,6 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown16)).BeginInit();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel2
@@ -346,6 +346,87 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(208, 488);
             this.panel7.TabIndex = 147;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.checkBox9);
+            this.groupBox1.Controls.Add(this.textBox10);
+            this.groupBox1.Controls.Add(this.label36);
+            this.groupBox1.Controls.Add(this.label35);
+            this.groupBox1.Controls.Add(this.numericUpDown16);
+            this.groupBox1.Location = new System.Drawing.Point(19, 7);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(183, 71);
+            this.groupBox1.TabIndex = 158;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "トレンド";
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(8, 18);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(18, 17);
+            this.checkBox9.TabIndex = 158;
+            this.checkBox9.UseVisualStyleBackColor = true;
+            this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged_1);
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(127, 44);
+            this.textBox10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(49, 22);
+            this.textBox10.TabIndex = 157;
+            this.textBox10.Text = "0.9";
+            this.textBox10.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(54, 17);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(68, 15);
+            this.label36.TabIndex = 154;
+            this.label36.Text = "transform";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(72, 47);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(49, 15);
+            this.label35.TabIndex = 156;
+            this.label35.Text = "lambda";
+            this.toolTip1.SetToolTip(this.label35, "決定木の葉の重みに関するL2正則化項を意味します。\r\n値を大きくすることで過学習を防止します。\r\ndefault 1.0");
+            // 
+            // numericUpDown16
+            // 
+            this.numericUpDown16.Location = new System.Drawing.Point(127, 15);
+            this.numericUpDown16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown16.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDown16.Name = "numericUpDown16";
+            this.numericUpDown16.Size = new System.Drawing.Size(51, 22);
+            this.numericUpDown16.TabIndex = 155;
+            this.toolTip1.SetToolTip(this.numericUpDown16, "0:変換無し\r\n1:差分変換\r\n2: log(x) + 差分変換\r\n//J. A. John and N. R. Draper \r\n3:sign(y) * (((" +
+        "abs(y) + 1) ^ lambda - 1) / lambda) + 差分変換\r\n4:sign(y) * (log(abs(y) + 1)) + 差分変換" +
+        "\r\n");
+            this.numericUpDown16.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
+            // 
+            // checkBox14
+            // 
+            this.checkBox14.AutoSize = true;
+            this.checkBox14.Location = new System.Drawing.Point(73, 91);
+            this.checkBox14.Name = "checkBox14";
+            this.checkBox14.Size = new System.Drawing.Size(124, 19);
+            this.checkBox14.TabIndex = 152;
+            this.checkBox14.Text = "周期(seasonal)";
+            this.checkBox14.UseVisualStyleBackColor = true;
+            this.checkBox14.CheckStateChanged += new System.EventHandler(this.checkBox14_CheckStateChanged);
             // 
             // checkBox12
             // 
@@ -1769,87 +1850,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // checkBox14
-            // 
-            this.checkBox14.AutoSize = true;
-            this.checkBox14.Location = new System.Drawing.Point(73, 91);
-            this.checkBox14.Name = "checkBox14";
-            this.checkBox14.Size = new System.Drawing.Size(124, 19);
-            this.checkBox14.TabIndex = 152;
-            this.checkBox14.Text = "周期(seasonal)";
-            this.checkBox14.UseVisualStyleBackColor = true;
-            this.checkBox14.CheckStateChanged += new System.EventHandler(this.checkBox14_CheckStateChanged);
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(54, 17);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(68, 15);
-            this.label36.TabIndex = 154;
-            this.label36.Text = "transform";
-            // 
-            // numericUpDown16
-            // 
-            this.numericUpDown16.Location = new System.Drawing.Point(127, 15);
-            this.numericUpDown16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numericUpDown16.Maximum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.numericUpDown16.Name = "numericUpDown16";
-            this.numericUpDown16.Size = new System.Drawing.Size(51, 22);
-            this.numericUpDown16.TabIndex = 155;
-            this.toolTip1.SetToolTip(this.numericUpDown16, "0:変換無し\r\n1:差分変換\r\n2: log(x) + 差分変換\r\n//J. A. John and N. R. Draper \r\n3:sign(y) * (((" +
-        "abs(y) + 1) ^ lambda - 1) / lambda) + 差分変換\r\n4:sign(y) * (log(abs(y) + 1)) + 差分変換" +
-        "\r\n");
-            this.numericUpDown16.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
-            // 
-            // textBox10
-            // 
-            this.textBox10.Location = new System.Drawing.Point(127, 44);
-            this.textBox10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(49, 22);
-            this.textBox10.TabIndex = 157;
-            this.textBox10.Text = "2.0";
-            this.textBox10.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(72, 47);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(49, 15);
-            this.label35.TabIndex = 156;
-            this.label35.Text = "lambda";
-            this.toolTip1.SetToolTip(this.label35, "決定木の葉の重みに関するL2正則化項を意味します。\r\n値を大きくすることで過学習を防止します。\r\ndefault 1.0");
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.checkBox9);
-            this.groupBox1.Controls.Add(this.textBox10);
-            this.groupBox1.Controls.Add(this.label36);
-            this.groupBox1.Controls.Add(this.label35);
-            this.groupBox1.Controls.Add(this.numericUpDown16);
-            this.groupBox1.Location = new System.Drawing.Point(19, 7);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(183, 71);
-            this.groupBox1.TabIndex = 158;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "トレンド";
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(8, 18);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(18, 17);
-            this.checkBox9.TabIndex = 158;
-            this.checkBox9.UseVisualStyleBackColor = true;
-            this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged_1);
-            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1870,6 +1870,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
@@ -1895,9 +1898,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown16)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }

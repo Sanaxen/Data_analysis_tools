@@ -271,7 +271,16 @@ namespace WindowsFormsApplication1
                     if (numericUpDown16.Value >= 1)
                     {
                         use_diff = 1;
-                    }else
+                        if (numericUpDown16.Value == 3 && double.Parse(textBox10.Text) < 0)
+                        {
+                            //BoxCox.lambda(abs(y))
+                            string cmd_tmp = "BoxCox.lambda(abs(df$'" + targetName + "'))\r\n";
+                            double p = form1.Double_func("", cmd_tmp);
+                            textBox10.Text = (((int)(p*1000.0))/1000).ToString();
+                            MessageBox.Show("lambda the default value of BoxCox.lambda");
+                        }
+                    }
+                    else
                     {
                         use_diff = 0;
                         string cmd_tmp = "tseries::kpss.test(df$'" + targetName + "')$p.value\r\n";
