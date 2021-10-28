@@ -43,6 +43,10 @@ anomaly_DetectionTs<- function(df, colname, vlinepos, vlinepos2)
 	#res <- AnomalyDetectionTs(tmp, max_anoms=0.02, direction='both', threshold = 'p95', longterm = F, plot=FALSE)
 	res <- AnomalyDetectionTs(tmp, max_anoms=0.05, direction='both',  longterm = F, plot=FALSE)
 	
+	if ( nrow(res$anoms) == 0 )
+	{
+		return ( list(tmp,res, ggplot()+ggtitle("ˆÙíŒŸo–³‚µ")))
+	}
 	plt <- Anomalyplot(tmp, res, vlinepos, vlinepos2)
 	return ( list(tmp,res, plt))
 }

@@ -2223,6 +2223,62 @@ namespace WindowsFormsApplication1
             return x;
         }
 
+        public double Double_func(string func, string objname)
+        {
+            if (File.Exists("tmp_double_func.txt"))
+            {
+                File.Delete("tmp_double_func.txt");
+            }
+            string cmd = "cat(" + func + "(" + objname + "))\r\n";
+            cmd += "cat(\"\\n\")\r\n";
+            System.IO.Directory.SetCurrentDirectory(curDir);
+            Clear_file();
+            string file = "tmp_double_func.R";
+
+            try
+            {
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                {
+                    sw.Write("options(width=1000)\r\n");
+                    sw.Write("sink(file = \"tmp_double_func.txt\")\r\n");
+                    sw.Write(cmd);
+                    sw.Write("sink()\r\n");
+                }
+            }
+            catch
+            {
+                if (MessageBox.Show("tmp_double_func.Rが書き込み出来ません", "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return -1;
+            }
+
+            string stat = Execute_script(file);
+            if (stat == "$ERROR")
+            {
+                return -1;
+            }
+
+            ListBox list = new ListBox();
+
+            double x = -1;
+            if (File.Exists("tmp_double_func.txt"))
+            {
+                StreamReader sr = null;
+                try
+                {
+                    sr = new StreamReader("tmp_double_func.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                    while (sr.EndOfStream == false)
+                    {
+                        string line = sr.ReadLine();
+                        line.Replace("\r\n", "");
+                        x = double.Parse(line);
+                        break;
+                    }
+                    sr.Close();
+                }
+                catch { if (sr != null) sr.Close(); }
+            }
+            return x;
+        }
 
         public int Int_func(string func, string objname)
         {
@@ -8599,8 +8655,7 @@ namespace WindowsFormsApplication1
                 _xgboost.numericUpDown15.Visible = true;
                 _xgboost.checkBox5.Visible = true;
                 _xgboost.checkBox8.Visible = true;
-                _xgboost.checkBox9.Visible = true;
-                _xgboost.checkBox10.Visible = true;
+                _xgboost.numericUpDown16.Visible = true;
                 _xgboost.label33.Visible = true;
             }
             else
@@ -8623,8 +8678,7 @@ namespace WindowsFormsApplication1
                 _xgboost.numericUpDown15.Visible = false;
                 _xgboost.checkBox5.Visible = true;
                 _xgboost.checkBox8.Visible = false;
-                _xgboost.checkBox9.Visible = false;
-                _xgboost.checkBox10.Visible = false;
+                _xgboost.numericUpDown16.Visible = false;
                 _xgboost.label33.Visible = false;
             }
 

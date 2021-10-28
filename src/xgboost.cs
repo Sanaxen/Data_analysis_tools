@@ -199,6 +199,7 @@ namespace WindowsFormsApplication1
             button18.Enabled = false;
             explain_num = 1;
             eval = 0;
+            int n_seasons = ((int)numericUpDown14.Value);
 
             string anomalyDetectionTs = "";
             if (checkBox12.Checked) use_AnomalyDetectionTs = 1;
@@ -267,44 +268,84 @@ namespace WindowsFormsApplication1
                 string targetName = listBox1.Items[listBox1.SelectedIndex].ToString();
                 if (time_series_mode)
                 {
-                    if (checkBox9.Checked)
+                    if (numericUpDown16.Value >= 1)
                     {
                         use_diff = 1;
                     }else
                     {
                         use_diff = 0;
-                        if (checkBox10.Checked)
+                        string cmd_tmp = "tseries::kpss.test(df$'" + targetName + "')$p.value\r\n";
+                        double p = form1.Double_func("", cmd_tmp);
+                        if ( p < 0.05)
                         {
-                            checkBox10.Checked = false;
+                            MessageBox.Show("データは非定常またはトレンドのあるデータです");
                         }
                     }
-                    if (checkBox10.Checked)
+                    if (use_diff == 1)
                     {
-                        use_log_diff = 1;
-                    }
-                    else
-                    {
-                        use_log_diff = 0;
+                        use_log_diff = ((int)numericUpDown16.Value);
                     }
                     start_lag = (int)numericUpDown15.Value;
                     lag = (int)numericUpDown8.Value + (int)numericUpDown15.Value;
+                    int nd = start_lag;
 
                     string cmd0 = "";
-                    cmd0 += "mydiff<-function(df, use_log_diff){\r\n";
-                    cmd0 += "	log_diff <- diff(df)\r\n";
-                    cmd0 += "	if ( use_log_diff == 1){\r\n";
-                    cmd0 += "		log_diff <- diff(log(df ))\r\n";
-                    cmd0 += "	}\r\n";
-                    cmd0 += "	return(log_diff)\r\n";
+                    cmd0 += "library( predtoolsTS)\r\n";
+                    cmd0 += "detrend_df <- NULL\r\n";
+                    cmd0 += "\r\n";
+                    cmd0 += "\r\n";
+                    cmd0 += "#John and Draper's modulus transformation\r\n";
+                    cmd0 += "mydiff<-function(df, use_log_diff, lambda="+ textBox10.Text+"){\r\n";
+                    cmd0 += "   if (use_log_diff == 0) return (df)\r\n";
+                    cmd0 += "   a <- df\r\n";
+                    cmd0 += "   if ( use_log_diff == 2){\r\n";
+                    cmd0 += "       a <- a + min__\r\n";
+                    cmd0 += "       a <- log(a)\r\n";
+                    cmd0 += "   }\r\n";
+                    cmd0 += "   if ( use_log_diff == 3){\r\n";
+                    cmd0 += "       a <- sign(a) * (((abs(a) + 1) ^ lambda - 1) / lambda)\r\n";
+                    cmd0 += "   }\r\n";
+                    cmd0 += "   if ( use_log_diff == 4){\r\n";
+                    cmd0 += "       a <- sign(a) * (log(abs(a) + 1))\r\n";
+                    cmd0 += "   }\r\n";
+                    cmd0 += "   p <- prep.detrend.differencing(ts(a))\r\n";
+                    cmd0 += "   p$min <- min__\r\n";
+                    cmd0 += "   detrend_df<<- p\r\n";
+                    cmd0 += "   b <- as.data.frame(as.matrix(p$tserie))\r\n";
+                    cmd0 += "	return(b[,1])\r\n";
                     cmd0 += "}\r\n";
                     cmd0 += "\r\n";
                     cmd0 += "#inv_diff\r\n";
-                    cmd0 += "inv_diff<-function(log_diff, start_value, use_log_diff){\r\n";
-                    cmd0 += "	df3 <- cumsum(log_diff) + as.numeric(start_value)\r\n";
-                    cmd0 += "	if ( use_log_diff == 1){\r\n";
-                    cmd0 += "		df3 <- exp(cumsum(log_diff) + as.numeric(log(start_value)))\r\n";
+                    cmd0 += "inv_diff<-function(df, use_log_diff, fstval = NULL, lambda=" + textBox10.Text + "){\r\n";
+                    cmd0 += "   if ( is.null(detrend_df)) return (df)\r\n";
+                    cmd0 += "   if ( is.null(fstval)){\r\n";
+                    cmd0 += "       undo_diff_df<-postp.detrend.differencing(ts(df),detrend_df$nd,detrend_df$firstvalues)\r\n";
+                    cmd0 += "   }else {\r\n";
+                    cmd0 += "       if ( use_log_diff == 1){\r\n";
+                    cmd0 += "           undo_diff_df<-postp.detrend.differencing(ts(df),detrend_df$nd,fstval)\r\n";
+                    cmd0 += "       }\r\n";
+                    cmd0 += "       if ( use_log_diff == 2){\r\n";
+                    cmd0 += "           undo_diff_df<-postp.detrend.differencing(ts(df),detrend_df$nd,log(fstval+detrend_df$min))\r\n";
+                    cmd0 += "       }\r\n";
+                    cmd0 += "       if ( use_log_diff == 3){\r\n";
+                    cmd0 += "           undo_diff_df<-postp.detrend.differencing(ts(df),detrend_df$nd,sign(fstval) * (((abs(fstval) + 1) ^ lambda - 1) / lambda))\r\n";
+                    cmd0 += "       }\r\n";
+                    cmd0 += "       if ( use_log_diff == 4){\r\n";
+                    cmd0 += "           undo_diff_df<-postp.detrend.differencing(ts(df),detrend_df$nd,sign(fstval) * (log(abs(fstval) + 1)))\r\n";
+                    cmd0 += "       }\r\n";
+                    cmd0 += "   }\r\n";
+                    cmd0 += "	if ( use_log_diff == 2){\r\n";
+                    cmd0 += "		undo_diff_df <- exp(undo_diff_df) - detrend_df$min\r\n";
                     cmd0 += "	}\r\n";
-                    cmd0 += "	return(df3)	\r\n";
+                    cmd0 += "	if ( use_log_diff == 3){\r\n";
+                    cmd0 += "		undo_diff_df <-((abs(undo_diff_df) * lambda + 1)  ^ (1 / lambda) - 1) * sign(undo_diff_df)\r\n";
+                    cmd0 += "	}\r\n";
+                    cmd0 += "	if ( use_log_diff == 4){\r\n";
+                    cmd0 += "		undo_diff_df <- (exp(abs(undo_diff_df)) - 1) * sign(undo_diff_df)\r\n";
+                    cmd0 += "	}\r\n";
+                    cmd0 += "   b <- as.data.frame(as.matrix(undo_diff_df))\r\n";
+                    cmd0 += "   b <- b[-detrend_df$nd,]\r\n";
+                    cmd0 += "	return(b)\r\n";
                     cmd0 += "}\r\n";
 
 
@@ -407,6 +448,23 @@ namespace WindowsFormsApplication1
                         cmd1 += "   df_ts_tmp$'grad5_" + targetName + "'[i] <- curvature(df_ts_tmp$'" + targetName + "', i-3, 0.01)\r\n";
                         cmd1 += "}\r\n\r\n";
                     }
+                    if (n_seasons/2 > 1 && checkBox14.Checked)
+                    { 
+                        if (n_seasons / 2 < 1 )
+                        {
+                            MessageBox.Show("frequencyの設定を見直して下さい");
+                        }
+                        cmd1 += "y2 <- df_ts_tmp$'lag1_" + targetName + "'\r\n";
+                        cmd1 += "f = " + numericUpDown14.Value.ToString() + "\r\n";
+                        cmd1 += "k = f/2\r\n";
+                        cmd1 += "if ( k > 0 ){\r\n";
+                        cmd1 += "   fx <-  fourier(ts(y2,frequency=f) , K = k)\r\n";
+                        cmd1 += "   df_ts_tmp <- cbind(df_ts_tmp, fx)\r\n";
+                        cmd1 += "   for (i in 1:ncol(fx)){\r\n";
+                        cmd1 += "       colnames(df_ts_tmp)[ncol(df_ts_tmp)-ncol(fx)+i] <- c(gsub(\" \", \"\",paste(\"season\", i)))\r\n";
+                        cmd1 += "   }\r\n";
+                        cmd1 += "}\r\n";
+                    }
                     cmd1 += "df_ts_tmp<- df_ts_tmp[-1:-" + lag.ToString() + ",]\r\n";
                     cmd1 += "write.csv(df_ts_tmp, file=\"df_ts_tmp.csv\",row.names=F)\r\n";
 
@@ -456,30 +514,25 @@ namespace WindowsFormsApplication1
                     {
                         cmd1 += "use_log_diff<- 0\r\n";
                         cmd1 += "min__<- 0\r\n";
-                        if (use_log_diff == 1)
+                        if (use_log_diff != 0)
                         {
-                            cmd1 += "use_log_diff<- 1\r\n";
-                            cmd1 += "min__<- min(df$'" + targetName + "')\r\n";
+                            cmd1 += "use_log_diff<- " + numericUpDown16.Value +"\r\n";
+                            
+                            if (use_log_diff > 2 ) cmd1 += "min__<- -min(df$'" + targetName + "') + 1\r\n";
                         }
-                        cmd1 += "df_tmp <- df$'" + targetName + "'+ min__\r\n";
-
-                        cmd1 += "log_diff <- mydiff(df_tmp, use_log_diff )\r\n";
-                        cmd1 += "df_ts_tmp <- cbind(df_ts_tmp, log_diff[-1:-" + (lag-1).ToString() + "])\r\n";
+                        cmd1 += "df_tmp <- df$'" + targetName + "'\r\n";
+                        cmd1 += "tmp <- df_tmp[-1:-" + lag.ToString() + "]\r\n";
+                        cmd1 += "log_diff <- mydiff(tmp, use_log_diff )\r\n";
+                        cmd1 += "df_ts_tmp <- df_ts_tmp[-(1:detrend_df$nd),]\r\n";
+                        cmd1 += "df_ts_tmp <- cbind(df_ts_tmp, log_diff)\r\n";
                         cmd1 += "colnames(df_ts_tmp)[ncol(df_ts_tmp)] <- c(\"target_\")\r\n";
 
                         cmd1 += "\r\n";
-                        if (eval == 1)
-                        {
-                            cmd1 += "start_value <- df$'" + targetName + "'[1] + min__\r\n";
-                        }
-                        else
-                        {
-                            cmd1 += "start_value <- df$'" + targetName + "'[1] + min__\r\n";
-                        }
-                        cmd1 += "zz_tmp<- inv_diff(log_diff, start_value, use_log_diff) - min__\r\n";
+
+                        cmd1 += "zz_tmp<- inv_diff(log_diff, use_log_diff)\r\n";
                         cmd1 += "debug_plt <- ggplot()\r\n";
-                        cmd1 += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(zz_tmp)), y = df$'"+targetName + "'[-1], colour = \"org\"))+\r\n";
-                        cmd1 += "geom_line(aes(x = (1:length(zz_tmp)), y = zz_tmp, colour = \"org2\"))\r\n";
+                        cmd1 += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(tmp[-detrend_df$nd])), y = tmp[-detrend_df$nd], colour = \"org\"))+\r\n";
+                        cmd1 += "geom_line(aes(x = (1:length(zz_tmp)), y = zz_tmp, colour = \"undo\"))\r\n";
                         cmd1 += "debug_plt\r\n";
                         cmd1 += "ggsave(file = \"tmp_xgboost_debug0.png\", debug_plt)\r\n";
                         cmd1 += "\r\n";
@@ -499,11 +552,13 @@ namespace WindowsFormsApplication1
                         cmd1 += "if ( num_ < 1 ) num_ <- 1\r\n";
                         cmd1 += "train <- df_ts_tmp[c(1:num_),]\r\n";
                         cmd1 += "test <- df_ts_tmp[-c(1:num_),]\r\n";
+                        cmd1 += "test_pre <- df_ts_tmp[num_,]\r\n";
 
                         if (eval == 1)
                         {
                             cmd1 += "train <- df_ts_tmp[c(1:num_),]\r\n";
                             cmd1 += "test  <- df_ts_tmp[-1:-" + lag.ToString() + ",]\r\n";
+                            cmd1 += "test_pre <- df_ts_tmp["+ lag.ToString()+"-1,]\r\n";
                         }
                     }
 
@@ -511,6 +566,7 @@ namespace WindowsFormsApplication1
                     {
                         cmd1 += "train <- df_ts_tmp\r\n";
                         cmd1 += "test  <- df_ts_tmp[-1:-" + lag.ToString() + ",]\r\n";
+                        cmd1 += "test_pre <- df_ts_tmp[" + lag.ToString() + "-1,]\r\n";
                     }
                     form1.script_executestr(cmd1);
 
@@ -701,6 +757,17 @@ namespace WindowsFormsApplication1
                         formuler += "+ grad3_" + targetName;
                         formuler += "+ grad4_" + targetName;
                         formuler += "+ grad5_" + targetName;
+                    }
+
+                    if (checkBox14.Checked)
+                    {
+                        if (((int)numericUpDown14.Value) / 2 > 0)
+                        {
+                            for (int i = 1; i <= ((int)numericUpDown14.Value) / 2; i++)
+                            {
+                                formuler += "+ season" + i.ToString();
+                            }
+                        }
                     }
                 }
                 if (Form1.batch_mode == 0)
@@ -910,16 +977,7 @@ namespace WindowsFormsApplication1
                         cmd2 += "set.seed(123) \r\n";
                         cmd2 += "seeds <- runif(n_samples,1,100000) \r\n";
                         cmd2 += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=n_samples))\r\n";
-                        if (use_diff == 1)
-                        {
-                            if (eval == 1)
-                            {
-                                cmd2 += "start_value = train$'" + targetName + "'[1+"+ (lag-1).ToString()+"+1] + min__\r\n";
-                            }
-                            else {
-                                cmd2 += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
-                            }
-                        }
+
                         cmd2 += "for (i in 1:ncol(predictions)){ #\r\n";
                         cmd2 += "\r\n";
                         cmd2 += "	set.seed(seeds[i]) \r\n";
@@ -946,10 +1004,7 @@ namespace WindowsFormsApplication1
                         cmd2 += "	watchlist = list(train = train_dmat, eval = test_dmat))\r\n";
                         cmd2 += "\r\n";
                         cmd2 += "	predictions[,i] <- predict(xgboost_tmp.model,newdata = test_dmat) \r\n";
-                        if ( use_diff == 1)
-                        {
-                            cmd2 += "   predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
-                        }
+                        cmd2 += "   predictions[,i] <- inv_diff(predictions[,i], use_log_diff, test_pre$"+targetName +")\r\n";
                         cmd2 += "} \r\n";
                         cmd2 += "\r\n";
                         cmd2 += "y_upper_smooth <- predictions[,1] \r\n";
@@ -1036,7 +1091,7 @@ namespace WindowsFormsApplication1
                             cmd2 += "geom_line(aes(x=1:length(test$'"+ targetName+ "'), y =test$'" + targetName + "', colour = \"観測値\"))+\r\n";
                             if (use_geom_point == 1) cmd2 += "geom_point(aes(x=1:length(test$target_),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                             cmd2 += "geom_line(aes(x=1:length(test$target_), y=y_mean_smooth,colour =\"平均値\"))+\r\n";
-                            cmd2 += "geom_vline(data = test, aes(xintercept=as.numeric(nrow(test_org))))\r\n";
+                            cmd2 += "geom_vline(data = test, aes(xintercept=as.numeric(nrow(test_org))))";
                             if (eval == 1)
                             {
                                 cmd2 += "+\r\ngeom_vline(data = test, linetype=\"dotdash\",aes(xintercept=as.numeric(nrow(train))))\r\n";
@@ -1117,17 +1172,7 @@ namespace WindowsFormsApplication1
                         cmd3 += "#2つのモデルをトレーニングする。1つは上限用、もう1つは下限用\r\n";
                         cmd3 += "alp_ = 0.95\r\n";
                         cmd3 += "alpha = alp_ + (1 - alp_)/2\r\n";
-                        if (use_diff == 1)
-                        {
-                            if ( eval == 1)
-                            {
-                                cmd3 += "start_value = train$'" + targetName + "'[1+" + (lag-1).ToString() +"] + min__\r\n";
-                            }
-                            else
-                            {
-                                cmd3 += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
-                            }
-                        }
+
                         cmd3 += "for ( i in 1:3 ){\r\n";
                         cmd3 += "   set.seed(seeds[i])\r\n";
                         cmd3 += "   xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
@@ -1141,10 +1186,7 @@ namespace WindowsFormsApplication1
                         cmd3 += "}\r\n";
                         cmd3 += "\r\n";
                         cmd3 += "y_upper_smooth2 <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
-                        if (use_diff == 1)
-                        {
-                            cmd3 += "y_upper_smooth2<- inv_diff(y_upper_smooth2,start_value, use_log_diff) - min__\r\n";
-                        }
+                        cmd3 += "y_upper_smooth2<- inv_diff(y_upper_smooth2,use_log_diff, test_pre$" + targetName + ")\r\n";
 
                         cmd3 += "if (xgboost_tmp.model$best_iteration == 1 )\r\n";
                         cmd3 += "{\r\n";
@@ -1167,10 +1209,7 @@ namespace WindowsFormsApplication1
                         cmd3 += "}\r\n";
                         cmd3 += "\r\n";
                         cmd3 += "y_lower_smooth2  <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
-                        if (use_diff == 1)
-                        {
-                            cmd3 += "y_lower_smooth2<- inv_diff(y_lower_smooth2, start_value, use_log_diff) - min__\r\n";
-                        }
+                        cmd3 += "y_lower_smooth2 <- inv_diff(y_lower_smooth2, use_log_diff, test_pre$" + targetName + ")\r\n";
                         cmd3 += "if (xgboost_tmp.model$best_iteration == 1 )\r\n";
                         cmd3 += "{\r\n";
                         cmd3 += "   y_lower_smooth2 = y_lower_smooth\r\n";
@@ -1182,8 +1221,8 @@ namespace WindowsFormsApplication1
                         cmd3 += "#up2 = y_upper_smooth2\r\n";
                         cmd3 += "#lo2 = y_lower_smooth2\r\n";
                         cmd3 += "\r\n";
-                        cmd3 += "up2 = y_upper_smooth2 + 15*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/5\r\n";
-                        cmd3 += "lo2 = y_lower_smooth2 - 15*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/5\r\n";
+                        cmd3 += "up2 = y_upper_smooth2 + 1.5*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/5\r\n";
+                        cmd3 += "lo2 = y_lower_smooth2 - 1.5*safety_factor*abs(y_upper_smooth2-y_lower_smooth2)/5\r\n";
                         cmd3 += "#q = qt(df = n_samples, alp_ + (1 - alp_) / 2)\r\n";
                         cmd3 += "#up2 = up2 + q * sqrt(y_sd_smooth + y_sd_smooth / (length(test$target_) - 1)) * safety_factor\r\n";
                         cmd3 += "#lo2 = lo2 - q * sqrt(y_sd_smooth + y_sd_smooth / (length(test$target_) - 1)) * safety_factor\r\n";
@@ -1429,6 +1468,7 @@ namespace WindowsFormsApplication1
                                     sw.Write("ggsave(filename = \"interval_plt2.png\", plot = interval_plt2)\r\n");
                                     if (use_AnomalyDetectionTs == 1)
                                     {
+                                        sw.Write("if (!is.null(anomaly_det[[3]])");
                                         sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, anomaly_det[[3]], nrow = 3)\r\n");
                                     }
                                     else
@@ -1464,18 +1504,7 @@ namespace WindowsFormsApplication1
                                 }
                                 cmd_tmp += "predict_tmp <- predict(xgboost.model,newdata = "+view_data+"_dmat)\r\n";
 
-                                if (use_diff == 1)
-                                {
-                                    if (eval == 1 || view_data == "train")
-                                    {
-                                        cmd_tmp += "start_value = df$'" + targetName + "'[1+" + (lag-1).ToString() +"] + min__\r\n";
-                                    }
-                                    else
-                                    {
-                                        cmd_tmp += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
-                                    }
-                                    cmd_tmp += "predict_tmp<- inv_diff(predict_tmp, start_value, use_log_diff) - min__\r\n";
-                                }
+                                cmd_tmp += "predict_tmp<- inv_diff(predict_tmp, use_log_diff,test_pre$" + targetName+")\r\n";
                                 cmd_tmp += "interval_plt4<-ggplot()\r\n";
 
                                 if (exist_time_axis == 1 && checkBox8.Checked)
@@ -1516,6 +1545,7 @@ namespace WindowsFormsApplication1
                 if (radioButton3.Checked)
                 {
                     explain = "";
+                    explain += xgboost_initial_cmd;
                     explain += "colidx = grep(\"^target_$\", colnames(train) )\r\n";
                     explain += "#data <- as.matrix(createDummyFeatures(test[, -colidx]))\r\n";
                     if (radioButton2.Checked)
@@ -1529,7 +1559,7 @@ namespace WindowsFormsApplication1
 
                     label27.Text = string.Format("{0:D4}/{0:D4}", 1, explain_num);
                     label27.Refresh();
-                    explain_num = form1.Int_func("nrow", "test");
+                    explain_num = form1.Int_func("nrow", "test") + ((int)numericUpDown5.Value);
 
                     string path = Form1.curDir + "\\explain_predict";
                     if (!System.IO.Directory.Exists(path))
@@ -1607,21 +1637,13 @@ namespace WindowsFormsApplication1
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
 
                     string forecast_extension = "";
-                    forecast_extension += "df_<<-test\r\n";
-                    forecast_extension += "predict_y<<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                    forecast_extension += "df_<-test\r\n";
+                    forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     if (use_diff == 1)
                     {
-                        if (eval == 1)
-                        {
-                            forecast_extension += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
-                        }
-                        else
-                        {
-                            forecast_extension += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
-                        }
-                        forecast_extension += "predict_y<<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
+                        forecast_extension += "predict_y<- inv_diff(predict_y, use_log_diff, test_pre$" + targetName + ")\r\n";
                         forecast_extension += "\r\n";
-                        forecast_extension += "zz_tmp<- inv_diff(test$target_, start_value, use_log_diff) - min__\r\n";
+                        forecast_extension += "zz_tmp<- inv_diff(test$target_, use_log_diff, test_pre$" + targetName + ")\r\n";
                         forecast_extension += "debug_plt <- ggplot()\r\n";
                         forecast_extension += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
                         forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
@@ -1637,9 +1659,9 @@ namespace WindowsFormsApplication1
                     {
                         if (comboBox2.Text == "\"multi:softprob\"")
                         {
-                            forecast_extension += "predict_y <<- matrix(predict_y," + numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
-                            forecast_extension += "predict_y<<-t(predict_y)\r\n";
-                            forecast_extension += "colnames(predict_y)<<-c(";
+                            forecast_extension += "predict_y <- matrix(predict_y," + numericUpDown7.Value.ToString()+" ,length(predict_y)/"+ numericUpDown7.Value.ToString()+")\r\n";
+                            forecast_extension += "predict_y<-t(predict_y)\r\n";
+                            forecast_extension += "colnames(predict_y)<-c(";
                             forecast_extension += "\""+string.Format("class{0}", 1)+"\"";
                             for ( int i = 2; i <= numericUpDown7.Value; i++)
                             {
@@ -1649,7 +1671,7 @@ namespace WindowsFormsApplication1
                         }
                         if (comboBox2.Text == "\"multi:softmax\"")
                         {
-                            forecast_extension += "confusion_tbl<<-table(predict_y, " + "test$target_)\r\n";
+                            forecast_extension += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
                             forecast_extension += "x_<- data.frame(confusion_tbl[,1])\r\n";
                             forecast_extension += "    for (i in 2:ncol(confusion_tbl)){\r\n";
                             forecast_extension += "    x_ <- cbind(x_, confusion_tbl[,i])\r\n";
@@ -1664,15 +1686,15 @@ namespace WindowsFormsApplication1
                             forecast_extension += "error = function(e) {\r\n";
                             forecast_extension += " #print(e)\r\n";
                             forecast_extension += "})\r\n";
-                            forecast_extension += "confusion_test <<- x_\r\n";
+                            forecast_extension += "confusion_test <- x_\r\n";
 
-                            forecast_extension += "ac_ <<- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
+                            forecast_extension += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
                             forecast_extension += "tmp_ <- df_\r\n";
                             forecast_extension += "tmp_ <- cbind(tmp_, predict_y)\r\n";
-                            forecast_extension += "predict.xgboost <<- cbind(tmp_, predict_y)\r\n";
+                            forecast_extension += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
                         }
                     }
-                    forecast_extension += "predict.y<<-as.data.frame(predict_y)\r\n";
+                    forecast_extension += "predict.y<-as.data.frame(predict_y)\r\n";
                     if ( time_series_mode )
                     {
                         forecast_extension += "sample_metod <- -1\r\n";
@@ -1703,18 +1725,19 @@ namespace WindowsFormsApplication1
                         forecast_extension += "colidx2 = grep(\"^"+targetName+"$\", colnames(test) )\r\n";
                         forecast_extension += "colidx3 = grep(\"^grad[0-9]?_" + targetName + "$\", colnames(test) )\r\n";
                         forecast_extension += "colidx4 = grep(\"^mean_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx5 = grep(\"^season[0-9]+$\", colnames(test) )\r\n";
                         forecast_extension += "mean_ <- apply(train[,-1],2, mean)\r\n";
                         forecast_extension += "sd_ <- apply(train[,-1],2, sd)\r\n";
                         forecast_extension += "st_ <- test[nrow(test),1]\r\n";
                         forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
                         forecast_extension += "    for ( i in 1:"+numericUpDown5.Value.ToString()+"){\r\n";
                         forecast_extension += "	    # 1行追加\r\n";
-                        forecast_extension += "	    test<<-rbind(test, test[1,])\r\n";
-                        forecast_extension += "        test[nrow(test),1] <<- st_ + i*dt_\r\n";
+                        forecast_extension += "	    test<-rbind(test, test[1,])\r\n";
+                        forecast_extension += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
                         forecast_extension += "	    \r\n";
                         if (add_enevt_data == 1)
                         {
-                            forecast_extension += "        test$event[nrow(test)] <<- sample(train$event, 1)\r\n";
+                            forecast_extension += "        test$event[nrow(test)] <- sample(train$event, 1)\r\n";
                         }
                         forecast_extension += "	    \r\n";
                         forecast_extension += "        if ( sample_metod >= 1){\r\n";
@@ -1741,23 +1764,32 @@ namespace WindowsFormsApplication1
                         forecast_extension += "                        break\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                }\r\n";
+                        if (n_seasons / 2 > 1)
+                        {
+                            forecast_extension += "                for ( k in 1:length(colidx5)){\r\n";
+                            forecast_extension += "                    if ( i == colidx5[k]) {\r\n";
+                            forecast_extension += "                        skip <- TRUE\r\n";
+                            forecast_extension += "                        break\r\n";
+                            forecast_extension += "                    }\r\n";
+                            forecast_extension += "                }\r\n";
+                        }
                         forecast_extension += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && skip != TRUE)\r\n";
                         forecast_extension += "	            {\r\n";
-                        forecast_extension += "                    test[nrow(test), i] <<- rnorm(mean_, sd_)[i]\r\n";
+                        forecast_extension += "                    test[nrow(test), i] <- rnorm(mean_, sd_)[i]\r\n";
                         forecast_extension += "                    if ( sample_metod == 1){\r\n";
                         forecast_extension += "                        #復元抽出\r\n";
-                        forecast_extension += "                        test[nrow(test), i] <<- sample(train[, i], 1)\r\n";
+                        forecast_extension += "                        test[nrow(test), i] <- sample(train[, i], 1)\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 2){\r\n";
                         forecast_extension += "   	        	        #移動平均\r\n";
-                        forecast_extension += "                        test[nrow(test),i] <<- mean(test[(nrow(test)-3):nrow(test),i])\r\n";
+                        forecast_extension += "                        test[nrow(test),i] <- mean(test[(nrow(test)-3):nrow(test),i])\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 3){\r\n";
                         forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
                         forecast_extension += "			            #ts.plot(df_t)\r\n";
                         forecast_extension += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
                         forecast_extension += "			            pred <- predict(Fit,n.ahead=1)\r\n";
-                        forecast_extension += "			            test[nrow(test),i] <<- pred$pred[1]\r\n";
+                        forecast_extension += "			            test[nrow(test),i] <- pred$pred[1]\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 4){\r\n";
                         forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
@@ -1765,13 +1797,13 @@ namespace WindowsFormsApplication1
                         forecast_extension += "                        tryCatch({\r\n";
                         forecast_extension += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
                         forecast_extension += "			                pred <- predict(Fit,n.ahead=1)\r\n";
-                        forecast_extension += "			                test[nrow(test),i] <<- pred$pred[1]\r\n";
+                        forecast_extension += "			                test[nrow(test),i] <- pred$pred[1]\r\n";
                         forecast_extension += "                        },\r\n";
                         forecast_extension += "                        error = function(e) {\r\n";
                         forecast_extension += "                            #message(e)\r\n";
                         forecast_extension += "                            #print(e)\r\n";
                         forecast_extension += "                            #復元抽出\r\n";
-                        forecast_extension += "                            test[nrow(test), i] <<- sample(train[, i], 1)\r\n";
+                        forecast_extension += "                            test[nrow(test), i] <- sample(train[, i], 1)\r\n";
                         forecast_extension += "                        },\r\n";
                         forecast_extension += "                        finally   = {\r\n";
                         forecast_extension += "                        },\r\n";
@@ -1798,22 +1830,22 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        colidx_11 = grep(\"minute$\", coln )\r\n";
                         forecast_extension += "        colidx_12 = grep(\"second$\", coln )\r\n";
 
-                        forecast_extension += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] <<- 0\r\n";
-                        forecast_extension += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] <<- 0\r\n";
-                        forecast_extension += "        if ( length(colidx_3) == 1 )test[nrow(test),colidx_3] <<- 0\r\n";
-                        forecast_extension += "        if ( length(colidx_4) == 1 )test[nrow(test),colidx_4] <<- 0\r\n";
-                        forecast_extension += "        if ( length(colidx_5) == 1 )test[nrow(test),colidx_5] <<- 0\r\n";
-                        forecast_extension += "        if ( length(colidx_6) == 1 )test[nrow(test),colidx_6] <<- 0\r\n";
-                        forecast_extension += "        if ( length(colidx_7) == 1 )test[nrow(test),colidx_7] <<- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] <- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] <- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_3) == 1 )test[nrow(test),colidx_3] <- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_4) == 1 )test[nrow(test),colidx_4] <- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_5) == 1 )test[nrow(test),colidx_5] <- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_6) == 1 )test[nrow(test),colidx_6] <- 0\r\n";
+                        forecast_extension += "        if ( length(colidx_7) == 1 )test[nrow(test),colidx_7] <- 0\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "        week = weekdays(as.Date(test[nrow(test),1]))\r\n";
-                        forecast_extension += "        if ( length(colidx_1) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_1] <<- 1\r\n";
-                        forecast_extension += "        if ( length(colidx_2) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_2] <<- 1\r\n";
-                        forecast_extension += "        if ( length(colidx_3) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_3] <<- 1\r\n";
-                        forecast_extension += "        if ( length(colidx_4) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_4] <<- 1\r\n";
-                        forecast_extension += "        if ( length(colidx_5) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_5] <<- 1\r\n";
-                        forecast_extension += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] <<- 1\r\n";
-                        forecast_extension += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] <<- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_1) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_1] <- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_2) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_2] <- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_3) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_3] <- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_4) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_4] <- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_5) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_5] <- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] <- 1\r\n";
+                        forecast_extension += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] <- 1\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "        tryCatch({\r\n";
                         forecast_extension += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
@@ -1840,9 +1872,9 @@ namespace WindowsFormsApplication1
                         forecast_extension += "            #print(e)\r\n";
                         forecast_extension += "        },\r\n";
                         forecast_extension += "        finally ={\r\n";
-                        forecast_extension += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] <<- h\r\n";
-                        forecast_extension += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] <<- m\r\n";
-                        forecast_extension += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] <<- s\r\n";
+                        forecast_extension += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] <- h\r\n";
+                        forecast_extension += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] <- m\r\n";
+                        forecast_extension += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] <- s\r\n";
                         forecast_extension += "        },\r\n";
                         forecast_extension += "            silent = FALSE\r\n";
                         forecast_extension += "        )\r\n";
@@ -1853,31 +1885,48 @@ namespace WindowsFormsApplication1
                             for (int j = start_lag; j <= lag; j++)
                             {
                                 forecast_extension += "        test$'lag"+j.ToString()+"_" + targetName + "'" +
-                               "[length(test$target_)]<<- test$'" + targetName +"'[length(test$target_)-" + j.ToString()+"]\r\n";
+                               "[length(test$target_)]<- test$'" + targetName +"'[length(test$target_)-" + j.ToString()+"]\r\n";
                             }
                             forecast_extension += "        test$'grad_" + targetName + "'" +
-                            "[length(test$target_)]<<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-2]\r\n";
+                            "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-2]\r\n";
                             forecast_extension += "        test$'grad2_" + targetName + "'" +
-                            "[length(test$target_)]<<- test$'grad_" + targetName+"'[length(test$target_)-1]-test$'grad_" + targetName+"'[length(test$target_)-2]\r\n";
+                            "[length(test$target_)]<- test$'grad_" + targetName+"'[length(test$target_)-1]-test$'grad_" + targetName+"'[length(test$target_)-2]\r\n";
 
                             if (lag >= means_n)
                             {
                                 forecast_extension += "        test$'mean_" + targetName + "'" +
-                               "[length(test$target_)]<<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
                             }
 
                             if (lag >= befor_day)
                             {
                                 forecast_extension += "        test$'grad3_" + targetName + "'" +
-                                "[length(test$target_)]<<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_3day) + "]\r\n";
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_3day) + "]\r\n";
                                 
                                 forecast_extension += "        test$'grad4_" + targetName + "'" +
-                               "[length(test$target_)]<<- numdiff2_5(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
+                               "[length(test$target_)]<- numdiff2_5(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
 
                                 forecast_extension += "        min_ <- min(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
                                 forecast_extension += "        max_ <- max(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
                                 forecast_extension += "        test$'grad5_" + targetName + "'" +
-                               "[length(test$target_)]<<- curvature(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
+                               "[length(test$target_)]<- curvature(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
+                            }
+
+                            if (n_seasons / 2 > 1)
+                            {
+                                forecast_extension += "\r\n";
+                                forecast_extension += "         y2 <- test$'lag1_" + targetName + "'\r\n";
+                                forecast_extension += "         f = " + numericUpDown14.Value.ToString() + "\r\n";
+                                forecast_extension += "         k = f/2\r\n";
+                                forecast_extension += "         if ( k > 0 ){\r\n";
+                                forecast_extension += "             fx <-  fourier(ts(y2,frequency=f) , K = k)\r\n";
+
+                                for (int j = 1; j <= n_seasons-1; j++)
+                                {
+                                    forecast_extension += "             test$season" + j.ToString() + "[length(test$target_)]<- fx[length(test$target_)," + j.ToString() + "]\r\n";
+                                }
+                                forecast_extension += "         }\r\n";
+                                forecast_extension += "\r\n";
                             }
                         }
 
@@ -1896,9 +1945,9 @@ namespace WindowsFormsApplication1
                         forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "	    #xgboostデータ形式に再構築して\r\n";
-                        forecast_extension += "        test_mx<<-";
+                        forecast_extension += "        test_mx<-";
                         forecast_extension += "        sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        forecast_extension += "        test_dmat <<- xgb.DMatrix(test_mx, label = test$target_";
+                        forecast_extension += "        test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
                         if (comboBox4.Text != "")
                         {
                             forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
@@ -1911,36 +1960,29 @@ namespace WindowsFormsApplication1
                             }
                         }
                         forecast_extension += "        )\r\n";
-                        forecast_extension += "	    df_ <<- test\r\n";
+                        forecast_extension += "	    df_ <- test\r\n";
                         forecast_extension += "	    \r\n";
                         forecast_extension += "	    #testデータ区間を予測\r\n";
-                        forecast_extension += "	    predict_y<<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
-                        forecast_extension += "     predict_y_org <<- predict_y\r\n";
+                        forecast_extension += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "     predict_y_org <- predict_y\r\n";
                         if (use_diff == 1)
                         {
-                            if (eval == 1)
-                            {
-                                forecast_extension += "        start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "] + min__\r\n";
-                            }
-                            else
-                            {
-                                forecast_extension += "        start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
-                            }
-                            forecast_extension += "        predict_y<<- inv_diff(predict_y, start_value, use_log_diff) - min__\r\n";
+                            forecast_extension += "        predict_y<- inv_diff(predict_y, use_log_diff, test_pre$" + targetName + ")\r\n";
                         }
-                        forecast_extension += "	        predict.y<<-as.data.frame(predict_y)\r\n";
+                        forecast_extension += "     predict.y<-as.data.frame(predict_y)\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "	    #データの最後を予測値で更新\r\n";
-                        forecast_extension += "	    test$target_[length(test$target_)] <<- predict_y_org[length(predict_y)]\r\n";
-                        forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] <<- predict_y[length(predict_y)]\r\n";
+                        forecast_extension += "	    test$target_[length(test$target_)] <- predict_y_org[length(predict_y)]\r\n";
+                        forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] <- predict_y[length(predict_y)]\r\n";
+                        forecast_extension += "\r\n";
                         forecast_extension += "    }\r\n";
                         forecast_extension += "}\r\n";
-                        forecast_extension += "    return(predict_y)\r\n";
+                        forecast_extension += "    return(list(predict_y, predict.y, test))\r\n";
                         forecast_extension += "#test<- test[-length(test$target_)]\r\n";
                     }
 
                     string forecast_extension_f = "";
-                    forecast_extension_f += "forecast_extension <- function(){\r\n";
+                    forecast_extension_f += "forecast_extension <- function(test, train){\r\n";
                     forecast_extension = forecast_extension.Replace("\r\n", "\r\n\t");
 
                     forecast_extension_f += forecast_extension;
@@ -1953,7 +1995,10 @@ namespace WindowsFormsApplication1
                     }
 
                     cmd += "source(\"time_series_forecast_extension.r\")\r\n";
-                    cmd += "forecast_extension()\r\n";
+                    cmd += "ret <- forecast_extension(test, train)\r\n";
+                    cmd += "predict_y <- ret[[1]]\r\n";
+                    cmd += "predict.y <- ret[[2]]\r\n";
+                    cmd += "test <- ret[[3]]\r\n";
 
                     if (checkBox6.Checked || checkBox7.Checked)
                     {
@@ -1992,8 +2037,7 @@ namespace WindowsFormsApplication1
                     cmd += "\r\n";
                     if (use_diff == 1)
                     {
-                        cmd += "start_value = train$'" + targetName + "'[1] + min__\r\n";
-                        cmd += "zz_tmp<- inv_diff(df_tmp$target_, start_value, use_log_diff) - min__\r\n";
+                        cmd += "zz_tmp<- inv_diff(df_tmp$target_, use_log_diff, test_pre$" + targetName + ")\r\n";
                         cmd += "debug_plt <- ggplot()\r\n";
                         cmd += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(df_tmp$target_)), y = df_tmp$'" + targetName + "', colour = \"org\"))+\r\n";
                         cmd += "geom_line(aes(x = (1:length(df_tmp$target_)), y = zz_tmp, colour = \"org2\"))\r\n";
@@ -2059,26 +2103,17 @@ namespace WindowsFormsApplication1
                         }
 
 
-                        if (use_diff == 1)
-                        {
-                            if (eval == 1)
-                            {
-                                predict_probability += "start_value = train$'" + targetName + "'[1+" + (lag - 1).ToString() + "+1] + min__\r\n";
-                            }
-                            else
-                            {
-                                predict_probability += "start_value = train$'" + targetName + "'[nrow(train)] + min__\r\n";
-                            }
-                        }
-
                         predict_probability += "std_mean <- function(x) sd(x)/sqrt(length(x))\r\n";
                         predict_probability += "rndsgn <- function(){\r\n";
                         predict_probability += "if (runif(1) > 0.5) return (1.0)\r\n";
                         predict_probability += "else return (-1.0)\r\n";
                         predict_probability += "}\r\n";
                         predict_probability += "alp = 0.2\r\n";
-                        predict_probability += "predict_y = forecast_extension()\r\n";
+                        predict_probability += "ret <- forecast_extension(test, train)\r\n";
+                        predict_probability += "predict_y <- ret[[1]]\r\n";
                         predict_probability += "test<-test_sv\r\n";
+                        predict_probability += "\r\n";
+
                         predict_probability += "for (i in 1:ncol(predictions)){\r\n";
                         for (int i = 0; i < var.Items.Count; i++)
                         {
@@ -2088,7 +2123,18 @@ namespace WindowsFormsApplication1
                         for (int i = 0; i < var.Items.Count; i++)
                         {
                             predict_probability += "   if ( runif(1) > alp) test$" + var.Items[i].ToString() +
-                                   "<- test_sv$" + var.Items[i].ToString() + " +rndsgn() * runif(1) * std_mean(train$" + var.Items[i].ToString() + ")\r\n";
+                                   "<- test_sv$" + var.Items[i].ToString() + " + rndsgn() * runif(1) * std_mean(train$" + var.Items[i].ToString() + ")\r\n";
+                        }
+                        if ( time_series_mode && var.Items.Count == 0)
+                        {
+                            for (int j = start_lag; j <= lag; j++)
+                            {
+                                predict_probability += "test$'lag" + j.ToString() + "_" + targetName + "'<- test$'lag" + j.ToString() + "_" + targetName + "'" + "+ mean(train$'lag" + j.ToString() + "_" + targetName + "')*0.1*runif(1)\r\n";
+                            }
+                            //for (int j = start_lag; j <= lag; j++)
+                            //{
+                            //    predict_probability += "test$'lag" + j.ToString() + "_" + targetName + "'[nrow(test)]" + "<- sample(train$'lag" + j.ToString() + "_" + targetName + "', 1)\r\n";
+                            //}
                         }
 
                         predict_probability += "\r\n";
@@ -2111,16 +2157,15 @@ namespace WindowsFormsApplication1
 
                         if ( time_series_mode && numericUpDown5.Value >= 1)
                         {
-                            predict_probability += "	predictions[,i] <- forecast_extension()\r\n";
-                            predict_probability += "test_ext <- test\r\n";
+                            predict_probability += "	ret <- forecast_extension(test, train)\r\n";
+                            predict_probability += "    predictions[, i] <- ret[[1]]\r\n";
+                            predict_probability += "    test <- ret[[3]]\r\n";
+                            predict_probability += "    test_ext <- test\r\n";
                         }
                         else
                         {
                             predict_probability += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
-                            if (use_diff == 1)
-                            {
-                                predict_probability += "	predictions[,i]<- inv_diff(predictions[,i],start_value, use_log_diff) - min__\r\n";
-                            }
+                            predict_probability += "	predictions[,i]<- inv_diff(predictions[,i], use_log_diff, test_pre$" + targetName + ")\r\n";
                         }
                         predict_probability += "   test <- test_sv\r\n";
                         predict_probability += "} \r\n";
@@ -2245,7 +2290,7 @@ namespace WindowsFormsApplication1
                         predict_probability += "		prob = p[[1]]\r\n";
                         predict_probability += "	}\r\n";
                         predict_probability += "	\r\n";
-                        predict_probability += "	s = paste(\"probability\",sprintf(\"%.1f\",prob*100))\r\n";
+                        predict_probability += "	s = paste(\"probability\",sprintf(\"%.1f\",prob*99.5))\r\n";
                         predict_probability += "	s = paste(s, \"% [\")\r\n";
                         predict_probability += "	if ( p[[1]] == -1 )\r\n";
                         predict_probability += "	{\r\n";
@@ -2269,14 +2314,21 @@ namespace WindowsFormsApplication1
                         predict_probability += "	prob_interval_s = p[[2]]\r\n";
                         predict_probability += "	prob_interval_e = p[[3]]\r\n";
                         predict_probability += "\r\n";
+                        predict_probability += "    col1 = \"#fa8072\"\r\n";
+                        predict_probability += "    col2 = \"#ff7f50\"\r\n";
+                        predict_probability += "    if ( i > length(test_sv) ){\r\n";
+                        predict_probability += "        col1 = \"#e4d2d8\"\r\n";
+                        predict_probability += "        col2 = \"#8b968d\"\r\n";
+                        predict_probability += "    }\r\n";
                         predict_probability += "	h <- t(predictions[i,])\r\n";
                         predict_probability += "	colnames(h)[1]<-c(\"value\")\r\n";
-                        predict_probability += "	g <- ggplot(data = as.data.frame(h), aes(x=value,y = ..density..))\r\n";
-                        predict_probability += "	g <- g + geom_histogram(bins=bins)+\r\n";
+                        predict_probability += "	h <- as.data.frame(h)\r\n";
+                        predict_probability += "	g <- ggplot(data = h, aes(x=value,y = ..density..))\r\n";
+                        predict_probability += "	g <- g + geom_histogram(bins=bins, fill = col1, alpha = 0.15)+\r\n";
                         predict_probability += "	geom_vline(xintercept = predict_y[i], colour=\"red\", size = 2)+\r\n";
                         predict_probability += "	geom_vline(xintercept = prob_interval_s, colour=\"red\", linetype = \"dotted\")+\r\n";
                         predict_probability += "	geom_vline(xintercept = prob_interval_e, colour=\"red\", linetype = \"dotted\")+\r\n";
-                        predict_probability += "	geom_density(aes(color = value), color = \"blue\", alpha = 0.2, fill=\"blue\", show.legend = F)+\r\n";
+                        predict_probability += "	geom_density(color = \"black\", alpha = 0.7, fill=col2, show.legend = F)+\r\n";
                         predict_probability += "	annotate(\"rect\", xmin = prob_interval_s, xmax = prob_interval_e, ymin = 0, ymax = Inf, alpha = 0.1)+\r\n";
                         predict_probability += "	ggtitle(s)\r\n";
                         predict_probability += "	\r\n";
@@ -2286,8 +2338,9 @@ namespace WindowsFormsApplication1
                         predict_probability += "predict_probability_list <- NULL\r\n";
                         predict_probability += "glist <- NULL\r\n";
 
-                        if (1 == 1)
+                        if (1 == 0)
                         {
+                            //glist, predict_probability_listが共有されない
                             predict_probability += "\r\n";
                             predict_probability += "\r\n";
                             predict_probability += "library(doParallel)\r\n";
@@ -2605,7 +2658,7 @@ namespace WindowsFormsApplication1
 
                 try
                 {
-                    for (int ii = 2; ii < 1000000; ii++)
+                    for (int ii = 1; ii < 1000000; ii++)
                     {
                         string pngfile = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", ii);
 
@@ -2623,7 +2676,7 @@ namespace WindowsFormsApplication1
 
                 try
                 {
-                    for (int ii = 2; ii < 1000000; ii++)
+                    for (int ii = 1; ii < 1000000; ii++)
                     {
                         string pngfile = string.Format("explain_predict\\predict_probability{0}.png", ii);
 
@@ -2656,6 +2709,9 @@ namespace WindowsFormsApplication1
                 {
                     timer1.Stop();
                     timer1.Enabled = false;
+                    if (checkBox13.Checked && xgboost_predict_probability_count == explain_num) button18.Enabled = true;
+                    if (checkBox4.Checked && xgboost_predict_parts_count == explain_num) button18.Enabled = true;
+
                 }
                 if (Form1.RProcess.HasExited)
                 {
@@ -2899,11 +2955,16 @@ namespace WindowsFormsApplication1
                     if (radioButton3.Checked)
                     {
                         pictureBox1.Image = Form1.CreateImage("tmp_xgboost_predict.png");
+                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox1.Dock = DockStyle.Fill;
+                        pictureBox1.Show();
+
+                        if (xgboost_exp_ != null ) xgboost_exp_.pictureBox1.Image = Form1.CreateImage("explain_predict\\tmp_xgboost_predict.png");
                         if (System.IO.File.Exists("explain_predict\\tmp_xgboost_predict_parts1.png"))
                         {
                             button18.Enabled = true;
                         }
-                        pictureBox1.Image = Form1.CreateImage("tmp_xgboost_predict.png");
+                        if(xgboost_exp_ != null) xgboost_exp_.pictureBox4.Image = Form1.CreateImage("explain_predict\\tmp_xgboost_predict.png");
                         if (System.IO.File.Exists("explain_predict\\predict_probability1.png"))
                         {
                             button18.Enabled = true;
@@ -3955,7 +4016,7 @@ namespace WindowsFormsApplication1
                 xgboost_exp_._ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_._ImageView.pictureBox1.Dock = DockStyle.Fill;
 
-                xgboost_exp_.pictureBox1.ImageLocation = "explain_predict\tmp_xgboost_predict_parts1.png";
+                xgboost_exp_.pictureBox1.ImageLocation = "explain_predict\\tmp_xgboost_predict_parts1.png";
                 xgboost_exp_.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_.pictureBox1.Dock = DockStyle.Fill;
             }
@@ -4043,10 +4104,6 @@ namespace WindowsFormsApplication1
 
         private void checkBox9_CheckedChanged(object sender, EventArgs e)
         {
-            if ( checkBox9.Checked)
-            {
-                checkBox10.Checked = true;
-            }
         }
 
         private void numericUpDown15_ValueChanged(object sender, EventArgs e)
@@ -4085,6 +4142,26 @@ namespace WindowsFormsApplication1
         private void toolTip1_Popup(object sender, PopupEventArgs e)
         {
 
+        }
+
+        private void textBox10_TextChanged(object sender, EventArgs e)
+        {
+            radioButton4.Checked = true;
+            radioButton3.Checked = false;
+        }
+
+        private void checkBox14_CheckStateChanged(object sender, EventArgs e)
+        {
+            radioButton4.Checked = true;
+            radioButton3.Checked = false;
+        }
+
+        private void checkBox9_CheckedChanged_1(object sender, EventArgs e)
+        {
+            if ( checkBox9.Checked)
+            {
+                numericUpDown16.Value = 2;
+            }
         }
     }
 

@@ -159,9 +159,9 @@ namespace WindowsFormsApplication1
                 file = string.Format("explain_predict\\predict_probability{0}.png", pos);
                 if (System.IO.File.Exists(file))
                 {
-                    _ImageView.pictureBox1.ImageLocation = file;
-                    _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    _ImageView.pictureBox1.Dock = DockStyle.Fill;
+                    _ImageView4.pictureBox1.ImageLocation = file;
+                    _ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    _ImageView4.pictureBox1.Dock = DockStyle.Fill;
 
                     pictureBox4.ImageLocation = file;
                     pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
@@ -191,6 +191,11 @@ namespace WindowsFormsApplication1
         private void button1_Click_1(object sender, EventArgs e)
         {
             _ImageView4.Show();
+        }
+
+        private void panel7_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
