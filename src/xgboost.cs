@@ -481,7 +481,7 @@ namespace WindowsFormsApplication1
                         {
                             MessageBox.Show("frequencyの設定を見直して下さい");
                         }
-                        cmd1 += "y2 <- df_ts_tmp$'lag1_" + targetName + "'\r\n";
+                        cmd1 += "y2 <- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "f = " + numericUpDown14.Value.ToString() + "\r\n";
                         cmd1 += "k = f/2\r\n";
                         cmd1 += "#k =  max(1, min(round(f / 4 - 1), 10))\r\n";
@@ -2075,7 +2075,7 @@ namespace WindowsFormsApplication1
                             {
                                 forecast_extension += "         #The value of the variable 'test$season' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
                                 forecast_extension += "\r\n";
-                                forecast_extension += "         y2 <- test$'lag1_" + targetName + "'\r\n";
+                                forecast_extension += "         y2 <- test$'" + targetName + "'\r\n";
                                 forecast_extension += "         f = " + numericUpDown14.Value.ToString() + "\r\n";
                                 forecast_extension += "         k = f/2\r\n";
                                 forecast_extension += "         #k =  max(1, min(round(f / 4 - 1), 10))\r\n";
@@ -2188,7 +2188,7 @@ namespace WindowsFormsApplication1
                     cmd += "df_ <- test\r\n";
                     if ( eval == 1)
                     {
-                        cmd += "df_tmp <- rbind(train, test)\r\n";
+                        cmd += "df_tmp <- train\r\n";
                     }else
                     {
                         cmd += "df_tmp <- test\r\n";
@@ -2218,7 +2218,7 @@ namespace WindowsFormsApplication1
                         cmd += "zz_tmp<- inv_diff(df_tmp, df_tmp$target_, use_log_diff, test_pre$" + targetName + ")\r\n";
                         cmd += "debug_plt <- ggplot()\r\n";
                         cmd += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(df_tmp$target_)), y = df_tmp$'" + targetName + "', colour = \"org\"))+\r\n";
-                        cmd += "geom_line(aes(x = (1:length(df_tmp$target_)), y = zz_tmp, colour = \"org2\"))\r\n";
+                        cmd += "geom_line(aes(x = (1:length(df_tmp$target_)), y = zz_tmp, colour = \"pred\"))\r\n";
                         cmd += "debug_plt\r\n";
                         cmd += "ggsave(file = \"tmp_xgboost_debug2.png\", debug_plt)\r\n";
                     }
@@ -4412,6 +4412,12 @@ namespace WindowsFormsApplication1
                 return;
             }
             System.Diagnostics.Process.Start(image_link3);
+        }
+
+        private void numericUpDown15_ValueChanged(object sender, CancelEventArgs e)
+        {
+            radioButton4.Checked = true;
+            radioButton3.Checked = false;
         }
     }
 

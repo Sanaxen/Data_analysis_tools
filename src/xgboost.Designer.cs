@@ -36,6 +36,8 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.button20 = new System.Windows.Forms.Button();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.numericUpDown14 = new System.Windows.Forms.NumericUpDown();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
@@ -156,8 +158,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button20 = new System.Windows.Forms.Button();
-            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -353,6 +353,29 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(208, 494);
             this.panel7.TabIndex = 147;
+            // 
+            // button20
+            // 
+            this.button20.Location = new System.Drawing.Point(62, 189);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(137, 28);
+            this.button20.TabIndex = 152;
+            this.button20.Text = "show compose";
+            this.button20.UseVisualStyleBackColor = true;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
+            // 
+            // linkLabel3
+            // 
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.linkLabel3.Location = new System.Drawing.Point(8, 189);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(48, 15);
+            this.linkLabel3.TabIndex = 153;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "image";
+            this.linkLabel3.Visible = false;
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
             // 
             // groupBox2
             // 
@@ -551,6 +574,8 @@
             0,
             0});
             this.numericUpDown8.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
+            this.numericUpDown8.Validating += new System.ComponentModel.CancelEventHandler(this.numericUpDown15_ValueChanged);
+            this.numericUpDown8.Validated += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label23
             // 
@@ -1896,29 +1921,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // button20
-            // 
-            this.button20.Location = new System.Drawing.Point(62, 189);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(137, 28);
-            this.button20.TabIndex = 152;
-            this.button20.Text = "show compose";
-            this.button20.UseVisualStyleBackColor = true;
-            this.button20.Click += new System.EventHandler(this.button20_Click);
-            // 
-            // linkLabel3
-            // 
-            this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.linkLabel3.Location = new System.Drawing.Point(8, 189);
-            this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(48, 15);
-            this.linkLabel3.TabIndex = 153;
-            this.linkLabel3.TabStop = true;
-            this.linkLabel3.Text = "image";
-            this.linkLabel3.Visible = false;
-            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
             // 
             // xgboost
             // 
