@@ -158,6 +158,10 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label37 = new System.Windows.Forms.Label();
+            this.numericUpDown17 = new System.Windows.Forms.NumericUpDown();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -185,6 +189,7 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown17)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -295,6 +300,7 @@
             0,
             0,
             0});
+            this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // button19
             // 
@@ -316,6 +322,7 @@
             this.textBox9.Size = new System.Drawing.Size(83, 22);
             this.textBox9.TabIndex = 149;
             this.textBox9.Text = "1.0";
+            this.textBox9.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
             this.textBox9.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label34
@@ -351,12 +358,12 @@
             this.panel7.Location = new System.Drawing.Point(675, 169);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(208, 494);
+            this.panel7.Size = new System.Drawing.Size(208, 647);
             this.panel7.TabIndex = 147;
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(62, 189);
+            this.button20.Location = new System.Drawing.Point(64, 246);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(137, 28);
             this.button20.TabIndex = 152;
@@ -368,7 +375,7 @@
             // 
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.linkLabel3.Location = new System.Drawing.Point(8, 189);
+            this.linkLabel3.Location = new System.Drawing.Point(10, 246);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(48, 15);
             this.linkLabel3.TabIndex = 153;
@@ -384,7 +391,7 @@
             this.groupBox2.Controls.Add(this.label32);
             this.groupBox2.Controls.Add(this.checkBox14);
             this.groupBox2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox2.Location = new System.Drawing.Point(7, 85);
+            this.groupBox2.Location = new System.Drawing.Point(9, 142);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
@@ -455,16 +462,20 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBox11);
+            this.groupBox1.Controls.Add(this.label38);
+            this.groupBox1.Controls.Add(this.label37);
+            this.groupBox1.Controls.Add(this.numericUpDown17);
             this.groupBox1.Controls.Add(this.checkBox9);
             this.groupBox1.Controls.Add(this.textBox10);
             this.groupBox1.Controls.Add(this.label36);
             this.groupBox1.Controls.Add(this.label35);
             this.groupBox1.Controls.Add(this.numericUpDown16);
-            this.groupBox1.Location = new System.Drawing.Point(7, 8);
+            this.groupBox1.Location = new System.Drawing.Point(6, 10);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(195, 71);
+            this.groupBox1.Size = new System.Drawing.Size(195, 130);
             this.groupBox1.TabIndex = 158;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "トレンド";
@@ -483,7 +494,7 @@
             // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(127, 44);
+            this.textBox10.Location = new System.Drawing.Point(140, 44);
             this.textBox10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(49, 22);
@@ -495,7 +506,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(53, 18);
+            this.label36.Location = new System.Drawing.Point(66, 18);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(68, 15);
             this.label36.TabIndex = 154;
@@ -504,7 +515,7 @@
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(72, 48);
+            this.label35.Location = new System.Drawing.Point(85, 48);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(49, 15);
             this.label35.TabIndex = 156;
@@ -513,7 +524,7 @@
             // 
             // numericUpDown16
             // 
-            this.numericUpDown16.Location = new System.Drawing.Point(127, 15);
+            this.numericUpDown16.Location = new System.Drawing.Point(140, 15);
             this.numericUpDown16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown16.Maximum = new decimal(new int[] {
             4,
@@ -532,7 +543,7 @@
             // checkBox12
             // 
             this.checkBox12.AutoSize = true;
-            this.checkBox12.Location = new System.Drawing.Point(109, 341);
+            this.checkBox12.Location = new System.Drawing.Point(111, 398);
             this.checkBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(89, 19);
@@ -543,7 +554,7 @@
             // checkBox11
             // 
             this.checkBox11.AutoSize = true;
-            this.checkBox11.Location = new System.Drawing.Point(4, 468);
+            this.checkBox11.Location = new System.Drawing.Point(7, 616);
             this.checkBox11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox11.Name = "checkBox11";
             this.checkBox11.Size = new System.Drawing.Size(104, 19);
@@ -553,7 +564,7 @@
             // 
             // numericUpDown8
             // 
-            this.numericUpDown8.Location = new System.Drawing.Point(131, 269);
+            this.numericUpDown8.Location = new System.Drawing.Point(134, 326);
             this.numericUpDown8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown8.Maximum = new decimal(new int[] {
             10000,
@@ -581,7 +592,7 @@
             // 
             this.label23.AutoSize = true;
             this.label23.ForeColor = System.Drawing.Color.Black;
-            this.label23.Location = new System.Drawing.Point(19, 270);
+            this.label23.Location = new System.Drawing.Point(21, 327);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(106, 15);
             this.label23.TabIndex = 115;
@@ -592,7 +603,7 @@
             // 
             this.label33.AutoSize = true;
             this.label33.ForeColor = System.Drawing.Color.Black;
-            this.label33.Location = new System.Drawing.Point(29, 240);
+            this.label33.Location = new System.Drawing.Point(31, 297);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(91, 15);
             this.label33.TabIndex = 143;
@@ -609,7 +620,7 @@
             "AutoRegression",
             "auto.arima",
             "不確実"});
-            this.comboBox5.Location = new System.Drawing.Point(81, 298);
+            this.comboBox5.Location = new System.Drawing.Point(83, 355);
             this.comboBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(116, 23);
@@ -621,7 +632,7 @@
             // 
             // numericUpDown15
             // 
-            this.numericUpDown15.Location = new System.Drawing.Point(131, 238);
+            this.numericUpDown15.Location = new System.Drawing.Point(133, 295);
             this.numericUpDown15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown15.Maximum = new decimal(new int[] {
             1000,
@@ -647,7 +658,7 @@
             // 
             this.label30.AutoSize = true;
             this.label30.ForeColor = System.Drawing.Color.Black;
-            this.label30.Location = new System.Drawing.Point(8, 300);
+            this.label30.Location = new System.Drawing.Point(10, 357);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(67, 15);
             this.label30.TabIndex = 136;
@@ -657,7 +668,7 @@
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(4, 441);
+            this.checkBox8.Location = new System.Drawing.Point(7, 589);
             this.checkBox8.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(109, 19);
@@ -667,7 +678,7 @@
             // 
             // numericUpDown5
             // 
-            this.numericUpDown5.Location = new System.Drawing.Point(76, 412);
+            this.numericUpDown5.Location = new System.Drawing.Point(79, 560);
             this.numericUpDown5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown5.Maximum = new decimal(new int[] {
             10000,
@@ -683,7 +694,7 @@
             // 
             this.label31.AutoSize = true;
             this.label31.ForeColor = System.Drawing.Color.Black;
-            this.label31.Location = new System.Drawing.Point(4, 420);
+            this.label31.Location = new System.Drawing.Point(7, 568);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(67, 15);
             this.label31.TabIndex = 138;
@@ -733,6 +744,7 @@
             this.textBox8.Size = new System.Drawing.Size(84, 22);
             this.textBox8.TabIndex = 131;
             this.textBox8.Text = "1";
+            this.textBox8.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
             // 
             // button17
             // 
@@ -884,6 +896,7 @@
             0,
             0,
             0});
+            this.numericUpDown11.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label26
             // 
@@ -917,6 +930,7 @@
             0,
             0,
             0});
+            this.numericUpDown10.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label25
             // 
@@ -947,6 +961,7 @@
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(159, 25);
             this.comboBox4.TabIndex = 118;
+            this.comboBox4.SelectedValueChanged += new System.EventHandler(this.comboBox4_SelectedValueChanged);
             // 
             // button14
             // 
@@ -1017,6 +1032,7 @@
             0,
             0});
             this.numericUpDown7.Visible = false;
+            this.numericUpDown7.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label21
             // 
@@ -1036,6 +1052,7 @@
             this.textBox7.Size = new System.Drawing.Size(79, 22);
             this.textBox7.TabIndex = 106;
             this.textBox7.Text = "0.8";
+            this.textBox7.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
             this.textBox7.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label20
@@ -1056,6 +1073,7 @@
             this.textBox6.Size = new System.Drawing.Size(79, 22);
             this.textBox6.TabIndex = 104;
             this.textBox6.Text = "1.0";
+            this.textBox6.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
             this.textBox6.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label19
@@ -1076,6 +1094,7 @@
             this.textBox5.Size = new System.Drawing.Size(79, 22);
             this.textBox5.TabIndex = 102;
             this.textBox5.Text = "0.0";
+            this.textBox5.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
             this.textBox5.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label18
@@ -1110,6 +1129,7 @@
             0,
             0,
             0});
+            this.numericUpDown6.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label17
             // 
@@ -1150,6 +1170,7 @@
             this.textBox4.Size = new System.Drawing.Size(83, 22);
             this.textBox4.TabIndex = 94;
             this.textBox4.Text = "0.0";
+            this.textBox4.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
             this.textBox4.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label12
@@ -1170,6 +1191,7 @@
             this.textBox3.Size = new System.Drawing.Size(79, 22);
             this.textBox3.TabIndex = 92;
             this.textBox3.Text = "0.1";
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
             this.textBox3.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // label11
@@ -1180,7 +1202,8 @@
             this.label11.Size = new System.Drawing.Size(27, 15);
             this.label11.TabIndex = 91;
             this.label11.Text = "eta";
-            this.toolTip1.SetToolTip(this.label11, "小さくすると、モデルの分類性を高めることが可能です。\r\n過学習が進み精度が悪化する恐れがあります。\r\ndefault:0.1");
+            this.toolTip1.SetToolTip(this.label11, "学習幅（学習率）。[0,1]の値をとる。値が小さいと学習が進みにくい.\r\n小さくすると、モデルの分類性を高めることが可能です。\r\n過学習が進み精度が悪化する恐れが" +
+        "あります。\r\ndefault:0.1");
             // 
             // label10
             // 
@@ -1212,6 +1235,7 @@
             this.comboBox3.Size = new System.Drawing.Size(121, 23);
             this.comboBox3.TabIndex = 89;
             this.comboBox3.Text = "default";
+            this.comboBox3.SelectedValueChanged += new System.EventHandler(this.comboBox4_SelectedValueChanged);
             // 
             // label9
             // 
@@ -1244,6 +1268,7 @@
             this.comboBox2.Size = new System.Drawing.Size(121, 23);
             this.comboBox2.TabIndex = 87;
             this.comboBox2.Text = "\"reg:squarederror\"";
+            this.comboBox2.SelectedValueChanged += new System.EventHandler(this.comboBox4_SelectedValueChanged);
             // 
             // label8
             // 
@@ -1268,6 +1293,7 @@
             this.comboBox1.Size = new System.Drawing.Size(121, 23);
             this.comboBox1.TabIndex = 85;
             this.comboBox1.Text = "\"gbtree\"";
+            this.comboBox1.SelectedValueChanged += new System.EventHandler(this.comboBox4_SelectedValueChanged);
             // 
             // label7
             // 
@@ -1300,6 +1326,7 @@
             0,
             0,
             0});
+            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label4
             // 
@@ -1332,6 +1359,7 @@
             0,
             0,
             0});
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // label3
             // 
@@ -1365,6 +1393,7 @@
             0,
             0,
             0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown15_ValueChanged);
             // 
             // checkBox2
             // 
@@ -1627,6 +1656,7 @@
             this.listBox2.Size = new System.Drawing.Size(244, 484);
             this.listBox2.TabIndex = 3;
             this.listBox2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBox2_MouseClick);
+            this.listBox2.SelectedValueChanged += new System.EventHandler(this.listBox1_SelectedValueChanged);
             // 
             // listBox1
             // 
@@ -1638,6 +1668,7 @@
             this.listBox1.Size = new System.Drawing.Size(229, 484);
             this.listBox1.TabIndex = 2;
             this.listBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseClick);
+            this.listBox1.SelectedValueChanged += new System.EventHandler(this.listBox1_SelectedValueChanged);
             // 
             // panel5
             // 
@@ -1922,6 +1953,51 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(100, 95);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(35, 15);
+            this.label37.TabIndex = 159;
+            this.label37.Text = "ndiff";
+            // 
+            // numericUpDown17
+            // 
+            this.numericUpDown17.Location = new System.Drawing.Point(140, 91);
+            this.numericUpDown17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown17.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown17.Name = "numericUpDown17";
+            this.numericUpDown17.Size = new System.Drawing.Size(51, 22);
+            this.numericUpDown17.TabIndex = 160;
+            this.toolTip1.SetToolTip(this.numericUpDown17, "何回階差をとるかしていします。0を指定するとkpss検定を実施して自動計算されます。\r\ndefault:0");
+            this.numericUpDown17.Validated += new System.EventHandler(this.numericUpDown16_Validated);
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(51, 92);
+            this.textBox11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(40, 22);
+            this.textBox11.TabIndex = 162;
+            this.textBox11.Text = "0.05";
+            this.toolTip1.SetToolTip(this.textBox11, "kpss検定の有意水準");
+            this.textBox11.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(4, 96);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(39, 15);
+            this.label38.TabIndex = 161;
+            this.label38.Text = "alpha";
+            this.toolTip1.SetToolTip(this.label38, "決定木の葉の重みに関するL2正則化項を意味します。\r\n値を大きくすることで過学習を防止します。\r\ndefault 1.0");
+            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1972,6 +2048,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown17)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2106,5 +2183,9 @@
         public System.Windows.Forms.CheckBox checkBox10;
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label37;
+        public System.Windows.Forms.NumericUpDown numericUpDown17;
     }
 }
