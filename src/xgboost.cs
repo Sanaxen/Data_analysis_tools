@@ -55,6 +55,7 @@ namespace WindowsFormsApplication1
         int use_decompose = 0;
         public ImageView _ImageView3;
         interactivePlot interactivePlot2 = null;
+        int max_seasonal = 10;
 
         public xgboost()
         {
@@ -292,7 +293,7 @@ namespace WindowsFormsApplication1
                         double p = form1.Double_func("", cmd_tmp);
                         if ( p < 0.05)
                         {
-                            MessageBox.Show("データは非定常またはトレンドのあるデータです");
+                            //MessageBox.Show("データは非定常またはトレンドのあるデータです");
                         }
                     }
                     if (use_diff == 1)
@@ -845,7 +846,7 @@ namespace WindowsFormsApplication1
                     {
                         if (((int)numericUpDown14.Value) / 2 > 0)
                         {
-                            for (int i = 1; i <= ((int)numericUpDown14.Value) / 2; i++)
+                            for (int i = 1; i <= Math.Min(max_seasonal, n_seasons - 1); i++)
                             {
                                 formuler += "+ season" + i.ToString();
                             }
@@ -2011,11 +2012,11 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "         if ( k > 0 ){\r\n";
                                 forecast_extension += "             fx <-  fourier(ts(y2,frequency=f) , K = k)\r\n";
 
-                                for (int j = 1; j <= n_seasons-1; j++)
+                                for (int j = 1; j <= Math.Min(max_seasonal, n_seasons-1); j++)
                                 {
                                     forecast_extension += "             test$season" + j.ToString() + "[length(test$target_)]<- fx[length(test$target_)," + j.ToString() + "]\r\n";
                                 }
-                                for (int j = 1; j <= n_seasons - 1; j++)
+                                for (int j = 1; j <= Math.Min(max_seasonal, n_seasons - 1); j++)
                                 {
                                     forecast_extension += "             test$season" + j.ToString() + "[length(test$target_)-1]<- fx[length(test$target_)-1," + j.ToString() + "] #update\r\n";
                                 }
