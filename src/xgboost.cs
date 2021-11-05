@@ -56,6 +56,7 @@ namespace WindowsFormsApplication1
         public ImageView _ImageView3;
         interactivePlot interactivePlot2 = null;
         int max_seasonal = 10;
+        int use_arima = 0;
 
         public xgboost()
         {
@@ -318,6 +319,12 @@ namespace WindowsFormsApplication1
                         exist_time_axis = 0;
                     }
 
+                    int datalenchk = form1.Int_func("nrow", "df");
+                    if ((checkBox9.Checked || checkBox10.Checked) && (datalenchk * (1.0 - (double)form1.numericUpDown5.Value * 0.01)) < ((int)numericUpDown14.Value) * 2)
+                    {
+                        MessageBox.Show("データ長が足りません(train/test分割後のデータでfrequencyの2倍が必要です)");
+                        return;
+                    }
                     string cmd1 = "";
                     if (form1.Int_func("coltype_time", "df") == 1)
                     {
@@ -329,6 +336,7 @@ namespace WindowsFormsApplication1
                         form1.FileDelete("addtime_cols.csv");
                     }
 
+                    cmd1 += "n_diffs <- 0\r\n";
                     cmd1 += "df_ts_tmp <- df\r\n";
                     for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                     {
@@ -499,22 +507,31 @@ namespace WindowsFormsApplication1
                         plotly_rows += "ggplotly(dat1_plt),ggplotly(dat2_plt),ggplotly(dat3_plt)";
                         cmd1 += "\r\n";
                     }
-
                     cmd1 += "log_diff <- list(tmp_sv, 0)\r\n";
+
+                    cmd1 += "df_ts_tmp$trend <- numeric(nrow(df_ts_tmp))\r\n";
                     if (use_diff == 1)
                     {
                         if ( numericUpDown14.Value == 0)
                         {
                             MessageBox.Show("階差数は自動計算します");
                         }
-                        cmd1 += "tmp <- df_ts_tmp$'" + targetName + "'\r\n";
+                        if (use_decompose == 1)
+                        {
+                            cmd1 += "tmp <- df_ts_tmp$deseasonal\r\n";
+                        }
+                        else
+                        {
+                            cmd1 += "tmp <- df_ts_tmp$'" + targetName + "'\r\n";
+                        }
                         cmd1 += "\r\n";
                         cmd1 += "log_diff <- mydiff(tmp, "+ numericUpDown14.Value.ToString()+", use_log_diff, ndiff ="+ numericUpDown17.Value.ToString()+",lambda="+textBox10.Text+", alpha="+textBox11.Text +")\r\n";
                         cmd1 += "df_ts_tmp <- cbind(df_ts_tmp, log_diff[[1]])\r\n";
+                        cmd1 += "n_diffs <- log_diff[[2]]\r\n";
                         cmd1 += "colnames(df_ts_tmp)[ncol(df_ts_tmp)] <- c(\"log_diff\")\r\n";
                         cmd1 += "\r\n";
 
-                        cmd1 += "zz_tmp<- inv_diff(df_ts_tmp, use_log_diff, log_diff[[1]], tmp_sv[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        cmd1 += "zz_tmp<- inv_diff(df_ts_tmp, use_log_diff, log_diff[[1]] + df_ts_tmp$trend, tmp_sv[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         cmd1 += "debug_plt <- ggplot()\r\n";
                         cmd1 += "if ( use_log_diff > 0){\r\n";
                         cmd1 += "   debug_plt <- debug_plt + geom_line(aes(x = (1:length(tmp_sv)), y = tmp_sv, colour = \"org\"))\r\n";
@@ -534,7 +551,31 @@ namespace WindowsFormsApplication1
                         if (plotly_rows != "") plotly_rows += ",";
                         plotly_rows += "ggplotly(dat4_plt)";
                     }
-                    if (use_diff == 1 && use_decompose == 0)
+
+                    if (use_decompose == 1)
+                    {
+                        cmd1 += "df_ts_tmp$target_ <- df_ts_tmp$deseasonal\r\n";
+                    }else
+                    {
+                        cmd1 += "df_ts_tmp$target_ <- df_ts_tmp$'" + targetName + "'\r\n";
+                    }
+
+                    if (use_diff == 0 && checkBox9.Checked)
+                    {
+                        //use_arima = 1;
+                        cmd1 += "t<-stl(ts(df_ts_tmp$target_,frequency=" + numericUpDown14.Value.ToString() + "), s.window=\"per\", robust=TRUE)\r\n";
+                        cmd1 += "stl_t = as.matrix(t$time.series[,2])      #トレンド（Trend）\r\n";
+                        cmd1 += "stl_s = as.matrix(t$time.series[,1])      #季節性（Seasonal）\r\n";
+                        cmd1 += "stl_r = as.matrix(t$time.series[,3])      #残差（Remainder）\r\n";
+                        cmd1 += "df_ts_tmp$trend <- stl_t\r\n";
+                        cmd1 += "df_ts_tmp$target_ <- df_ts_tmp$target_ - stl_t\r\n";
+                    }
+                    if ( !checkBox9.Checked )
+                    {
+                        cmd1 += "df_ts_tmp$trend <- numeric(nrow(df_ts_tmp))\r\n";
+                    }
+
+                    if (use_diff == 1)
                     {
                         cmd1 += "colidx = grep(\"^log_diff$\", colnames(df_ts_tmp) )\r\n";
                         cmd1 += "if ( length(colidx) == 1 ){\r\n";
@@ -595,22 +636,23 @@ namespace WindowsFormsApplication1
                         cmd1 += "test_pre <- df_ts_tmp[" + lag.ToString() + "-1,]\r\n";
                     }
 
-                    cmd1 += "colidx = grep(\"^target_$\", colnames(df_ts_tmp) )\r\n";
-                    cmd1 += "if ( length(colidx) == 1 || !is.null(decompose_df)){\r\n";
-                    cmd1 += "   colidx2 = grep(\"^deseasonal$\", colnames(df_ts_tmp) )\r\n";
-                    cmd1 += "   if ( length(colidx2) == 1 ){\r\n";
-                    cmd1 += "       log_diff_tmp <- mydiff(train$deseasonal, " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =" + numericUpDown17.Value.ToString() + ",lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
-                    cmd1 += "       train$target_ <- log_diff_tmp[[1]]\r\n";
-                    cmd1 += "       log_diff_tmp <- mydiff(test$deseasonal, " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =" + numericUpDown17.Value.ToString() + ",lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
-                    cmd1 += "       test$target_ <- log_diff_tmp[[1]]\r\n";
-                    cmd1 += "   }else{\r\n";
-                    cmd1 += "       log_diff_tmp <- mydiff(train$'" + targetName + "', " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =" + numericUpDown17.Value.ToString() + ",lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
-                    cmd1 += "       train$target_ <- log_diff_tmp[[1]]\r\n";
-                    cmd1 += "       log_diff_tmp <- mydiff(test$'" + targetName + "', " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =" + numericUpDown17.Value.ToString() + ",lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
-                    cmd1 += "       test$target_ <- log_diff_tmp[[1]]\r\n";
-                    cmd1 += "   }\r\n";
-                    cmd1 += "}\r\n";
-
+                    if (use_diff == 1 )
+                    {
+                        if (use_decompose == 1)
+                        {
+                            cmd1 += "       log_diff_tmp <- mydiff(train$deseasonal, " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
+                            cmd1 += "       train$target_ <- log_diff_tmp[[1]]\r\n";
+                            cmd1 += "       log_diff_tmp <- mydiff(test$deseasonal, " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
+                            cmd1 += "       test$target_ <- log_diff_tmp[[1]]\r\n";
+                        }
+                        if (use_decompose == 0)
+                        {
+                            cmd1 += "       log_diff_tmp <- mydiff(train$'" + targetName + "', " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
+                            cmd1 += "       train$target_ <- log_diff_tmp[[1]]\r\n";
+                            cmd1 += "       log_diff_tmp <- mydiff(test$'" + targetName + "', " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
+                            cmd1 += "       test$target_ <- log_diff_tmp[[1]]\r\n";
+                        }
+                    }
 
 
                     form1.script_executestr(cmd1);
@@ -918,6 +960,8 @@ namespace WindowsFormsApplication1
                 {
                     xgboost_initial_cmd += "y_ <- train$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
                 }
+                if (checkBox9.Checked) xgboost_initial_cmd += "y_ <- train$target_\r\n";
+
                 if (radioButton2.Checked)
                 {
                     xgboost_initial_cmd += "if ( is.character(y_)){\r\n";
@@ -958,6 +1002,8 @@ namespace WindowsFormsApplication1
                 {
                     xgboost_initial_cmd += "y_ <- test$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
                 }
+                if (checkBox9.Checked) xgboost_initial_cmd += "y_ <- test$target_\r\n";
+                
                 if (radioButton2.Checked)
                 {
                     xgboost_initial_cmd += "if ( is.character(y_)){\r\n";
@@ -1087,7 +1133,7 @@ namespace WindowsFormsApplication1
                         cmd2 += "	watchlist = list(train = train_dmat, eval = test_dmat))\r\n";
                         cmd2 += "\r\n";
                         cmd2 += "	predictions[,i] <- predict(xgboost_tmp.model,newdata = test_dmat) \r\n";
-                        cmd2 += "   predictions[,i] <- inv_diff(test, use_log_diff, predictions[,i], test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        cmd2 += "   predictions[,i] <- inv_diff(test, use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         cmd2 += "} \r\n";
                         cmd2 += "\r\n";
                         cmd2 += "y_upper_smooth <- predictions[,1] \r\n";
@@ -1269,7 +1315,7 @@ namespace WindowsFormsApplication1
                         cmd3 += "}\r\n";
                         cmd3 += "\r\n";
                         cmd3 += "y_upper_smooth2 <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
-                        cmd3 += "y_upper_smooth2<- inv_diff(test, use_log_diff, y_upper_smooth2, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        cmd3 += "y_upper_smooth2<- inv_diff(test, use_log_diff, y_upper_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
 
                         cmd3 += "if (xgboost_tmp.model$best_iteration == 1  || y_upper_smooth2[length(y_upper_smooth2)] == Inf)\r\n";
                         cmd3 += "{\r\n";
@@ -1292,12 +1338,19 @@ namespace WindowsFormsApplication1
                         cmd3 += "}\r\n";
                         cmd3 += "\r\n";
                         cmd3 += "y_lower_smooth2  <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
-                        cmd3 += "y_lower_smooth2 <- inv_diff(test, use_log_diff, y_upper_smooth2, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        cmd3 += "y_lower_smooth2 <- inv_diff(test, use_log_diff, y_lower_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         cmd3 += "if (xgboost_tmp.model$best_iteration == 1  || y_lower_smooth2[length(y_lower_smooth2)] == Inf)\r\n";
                         cmd3 += "{\r\n";
                         cmd3 += "   y_lower_smooth2 = y_lower_smooth\r\n";
                         cmd3 += "}\r\n";
                         cmd3 += "\r\n";
+
+                        cmd3 += "if ( sum(abs(y_lower_smooth2 - y_upper_smooth2)) < 0.001 )\r\n";
+                        cmd3 += "{\r\n";
+                        cmd3 += "	y_lower_smooth2 = y_lower_smooth\r\n";
+                        cmd3 += "	y_upper_smooth2 = y_upper_smooth\r\n";
+                        cmd3 += "}\r\n";
+
                         cmd3 += "#plot(y_upper_smooth2)\r\n";
                         cmd3 += "#plot(y_lower_smooth2)\r\n";
                         cmd3 += "\r\n";
@@ -1587,7 +1640,7 @@ namespace WindowsFormsApplication1
                                 }
                                 cmd_tmp += "predict_tmp <- predict(xgboost.model,newdata = "+ view_data+"_dmat)\r\n";
 
-                                cmd_tmp += "predict_tmp<- inv_diff("+ view_data+", use_log_diff, predict_tmp, "+ view_data+"$" + targetName+ "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                                cmd_tmp += "predict_tmp<- inv_diff("+ view_data+ ", use_log_diff, predict_tmp + " + view_data + "$trend, " + view_data+"$" + targetName+ "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                                 cmd_tmp += "interval_plt4<-ggplot()\r\n";
 
                                 if (exist_time_axis == 1 && checkBox8.Checked)
@@ -1722,11 +1775,11 @@ namespace WindowsFormsApplication1
                     string forecast_extension = "";
                     forecast_extension += "df_<-test\r\n";
                     forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
-                    if (use_diff == 1 || use_decompose == 1)
+                    //if (use_diff == 1 || use_decompose == 1)
                     {
-                        forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         forecast_extension += "\r\n";
-                        forecast_extension += "zz_tmp<- inv_diff(test, use_log_diff, test$target_, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        forecast_extension += "zz_tmp<- inv_diff(test, use_log_diff, test$target_ + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         forecast_extension += "debug_plt <- ggplot()\r\n";
                         forecast_extension += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
                         forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
@@ -1812,11 +1865,12 @@ namespace WindowsFormsApplication1
                         forecast_extension += "mean_ <- apply(train[,-1],2, mean)\r\n";
                         forecast_extension += "sd_ <- apply(train[,-1],2, sd)\r\n";
                         forecast_extension += "st_ <- test[nrow(test),1]\r\n";
+                        forecast_extension += "trendFit <- NULL\r\n";
                         forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
-                        forecast_extension += "    for ( i in 1:"+numericUpDown5.Value.ToString()+"){\r\n";
+                        forecast_extension += "    for ( t_step in 1:" + numericUpDown5.Value.ToString()+"){\r\n";
                         forecast_extension += "	        # 1行追加\r\n";
                         forecast_extension += "	        test<-rbind(test, test[nrow(test),])\r\n";
-                        forecast_extension += "        test[nrow(test),1] <- st_ + i*dt_\r\n";
+                        forecast_extension += "        test[nrow(test),1] <- st_ + t_step*dt_\r\n";
                         forecast_extension += "\r\n";
                         if (add_enevt_data == 1)
                         {
@@ -1874,19 +1928,21 @@ namespace WindowsFormsApplication1
                         forecast_extension += "                        test[nrow(test),i] <- mean(test[(nrow(test)-3):nrow(test),i])\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 3){\r\n";
-                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
+                        //forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
+                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),frequency=" + numericUpDown14.Value.ToString() + ")\r\n";
                         forecast_extension += "			            #ts.plot(df_t)\r\n";
                         forecast_extension += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
-                        forecast_extension += "			            pred <- predict(Fit,n.ahead=1)\r\n";
-                        forecast_extension += "			            test[nrow(test),i] <- pred$pred[1]\r\n";
+                        forecast_extension += "			            pred <- predict(Fit,n.ahead=2)\r\n";
+                        forecast_extension += "			            test[nrow(test),i] <- pred$pred[2]\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 4){\r\n";
-                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
+                        //forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
+                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),frequency="+numericUpDown14.Value.ToString()+")\r\n";
                         forecast_extension += "			            #ts.plot(df_t)\r\n";
                         forecast_extension += "                        tryCatch({\r\n";
                         forecast_extension += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
-                        forecast_extension += "			                pred <- predict(Fit,n.ahead=1)\r\n";
-                        forecast_extension += "			                test[nrow(test),i] <- pred$pred[1]\r\n";
+                        forecast_extension += "			                pred <- predict(Fit,n.ahead=2)\r\n";
+                        forecast_extension += "			                test[nrow(test),i] <- pred$pred[2]\r\n";
                         forecast_extension += "                        },\r\n";
                         forecast_extension += "                        error = function(e) {\r\n";
                         forecast_extension += "                            #message(e)\r\n";
@@ -2032,9 +2088,52 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "         decompose_df <<- tmp\r\n";
                                 forecast_extension += "         test$seasonal[length(test$target_)-1] = decompose_df$seasonal[length(test$target_)-1]   #update\r\n";
                                 forecast_extension += "         test$seasonal[length(test$target_)] = decompose_df$seasonal[length(test$target_)]\r\n";
+                                forecast_extension += "\r\n";
+                                forecast_extension += "			tmp<- seasadj(tmp)\r\n";
+                                forecast_extension += "         tmp <- as.data.frame(as.matrix(tmp))\r\n";
+                                forecast_extension += "         test$deseasonal[length(test$target_) - 1] = tmp[length(test$target_) - 1, 1]\r\n";
+                                forecast_extension += "         test$deseasonal[length(test$target_)] = tmp[length(test$target_), 1]\r\n";
                                 forecast_extension += "     }\r\n";
                                 forecast_extension += "\r\n";
                             }
+
+                            if (use_arima == 1)
+                            {
+                                forecast_extension += "        \r\n";
+                                forecast_extension += "			if ( !is.null(decompose_df)){\r\n";
+                                forecast_extension += "				test$target_ <- test$deseasonal\r\n";
+                                forecast_extension += "			}else\r\n";
+                                forecast_extension += "			{\r\n";
+                                forecast_extension += "				test$target_ <- test$'" + targetName + "'\r\n";
+                                forecast_extension += "			}\r\n";
+                                forecast_extension += "			t<-stl(ts(test$target_,frequency=" + numericUpDown14.Value.ToString()+"), s.window=\"per\", robust=TRUE)\r\n";
+                                forecast_extension += "			stl_t = as.matrix(t$time.series[,2])      #トレンド（Trend）\r\n";
+                                forecast_extension += "			stl_s = as.matrix(t$time.series[,1])      #季節性（Seasonal）\r\n";
+                                forecast_extension += "			stl_r = as.matrix(t$time.series[,3])      #残差（Remainder）\r\n";
+                                forecast_extension += "			test$trend <- stl_t\r\n";
+                                forecast_extension += "			test$target_ <- test$target_ - stl_t\r\n";
+                                forecast_extension += "        \r\n";
+                                forecast_extension += "            df_t <- ts(test$trend[1:(nrow(test)-1)],start=c(2015,1),frequency=" + numericUpDown14.Value.ToString() + ")\r\n";
+                                forecast_extension += "            #ts.plot(df_t)\r\n";
+                                forecast_extension += "            tryCatch({\r\n";
+                                forecast_extension += "                if ( is.null(trendFit)) trendFit <- auto.arima(df_t, ic=\"aic\", seasonal = T, stepwise=T, trace=T)\r\n";
+                                forecast_extension += "                pred <- predict(trendFit,n.ahead=t_step+1)\r\n";
+                                forecast_extension += "                test$trend[nrow(test)] <- pred$pred[t_step+1]\r\n";
+                                forecast_extension += "                #if ( t_step %% " + numericUpDown14.Value.ToString() + "== 0) trendFit = NULL\r\n";
+                                forecast_extension += "            },\r\n";
+                                forecast_extension += "            error = function(e) {\r\n";
+                                forecast_extension += "                #message(e)\r\n";
+                                forecast_extension += "                print(e)\r\n";
+                                forecast_extension += "                #復元抽出\r\n";
+                                forecast_extension += "                test$trend[nrow(test)] <- sample(train[, i], 1)\r\n";
+                                forecast_extension += "            },\r\n";
+                                forecast_extension += "            finally   = {\r\n";
+                                forecast_extension += "            },\r\n";
+                                forecast_extension += "            silent = TRUE\r\n";
+                                forecast_extension += "            )\r\n";
+                                forecast_extension += "            test$target_ <- test$target_ - test$trend\r\n";
+                            }
+
                         }
 
                         //forecast_extension += "		id = -1\r\n";
@@ -2072,9 +2171,9 @@ namespace WindowsFormsApplication1
                         forecast_extension += "	    #testデータ区間を予測\r\n";
                         forecast_extension += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                         forecast_extension += "     predict_y_org <- predict_y\r\n";
-                        if (use_diff == 1 || use_decompose == 1)
+                        //if (use_diff == 1 || use_decompose == 1)
                         {
-                            forecast_extension += "        predict_y<- inv_diff(test, use_log_diff, predict_y, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            forecast_extension += "        predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         }
                         forecast_extension += "     predict.y<-as.data.frame(predict_y)\r\n";
                         forecast_extension += "\r\n";
@@ -2143,9 +2242,16 @@ namespace WindowsFormsApplication1
                     }
 
                     cmd += "\r\n";
-                    if (use_diff == 1 || use_decompose == 1)
+                    //if (use_diff == 1 || use_decompose == 1)
                     {
-                        cmd += "zz_tmp<- inv_diff(df_tmp, use_log_diff, df_tmp$target_, df_tmp$" + targetName + "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        if (eval == 1)
+                        {
+                            cmd += "zz_tmp<- inv_diff(df_tmp, use_log_diff, df_tmp$target_ + train$trend, df_tmp$" + targetName + "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        }
+                        else
+                        {
+                            cmd += "zz_tmp<- inv_diff(df_tmp, use_log_diff, df_tmp$target_ + test$trend, df_tmp$" + targetName + "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        }
                         cmd += "debug_plt <- ggplot()\r\n";
                         cmd += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(df_tmp$target_)), y = df_tmp$'" + targetName + "', colour = \"org\"))+\r\n";
                         cmd += "geom_line(aes(x = (1:length(df_tmp$target_)), y = zz_tmp, colour = \"pred\"))\r\n";
@@ -2273,7 +2379,7 @@ namespace WindowsFormsApplication1
                         else
                         {
                             predict_probability += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
-                            predict_probability += "	predictions[,i]<- inv_diff(test, use_log_diff, predictions[,i], test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            predict_probability += "	predictions[,i]<- inv_diff(test, use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         }
                         predict_probability += "   test <- test_sv\r\n";
                         predict_probability += "} \r\n";
@@ -4220,6 +4326,11 @@ namespace WindowsFormsApplication1
         {
             radioButton4.Checked = true;
             radioButton3.Checked = false;
+            if ( checkBox9.Checked && numericUpDown16.Value > 0)
+            {
+                MessageBox.Show("トレンド分離と同時には使えません");
+                numericUpDown16.Value = 0;
+            }
         }
 
         private void checkBox9_CheckStateChanged(object sender, EventArgs e)
@@ -4270,7 +4381,10 @@ namespace WindowsFormsApplication1
         {
             if ( checkBox9.Checked)
             {
-                numericUpDown16.Value = 2;
+                numericUpDown16.Value = 0;
+            }else
+            {
+                checkBox15.Checked = false;
             }
         }
 
@@ -4360,6 +4474,18 @@ namespace WindowsFormsApplication1
         {
             radioButton4.Checked = true;
             radioButton3.Checked = false;
+        }
+
+        private void checkBox15_CheckedChanged(object sender, EventArgs e)
+        {
+            if ( checkBox15.Checked)
+            {
+                use_arima = 1;
+            }
+            else
+            {
+                use_arima = 0;
+            }
         }
     }
 
