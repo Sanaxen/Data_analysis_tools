@@ -1709,6 +1709,7 @@ namespace WindowsFormsApplication1
                     {
                         explain += "\r\n";
                         explain += "\r\n";
+                        explain += "write.table (test[,1], file = \"explainer_timestanp.txt\", sep = \",\", quote = FALSE, col.names = F, row.names = FALSE)\r\n";
                         explain += "library(doParallel)\r\n";
                         explain += "cluster = makeCluster(getOption(\"mc.cores\", 3L), type = \"PSOCK\")\r\n";
                         explain += "registerDoParallel(cluster)\r\n";
@@ -4252,6 +4253,27 @@ namespace WindowsFormsApplication1
             else
             {
             }
+
+            xgboost_exp_.timestanplist = new ListBox();
+
+            if (System.IO.File.Exists("explainer_timestanp.txt"))
+            {
+                try
+                {
+                    System.IO.StreamReader sr = new System.IO.StreamReader("explainer_timestanp.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                    while (sr.EndOfStream == false)
+                    {
+                        string line = sr.ReadLine();
+                        string timestanp = line.Replace("\n", "");
+                        timestanp = timestanp.Replace("\r", "");
+                        timestanp = timestanp.Replace("\"", "");
+                        xgboost_exp_.timestanplist.Items.Add(timestanp);
+                    }
+                    sr.Close();
+                }
+                catch { }
+            }
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -4276,6 +4298,9 @@ namespace WindowsFormsApplication1
                     xgboost_predict_probability_count++;
                 }
             }
+            if (checkBox13.Checked && xgboost_predict_probability_count == explain_num) button18.Enabled = true;
+            if (checkBox4.Checked && xgboost_predict_parts_count == explain_num) button18.Enabled = true;
+
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -20,6 +20,8 @@ namespace WindowsFormsApplication1
         public ImageView _ImageView4;
 
         public int explain_num = 1;
+        public ListBox timestanplist = null;
+
         public xgboost_exp()
         {
             InitializeComponent();
@@ -144,6 +146,11 @@ namespace WindowsFormsApplication1
             try
             {
                 int pos = trackBar1.Value;
+
+                textBox1.Text = timestanplist.Items[pos].ToString();
+                textBox2.Text = timestanplist.Items[pos].ToString();
+                textBox3.Text = timestanplist.Items[pos].ToString();
+                
                 string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", pos);
                 if (System.IO.File.Exists(file))
                 {
@@ -196,6 +203,14 @@ namespace WindowsFormsApplication1
         private void panel7_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void xgboost_exp_Shown(object sender, EventArgs e)
+        {
+            if (timestanplist == null) return;
+            textBox1.Text = timestanplist.Items[0].ToString();
+            textBox2.Text = timestanplist.Items[0].ToString();
+            textBox3.Text = timestanplist.Items[0].ToString();
         }
     }
 }
