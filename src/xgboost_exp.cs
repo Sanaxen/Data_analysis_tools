@@ -143,39 +143,39 @@ namespace WindowsFormsApplication1
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            try
-            {
-                int pos = trackBar1.Value;
+            //try
+            //{
+            //    int pos = trackBar1.Value;
 
-                textBox1.Text = timestanplist.Items[pos].ToString();
-                textBox2.Text = timestanplist.Items[pos].ToString();
-                textBox3.Text = timestanplist.Items[pos].ToString();
+            //    textBox1.Text = timestanplist.Items[pos].ToString();
+            //    textBox2.Text = timestanplist.Items[pos].ToString();
+            //    textBox3.Text = timestanplist.Items[pos].ToString();
                 
-                string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", pos);
-                if (System.IO.File.Exists(file))
-                {
-                    _ImageView.pictureBox1.ImageLocation = file;
-                    _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    _ImageView.pictureBox1.Dock = DockStyle.Fill;
+            //    string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", pos);
+            //    if (System.IO.File.Exists(file))
+            //    {
+            //        _ImageView.pictureBox1.ImageLocation = file;
+            //        _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            //        _ImageView.pictureBox1.Dock = DockStyle.Fill;
 
-                    pictureBox1.ImageLocation = file;
-                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox1.Dock = DockStyle.Fill;
-                }
+            //        pictureBox1.ImageLocation = file;
+            //        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            //        pictureBox1.Dock = DockStyle.Fill;
+            //    }
                 
-                file = string.Format("explain_predict\\predict_probability{0}.png", pos);
-                if (System.IO.File.Exists(file))
-                {
-                    _ImageView4.pictureBox1.ImageLocation = file;
-                    _ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    _ImageView4.pictureBox1.Dock = DockStyle.Fill;
+            //    file = string.Format("explain_predict\\predict_probability{0}.png", pos);
+            //    if (System.IO.File.Exists(file))
+            //    {
+            //        _ImageView4.pictureBox1.ImageLocation = file;
+            //        _ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            //        _ImageView4.pictureBox1.Dock = DockStyle.Fill;
 
-                    pictureBox4.ImageLocation = file;
-                    pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox4.Dock = DockStyle.Fill;
-                }
-            }
-            catch { }
+            //        pictureBox4.ImageLocation = file;
+            //        pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
+            //        pictureBox4.Dock = DockStyle.Fill;
+            //    }
+            //}
+            //catch { }
 
         }
 
@@ -211,6 +211,113 @@ namespace WindowsFormsApplication1
             textBox1.Text = timestanplist.Items[0].ToString();
             textBox2.Text = timestanplist.Items[0].ToString();
             textBox3.Text = timestanplist.Items[0].ToString();
+
+            string yymmdd = textBox1.Text.Split(' ')[0];
+            string yy = yymmdd.Split('-')[0];
+            string mm = yymmdd.Split('-')[1];
+            string dd = yymmdd.Split('-')[2];
+
+            dateTimePicker1.Value = new DateTime(int.Parse(yy), int.Parse(mm), int.Parse(dd));
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            int yy = dateTimePicker1.Value.Year;
+            int mm = dateTimePicker1.Value.Month;
+            int dd = dateTimePicker1.Value.Day;
+
+            string yyyy = yy.ToString();
+            string yyyymm = yyyy + "-" + string.Format("{0:D2}", mm);
+            string yyyymmdd = yyyymm + "-" + string.Format("{0:D2}", dd);
+
+            int pos = -1;
+            for (int i = 0; i < timestanplist.Items.Count; i++)
+            {
+                if (timestanplist.Items[i].ToString().IndexOf(yyyy) >= 0)
+                {
+                    pos = i;
+                    break;
+                }
+            }
+            if (pos >= 1)
+            {
+                int pos2 = -1;
+                for (int i = 0; i < timestanplist.Items.Count; i++)
+                {
+                    if (timestanplist.Items[i].ToString().IndexOf(yyyymm) >= 0)
+                    {
+                        pos2 = i;
+                        break;
+                    }
+                }
+                if (pos2 >= 1)
+                {
+                    int pos3 = -1;
+                    for (int i = 0; i < timestanplist.Items.Count; i++)
+                    {
+                        if (timestanplist.Items[i].ToString().IndexOf(yyyymmdd) >= 0)
+                        {
+                            pos3 = i;
+                            break;
+                        }
+                    }
+                    if ( pos3 >= 0)
+                    {
+                        pos = pos3;
+                    }else
+                    {
+                        pos = pos2;
+                    }
+                }
+            }
+            if ( pos >= 1)
+            {
+                trackBar1.Value = pos;
+            }
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int pos = trackBar1.Value;
+
+                textBox1.Text = timestanplist.Items[pos].ToString();
+                textBox2.Text = timestanplist.Items[pos].ToString();
+                textBox3.Text = timestanplist.Items[pos].ToString();
+
+                string yymmdd = textBox1.Text.Split(' ')[0];
+                string yy = yymmdd.Split('-')[0];
+                string mm = yymmdd.Split('-')[1];
+                string dd = yymmdd.Split('-')[2];
+
+                dateTimePicker1.Value = new DateTime(int.Parse(yy), int.Parse(mm), int.Parse(dd));
+
+                string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", pos);
+                if (System.IO.File.Exists(file))
+                {
+                    _ImageView.pictureBox1.ImageLocation = file;
+                    _ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    _ImageView.pictureBox1.Dock = DockStyle.Fill;
+
+                    pictureBox1.ImageLocation = file;
+                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox1.Dock = DockStyle.Fill;
+                }
+
+                file = string.Format("explain_predict\\predict_probability{0}.png", pos);
+                if (System.IO.File.Exists(file))
+                {
+                    _ImageView4.pictureBox1.ImageLocation = file;
+                    _ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    _ImageView4.pictureBox1.Dock = DockStyle.Fill;
+
+                    pictureBox4.ImageLocation = file;
+                    pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox4.Dock = DockStyle.Fill;
+                }
+            }
+            catch { }
         }
     }
 }
