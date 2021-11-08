@@ -507,6 +507,7 @@ namespace WindowsFormsApplication1
                         plotly_rows += "ggplotly(dat1_plt),ggplotly(dat2_plt),ggplotly(dat3_plt)";
                         cmd1 += "\r\n";
                     }
+
                     cmd1 += "log_diff <- list(tmp_sv, 0)\r\n";
 
                     cmd1 += "df_ts_tmp$trend <- numeric(nrow(df_ts_tmp))\r\n";
@@ -1778,15 +1779,18 @@ namespace WindowsFormsApplication1
                     forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     //if (use_diff == 1 || use_decompose == 1)
                     {
-                        forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
-                        forecast_extension += "\r\n";
-                        forecast_extension += "zz_tmp<- inv_diff(test, use_log_diff, test$target_ + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
-                        forecast_extension += "debug_plt <- ggplot()\r\n";
-                        forecast_extension += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
-                        forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
-                        forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = predict_y, colour = \"pred\"))\r\n";
-                        forecast_extension += "debug_plt\r\n";
-                        forecast_extension += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt)\r\n";
+                        if (time_series_mode)
+                        {
+                            forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            forecast_extension += "\r\n";
+                            forecast_extension += "zz_tmp<- inv_diff(test, use_log_diff, test$target_ + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            forecast_extension += "debug_plt <- ggplot()\r\n";
+                            forecast_extension += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
+                            forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
+                            forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = predict_y, colour = \"pred\"))\r\n";
+                            forecast_extension += "debug_plt\r\n";
+                            forecast_extension += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt)\r\n";
+                        }
 
                         forecast_extension += "\r\n";
                     }
@@ -2186,6 +2190,9 @@ namespace WindowsFormsApplication1
                         forecast_extension += "}\r\n";
                         forecast_extension += "    return(list(predict_y, predict.y, test, test_dmat))\r\n";
                         forecast_extension += "#test<- test[-length(test$target_)]\r\n";
+                    }else
+                    {
+                        forecast_extension += "    return(list(predict_y, predict.y, test, test_dmat))\r\n";
                     }
 
                     string forecast_extension_f = "";
@@ -2243,7 +2250,7 @@ namespace WindowsFormsApplication1
                     }
 
                     cmd += "\r\n";
-                    //if (use_diff == 1 || use_decompose == 1)
+                    if (time_series_mode)
                     {
                         if (eval == 1)
                         {
