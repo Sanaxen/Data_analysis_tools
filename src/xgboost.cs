@@ -61,10 +61,22 @@ namespace WindowsFormsApplication1
         public xgboost()
         {
             InitializeComponent();
+            InitializeAsync();
             interactivePlot = new interactivePlot();
             interactivePlot.Hide();
         }
-
+        async void InitializeAsync()
+        {
+            try
+            {
+                await webView21.EnsureCoreWebView2Async(null);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("WebView2ランタイムがインストールされていない可能性があります。", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Close();
+            }
+        }
         private void xgboost_Load(object sender, EventArgs e)
         {
 
@@ -226,14 +238,14 @@ namespace WindowsFormsApplication1
                 }
                 if (!checkBox5.Checked)
                 {
-                    webBrowser1.Hide();
+                    webView21.Hide();
                     pictureBox1.Show();
                     button2.Visible = true;
                     button3.Visible = true;
                 }
                 else
                 {
-                    webBrowser1.Show();
+                    webView21.Show();
                     pictureBox1.Hide();
                     button2.Visible = false;
                     button3.Visible = false;
@@ -687,7 +699,7 @@ namespace WindowsFormsApplication1
                                 else
                                 {
                                     if (interactivePlot2 == null) interactivePlot2 = new interactivePlot();
-                                    interactivePlot2.webBrowser1.Navigate(webpath);
+                                    interactivePlot2.webView21.CoreWebView2.Navigate(webpath);
                                     interactivePlot2.Refresh();
                                     TopMost = true;
                                     TopMost = false;
@@ -1499,12 +1511,22 @@ namespace WindowsFormsApplication1
                     if (radioButton2.Checked)
                     {
                         //cmd += "imp_<-xgb.importance(names(df_),model=xgboost.model)\r\n";
-                        cmd += "imp_<-xgb.importance(model=xgboost.model)\r\n";
+                        cmd += "#imp_<-xgb.importance(model=xgboost.model)\r\n";
                     }
                     if (radioButton1.Checked)
                     {
-                        cmd += "imp_<-xgb.importance(model=xgboost.model)\r\n";
+                        cmd += "#imp_<-xgb.importance(model=xgboost.model)\r\n";
                     }
+                    if (radioButton2.Checked)
+                    {
+                        cmd += "explainer <-explain_xgboost(xgboost.model, data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
+                    }
+                    else
+                    {
+                        cmd += "explainer <-explain_xgboost(xgboost.model, data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+                    }
+                    cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square)\r\n";
+                   
                     if (dup_var)
                     {
                         MessageBox.Show("説明変数に目的変数があるので無視されました", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1565,14 +1587,16 @@ namespace WindowsFormsApplication1
                             sw.Write("sink()\r\n");
 
                             {
-                                sw.Write("png(\"tmp_xgboost.png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
-                                sw.Write("par(mfrow=c(1,1),lwd=2)\r\n");
+                                sw.Write("#png(\"tmp_xgboost.png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
+                                sw.Write("#par(mfrow=c(1,1),lwd=2)\r\n");
 
-                                sw.Write("xgb.plot.importance(imp_)\r\n");
-                                sw.Write("par(mar=c(5, 4, 4, 2) + 3)\r\n");
-                                sw.Write("dev.off()\r\n");
+                                sw.Write("#xgb.plot.importance(imp_)\r\n");
+                                sw.Write("#par(mar=c(5, 4, 4, 2) + 3)\r\n");
+                                sw.Write("#dev.off()\r\n\r\n");
 
-                                sw.Write("plt_<-xgb.ggplot.importance(imp_, top_n = 6, measure = NULL, rel_to_first = F)\r\n");
+                                sw.Write("#plt_<-xgb.ggplot.importance(imp_, top_n = 6, measure = NULL, rel_to_first = F)\r\n");
+                                sw.Write("plt_<-plot(imp_)\r\n");
+
                                 sw.Write("ggsave(\"tmp_xgboost2.png\", plt_, dpi = 100, width = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                             }
                             if (use_AnomalyDetectionTs == 1)
@@ -1875,7 +1899,8 @@ namespace WindowsFormsApplication1
                         forecast_extension += "    for ( t_step in 1:" + numericUpDown5.Value.ToString()+"){\r\n";
                         forecast_extension += "	        # 1行追加\r\n";
                         forecast_extension += "	        test<-rbind(test, test[nrow(test),])\r\n";
-                        forecast_extension += "        test[nrow(test),1] <- st_ + t_step*dt_\r\n";
+                        forecast_extension += "        #test[nrow(test),1] <- st_ + t_step*dt_\r\n";
+                        forecast_extension += "        test[nrow(test),1] <- as.POSIXct(t_step*dt_, origin = st_)\r\n";
                         forecast_extension += "\r\n";
                         if (add_enevt_data == 1)
                         {
@@ -3365,15 +3390,15 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
-                            interactivePlot.webBrowser1.Navigate(webpath);
+                            interactivePlot.webView21.CoreWebView2.Navigate(webpath);
                             interactivePlot.Refresh();
                             //interactivePlot.Show();
                             //interactivePlot.TopMost = true;
                             //interactivePlot.TopMost = false;
 
-                            webBrowser1.Navigate(webpath);
-                            webBrowser1.Refresh();
-                            webBrowser1.Show();
+                            webView21.CoreWebView2.Navigate(webpath);
+                            webView21.Refresh();
+                            webView21.Show();
                             TopMost = true;
                             TopMost = false;
                         }

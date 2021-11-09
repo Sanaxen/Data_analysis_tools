@@ -79,7 +79,6 @@
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -100,6 +99,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.このグラフをダッシュボードに追加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+            this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
@@ -112,6 +112,7 @@
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -768,7 +769,7 @@
             // 
             this.panel5.AutoScroll = true;
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel5.Controls.Add(this.webBrowser1);
+            this.panel5.Controls.Add(this.webView21);
             this.panel5.Controls.Add(this.pictureBox1);
             this.panel5.Controls.Add(this.splitter2);
             this.panel5.Controls.Add(this.textBox1);
@@ -778,16 +779,6 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(692, 678);
             this.panel5.TabIndex = 38;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.Margin = new System.Windows.Forms.Padding(4);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(27, 25);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(690, 417);
-            this.webBrowser1.TabIndex = 37;
             // 
             // pictureBox1
             // 
@@ -996,6 +987,17 @@
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
             // 
+            // webView21
+            // 
+            this.webView21.CreationProperties = null;
+            this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView21.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webView21.Location = new System.Drawing.Point(0, 0);
+            this.webView21.Name = "webView21";
+            this.webView21.Size = new System.Drawing.Size(690, 417);
+            this.webView21.TabIndex = 37;
+            this.webView21.ZoomFactor = 1D;
+            // 
             // fbprophet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1027,6 +1029,7 @@
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1087,7 +1090,6 @@
         private System.Windows.Forms.Label label8;
         public System.Windows.Forms.TextBox textBox4;
         public System.Windows.Forms.ComboBox comboBox6;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label28;
@@ -1104,5 +1106,6 @@
         private System.Windows.Forms.CheckBox checkBox5;
         public System.Windows.Forms.Button button12;
         private System.Windows.Forms.Label label17;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
     }
 }

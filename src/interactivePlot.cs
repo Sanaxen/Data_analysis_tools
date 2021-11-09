@@ -16,10 +16,22 @@ namespace WindowsFormsApplication1
         public interactivePlot()
         {
             InitializeComponent();
-            webBrowser1.ScriptErrorsSuppressed = true;
-            IEchg();
+            InitializeAsync();
+            //webView21.CoreWebView2.ScriptErrorsSuppressed = true;
+            //IEchg();
         }
-
+        async void InitializeAsync()
+        {
+            try
+            {
+                await webView21.EnsureCoreWebView2Async(null);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("WebView2ランタイムがインストールされていない可能性があります。", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Close();
+            }
+        }
         //static string exename = "WindowsFormsApplication1.vshost.exe";
         static string exename = "WindowsFormsApplication1.exe";
 
@@ -28,7 +40,7 @@ namespace WindowsFormsApplication1
         static int curIE = 7;
         void init()
         {
-            curIE = webBrowser1.Version.Major;
+            //curIE = webBrowser1.Version.Major;
             //MessageBox.Show(" IE:" + curIE.ToString());
             try
             {
@@ -101,6 +113,11 @@ namespace WindowsFormsApplication1
             textBox1.Visible = false;
             textBox1.Dock = DockStyle.Top;
             e.Cancel = true;
+        }
+
+        private void webView21_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -36,19 +36,20 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBox15 = new System.Windows.Forms.CheckBox();
             this.button20 = new System.Windows.Forms.Button();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.numericUpDown14 = new System.Windows.Forms.NumericUpDown();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.label32 = new System.Windows.Forms.Label();
             this.checkBox14 = new System.Windows.Forms.CheckBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
             this.numericUpDown17 = new System.Windows.Forms.NumericUpDown();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
@@ -138,7 +139,6 @@
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.このグラフをダッシュボードに追加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -162,7 +162,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox15 = new System.Windows.Forms.CheckBox();
+            this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -191,6 +191,7 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -360,6 +361,38 @@
             this.panel7.Size = new System.Drawing.Size(220, 647);
             this.panel7.TabIndex = 147;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBox15);
+            this.groupBox2.Controls.Add(this.button20);
+            this.groupBox2.Controls.Add(this.linkLabel3);
+            this.groupBox2.Controls.Add(this.numericUpDown14);
+            this.groupBox2.Controls.Add(this.checkBox10);
+            this.groupBox2.Controls.Add(this.label32);
+            this.groupBox2.Controls.Add(this.checkBox14);
+            this.groupBox2.Controls.Add(this.checkBox9);
+            this.groupBox2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.groupBox2.Location = new System.Drawing.Point(9, 142);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Size = new System.Drawing.Size(207, 216);
+            this.groupBox2.TabIndex = 160;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "トレンドと周期と分離";
+            // 
+            // checkBox15
+            // 
+            this.checkBox15.AutoSize = true;
+            this.checkBox15.Location = new System.Drawing.Point(7, 53);
+            this.checkBox15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox15.Name = "checkBox15";
+            this.checkBox15.Size = new System.Drawing.Size(103, 19);
+            this.checkBox15.TabIndex = 160;
+            this.checkBox15.Text = "トレンド推定";
+            this.checkBox15.UseVisualStyleBackColor = true;
+            this.checkBox15.CheckedChanged += new System.EventHandler(this.checkBox15_CheckedChanged);
+            // 
             // button20
             // 
             this.button20.Location = new System.Drawing.Point(63, 181);
@@ -382,26 +415,6 @@
             this.linkLabel3.Text = "image";
             this.linkLabel3.Visible = false;
             this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.checkBox15);
-            this.groupBox2.Controls.Add(this.button20);
-            this.groupBox2.Controls.Add(this.linkLabel3);
-            this.groupBox2.Controls.Add(this.numericUpDown14);
-            this.groupBox2.Controls.Add(this.checkBox10);
-            this.groupBox2.Controls.Add(this.label32);
-            this.groupBox2.Controls.Add(this.checkBox14);
-            this.groupBox2.Controls.Add(this.checkBox9);
-            this.groupBox2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox2.Location = new System.Drawing.Point(9, 142);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(207, 216);
-            this.groupBox2.TabIndex = 160;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "トレンドと周期と分離";
             // 
             // numericUpDown14
             // 
@@ -463,6 +476,19 @@
             this.checkBox14.Text = "重複混合周期（周波数分離）";
             this.checkBox14.UseVisualStyleBackColor = true;
             this.checkBox14.CheckStateChanged += new System.EventHandler(this.checkBox14_CheckStateChanged);
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(7, 29);
+            this.checkBox9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(103, 19);
+            this.checkBox9.TabIndex = 158;
+            this.checkBox9.Text = "トレンド分離";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged_1);
+            this.checkBox9.CheckStateChanged += new System.EventHandler(this.checkBox9_CheckStateChanged_1);
             // 
             // groupBox1
             // 
@@ -527,19 +553,6 @@
             this.numericUpDown17.TabIndex = 160;
             this.toolTip1.SetToolTip(this.numericUpDown17, "何回階差をとるかしていします。0を指定するとkpss検定を実施して自動計算されます。\r\ndefault:0");
             this.numericUpDown17.Validated += new System.EventHandler(this.numericUpDown16_Validated);
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(7, 29);
-            this.checkBox9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(103, 19);
-            this.checkBox9.TabIndex = 158;
-            this.checkBox9.Text = "トレンド分離";
-            this.checkBox9.UseVisualStyleBackColor = true;
-            this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged_1);
-            this.checkBox9.CheckStateChanged += new System.EventHandler(this.checkBox9_CheckStateChanged_1);
             // 
             // textBox10
             // 
@@ -1723,7 +1736,7 @@
             // 
             this.panel5.AutoScroll = true;
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel5.Controls.Add(this.webBrowser1);
+            this.panel5.Controls.Add(this.webView21);
             this.panel5.Controls.Add(this.pictureBox1);
             this.panel5.Controls.Add(this.splitter2);
             this.panel5.Controls.Add(this.textBox1);
@@ -1733,16 +1746,6 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(713, 774);
             this.panel5.TabIndex = 38;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(711, 578);
-            this.webBrowser1.TabIndex = 37;
             // 
             // pictureBox1
             // 
@@ -2002,17 +2005,16 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // checkBox15
+            // webView21
             // 
-            this.checkBox15.AutoSize = true;
-            this.checkBox15.Location = new System.Drawing.Point(7, 53);
-            this.checkBox15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBox15.Name = "checkBox15";
-            this.checkBox15.Size = new System.Drawing.Size(103, 19);
-            this.checkBox15.TabIndex = 160;
-            this.checkBox15.Text = "トレンド推定";
-            this.checkBox15.UseVisualStyleBackColor = true;
-            this.checkBox15.CheckedChanged += new System.EventHandler(this.checkBox15_CheckedChanged);
+            this.webView21.CreationProperties = null;
+            this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView21.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webView21.Location = new System.Drawing.Point(0, 0);
+            this.webView21.Name = "webView21";
+            this.webView21.Size = new System.Drawing.Size(711, 578);
+            this.webView21.TabIndex = 38;
+            this.webView21.ZoomFactor = 1D;
             // 
             // xgboost
             // 
@@ -2065,6 +2067,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2164,7 +2167,6 @@
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         public System.Windows.Forms.CheckBox checkBox5;
         public System.Windows.Forms.CheckBox checkBox4;
         public System.Windows.Forms.PictureBox pictureBox1;
@@ -2204,5 +2206,6 @@
         private System.Windows.Forms.Label label37;
         public System.Windows.Forms.NumericUpDown numericUpDown17;
         private System.Windows.Forms.CheckBox checkBox15;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
     }
 }

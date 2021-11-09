@@ -24,10 +24,22 @@ namespace WindowsFormsApplication1
         public curvplot()
         {
             InitializeComponent();
+            InitializeAsync();
             interactivePlot = new interactivePlot();
             interactivePlot.Hide();
         }
-
+        async void InitializeAsync()
+        {
+            try
+            {
+                await webView21.EnsureCoreWebView2Async(null);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("WebView2ランタイムがインストールされていない可能性があります。", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Close();
+            }
+        }
         private void curvplot_Load(object sender, EventArgs e)
         {
 
@@ -156,13 +168,13 @@ namespace WindowsFormsApplication1
                 form1.FileDelete("curvplot_temp.html");
                 if (!checkBox5.Checked)
                 {
-                    webBrowser1.Hide();
+                    webView21.Hide();
                     button2.Visible = true;
                     button3.Visible = true;
                 }
                 else
                 {
-                    webBrowser1.Show();
+                    webView21.Show();
                     button2.Visible = false;
                     button3.Visible = false;
                 }
@@ -518,15 +530,15 @@ namespace WindowsFormsApplication1
                     }
                     else
                     {
-                        interactivePlot.webBrowser1.Navigate(webpath);
+                        interactivePlot.webView21.CoreWebView2.Navigate(webpath);
                         interactivePlot.Refresh();
-                        //interactivePlot.Show();
-                        //interactivePlot.TopMost = true;
-                        //interactivePlot.TopMost = false;
+                            //interactivePlot.Show();
+                            //interactivePlot.TopMost = true;
+                            //interactivePlot.TopMost = false;
 
-                        webBrowser1.Navigate(webpath);
-                        webBrowser1.Refresh();
-                        webBrowser1.Show();
+                        webView21.CoreWebView2.Navigate(webpath);
+                        webView21.Refresh();
+                        webView21.Show();
                         TopMost = true;
                         TopMost = false;
                     }

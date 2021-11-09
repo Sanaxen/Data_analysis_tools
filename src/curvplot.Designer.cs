@@ -51,7 +51,6 @@
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.このグラフをダッシュボードに追加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +61,7 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel3 = new System.Windows.Forms.Panel();
             this.splitter2 = new System.Windows.Forms.Splitter();
+            this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -69,6 +69,7 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -92,17 +93,18 @@
             this.panel2.Controls.Add(this.listBox1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(541, 494);
+            this.panel2.Size = new System.Drawing.Size(721, 618);
             this.panel2.TabIndex = 3;
             // 
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(6, 59);
+            this.checkBox6.Location = new System.Drawing.Point(8, 74);
+            this.checkBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(67, 16);
+            this.checkBox6.Size = new System.Drawing.Size(83, 19);
             this.checkBox6.TabIndex = 66;
             this.checkBox6.Text = "X軸指定";
             this.checkBox6.UseVisualStyleBackColor = true;
@@ -110,9 +112,10 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(178, 82);
+            this.checkBox4.Location = new System.Drawing.Point(237, 102);
+            this.checkBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(113, 16);
+            this.checkBox4.Size = new System.Drawing.Size(142, 19);
             this.checkBox4.TabIndex = 65;
             this.checkBox4.Text = "X軸は時間（日時）";
             this.checkBox4.UseVisualStyleBackColor = true;
@@ -120,19 +123,20 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(6, 78);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox1.Location = new System.Drawing.Point(8, 98);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(167, 20);
+            this.comboBox1.Size = new System.Drawing.Size(221, 23);
             this.comboBox1.TabIndex = 63;
             // 
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
             this.checkBox5.ForeColor = System.Drawing.Color.Black;
-            this.checkBox5.Location = new System.Drawing.Point(6, 33);
+            this.checkBox5.Location = new System.Drawing.Point(8, 41);
+            this.checkBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(139, 16);
+            this.checkBox5.Size = new System.Drawing.Size(171, 19);
             this.checkBox5.TabIndex = 62;
             this.checkBox5.Text = "インタラクティブ（ブラウザ）";
             this.checkBox5.UseVisualStyleBackColor = true;
@@ -141,19 +145,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(395, 37);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(527, 46);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(37, 12);
+            this.label1.Size = new System.Drawing.Size(47, 15);
             this.label1.TabIndex = 53;
             this.label1.Text = "線太さ";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(433, 34);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox1.Location = new System.Drawing.Point(577, 42);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(31, 19);
+            this.textBox1.Size = new System.Drawing.Size(40, 22);
             this.textBox1.TabIndex = 52;
             this.textBox1.Text = "1.3";
             this.textBox1.Validating += new System.ComponentModel.CancelEventHandler(this.textBox1_Validating);
@@ -161,9 +164,10 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(397, 7);
+            this.checkBox3.Location = new System.Drawing.Point(529, 9);
+            this.checkBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(77, 16);
+            this.checkBox3.Size = new System.Drawing.Size(94, 19);
             this.checkBox3.TabIndex = 51;
             this.checkBox3.Text = "列で並べる";
             this.checkBox3.UseVisualStyleBackColor = true;
@@ -173,10 +177,10 @@
             // 
             this.checkBox2.AutoSize = true;
             this.checkBox2.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.checkBox2.Location = new System.Drawing.Point(184, 169);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox2.Location = new System.Drawing.Point(245, 211);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(92, 15);
+            this.checkBox2.Size = new System.Drawing.Size(115, 18);
             this.checkBox2.TabIndex = 46;
             this.checkBox2.Text = "重ね合わせだけ";
             this.checkBox2.UseVisualStyleBackColor = true;
@@ -188,17 +192,19 @@
             this.panel4.Controls.Add(this.radioButton3);
             this.panel4.Controls.Add(this.radioButton2);
             this.panel4.Controls.Add(this.radioButton1);
-            this.panel4.Location = new System.Drawing.Point(157, 3);
+            this.panel4.Location = new System.Drawing.Point(209, 4);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(234, 48);
+            this.panel4.Size = new System.Drawing.Size(312, 60);
             this.panel4.TabIndex = 45;
             // 
             // radioButton4
             // 
             this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(139, 4);
+            this.radioButton4.Location = new System.Drawing.Point(185, 5);
+            this.radioButton4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(92, 16);
+            this.radioButton4.Size = new System.Drawing.Size(115, 19);
             this.radioButton4.TabIndex = 3;
             this.radioButton4.TabStop = true;
             this.radioButton4.Text = "階段状プロット";
@@ -208,9 +214,10 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(3, 26);
+            this.radioButton3.Location = new System.Drawing.Point(4, 32);
+            this.radioButton3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(98, 16);
+            this.radioButton3.Size = new System.Drawing.Size(121, 19);
             this.radioButton3.TabIndex = 2;
             this.radioButton3.TabStop = true;
             this.radioButton3.Text = "点と線のプロット";
@@ -220,9 +227,10 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(74, 4);
+            this.radioButton2.Location = new System.Drawing.Point(99, 5);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(68, 16);
+            this.radioButton2.Size = new System.Drawing.Size(85, 19);
             this.radioButton2.TabIndex = 1;
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "点プロット";
@@ -233,9 +241,10 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(3, 4);
+            this.radioButton1.Location = new System.Drawing.Point(4, 5);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(68, 16);
+            this.radioButton1.Size = new System.Drawing.Size(85, 19);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "線プロット";
@@ -245,9 +254,10 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 7);
+            this.checkBox1.Location = new System.Drawing.Point(8, 9);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(64, 16);
+            this.checkBox1.Size = new System.Drawing.Size(78, 19);
             this.checkBox1.TabIndex = 44;
             this.checkBox1.Text = "軸ラベル";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -256,10 +266,10 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.SystemColors.Info;
-            this.button1.Location = new System.Drawing.Point(479, 3);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Location = new System.Drawing.Point(639, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(56, 39);
+            this.button1.Size = new System.Drawing.Size(75, 49);
             this.button1.TabIndex = 43;
             this.button1.Text = "再描画";
             this.button1.UseVisualStyleBackColor = false;
@@ -267,9 +277,10 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(471, 111);
+            this.button12.Location = new System.Drawing.Point(628, 139);
+            this.button12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(63, 23);
+            this.button12.Size = new System.Drawing.Size(84, 29);
             this.button12.TabIndex = 40;
             this.button12.Text = "キャンセル";
             this.button12.UseVisualStyleBackColor = true;
@@ -277,9 +288,10 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(184, 140);
+            this.button9.Location = new System.Drawing.Point(245, 175);
+            this.button9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(48, 23);
+            this.button9.Size = new System.Drawing.Size(64, 29);
             this.button9.TabIndex = 39;
             this.button9.Text = "反転";
             this.button9.UseVisualStyleBackColor = true;
@@ -287,9 +299,10 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(184, 111);
+            this.button10.Location = new System.Drawing.Point(245, 139);
+            this.button10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(48, 23);
+            this.button10.Size = new System.Drawing.Size(64, 29);
             this.button10.TabIndex = 38;
             this.button10.Text = "全て";
             this.button10.UseVisualStyleBackColor = true;
@@ -298,11 +311,11 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 12;
-            this.listBox2.Location = new System.Drawing.Point(283, 102);
-            this.listBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listBox2.ItemHeight = 15;
+            this.listBox2.Location = new System.Drawing.Point(377, 128);
+            this.listBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(184, 388);
+            this.listBox2.Size = new System.Drawing.Size(244, 484);
             this.listBox2.TabIndex = 3;
             this.listBox2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBox2_MouseClick);
             this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
@@ -310,12 +323,12 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(6, 102);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(8, 128);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox1.Name = "listBox1";
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBox1.Size = new System.Drawing.Size(173, 388);
+            this.listBox1.Size = new System.Drawing.Size(229, 484);
             this.listBox1.TabIndex = 2;
             this.listBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseClick);
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -324,31 +337,23 @@
             // 
             this.panel5.AutoScroll = true;
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel5.Controls.Add(this.webBrowser1);
+            this.panel5.Controls.Add(this.webView21);
             this.panel5.Controls.Add(this.pictureBox1);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(0, 46);
+            this.panel5.Location = new System.Drawing.Point(0, 58);
+            this.panel5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(526, 448);
+            this.panel5.Size = new System.Drawing.Size(702, 560);
             this.panel5.TabIndex = 38;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(15, 16);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(524, 446);
-            this.webBrowser1.TabIndex = 31;
             // 
             // pictureBox1
             // 
             this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(524, 446);
+            this.pictureBox1.Size = new System.Drawing.Size(700, 558);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 30;
             this.pictureBox1.TabStop = false;
@@ -359,12 +364,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.このグラフをダッシュボードに追加ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(233, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(230, 28);
             // 
             // このグラフをダッシュボードに追加ToolStripMenuItem
             // 
             this.このグラフをダッシュボードに追加ToolStripMenuItem.Name = "このグラフをダッシュボードに追加ToolStripMenuItem";
-            this.このグラフをダッシュボードに追加ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.このグラフをダッシュボードに追加ToolStripMenuItem.Size = new System.Drawing.Size(229, 24);
             this.このグラフをダッシュボードに追加ToolStripMenuItem.Text = "このグラフをレポートに追加";
             this.このグラフをダッシュボードに追加ToolStripMenuItem.Click += new System.EventHandler(this.このグラフをダッシュボードに追加ToolStripMenuItem_Click);
             // 
@@ -375,18 +380,19 @@
             this.panel1.Controls.Add(this.button2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(526, 43);
+            this.panel1.Size = new System.Drawing.Size(702, 54);
             this.panel1.TabIndex = 35;
             // 
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.Blue;
             this.button3.ForeColor = System.Drawing.Color.Yellow;
-            this.button3.Location = new System.Drawing.Point(10, 10);
+            this.button3.Location = new System.Drawing.Point(13, 12);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(98, 23);
+            this.button3.Size = new System.Drawing.Size(131, 29);
             this.button3.TabIndex = 31;
             this.button3.Text = "フィット切り替え";
             this.button3.UseVisualStyleBackColor = false;
@@ -394,9 +400,10 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(195, 10);
+            this.button7.Location = new System.Drawing.Point(260, 12);
+            this.button7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.Size = new System.Drawing.Size(100, 29);
             this.button7.TabIndex = 34;
             this.button7.Text = "Viewer";
             this.button7.UseVisualStyleBackColor = true;
@@ -404,9 +411,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(114, 10);
+            this.button2.Location = new System.Drawing.Point(152, 12);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(100, 29);
             this.button2.TabIndex = 32;
             this.button2.Text = "クリップボード";
             this.button2.UseVisualStyleBackColor = true;
@@ -414,9 +422,10 @@
             // 
             // splitter1
             // 
-            this.splitter1.Location = new System.Drawing.Point(541, 0);
+            this.splitter1.Location = new System.Drawing.Point(721, 0);
+            this.splitter1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 494);
+            this.splitter1.Size = new System.Drawing.Size(4, 618);
             this.splitter1.TabIndex = 39;
             this.splitter1.TabStop = false;
             // 
@@ -426,30 +435,43 @@
             this.panel3.Controls.Add(this.splitter2);
             this.panel3.Controls.Add(this.panel1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(544, 0);
+            this.panel3.Location = new System.Drawing.Point(725, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(526, 494);
+            this.panel3.Size = new System.Drawing.Size(702, 618);
             this.panel3.TabIndex = 40;
             // 
             // splitter2
             // 
             this.splitter2.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter2.Location = new System.Drawing.Point(0, 43);
+            this.splitter2.Location = new System.Drawing.Point(0, 54);
+            this.splitter2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(526, 3);
+            this.splitter2.Size = new System.Drawing.Size(702, 4);
             this.splitter2.TabIndex = 39;
             this.splitter2.TabStop = false;
             // 
+            // webView21
+            // 
+            this.webView21.CreationProperties = null;
+            this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView21.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webView21.Location = new System.Drawing.Point(0, 0);
+            this.webView21.Name = "webView21";
+            this.webView21.Size = new System.Drawing.Size(700, 558);
+            this.webView21.TabIndex = 31;
+            this.webView21.ZoomFactor = 1D;
+            // 
             // curvplot
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1070, 494);
+            this.ClientSize = new System.Drawing.Size(1427, 618);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel2);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "curvplot";
             this.Text = "curvplot";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.curvplot_FormClosing);
@@ -464,6 +486,7 @@
             this.contextMenuStrip1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -499,9 +522,9 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem このグラフをダッシュボードに追加ToolStripMenuItem;
         public System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         public System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox6;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
     }
 }
