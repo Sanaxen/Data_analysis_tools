@@ -11,6 +11,7 @@ set WRK="%BATPATH%\Work"
 
 
 echo "%R_INSTALL_PATH%"> backend.txt
+echo "%R_INSTALL_PATH%"> "%WRK%\backend.txt"
 echo "%GNUPLOT_PATH%"> "%BATPATH%bin\gnuplot_path.txt"
 echo "%GRAPHVIZ_PATH%"> "%BATPATH%bin\graphviz_path.txt"
 echo "%PYTORCH_CUDA%"> "%BATPATH%bin\pytorch_cuda_version.txt"
