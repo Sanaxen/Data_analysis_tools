@@ -1,5 +1,23 @@
 :@echo off
 
+
+if exist ..\MicrosoftEdgeWebview2Setup._ (
+	echo -------- MicrosoftEdgeWebview2をインストールします-----------------
+	
+	whoami /priv | find "SeDebugPrivilege" > nul
+	if %errorlevel% neq 0 (
+		@powershell start-process ”%~0" -verb runas
+		exit
+	)
+	copy ..\MicrosoftEdgeWebview2Setup._ ..\MicrosoftEdgeWebview2Setup.exe
+
+	call ..\MicrosoftEdgeWebview2Setup.exe
+	copy ..\MicrosoftEdgeWebview2Setup._  ..\MicrosoftEdgeWebview2Setup._sv
+
+	del ..\MicrosoftEdgeWebview2Setup.exe
+	del ..\MicrosoftEdgeWebview2Setup._
+ ) 
+
 call ..\setup_ini.bat
 
 
