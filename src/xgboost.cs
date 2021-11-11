@@ -453,12 +453,13 @@ namespace WindowsFormsApplication1
                         cmd1 += "   tmp[,1] = as.Date(tmp[,1])\r\n";
                         cmd1 += "   tmp[1,1] = Sys.Date()\r\n";
                         cmd1 += "   for ( i in 2:nrow(tmp)){\r\n";
-                        cmd1 += "       tmp[i,1] <- tmp[i-1,1] + 1\r\n";
+                        cmd1 += "       tmp[i,1] <- as.Date(as.numeric(tmp[i-1,1]) +1)\r\n";
                         cmd1 += "   }\r\n";
                         cmd1 += "   df_ts_tmp2 <- cbind(tmp[,1], df[-1:-" + lag.ToString() + ",])\r\n";
                         cmd1 += "    colnames(df_ts_tmp2)[1] <- \"ds\"\r\n";
                         cmd1 += "   df_ts_tmp2[,1] <- as.POSIXct(df_ts_tmp2[,1])\r\n";
                         cmd1 += "   write.csv(df_ts_tmp2, file=\"addtime_cols.csv\",row.names=F)\r\n";
+                        cmd1 += "   df_ts_tmp <- df_ts_tmp2\r\n";
                         cmd1 += "}\r\n";
                     }
                     if (System.IO.File.Exists("addtime_cols.csv"))
@@ -2402,7 +2403,7 @@ namespace WindowsFormsApplication1
                         }
                         predict_probability += "        )\r\n";
 
-                        if ( time_series_mode && numericUpDown5.Value >= 1)
+                        if (time_series_mode && numericUpDown5.Value >= 1)
                         {
                             predict_probability += "	ret <- forecast_extension(test, train)\r\n";
                             predict_probability += "    predictions[, i] <- ret[[1]]\r\n";
@@ -2412,7 +2413,10 @@ namespace WindowsFormsApplication1
                         else
                         {
                             predict_probability += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
-                            predict_probability += "	predictions[,i]<- inv_diff(test, use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            if (time_series_mode)
+                            {
+                                predict_probability += "	predictions[,i]<- inv_diff(test, use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            }
                         }
                         predict_probability += "   test <- test_sv\r\n";
                         predict_probability += "} \r\n";

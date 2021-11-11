@@ -39,15 +39,26 @@ anomaly_DetectionTs<- function(df, colname, vlinepos, vlinepos2)
 	colnames(tmp)[2] <- c("count")
 	tmp$timestamp <- as.POSIXct(tmp$timestamp)
 	
-	#threshold = 'None' | 'med_max' | 'p95' | 'p99'
-	#res <- AnomalyDetectionTs(tmp, max_anoms=0.02, direction='both', threshold = 'p95', longterm = F, plot=FALSE)
-	res <- AnomalyDetectionTs(tmp, max_anoms=0.05, direction='both',  longterm = F, plot=FALSE)
+	tryCatch({
+		#threshold = 'None' | 'med_max' | 'p95' | 'p99'
+		#res <- AnomalyDetectionTs(tmp, max_anoms=0.02, direction='both', threshold = 'p95', longterm = F, plot=FALSE)
+		res <- AnomalyDetectionTs(tmp, max_anoms=0.05, direction='both',  longterm = F, plot=FALSE)
 	
-	if ( nrow(res$anoms) == 0 )
-	{
-		return ( list(tmp,res, ggplot()+ggtitle("ˆÙíŒŸo–³‚µ")))
-	}
-	plt <- Anomalyplot(tmp, res, vlinepos, vlinepos2)
+		if ( nrow(res$anoms) == 0 )
+		{
+			return ( list(tmp,res, ggplot()+ggtitle("ˆÙíŒŸo–³‚µ")))
+		}
+		plt <- Anomalyplot(tmp, res, vlinepos, vlinepos2)
+	},
+	error=function(e){
+	    message(e)
+	    print(e)
+	},
+	finally   = {
+		return ( list(tmp,NULL, NULL))
+	},
+		silent = TRUE
+	)
 	return ( list(tmp,res, plt))
 }
 
