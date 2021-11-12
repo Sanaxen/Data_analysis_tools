@@ -157,8 +157,10 @@ namespace WindowsFormsApplication1
                                 s1 = s1.Substring(0, idx);
                             }
                             error_status = 1;
+                            MessageBox.Show(s1+":エラーを検出しました。\n有効な因果が探索されていない可能性があります");
+
                             error_string = s1;
-                            return;
+                            //return;
                         }
                         if (textBox3.Text.LastIndexOf("WARNING:") >= 0)
                         {

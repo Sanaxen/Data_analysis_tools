@@ -1236,7 +1236,7 @@
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(59, 22);
             this.textBox10.TabIndex = 20;
-            this.textBox10.Text = "10000";
+            this.textBox10.Text = "1000";
             this.toolTip2.SetToolTip(this.textBox10, "Lasso計算における収束計算の繰り返し最大数");
             this.textBox10.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
