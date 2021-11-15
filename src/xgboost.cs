@@ -1896,6 +1896,15 @@ namespace WindowsFormsApplication1
                         forecast_extension += "sd_ <- apply(train[,-1],2, sd)\r\n";
                         forecast_extension += "st_ <- test[nrow(test),1]\r\n";
                         forecast_extension += "trendFit <- NULL\r\n";
+
+                        if (radioButton6.Checked)
+                        {
+                            forecast_extension += "use_prophet = 1\r\n";
+                        }else
+                        {
+                            forecast_extension += "use_prophet = 0\r\n";
+                        }
+
                         forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
                         forecast_extension += "    for ( t_step in 1:" + numericUpDown5.Value.ToString()+"){\r\n";
                         forecast_extension += "	        # 1行追加\r\n";
@@ -2144,12 +2153,44 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "			test$trend <- stl_t\r\n";
                                 forecast_extension += "			test$target_ <- test$target_ - stl_t\r\n";
                                 forecast_extension += "        \r\n";
-                                forecast_extension += "            df_t <- ts(test$trend[1:(nrow(test)-1)],start=c(2015,1),frequency=" + numericUpDown14.Value.ToString() + ")\r\n";
-                                forecast_extension += "            #ts.plot(df_t)\r\n";
-                                forecast_extension += "            tryCatch({\r\n";
-                                forecast_extension += "                if ( is.null(trendFit)) trendFit <- auto.arima(df_t, ic=\"aic\", seasonal = T, stepwise=T, trace=T)\r\n";
-                                forecast_extension += "                pred <- predict(trendFit,n.ahead=t_step+1)\r\n";
+                                forecast_extension += "        \r\n";
+                                forecast_extension += "         if ( use_prophet == 0){\r\n";
+                                forecast_extension += "             tryCatch({\r\n";
+                                forecast_extension += "                 df_t <- ts(test$trend[1:(nrow(test)-1)],start=c(2015,1),frequency=" + numericUpDown14.Value.ToString() + ")\r\n";
+                                forecast_extension += "                 #ts.plot(df_t)\r\n";
+                                forecast_extension += "                 if ( is.null(trendFit)) trendFit <- auto.arima(df_t, ic=\"aic\", seasonal = T, stepwise=T, trace=T)\r\n";
+                                forecast_extension += "                 pred <- predict(trendFit,n.ahead=t_step+1)\r\n";
                                 forecast_extension += "                test$trend[nrow(test)] <- pred$pred[t_step+1]\r\n";
+                                forecast_extension += "                #if ( t_step %% " + numericUpDown14.Value.ToString() + "== 0) trendFit = NULL\r\n";
+                                forecast_extension += "             },\r\n";
+                                forecast_extension += "             error = function(e) {\r\n";
+                                forecast_extension += "                #message(e)\r\n";
+                                forecast_extension += "                print(e)\r\n";
+                                forecast_extension += "                #復元抽出\r\n";
+                                forecast_extension += "                test$trend[nrow(test)] <- sample(train[, i], 1)\r\n";
+                                forecast_extension += "             },\r\n";
+                                forecast_extension += "                 finally   = {\r\n";
+                                forecast_extension += "             },\r\n";
+                                forecast_extension += "                 silent = TRUE\r\n";
+                                forecast_extension += "             )\r\n";
+                                forecast_extension += "         }\r\n";
+                                forecast_extension += "         \r\n";
+                                forecast_extension += "         \r\n";
+                                forecast_extension += "         if ( use_prophet == 1){\r\n";
+                                forecast_extension += "             tryCatch({\r\n";
+                                forecast_extension += "                df_t <- test\t\n";
+                                forecast_extension += "                df_t$ds <- test[,1]\r\n";
+                                forecast_extension += "                df_t$y   <- test$trend\r\n";
+                                forecast_extension += "                if ( is.null(trendFit)){\r\n";
+                                forecast_extension += "                     prophet_model<-prophet(n.changepoints=25,weekly.seasonality=\"auto\",yearly.seasonality=\"auto\",daily.seasonality=\"auto\",\r\n";
+                                forecast_extension += "                     seasonality.mode = \"additive\",changepoint.prior.scale = 0.05,growth = \"linear\", fit=FALSE)\r\n";
+                                forecast_extension += "                     trendFit <-fit.prophet(prophet_model, df_t[1:(nrow(test)-1),])\r\n";
+                                forecast_extension += "                 }\r\n";
+                                forecast_extension += "                 future<-make_future_dataframe(trendFit,t_step+1, freq =dt_)\r\n";
+                                forecast_extension += "";
+                                forecast_extension += "";
+                                forecast_extension += "                pred <- predict(trendFit, future,growth = \"linear\")\r\n";
+                                forecast_extension += "                test$trend[nrow(test)] <- pred$yhat[nrow(test)]\r\n";
                                 forecast_extension += "                #if ( t_step %% " + numericUpDown14.Value.ToString() + "== 0) trendFit = NULL\r\n";
                                 forecast_extension += "            },\r\n";
                                 forecast_extension += "            error = function(e) {\r\n";
@@ -2162,7 +2203,10 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "            },\r\n";
                                 forecast_extension += "            silent = TRUE\r\n";
                                 forecast_extension += "            )\r\n";
-                                forecast_extension += "            test$target_ <- test$target_ - test$trend\r\n";
+                                forecast_extension += "         }\r\n";
+                                forecast_extension += "\r\n";
+
+                                forecast_extension += "            #test$target_ <- test$target_ - test$trend\r\n";
                             }
 
                         }
