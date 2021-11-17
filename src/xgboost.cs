@@ -57,6 +57,9 @@ namespace WindowsFormsApplication1
         interactivePlot interactivePlot2 = null;
         int max_seasonal = 10;
         int use_arima = 0;
+        int cutoff = 0;
+
+
 
         public xgboost()
         {
@@ -225,6 +228,7 @@ namespace WindowsFormsApplication1
             else use_AnomalyDetectionTs = 0;
 
             if (checkBox11.Checked) eval = 1;
+            if (checkBox16.Checked) cutoff = 1;
             try
             {
                 form1.FileDelete("curvplot_temp.html");
@@ -1807,6 +1811,10 @@ namespace WindowsFormsApplication1
                         if (time_series_mode)
                         {
                             forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            if (cutoff == 1)
+                            {
+                                forecast_extension += "predict_y<-limit_cutoff(predict_y, upper_limit, lower_limit)\r\n";
+                            }
                             forecast_extension += "\r\n";
                             forecast_extension += "zz_tmp<- inv_diff(test, use_log_diff, test$target_ + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                             forecast_extension += "debug_plt <- ggplot()\r\n";
@@ -1863,6 +1871,11 @@ namespace WindowsFormsApplication1
                     forecast_extension += "predict.y<-as.data.frame(predict_y)\r\n";
                     if ( time_series_mode )
                     {
+                        bool holidays1 = false;
+                        bool holidays2 = false;
+                        if (form1.ExistObj("holidays")) holidays1 = true;
+                        else if (form1.ExistObj("i.holidays")) holidays2 = true;
+
                         forecast_extension += "sample_metod <- -1\r\n";
                         if (comboBox5.Text == "復元抽出")
                         {
@@ -2183,7 +2196,20 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                df_t$y   <- test$trend\r\n";
                                 forecast_extension += "                if ( is.null(trendFit)){\r\n";
                                 forecast_extension += "                     prophet_model<-prophet(n.changepoints=25,weekly.seasonality=\"auto\",yearly.seasonality=\"auto\",daily.seasonality=\"auto\",\r\n";
-                                forecast_extension += "                     seasonality.mode = \"additive\",changepoint.prior.scale = 0.05,growth = \"linear\", fit=FALSE)\r\n";
+                                forecast_extension += "                     seasonality.mode = \"additive\",changepoint.prior.scale = 0.05,growth = \"linear\", fit=FALSE";
+                                if (holidays1 || holidays2 )
+                                {
+                                    if (holidays1)
+                                    {
+                                        forecast_extension += ",holidays = holidays";
+                                    }
+                                    else
+                                    if ( holidays2)
+                                    {
+                                        forecast_extension += ",holidays = i.holidays";
+                                    }
+                                }
+                                forecast_extension += ")\r\n";
                                 forecast_extension += "                     trendFit <-fit.prophet(prophet_model, df_t[1:(nrow(test)-1),])\r\n";
                                 forecast_extension += "                 }\r\n";
                                 forecast_extension += "                 future<-make_future_dataframe(trendFit,t_step+1, freq =dt_)\r\n";
@@ -2250,6 +2276,11 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "        predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         }
+                        if ( cutoff == 1)
+                        {
+                            forecast_extension += "         predict_y_org[length(test$target_)] = limit_cutoff(predict_y_org[length(test$target_)], upper_limit, lower_limit)\r\n";
+                            forecast_extension += "         predict_y[length(test$target_)] = limit_cutoff(predict_y[length(test$target_)], upper_limit, lower_limit)\r\n";
+                        }
                         forecast_extension += "     predict.y<-as.data.frame(predict_y)\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "	    #データの最後を予測値で更新\r\n";
@@ -2278,6 +2309,8 @@ namespace WindowsFormsApplication1
                         sw.Write(forecast_extension);
                     }
 
+                    cmd += "upper_limit = " + textBox12.Text + "\r\n";
+                    cmd += "lower_limit = " + textBox13.Text + "\r\n";
                     cmd += "source(\"time_series_forecast_extension.r\")\r\n";
                     cmd += "ret <- forecast_extension(test, train)\r\n";
                     cmd += "predict_y <- ret[[1]]\r\n";
@@ -2373,6 +2406,9 @@ namespace WindowsFormsApplication1
                     string predict_probability = "";
                     if ( 1 == 1 )
                     {
+                        predict_probability += "upper_limit = " + textBox12.Text + "\r\n";
+                        predict_probability += "lower_limit = " + textBox13.Text + "\r\n";
+
                         predict_probability += "test<-test_org\r\n";
                         predict_probability += xgboost_initial_cmd;
                         predict_probability += "test_sv <- test\r\n";
