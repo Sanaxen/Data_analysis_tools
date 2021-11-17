@@ -228,7 +228,9 @@ namespace WindowsFormsApplication1
             else use_AnomalyDetectionTs = 0;
 
             if (checkBox11.Checked) eval = 1;
+            else eval = 0;
             if (checkBox16.Checked) cutoff = 1;
+            else cutoff = 0;
             try
             {
                 form1.FileDelete("curvplot_temp.html");
