@@ -7254,7 +7254,8 @@ namespace WindowsFormsApplication1
                 else
                 {
                     interactivePlot w = new interactivePlot();
-                    w.webView21.CoreWebView2.Navigate(adr);
+                    //w.webView21.CoreWebView2.Navigate(adr);
+                    w.webView21.Source = new Uri(adr);
                     w.Show();
                 }
             }

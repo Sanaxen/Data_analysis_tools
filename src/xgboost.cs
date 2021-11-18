@@ -344,6 +344,9 @@ namespace WindowsFormsApplication1
                         return;
                     }
                     string cmd1 = "";
+                    cmd1 += "upper_limit = " + textBox12.Text + "\r\n";
+                    cmd1 += "lower_limit = " + textBox13.Text + "\r\n";
+
                     if (form1.Int_func("coltype_time", "df") == 1)
                     {
                         cmd1 += "df[,1] <- as.POSIXct(df[,1])\r\n";
@@ -706,7 +709,8 @@ namespace WindowsFormsApplication1
                                 else
                                 {
                                     if (interactivePlot2 == null) interactivePlot2 = new interactivePlot();
-                                    interactivePlot2.webView21.CoreWebView2.Navigate(webpath);
+                                    //interactivePlot2.webView21.CoreWebView2.Navigate(webpath);
+                                    interactivePlot2.webView21.Source = new Uri(webpath);
                                     interactivePlot2.Refresh();
                                     TopMost = true;
                                     TopMost = false;
@@ -1154,6 +1158,10 @@ namespace WindowsFormsApplication1
                         cmd2 += "\r\n";
                         cmd2 += "	predictions[,i] <- predict(xgboost_tmp.model,newdata = test_dmat) \r\n";
                         cmd2 += "   predictions[,i] <- inv_diff(test, use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        if (cutoff == 1)
+                        {
+                            cmd2 += "   predictions[,i]<-limit_cutoff(predictions[,i], upper_limit, lower_limit)\r\n";
+                        }
                         cmd2 += "} \r\n";
                         cmd2 += "\r\n";
                         cmd2 += "y_upper_smooth <- predictions[,1] \r\n";
@@ -1197,8 +1205,11 @@ namespace WindowsFormsApplication1
                                 cmd2 += "	lo[i] = lo[i] - y\r\n";
                                 cmd2 += "}\r\n";
                             }
-                            cmd2 += "up <- limit_cutoff(up, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
-                            cmd2 += "lo <- limit_cutoff(lo, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            if (cutoff == 1)
+                            {
+                                cmd2 += "up <- limit_cutoff(up, upper_limit, lower_limit)\r\n";
+                                cmd2 += "lo <- limit_cutoff(lo, upper_limit, lower_limit)\r\n";
+                            }
                             cmd2 += "\r\n";
                             cmd2 += "interval_plt<-ggplot()\r\n";
                             cmd2 += "\r\n";
@@ -1231,8 +1242,11 @@ namespace WindowsFormsApplication1
                                 cmd2 += "	lo[i] = lo[i] - y\r\n";
                                 cmd2 += "}\r\n";
                             }
-                            cmd2 += "up <- limit_cutoff(up, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
-                            cmd2 += "lo <- limit_cutoff(lo, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            if (cutoff == 1)
+                            {
+                                cmd2 += "up <- limit_cutoff(up, upper_limit, lower_limit)\r\n";
+                                cmd2 += "lo <- limit_cutoff(lo, upper_limit, lower_limit)\r\n";
+                            }
                             cmd2 += "\r\n";
                             cmd2 += "interval_plt<-ggplot()\r\n";
                             cmd2 += "\r\n";
@@ -1336,6 +1350,10 @@ namespace WindowsFormsApplication1
                         cmd3 += "\r\n";
                         cmd3 += "y_upper_smooth2 <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
                         cmd3 += "y_upper_smooth2<- inv_diff(test, use_log_diff, y_upper_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        if (cutoff == 1)
+                        {
+                            cmd3 += "y_upper_smooth2<-limit_cutoff(y_upper_smooth2, upper_limit, lower_limit)\r\n";
+                        }
 
                         cmd3 += "if (xgboost_tmp.model$best_iteration == 1  || y_upper_smooth2[length(y_upper_smooth2)] == Inf)\r\n";
                         cmd3 += "{\r\n";
@@ -1359,6 +1377,10 @@ namespace WindowsFormsApplication1
                         cmd3 += "\r\n";
                         cmd3 += "y_lower_smooth2  <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
                         cmd3 += "y_lower_smooth2 <- inv_diff(test, use_log_diff, y_lower_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        if (cutoff == 1)
+                        {
+                            cmd3 += "y_lower_smooth2<-limit_cutoff(y_lower_smooth2, upper_limit, lower_limit)\r\n";
+                        }
                         cmd3 += "if (xgboost_tmp.model$best_iteration == 1  || y_lower_smooth2[length(y_lower_smooth2)] == Inf)\r\n";
                         cmd3 += "{\r\n";
                         cmd3 += "   y_lower_smooth2 = y_lower_smooth\r\n";
@@ -1405,8 +1427,11 @@ namespace WindowsFormsApplication1
                                 cmd3 += "	lo2[i] = lo2[i] - y\r\n";
                                 cmd3 += "}\r\n";
                             }
-                            cmd3 += "up2 <- limit_cutoff(up2, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
-                            cmd3 += "lo2 <- limit_cutoff(lo2, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            if (cutoff == 1)
+                            {
+                                cmd3 += "up2 <- limit_cutoff(up2, upper_limit, lower_limit)\r\n";
+                                cmd3 += "lo2 <- limit_cutoff(lo2, upper_limit, lower_limit)\r\n";
+                            }
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt2<-ggplot()\r\n";
                             cmd3 += "\r\n";
@@ -1452,8 +1477,11 @@ namespace WindowsFormsApplication1
                                 cmd3 += "	lo2[i] = lo2[i] - y\r\n";
                                 cmd3 += "}\r\n";
                             }
-                            cmd3 += "up2 <- limit_cutoff(up2, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
-                            cmd3 += "lo2 <- limit_cutoff(lo2, target_max+1.8*(target_max-target_min), target_min-1.8*(target_max-target_min))\r\n";
+                            if (cutoff == 1)
+                            {
+                                cmd3 += "up2 <- limit_cutoff(up2, upper_limit, lower_limit)\r\n";
+                                cmd3 += "lo2 <- limit_cutoff(lo2, upper_limit, lower_limit)\r\n";
+                            }
                             cmd3 += "interval_plt2<-ggplot()\r\n";
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
@@ -1636,7 +1664,7 @@ namespace WindowsFormsApplication1
                                     sw.Write("ggsave(filename = \"interval_plt2.png\", plot = interval_plt2)\r\n");
                                     if (use_AnomalyDetectionTs == 1)
                                     {
-                                        sw.Write("if (!is.null(anomaly_det[[3]])");
+                                        sw.Write("if (!is.null(anomaly_det[[3]])) ");
                                         sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, anomaly_det[[3]], nrow = 3)\r\n");
                                     }
                                     else
@@ -2459,7 +2487,12 @@ namespace WindowsFormsApplication1
                         {
                             for (int j = start_lag; j <= lag; j++)
                             {
-                                predict_probability += "test$'lag" + j.ToString() + "_" + targetName + "'<- test$'lag" + j.ToString() + "_" + targetName + "'" + "+ mean(train$'lag" + j.ToString() + "_" + targetName + "')*0.1*runif(1)\r\n";
+                                predict_probability += "    if ( runif(1) > 0.8 ){\r\n";
+                                predict_probability += "        test$'lag" + j.ToString() + "_" + targetName + "'<- test$'lag" + j.ToString() + "_" + targetName + "'" + "+ mean(train$'lag" + j.ToString() + "_" + targetName + "')*0.1*runif(1)\r\n";
+                                predict_probability += "    } else {\r\n";
+                                predict_probability += "        #test$'lag" + j.ToString() + "_" + targetName + "'<- test$'lag" + j.ToString() + "_" + targetName + "'" + "- mean(train$'lag" + j.ToString() + "_" + targetName + "')*0.1*runif(1)\r\n";
+                                predict_probability += "        test$'lag" + j.ToString() + "_" + targetName + "'" + "<- sample(train$'lag" + j.ToString() + "_" + targetName + "', nrow(test))\r\n";
+                                predict_probability += "    }\r\n";
                             }
                             //for (int j = start_lag; j <= lag; j++)
                             //{
@@ -2540,12 +2573,28 @@ namespace WindowsFormsApplication1
                         predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測結果.png\", plot = plot)\r\n";
 
                         predict_probability += "\r\n";
-                        predict_probability += "prob_value <- function(predictions, predict_y, i, bins=10)\r\n";
+                        predict_probability += "prob_value <- function(predictions, predict_y, i, bins=10, offset=1)\r\n";
                         predict_probability += "{\r\n";
                         predict_probability += "	h <- t(predictions[i,])\r\n";
                         predict_probability += "	colnames(h)[1]<-c(\"value\")\r\n";
                         predict_probability += "\r\n";
-                        predict_probability += "	b = hist(h, breaks=bins)\r\n";
+                        predict_probability += "    hist_error=0\r\n";
+                        predict_probability += "	#b = hist(h, breaks=bins)\r\n";
+                        predict_probability += "	tryCatch({\r\n";
+                        predict_probability += "		b = hist(h, breaks=bins)\r\n";
+                        predict_probability += "	},error = function(e){\r\n";
+                        predict_probability += "		print(e)\r\n";
+                        predict_probability += "        hist_error = 1\r\n";
+                        predict_probability += "	},finally   = {\r\n";
+                        predict_probability += "\r\n";
+                        predict_probability += "	},silent = TRUE\r\n";
+                        predict_probability += "	)\r\n";
+                        predict_probability += "    if ( hist_error == 1 ){\r\n";
+                        predict_probability += "        return (list(-1, 0, 0, 0))\r\n";
+                        predict_probability += "    }\r\n";
+                        predict_probability += "    if ( min(h)==Inf || max(h) == Inf ){\r\n";
+                        predict_probability += "        return (list(-1, 0, 0, 0))\r\n";
+                        predict_probability += "    }\r\n";
                         predict_probability += "	\r\n";
                         predict_probability += "	density = b$density/sum(b$density)\r\n";
                         predict_probability += "	p = 0.0\r\n";
@@ -2599,14 +2648,14 @@ namespace WindowsFormsApplication1
                         predict_probability += "			}\r\n";
                         predict_probability += "			#print(s)\r\n";
                         predict_probability += "			#print(e)\r\n";
-                        predict_probability += "			return (list (p, s,e, b))\r\n";
+                        predict_probability += "			return (list (p*offset, s,e, b))\r\n";
                         predict_probability += "			break\r\n";
                         predict_probability += "		}\r\n";
                         predict_probability += "	}\r\n";
                         predict_probability += "	return (NULL)\r\n";
                         predict_probability += "}\r\n";
                         predict_probability += "\r\n";
-                        predict_probability += "predict_probability <- function(predictions, predict_y, i, bins=10)\r\n";
+                        predict_probability += "predict_probability <- function(predictions, predict_y, i, bins=10, offset = 1)\r\n";
                         predict_probability += "{\r\n";
                         predict_probability += "	prob = 0\r\n";
                         predict_probability += "	p = prob_value(predictions, predict_y, i, bins)\r\n";
@@ -2620,10 +2669,11 @@ namespace WindowsFormsApplication1
                         predict_probability += "	}\r\n";
                         predict_probability += "	if ( p[[1]] >= 0 )\r\n";
                         predict_probability += "	{\r\n";
+                        predict_probability += "        p[[1]] = p[[1]]*offset\r\n";
                         predict_probability += "		prob = p[[1]]\r\n";
                         predict_probability += "	}\r\n";
                         predict_probability += "	\r\n";
-                        predict_probability += "	s = paste(\"probability\",sprintf(\"%.1f\",prob*99.5))\r\n";
+                        predict_probability += "	s = paste(\"probability\",sprintf(\"%.1f\",prob*100))\r\n";
                         predict_probability += "	s = paste(s, \"% [\")\r\n";
                         predict_probability += "	if ( p[[1]] == -1 )\r\n";
                         predict_probability += "	{\r\n";
@@ -2683,7 +2733,12 @@ namespace WindowsFormsApplication1
                             predict_probability += "#.export=c('ggplot','ggsave','aes','geom_histogram','geom_vline', 'geom_density','annotate')) %dopar% {\r\n";
                             predict_probability += "\r\n";
                             predict_probability += "foreach( i = 1:length(test$target_),.packages=c('ggplot2')) %dopar% {\r\n";
-                            predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin)\r\n";
+                            predict_probability += "    offset = 99.5\r\n";
+                            predict_probability += "    if ( i > nrow(test_org) && nrow(test) > nrow(test_org)){\r\n";
+                            predict_probability += "        offset = 90.5 - 90.5*sqrt((i - nrow(test_org))/(min(nrow(test),nrow(test_org)+30) - nrow(test_org))) + runif(1, 0, 0.1)\r\n";
+                            predict_probability += "        if ( offset <= 0.1 ) offset = runif(1, 0.05, 0.1)\r\n";
+                            predict_probability += "	}\r\n";
+                            predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin, offset/100.0)\r\n";
                             predict_probability += "	\r\n";
                             predict_probability += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
                             predict_probability += "	file = paste(file, \".png\")\r\n";
@@ -2701,9 +2756,15 @@ namespace WindowsFormsApplication1
                         {
                             predict_probability += "\r\n";
                             predict_probability += "\r\n";
+                            predict_probability += "set.seed(125)\r\n";
                             predict_probability += "for ( i in 1:length(test$target_) ){\r\n";
+                            predict_probability += "    offset = 99.5\r\n";
+                            predict_probability += "    if ( i > nrow(test_org) && nrow(test) > nrow(test_org)){\r\n";
+                            predict_probability += "        offset = 90.5 - 90.5*sqrt((i - nrow(test_org))/(min(nrow(test),nrow(test_org)+30) - nrow(test_org))) + runif(1, 0, 0.1)\r\n";
+                            predict_probability += "        if ( offset <= 0.1 ) offset = runif(1, 0.05, 0.1)\r\n";
+                            predict_probability += "	}\r\n";
                             predict_probability += "#for ( i in 1:1 ){\r\n";
-                            predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin)\r\n";
+                            predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin, offset/100.0)\r\n";
                             predict_probability += "	\r\n";
                             predict_probability += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
                             predict_probability += "	file = paste(file, \".png\")\r\n";
@@ -3455,7 +3516,7 @@ namespace WindowsFormsApplication1
                         cmd += "p_<-ggplotly(plt_)\r\n";
                     }
 
-                    if (System.IO.File.Exists("xgboost_plot_temp.html")) form1.FileDelete("curvplot_temp.html");
+                    if (System.IO.File.Exists("xgboost_plot_temp.html")) form1.FileDelete("xgboost_plot_temp.html");
                     cmd += "print(p_)\r\n";
                     cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_plot_temp.html\", selfcontained = F)\r\n";
                     form1.script_executestr(cmd);
@@ -3476,13 +3537,15 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
-                            interactivePlot.webView21.CoreWebView2.Navigate(webpath);
+                            //interactivePlot.webView21.CoreWebView2.Navigate(webpath);
+                            interactivePlot.webView21.Source = new Uri(webpath);
                             interactivePlot.Refresh();
                             //interactivePlot.Show();
                             //interactivePlot.TopMost = true;
                             //interactivePlot.TopMost = false;
 
-                            webView21.CoreWebView2.Navigate(webpath);
+                            //webView21.CoreWebView2.Navigate(webpath);
+                            webView21.Source = new Uri(webpath);
                             webView21.Refresh();
                             webView21.Show();
                             TopMost = true;

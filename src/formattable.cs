@@ -346,7 +346,8 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
-                            interactivePlot.webView21.CoreWebView2.Navigate(adr);
+                            //interactivePlot.webView21.CoreWebView2.Navigate(adr);
+                            interactivePlot.webView21.Source = new Uri(adr); 
                             interactivePlot.Refresh();
                             //interactivePlot.Show();
                             //interactivePlot.TopMost = true;

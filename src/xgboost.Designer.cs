@@ -36,6 +36,11 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.label40 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.checkBox16 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
@@ -166,11 +171,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox16 = new System.Windows.Forms.CheckBox();
-            this.textBox12 = new System.Windows.Forms.TextBox();
-            this.textBox13 = new System.Windows.Forms.TextBox();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -284,7 +284,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(896, 863);
+            this.panel2.Size = new System.Drawing.Size(896, 867);
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
@@ -374,6 +374,57 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(220, 692);
             this.panel7.TabIndex = 147;
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(9, 651);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(41, 15);
+            this.label40.TabIndex = 165;
+            this.label40.Text = "lower";
+            this.toolTip1.SetToolTip(this.label40, "下限値");
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(9, 629);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(42, 15);
+            this.label39.TabIndex = 164;
+            this.label39.Text = "upper";
+            this.toolTip1.SetToolTip(this.label39, "上限値");
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(57, 648);
+            this.textBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(79, 22);
+            this.textBox13.TabIndex = 163;
+            this.textBox13.Text = "0.0";
+            this.textBox13.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(57, 622);
+            this.textBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(79, 22);
+            this.textBox12.TabIndex = 162;
+            this.textBox12.Text = "100000";
+            this.textBox12.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
+            // 
+            // checkBox16
+            // 
+            this.checkBox16.AutoSize = true;
+            this.checkBox16.Location = new System.Drawing.Point(9, 599);
+            this.checkBox16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox16.Name = "checkBox16";
+            this.checkBox16.Size = new System.Drawing.Size(119, 19);
+            this.checkBox16.TabIndex = 161;
+            this.checkBox16.Text = "上限下限制約";
+            this.checkBox16.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -1796,7 +1847,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 76);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(713, 787);
+            this.panel5.Size = new System.Drawing.Size(713, 791);
             this.panel5.TabIndex = 38;
             // 
             // webView21
@@ -1806,7 +1857,7 @@
             this.webView21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webView21.Location = new System.Drawing.Point(0, 0);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(711, 591);
+            this.webView21.Size = new System.Drawing.Size(711, 595);
             this.webView21.TabIndex = 38;
             this.webView21.ZoomFactor = 1D;
             // 
@@ -1817,7 +1868,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(711, 591);
+            this.pictureBox1.Size = new System.Drawing.Size(711, 595);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 37;
             this.pictureBox1.TabStop = false;
@@ -1841,7 +1892,7 @@
             // 
             this.splitter2.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(0, 591);
+            this.splitter2.Location = new System.Drawing.Point(0, 595);
             this.splitter2.Margin = new System.Windows.Forms.Padding(4);
             this.splitter2.Name = "splitter2";
             this.splitter2.Size = new System.Drawing.Size(711, 10);
@@ -1853,7 +1904,7 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBox1.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox1.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.textBox1.Location = new System.Drawing.Point(0, 601);
+            this.textBox1.Location = new System.Drawing.Point(0, 605);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -2039,7 +2090,7 @@
             this.panel3.Location = new System.Drawing.Point(896, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(713, 863);
+            this.panel3.Size = new System.Drawing.Size(713, 867);
             this.panel3.TabIndex = 39;
             // 
             // splitter1
@@ -2047,7 +2098,7 @@
             this.splitter1.Location = new System.Drawing.Point(896, 0);
             this.splitter1.Margin = new System.Windows.Forms.Padding(4);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(4, 863);
+            this.splitter1.Size = new System.Drawing.Size(4, 867);
             this.splitter1.TabIndex = 40;
             this.splitter1.TabStop = false;
             // 
@@ -2068,62 +2119,11 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // checkBox16
-            // 
-            this.checkBox16.AutoSize = true;
-            this.checkBox16.Location = new System.Drawing.Point(9, 599);
-            this.checkBox16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBox16.Name = "checkBox16";
-            this.checkBox16.Size = new System.Drawing.Size(119, 19);
-            this.checkBox16.TabIndex = 161;
-            this.checkBox16.Text = "上限下限制約";
-            this.checkBox16.UseVisualStyleBackColor = true;
-            // 
-            // textBox12
-            // 
-            this.textBox12.Location = new System.Drawing.Point(57, 622);
-            this.textBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(79, 22);
-            this.textBox12.TabIndex = 162;
-            this.textBox12.Text = "100000";
-            this.textBox12.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
-            // 
-            // textBox13
-            // 
-            this.textBox13.Location = new System.Drawing.Point(57, 648);
-            this.textBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(79, 22);
-            this.textBox13.TabIndex = 163;
-            this.textBox13.Text = "0.0";
-            this.textBox13.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(9, 629);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(42, 15);
-            this.label39.TabIndex = 164;
-            this.label39.Text = "upper";
-            this.toolTip1.SetToolTip(this.label39, "上限値");
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(9, 651);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(41, 15);
-            this.label40.TabIndex = 165;
-            this.label40.Text = "lower";
-            this.toolTip1.SetToolTip(this.label40, "下限値");
-            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1609, 863);
+            this.ClientSize = new System.Drawing.Size(1609, 867);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
