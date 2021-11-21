@@ -347,15 +347,14 @@ namespace WindowsFormsApplication1
                         else
                         {
                             //interactivePlot.webView21.CoreWebView2.Navigate(adr);
-                            interactivePlot.webView21.Source = new Uri(adr); 
-                            interactivePlot.Refresh();
+                            interactivePlot.webView21.Source = new Uri(adr);
+                            interactivePlot.webView21.Refresh(); 
                             //interactivePlot.Show();
                             //interactivePlot.TopMost = true;
                             //interactivePlot.TopMost = false;
 
                             webBrowser1.Navigate(adr);
                             webBrowser1.Refresh();
-                            webBrowser1.Show();
                             TopMost = true;
                             TopMost = false;
                         }

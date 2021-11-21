@@ -477,7 +477,7 @@ namespace WindowsFormsApplication1
                         else
                         {
                             interactivePlot.webView21.CoreWebView2.Navigate(webpath);
-                            interactivePlot.Refresh();
+                            interactivePlot.webView21.Refresh();
                             //interactivePlot.Show();
                             //interactivePlot.TopMost = true;
                             //interactivePlot.TopMost = false;
