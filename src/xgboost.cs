@@ -345,6 +345,7 @@ namespace WindowsFormsApplication1
                         return;
                     }
                     string cmd1 = "";
+                    cmd1 += "frequency_value =" + numericUpDown14.Value.ToString()+"\r\n";
                     cmd1 += "upper_limit = " + textBox12.Text + "\r\n";
                     cmd1 += "lower_limit = " + textBox13.Text + "\r\n";
 
@@ -412,18 +413,18 @@ namespace WindowsFormsApplication1
                         cmd1 += "   df_ts_tmp$'grad5_" + targetName + "'[i] <- curvature(df_ts_tmp$'" + targetName + "', i-3, 0.01)\r\n";
                         cmd1 += "}\r\n\r\n";
                     }
-                    if (n_seasons/2 > 1 && checkBox14.Checked)
+                    if (n_seasons/2 > 0 && checkBox14.Checked)
                     { 
                         if (n_seasons / 2 < 1 )
                         {
                             MessageBox.Show("frequencyの設定を見直して下さい");
                         }
                         cmd1 += "y2 <- df_ts_tmp$'" + targetName + "'\r\n";
-                        cmd1 += "f = " + numericUpDown14.Value.ToString() + "\r\n";
-                        cmd1 += "k = f/2\r\n";
-                        cmd1 += "#k =  max(1, min(round(f / 4 - 1), 10))\r\n";
+                        //cmd1 += "frequency_value = " + numericUpDown14.Value.ToString() + "\r\n";
+                        cmd1 += "k = frequency_value/2\r\n";
+                        cmd1 += "#k =  max(1, min(round(frequency_value / 4 - 1), 10))\r\n";
                         cmd1 += "if ( k > 0 ){\r\n";
-                        cmd1 += "   fx <-  fourier(ts(y2,frequency=f) , K = k)\r\n";
+                        cmd1 += "   fx <-  fourier(ts(y2,frequency=frequency_value) , K = k)\r\n";
                         cmd1 += "   df_ts_tmp <- cbind(df_ts_tmp, fx)\r\n";
                         cmd1 += "   for (i in 1:ncol(fx)){\r\n";
                         cmd1 += "       colnames(df_ts_tmp)[ncol(df_ts_tmp)-ncol(fx)+i] <- c(gsub(\" \", \"\",paste(\"season\", i)))\r\n";
@@ -499,7 +500,7 @@ namespace WindowsFormsApplication1
                     {
                         cmd1 += "tmp <- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "#時系列データの分解（トレンド＋周期＋ノイズ）\r\n";
-                        cmd1 += "tmp<-decompose(ts(tmp, frequency=" + n_seasons + "), type =\"multiplicative\")\r\n";
+                        cmd1 += "tmp<-decompose(ts(tmp, frequency=frequency_value), type =\"multiplicative\")\r\n";
                         cmd1 += "decompose_df <- tmp\r\n";
                         cmd1 += "#時系列データから周期を削除 <- これを予測するようにする。\r\n";
                         cmd1 += "tmp<- seasadj(tmp)\r\n";
@@ -549,7 +550,7 @@ namespace WindowsFormsApplication1
                             cmd1 += "tmp <- df_ts_tmp$'" + targetName + "'\r\n";
                         }
                         cmd1 += "\r\n";
-                        cmd1 += "log_diff <- mydiff(tmp, "+ numericUpDown14.Value.ToString()+", use_log_diff, ndiff ="+ numericUpDown17.Value.ToString()+",lambda="+textBox10.Text+", alpha="+textBox11.Text +")\r\n";
+                        cmd1 += "log_diff <- mydiff(tmp, frequency_value, use_log_diff, ndiff =" + numericUpDown17.Value.ToString()+",lambda="+textBox10.Text+", alpha="+textBox11.Text +")\r\n";
                         cmd1 += "df_ts_tmp <- cbind(df_ts_tmp, log_diff[[1]])\r\n";
                         cmd1 += "n_diffs <- log_diff[[2]]\r\n";
                         cmd1 += "colnames(df_ts_tmp)[ncol(df_ts_tmp)] <- c(\"log_diff\")\r\n";
@@ -587,7 +588,7 @@ namespace WindowsFormsApplication1
                     if (use_diff == 0 && checkBox9.Checked)
                     {
                         //use_arima = 1;
-                        cmd1 += "t<-stl(ts(df_ts_tmp$target_,frequency=" + numericUpDown14.Value.ToString() + "), s.window=\"per\", robust=TRUE)\r\n";
+                        cmd1 += "t<-stl(ts(df_ts_tmp$target_,frequency=frequency_value), s.window=\"per\", robust=TRUE)\r\n";
                         cmd1 += "stl_t = as.matrix(t$time.series[,2])      #トレンド（Trend）\r\n";
                         cmd1 += "stl_s = as.matrix(t$time.series[,1])      #季節性（Seasonal）\r\n";
                         cmd1 += "stl_r = as.matrix(t$time.series[,3])      #残差（Remainder）\r\n";
@@ -664,16 +665,16 @@ namespace WindowsFormsApplication1
                     {
                         if (use_decompose == 1)
                         {
-                            cmd1 += "       log_diff_tmp <- mydiff(train$deseasonal, " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
+                            cmd1 += "       log_diff_tmp <- mydiff(train$deseasonal, frequency_value, use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
                             cmd1 += "       train$target_ <- log_diff_tmp[[1]]\r\n";
-                            cmd1 += "       log_diff_tmp <- mydiff(test$deseasonal, " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
+                            cmd1 += "       log_diff_tmp <- mydiff(test$deseasonal, frequency_value, use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
                             cmd1 += "       test$target_ <- log_diff_tmp[[1]]\r\n";
                         }
                         if (use_decompose == 0)
                         {
-                            cmd1 += "       log_diff_tmp <- mydiff(train$'" + targetName + "', " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
+                            cmd1 += "       log_diff_tmp <- mydiff(train$'" + targetName + "', frequency_value, use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
                             cmd1 += "       train$target_ <- log_diff_tmp[[1]]\r\n";
-                            cmd1 += "       log_diff_tmp <- mydiff(test$'" + targetName + "', " + numericUpDown14.Value.ToString() + ", use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
+                            cmd1 += "       log_diff_tmp <- mydiff(test$'" + targetName + "', frequency_value, use_log_diff, ndiff =n_diffs,lambda=" + textBox10.Text + ", alpha=" + textBox11.Text + ")\r\n";
                             cmd1 += "       test$target_ <- log_diff_tmp[[1]]\r\n";
                         }
                     }
@@ -1966,10 +1967,19 @@ namespace WindowsFormsApplication1
                             forecast_extension += "sample_metod <- 4\r\n";
                         }
 
-                        forecast_extension += "overall_flg <- 0\r\n";
-                        if ( checkBox17.Checked)
+                        //forecast_extension += "overall_flg <- 0\r\n";
+                        //if ( checkBox17.Checked)
+                        //{
+                        //    forecast_extension += "overall_flg <- 1\r\n";
+                        //}
+                        forecast_extension += "overall_flg <- 1\r\n";
+
+                        if (checkBox17.Checked)
                         {
-                            forecast_extension += "overall_flg <- 1\r\n";
+                            forecast_extension += "fast_arima = 1\r\n";
+                        }else
+                        {
+                            forecast_extension += "fast_arima = 0\r\n";
                         }
 
                         //forecast_extension += "test<- test_org\r\n";
@@ -1996,6 +2006,7 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "use_prophet = 0\r\n";
                         }
+                        forecast_extension += "t_step_forcast = 1\r\n";
 
                         forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
                         forecast_extension += "    for ( t_step in 1:" + numericUpDown5.Value.ToString()+"){\r\n";
@@ -2061,7 +2072,7 @@ namespace WindowsFormsApplication1
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 3){\r\n";
                         //forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
-                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),frequency=" + numericUpDown14.Value.ToString() + ")\r\n";
+                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),frequency=frequency_value)\r\n";
                         forecast_extension += "			            #ts.plot(df_t)\r\n";
                         forecast_extension += "			            Fit <- ar(df_t,aic = TRUE)\r\n";
                         forecast_extension += "			            pred <- predict(Fit,n.ahead=2)\r\n";
@@ -2069,7 +2080,7 @@ namespace WindowsFormsApplication1
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 4){\r\n";
                         //forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),deltat=dt_)\r\n";
-                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),frequency="+numericUpDown14.Value.ToString()+")\r\n";
+                        forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),frequency=frequency_value)\r\n";
                         forecast_extension += "			            #ts.plot(df_t)\r\n";
                         forecast_extension += "                        tryCatch({\r\n";
                         forecast_extension += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
@@ -2191,14 +2202,14 @@ namespace WindowsFormsApplication1
 
                             if (n_seasons / 2 > 1 && checkBox14.Checked)
                             {
-                                forecast_extension += "         #The value of the variable 'test$season' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
+                                forecast_extension += "        #The value of the variable 'test$season' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
                                 forecast_extension += "\r\n";
-                                forecast_extension += "         y2 <- test$'" + targetName + "'\r\n";
-                                forecast_extension += "         f = " + numericUpDown14.Value.ToString() + "\r\n";
-                                forecast_extension += "         k = f/2\r\n";
-                                forecast_extension += "         #k =  max(1, min(round(f / 4 - 1), 10))\r\n";
-                                forecast_extension += "         if ( k > 0 ){\r\n";
-                                forecast_extension += "             fx <-  fourier(ts(y2,frequency=f) , K = k)\r\n";
+                                forecast_extension += "        y2 <- test$'" + targetName + "'\r\n";
+                                forecast_extension += "        f = frequency_value\r\n";
+                                forecast_extension += "        k = f/2\r\n";
+                                forecast_extension += "        #k =  max(1, min(round(f / 4 - 1), 10))\r\n";
+                                forecast_extension += "        if ( k > 0 ){\r\n";
+                                forecast_extension += "             fx <-  fourier(ts(y2,frequency=frequency_value) , K = k)\r\n";
 
                                 for (int j = 1; j <= Math.Min(max_seasonal, n_seasons-1); j++)
                                 {
@@ -2206,85 +2217,109 @@ namespace WindowsFormsApplication1
                                 }
                                 for (int j = 1; j <= Math.Min(max_seasonal, n_seasons - 1); j++)
                                 {
-                                    forecast_extension += "             if ( t_step > 2 ) test$season" + j.ToString() + "[length(test$target_)-1]<- fx[length(test$target_)-1," + j.ToString() + "] #update\r\n";
+                                    forecast_extension += "             #if ( t_step > 2 ) test$season" + j.ToString() + "[length(test$target_)-1]<- fx[length(test$target_)-1," + j.ToString() + "] #update\r\n";
                                 }
-                                forecast_extension += "         }\r\n";
+                                forecast_extension += "        }\r\n";
                                 forecast_extension += "\r\n";
                             }
+
+
+                            forecast_extension += "        overall <- test\r\n";
+                            forecast_extension += "        if ( overall_flg == 1) overall <- rbind(train, test)\r\n";
+                            forecast_extension += "\r\n";
                             if (use_decompose == 1)
                             {
-                                forecast_extension += "	         overall <- test\r\n";
-                                forecast_extension += "	         if ( overall_flg == 1) overall <- rbind(train, test)\r\n";
-                                forecast_extension += "\r\n";
-                                forecast_extension += "	         #The value of the variable 'test$seasonal' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
-                                forecast_extension += "	         if ( !is.null(decompose_df)){\r\n";
-                                forecast_extension += "	            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency="+numericUpDown14.Value.ToString()+ "), type =\"multiplicative\")\r\n";
+                                forecast_extension += "        #The value of the variable 'test$seasonal' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
+                                forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
+                                forecast_extension += "	            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency=frequency_value), type =\"multiplicative\")\r\n";
                                 forecast_extension += "	            decompose_df <<- tmp\r\n";
-                                forecast_extension += "	            if ( t_step > 2 ) overall$seasonal[length(overall$target_)-1] = decompose_df$seasonal[length(overall$target_)-1]   #update\r\n";
+                                forecast_extension += "	            #if ( t_step > 2 ) overall$seasonal[length(overall$target_)-1] = decompose_df$seasonal[length(overall$target_)-1]   #update\r\n";
                                 forecast_extension += "	            overall$seasonal[length(overall$target_)] = decompose_df$seasonal[length(overall$target_)]\r\n";
                                 forecast_extension += "\r\n";
                                 forecast_extension += "	            tmp<- seasadj(tmp)\r\n";
                                 forecast_extension += "	            tmp <- as.data.frame(as.matrix(tmp))\r\n";
-                                forecast_extension += "	            if ( t_step > 2 ) overall$deseasonal[length(overall$target_) - 1] = tmp[length(overall$target_) - 1, 1]\r\n";
+                                forecast_extension += "	            #if ( t_step > 2 ) overall$deseasonal[length(overall$target_) - 1] = tmp[length(overall$target_) - 1, 1]\r\n";
                                 forecast_extension += "	            overall$deseasonal[length(overall$target_)] = tmp[length(overall$target_), 1]\r\n";
-                                forecast_extension += "	            test <- overall\r\n";
-                                forecast_extension += "	            if ( overall_flg == 1) test <- overall[-c(1:nrow(train)),]\r\n";
-                                forecast_extension += "	            if ( t_step == 1 ) forecast_debug_plot(train, test, NULL, \"deseasonal\", \"deseasonal.png\")\r\n";
                                 forecast_extension += "\r\n";
-                                forecast_extension += "	         }\r\n";
+                                forecast_extension += "        }\r\n";
                                 forecast_extension += "\r\n";
                             }
 
                             if (use_arima == 1)
                             {
-                                forecast_extension += "             overall <- test\r\n";
-                                forecast_extension += "             if ( overall_flg == 1) overall <- rbind(train, test)\r\n";
                                 forecast_extension += "        \r\n";
-                                forecast_extension += "			    if ( !is.null(decompose_df)){\r\n";
-                                forecast_extension += "				    overall$target_ <- overall$deseasonal\r\n";
-                                forecast_extension += "			    }else\r\n";
-                                forecast_extension += "			    {\r\n";
-                                forecast_extension += "				    overall$target_ <- overall$'" + targetName + "'\r\n";
-                                forecast_extension += "			    }\r\n";
-                                forecast_extension += "			    t<-stl(ts(as.vector(overall$target_),frequency=" + numericUpDown14.Value.ToString()+"), s.window=\"per\", robust=TRUE)\r\n";
-                                forecast_extension += "			    stl_t = as.matrix(t$time.series[,2])      #トレンド（Trend）\r\n";
-                                forecast_extension += "			    stl_s = as.matrix(t$time.series[,1])      #季節性（Seasonal）\r\n";
-                                forecast_extension += "			    stl_r = as.matrix(t$time.series[,3])      #残差（Remainder）\r\n";
-                                forecast_extension += "			    overall$trend[length(overall$target_)] <- stl_t[length(overall$target_),1]\r\n";
-                                forecast_extension += "			    overall$target_[length(overall$target_)] <- overall$target_[length(overall$target_)] - overall$trend[length(overall$target_)]\r\n";
-                                forecast_extension += "             test <- overall\r\n";
-                                forecast_extension += "             if ( overall_flg == 1) test <- overall[-c(1:nrow(train)),]\r\n";
-                                forecast_extension += "             if ( t_step == 1 ) forecast_debug_plot(train, test, NULL, \"trend\", \"trend.png\")\r\n";
+                                forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
+                                forecast_extension += "				overall$target_ <- overall$deseasonal\r\n";
+                                forecast_extension += "        }else\r\n";
+                                forecast_extension += "        {\r\n";
+                                forecast_extension += "				overall$target_ <- overall$'" + targetName + "'\r\n";
+                                forecast_extension += "        }\r\n";
+                                forecast_extension += "        t<-stl(ts(as.vector(overall$target_),frequency=frequency_value), s.window=\"per\", robust=TRUE)\r\n";
+                                forecast_extension += "        stl_t = as.matrix(t$time.series[,2])      #トレンド（Trend）\r\n";
+                                forecast_extension += "        stl_s = as.matrix(t$time.series[,1])      #季節性（Seasonal）\r\n";
+                                forecast_extension += "        stl_r = as.matrix(t$time.series[,3])      #残差（Remainder）\r\n";
+                                forecast_extension += "        overall$trend[length(overall$target_)] <- stl_t[length(overall$target_),1]\r\n";
+                                forecast_extension += "        overall$target_[length(overall$target_)] <- overall$target_[length(overall$target_)] - overall$trend[length(overall$target_)]\r\n";
 
                                 forecast_extension += "        \r\n";
                                 forecast_extension += "        \r\n";
                                 forecast_extension += "         if ( use_prophet == 0){\r\n";
                                 forecast_extension += "             tryCatch({\r\n";
-                                forecast_extension += "                 df_t <- ts(test$trend[1:(nrow(test)-1)],start=as.POSIXct(test[1,1]),frequency=" + numericUpDown14.Value.ToString() + ")\r\n";
-                                forecast_extension += "                 #ts.plot(df_t)\r\n";
                                 forecast_extension += "                 if ( is.null(trendFit)){\r\n";
-                                forecast_extension += "                     trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
-                                forecast_extension += "                         max.order=20,  #p+q+P+Q\r\n";
-                                forecast_extension += "                         max.d = 12,\r\n";
-                                forecast_extension += "                         max.D = 12,\r\n";
-                                forecast_extension += "                         max.p = 5,\r\n";
-                                forecast_extension += "                         max.q = 5,\r\n";
-                                forecast_extension += "                         max.P = 5,\r\n";
-                                forecast_extension += "                         max.Q = 5,\r\n";
-                                forecast_extension += "                         nmodels = 100,\r\n";
-                                forecast_extension += "                         #approximation=F,\r\n";
-                                forecast_extension += "                         seasonal = T, stepwise=F, trace=T)\r\n";
-                                forecast_extension += "                 }\r\n";
-                                forecast_extension += "                 #pred <- predict(trendFit,n.ahead=t_step+1)\r\n";
-                                forecast_extension += "                 #test$trend[nrow(test)] <- pred$pred[t_step+1]\r\n";
-                                forecast_extension += "                 pred<-forecast(trendFit, level = c(50,95), h = t_step)\r\n";
-                                forecast_extension += "                 test$trend[nrow(test)] <- as.data.frame(pred)[t_step,1]\r\n";
+                                forecast_extension += "                     # rolling forecast\r\n";
+                                forecast_extension += "                     train_length = " +numericUpDown19.Value.ToString()+"\r\n";
+                                forecast_extension += "                     if ( nrow(overall)- train_length -2 <= 0 )\r\n";
+                                forecast_extension += "                     {\r\n";
+                                forecast_extension += "                         train_length = nrow(overall)-2\r\n";
+                                forecast_extension += "                     }\r\n";
+                                forecast_extension += "                     tmp = overall[(nrow(overall)-train_length-2):(nrow(overall)-1),]\r\n";
+                                forecast_extension += "                     df_t <- ts(tmp$trend,start=c(2015,1),frequency=frequency_value)\r\n";
+                                forecast_extension += "                     if ( fast_arima == 0 ){\r\n";
+                                forecast_extension += "                         trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
 
+                                forecast_extension += "                             max.order=10,  #p+q+P+Q\r\n";
+                                forecast_extension += "                             max.d = 2,\r\n";
+                                forecast_extension += "                             max.D = 1,\r\n";
+                                forecast_extension += "                             max.p = 5,\r\n";
+                                forecast_extension += "                             max.q = 5,\r\n";
+                                forecast_extension += "                             max.P = 2,\r\n";
+                                forecast_extension += "                             max.Q = 2,\r\n";
+                                forecast_extension += "                             nmodels = 100,\r\n";
+                                forecast_extension += "                             #approximation=F,\r\n";
+                                forecast_extension += "                             seasonal = T, stepwise=F, trace=T)\r\n";
+                                forecast_extension += "                     }else{\r\n";
+                                forecast_extension += "                         trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
+
+                                forecast_extension += "                             max.order=10,  #p+q+P+Q\r\n";
+                                forecast_extension += "                             #approximation=F,\r\n";
+                                forecast_extension += "                             seasonal = T, stepwise=T, trace=T)\r\n";
+
+                                forecast_extension += "                     }\r\n";
+                                forecast_extension += "                     t_step_forcast = t_step\r\n";
+                                forecast_extension += "\r\n";
+                                forecast_extension += "                 }\r\n";
+                                forecast_extension += "                 h = t_step-t_step_forcast+1\r\n";
+                                forecast_extension += "                 pred<-forecast(trendFit, level = c(50,95), h = h)\r\n";
+                                forecast_extension += "                 #Point Forecast\r\n";
+                                forecast_extension += "	                overall$trend[nrow(overall)] <- as.data.frame(pred)[h,1]\r\n";
                                 if (cutoff == 1)
                                 {
-                                    forecast_extension += "                 test$trend[nrow(test)] = limit_cutoff(test$trend[nrow(test)], upper_limit, lower_limit)\r\n";
+
+                                    forecast_extension += "	                if ( overall$trend[nrow(overall)] > upper_limit )\r\n";
+                                    forecast_extension += "	                {\r\n";
+                                    forecast_extension += "	                 	#Lo 95\r\n";
+                                    forecast_extension += "	                 	overall$trend[nrow(overall)] <- as.data.frame(pred)[h,4]\r\n";
+                                    forecast_extension += "	                }\r\n";
+                                    forecast_extension += "	                if ( overall$trend[nrow(overall)] < lower_limit )\r\n";
+                                    forecast_extension += "	                {\r\n";
+                                    forecast_extension += "	                 	#Hi 95\r\n";
+                                    forecast_extension += "	                 	overall$trend[nrow(overall)] <- as.data.frame(pred)[h,5]\r\n";
+                                    forecast_extension += "	                }\r\n";
+                                    forecast_extension += "                 overall$trend[nrow(overall)] = limit_cutoff(overall$trend[nrow(overall)], upper_limit, lower_limit)\r\n";
                                 }
-                                forecast_extension += "                 #if ( t_step %% " + numericUpDown14.Value.ToString() + "== 0) trendFit = NULL\r\n";
+                                forecast_extension += "	                if ( t_step %% min(10, train_length/4) == 0) trendFit = NULL\r\n";
+
+                                forecast_extension += "                 #if ( t_step %% frequency_value == 0) trendFit = NULL\r\n";
                                 forecast_extension += "             },\r\n";
                                 forecast_extension += "             error = function(e) {\r\n";
                                 forecast_extension += "                #message(e)\r\n";
@@ -2301,9 +2336,9 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "         \r\n";
                                 forecast_extension += "         if ( use_prophet == 1){\r\n";
                                 forecast_extension += "             tryCatch({\r\n";
-                                forecast_extension += "                df_t <- test\t\n";
-                                forecast_extension += "                df_t$ds <- test[,1]\r\n";
-                                forecast_extension += "                df_t$y   <- test$trend\r\n";
+                                forecast_extension += "                df_t <- overall\t\n";
+                                forecast_extension += "                df_t$ds <- overall[,1]\r\n";
+                                forecast_extension += "                df_t$y   <- overall$trend\r\n";
                                 forecast_extension += "                if ( is.null(trendFit)){\r\n";
                                 forecast_extension += "                     prophet_model<-prophet(n.changepoints=25,weekly.seasonality=\"auto\",yearly.seasonality=\"auto\",daily.seasonality=\"auto\",\r\n";
                                 forecast_extension += "                     seasonality.mode = \"additive\",changepoint.prior.scale = 0.05,growth = \"linear\", fit=FALSE";
@@ -2320,14 +2355,14 @@ namespace WindowsFormsApplication1
                                     }
                                 }
                                 forecast_extension += ")\r\n";
-                                forecast_extension += "                     trendFit <-fit.prophet(prophet_model, df_t[1:(nrow(test)-1),])\r\n";
+                                forecast_extension += "                     trendFit <-fit.prophet(prophet_model, df_t[1:(nrow(overall)-1),])\r\n";
                                 forecast_extension += "                 }\r\n";
                                 forecast_extension += "                 future<-make_future_dataframe(trendFit,t_step+1, freq =dt_)\r\n";
                                 forecast_extension += "";
                                 forecast_extension += "";
                                 forecast_extension += "                pred <- predict(trendFit, future,growth = \"linear\")\r\n";
-                                forecast_extension += "                test$trend[nrow(test)] <- pred$yhat[nrow(test)]\r\n";
-                                forecast_extension += "                #if ( t_step %% " + numericUpDown14.Value.ToString() + "== 0) trendFit = NULL\r\n";
+                                forecast_extension += "                overall$trend[nrow(overall)] <- pred$yhat[nrow(overall)]\r\n";
+                                forecast_extension += "                #if ( t_step %% frequency_value == 0) trendFit = NULL\r\n";
                                 forecast_extension += "            },\r\n";
                                 forecast_extension += "            error = function(e) {\r\n";
                                 forecast_extension += "                #message(e)\r\n";
@@ -2342,7 +2377,9 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "         }\r\n";
                                 forecast_extension += "\r\n";
 
-                                forecast_extension += "            #test$target_ <- test$target_ - test$trend\r\n";
+                                forecast_extension += "         test <- overall\r\n";
+                                forecast_extension += "         if ( overall_flg == 1) test <- overall[-c(1:nrow(train)),]\r\n";
+                                forecast_extension += "         #test$target_ <- test$target_ - test$trend\r\n";
                             }
 
                         }
@@ -2388,10 +2425,10 @@ namespace WindowsFormsApplication1
                         }
                         if ( cutoff == 1)
                         {
-                            forecast_extension += "         predict_y_org[length(test$target_)] = limit_cutoff(predict_y_org[length(test$target_)], upper_limit, lower_limit)\r\n";
-                            forecast_extension += "         predict_y[length(test$target_)] = limit_cutoff(predict_y[length(test$target_)], upper_limit, lower_limit)\r\n";
+                            forecast_extension += "        predict_y_org[length(test$target_)] = limit_cutoff(predict_y_org[length(test$target_)], upper_limit, lower_limit)\r\n";
+                            forecast_extension += "        predict_y[length(test$target_)] = limit_cutoff(predict_y[length(test$target_)], upper_limit, lower_limit)\r\n";
                         }
-                        forecast_extension += "         predict.y<-as.data.frame(predict_y)\r\n";
+                        forecast_extension += "        predict.y<-as.data.frame(predict_y)\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "	    #データの最後を予測値で更新\r\n";
                         forecast_extension += "	    test$target_[length(test$target_)] <- predict_y_org[length(predict_y)]\r\n";
@@ -2399,14 +2436,15 @@ namespace WindowsFormsApplication1
                         forecast_extension += "\r\n";
                         forecast_extension += "    }\r\n";
                         forecast_extension += "}\r\n";
-                        forecast_extension += "     forecast_debug_plot(train, test, NULL, \"deseasonal\", \"deseasonal2.png\")\r\n";
-                        forecast_extension += "     forecast_debug_plot(train, test, NULL, \"trend\", \"trend2.png\")\r\n";
-                        forecast_extension += "     forecast_debug_plot(train, test, predict.y, \"" + targetName +"\", \"forecast_plot.png\")\r\n";
-                        forecast_extension += "    return(list(predict_y, predict.y, test, test_dmat))\r\n";
+                        forecast_extension += "forecast_debug_plot(train, test, NULL, \"seasonal\", \"seasonal2.png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(train, test, NULL, \"deseasonal\", \"deseasonal2.png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(train, test, NULL, \"trend\", \"trend2.png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(train, test, predict.y, \"" + targetName +"\", \"forecast_plot.png\")\r\n";
+                        forecast_extension += "return(list(predict_y, predict.y, test, test_dmat))\r\n";
                         forecast_extension += "#test<- test[-length(test$target_)]\r\n";
                     }else
                     {
-                        forecast_extension += "    return(list(predict_y, predict.y, test, test_dmat))\r\n";
+                        forecast_extension += "return(list(predict_y, predict.y, test, test_dmat))\r\n";
                     }
 
                     string forecast_extension_f = "";
@@ -2462,10 +2500,17 @@ namespace WindowsFormsApplication1
                     cmd += "test <- ret[[3]]\r\n";
                     cmd += "test_dmat <- ret[[4]]\r\n";
 
+                    cmd += "output_tmp <- cbind(test, predict.y)\r\n";
                     if (checkBox6.Checked || checkBox7.Checked)
                     {
                         cmd += cmd2;
                         cmd += cmd3;
+                        cmd += "tmp <- cbind(lo, up)\r\n";
+                        cmd += "colnames(tmp)<- c(\"lower_interval\", \"upper_interval\")\r\n";
+                        cmd += "tmp2 <- cbind(lo2, up2)\r\n";
+                        cmd += "colnames(tmp)<- c(\"lower2_interval\", \"upper2_interval\")\r\n";
+                        cmd += "output_tmp <- cbind(output_tmp, tmp)\r\n";
+                        cmd += "write.csv(output_tmp, \"predict_interval.csv\", row.names =F)\r\n";
                     }
 
 
@@ -3027,6 +3072,8 @@ namespace WindowsFormsApplication1
                             if (checkBox13.Checked)
                             {
                                 sw.Write(predict_probability);
+                                sw.Write("output_tmp <- cbind(output_tmp, predict_probability_df)\r\n");
+                                sw.Write("write.csv(output_tmp, \"predict_probability.csv\", row.names =F)\r\n");
                             }
                             sw.Write("\r\n");
                             sw.Write("sink()\r\n");
