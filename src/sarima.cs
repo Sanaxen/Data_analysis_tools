@@ -433,8 +433,8 @@ namespace WindowsFormsApplication1
                     cmd += "predict_sarima <- forecast(sarima.model";
                     if (xreg_var.Items.Count > 0)
                     {
-                        //cmd += ", xreg = xreg_[1:nPredict,]";
-                        cmd += ", xreg = as.xts(xreg_)[1:nPredict,]";
+                        cmd += ", xreg = xreg_[1:nPredict,]";
+                        //cmd += ", xreg = as.xts(xreg_)[1:nPredict,]";
                     }
                     cmd += ", h = nPredict";
                     cmd +=  ")\r\n";
@@ -534,15 +534,15 @@ namespace WindowsFormsApplication1
                                 //    + ",max.q=" + numericUpDown4.Value.ToString();
 
                                 cmd += "sarima.model <- auto.arima(y = xt[,'" + listBox1.Items[listBox1.SelectedIndex].ToString() + "'],ic=\"aic\",trace=T,stepwise=" + stepwize + ", approximation=F,allowmean=F,allowdrift=F, parallel=F, num.cores = 1"
-                                   //+ ",max.p=" + numericUpDown3.Value.ToString()
-                                   //+ ",max.q=" + numericUpDown4.Value.ToString()
-                                   //+ ",max.order=" + numericUpDown5.Value.ToString()
-                                   //+ ",max.d=" + numericUpDown14.Value.ToString()
-                                   //+ ",max.D=" + numericUpDown15.Value.ToString()
-                                   //+ ",start.p = 0"
-                                   //+ ",start.q = 0"
-                                   //+ ",start.P = 0"
-                                   //+ ",start.Q = 0"
+                                   + ",max.p=" + numericUpDown3.Value.ToString()
+                                   + ",max.q=" + numericUpDown4.Value.ToString()
+                                   + ",max.order=" + numericUpDown5.Value.ToString()
+                                   + ",max.d=" + numericUpDown14.Value.ToString()
+                                   + ",max.D=" + numericUpDown15.Value.ToString()
+                                   + ",start.p = 0"
+                                   + ",start.q = 0"
+                                   + ",start.P = 0"
+                                   + ",start.Q = 0"
                                    ;
                                 //
                                 if (checkBox3.Checked)

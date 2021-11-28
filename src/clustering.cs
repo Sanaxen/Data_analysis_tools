@@ -181,7 +181,13 @@ namespace WindowsFormsApplication1
                         names += ",";
                         names += "'" + form1.Names.Items[listBox2.SelectedIndices[i]].ToString() + "'";
                     }
-                    arg2 += "colnames(df_tmp_)<-c(" + names + ")\r\n";
+                    if (listBox2.SelectedIndices.Count > 1)
+                    {
+                        arg2 += "colnames(df_tmp_)<-c(" + names + ")\r\n";
+                    }else
+                    {
+                        arg2 += "df_tmp_ <- data.frame(" + names + "=df_tmp_)\r\n";
+                    }
                 }
                 else
                 {

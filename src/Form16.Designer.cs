@@ -43,6 +43,7 @@
             this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkBox13 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // checkBox1
@@ -194,11 +195,24 @@
             this.label1.TabIndex = 94;
             this.label1.Text = "日時列";
             // 
+            // checkBox13
+            // 
+            this.checkBox13.AutoSize = true;
+            this.checkBox13.Checked = true;
+            this.checkBox13.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox13.Location = new System.Drawing.Point(348, 221);
+            this.checkBox13.Name = "checkBox13";
+            this.checkBox13.Size = new System.Drawing.Size(89, 19);
+            this.checkBox13.TabIndex = 95;
+            this.checkBox13.Text = "連続値化";
+            this.checkBox13.UseVisualStyleBackColor = true;
+            // 
             // Form16
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(525, 252);
+            this.Controls.Add(this.checkBox13);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBox12);
             this.Controls.Add(this.checkBox11);
@@ -238,5 +252,6 @@
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.CheckBox checkBox12;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBox13;
     }
 }

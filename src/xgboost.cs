@@ -351,7 +351,7 @@ namespace WindowsFormsApplication1
 
                     if (form1.Int_func("coltype_time", "df") == 1)
                     {
-                        cmd1 += "df[,1] <- as.POSIXct(df[,1])\r\n";
+                        cmd1 += "df[,1] <- as.POSIXct(df[,1], format = \"%Y-%m-%d %H:%M:%OS\")\r\n";
                     }
 
                     if (System.IO.File.Exists("addtime_cols.csv"))
@@ -425,9 +425,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "#k =  max(1, min(round(frequency_value / 4 - 1), 10))\r\n";
                         cmd1 += "if ( k > 0 ){\r\n";
                         cmd1 += "   fx <-  fourier(ts(y2,frequency=frequency_value) , K = k)\r\n";
-                        cmd1 += "   df_ts_tmp <- cbind(df_ts_tmp, fx)\r\n";
-                        cmd1 += "   for (i in 1:ncol(fx)){\r\n";
-                        cmd1 += "       colnames(df_ts_tmp)[ncol(df_ts_tmp)-ncol(fx)+i] <- c(gsub(\" \", \"\",paste(\"season\", i)))\r\n";
+                        cmd1 += "   df_ts_tmp <- cbind(df_ts_tmp, fx[,1:min(" + max_seasonal + ", ncol(fx))])\r\n";
+                        cmd1 += "   for (i in 1:min("+max_seasonal+",ncol(fx))){\r\n";
+                        cmd1 += "       colnames(df_ts_tmp)[ncol(df_ts_tmp)-min(" + max_seasonal + ",ncol(fx))+i] <- c(gsub(\" \", \"\",paste(\"season\", i)))\r\n";
                         cmd1 += "   }\r\n";
                         cmd1 += "}\r\n";
                     }
@@ -1981,7 +1981,6 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "fast_arima = 0\r\n";
                         }
-
                         //forecast_extension += "test<- test_org\r\n";
                         //forecast_extension += "test$target_[length(test$target_)] = predict_y_org[length(predict_y)]\r\n";
                         //forecast_extension += "test$target_ = predict_y_org\r\n";
@@ -2136,8 +2135,16 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] <- 1\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "        tryCatch({\r\n";
-                        forecast_extension += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
-                        forecast_extension += "            d = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))\r\n";
+                        if (checkBox18.Checked)
+                        {
+                            forecast_extension += "            m = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))/12)\r\n";
+                            forecast_extension += "            d = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/30)\r\n";
+                        }
+                        else
+                        {
+                            forecast_extension += "            m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
+                            forecast_extension += "            d = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))\r\n";
+                        }
                         forecast_extension += "        },\r\n";
                         forecast_extension += "        error = function(e){\r\n";
                         forecast_extension += "            #message(e)\r\n";
@@ -2151,9 +2158,18 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        )\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "        tryCatch({\r\n";
-                        forecast_extension += "            h = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))\r\n";
-                        forecast_extension += "            m = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))\r\n";
-                        forecast_extension += "            s = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%S\"))\r\n";
+                        if (checkBox18.Checked)
+                        {
+                            forecast_extension += "            h = sin(2*pi*as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))/24)\r\n";
+                            forecast_extension += "            m = sin(2*pi*as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))/60)\r\n";
+                            forecast_extension += "            s = sin(2*pi*as.numeric(format(as.POSIXlt(test[nrow(test),1]),\"%OS6\"))/60)\r\n";
+                        }
+                        else
+                        {
+                            forecast_extension += "            h = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))\r\n";
+                            forecast_extension += "            m = as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))\r\n";
+                            forecast_extension += "            s = as.numeric(format(as.POSIXlt(test[nrow(test),1]),\"%OS6\"))\r\n";
+                        }
                         forecast_extension += "        },\r\n";
                         forecast_extension += "        error = function(e){\r\n";
                         forecast_extension += "            #message(e)\r\n";
@@ -2199,6 +2215,8 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        test$'grad5_" + targetName + "'" +
                                "[length(test$target_)]<- curvature(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
                             }
+
+
 
                             if (n_seasons / 2 > 1 && checkBox14.Checked)
                             {
@@ -2317,7 +2335,7 @@ namespace WindowsFormsApplication1
                                     forecast_extension += "	                }\r\n";
                                     forecast_extension += "                 overall$trend[nrow(overall)] = limit_cutoff(overall$trend[nrow(overall)], upper_limit, lower_limit)\r\n";
                                 }
-                                forecast_extension += "	                if ( t_step %% min(10, train_length/4) == 0) trendFit = NULL\r\n";
+                                forecast_extension += "	                if ( t_step %% (train_length/6) == 0) trendFit = NULL\r\n";
 
                                 forecast_extension += "                 #if ( t_step %% frequency_value == 0) trendFit = NULL\r\n";
                                 forecast_extension += "             },\r\n";
@@ -2336,7 +2354,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "         \r\n";
                                 forecast_extension += "         if ( use_prophet == 1){\r\n";
                                 forecast_extension += "             tryCatch({\r\n";
-                                forecast_extension += "                df_t <- overall\t\n";
+                                forecast_extension += "                df_t <- overall\r\n";
                                 forecast_extension += "                df_t$ds <- overall[,1]\r\n";
                                 forecast_extension += "                df_t$y   <- overall$trend\r\n";
                                 forecast_extension += "                if ( is.null(trendFit)){\r\n";
@@ -2381,7 +2399,6 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "         if ( overall_flg == 1) test <- overall[-c(1:nrow(train)),]\r\n";
                                 forecast_extension += "         #test$target_ <- test$target_ - test$trend\r\n";
                             }
-
                         }
 
                         //forecast_extension += "		id = -1\r\n";
@@ -2604,7 +2621,6 @@ namespace WindowsFormsApplication1
                             predict_probability += "predictions = data.frame(matrix(nrow=length(test$target_), ncol=eval_samples))\r\n";
                         }
 
-
                         predict_probability += "std_mean <- function(x) sd(x)/sqrt(length(x))\r\n";
                         predict_probability += "rndsgn <- function(){\r\n";
                         predict_probability += "if (runif(1) > 0.5) return (1.0)\r\n";
@@ -2616,16 +2632,23 @@ namespace WindowsFormsApplication1
                         predict_probability += "test<-test_sv\r\n";
                         predict_probability += "\r\n";
 
+
+
+                        predict_probability += "skippcol <- c(\"sunday\", \"monday\", \"tuesday\", \"wednesday\", \"thursday\", \"friday\", \"saturday\", \"month\", \"day\", \"hour\", \"minute\", \"second\")\r\n";
                         predict_probability += "for (i in 1:ncol(predictions)){\r\n";
-                        for (int i = 0; i < var.Items.Count; i++)
-                        {
-                            predict_probability += "#   test$" + var.Items[i].ToString() +
-                                    "<- rnorm(length(test$target_), mean_" + var.Items[i].ToString() + ",sd_" + var.Items[i].ToString() + ")\r\n";
-                        }
-                        for (int i = 0; i < var.Items.Count; i++)
-                        {
-                            predict_probability += "   if ( runif(1) > alp) test$" + var.Items[i].ToString() +
+                        for ( int i = 0; i < var.Items.Count;i++) {
+                            predict_probability += "    skipp = 0\r\n";
+	                        predict_probability += "    for (j in 1:length(skippcol)){\r\n";
+	                        predict_probability += "       ptn = paste(\"^\", skippcol[j])\r\n";
+	                        predict_probability += "       ptn = paste(ptn, \"$\")\r\n";
+	                        predict_probability += "       ptn = gsub(\" \", \"\", ptn)\r\n";
+
+							predict_probability += "       colidx_1 = grep(ptn,  \""+ var.Items[i].ToString() +"\")\r\n";
+                        	predict_probability += "       if ( skipp == 0 && length(colidx_1) == 1 ) skipp = 1\r\n";
+                            predict_probability += "    }\r\n";
+                            predict_probability += "    if ( skipp == 0 && runif(1) > alp) test$" + var.Items[i].ToString() +
                                    "<- test_sv$" + var.Items[i].ToString() + " + rndsgn() * runif(1) * std_mean(train$" + var.Items[i].ToString() + ")\r\n";
+                            predict_probability += "\r\n";
                         }
                         if ( time_series_mode && var.Items.Count == 0)
                         {

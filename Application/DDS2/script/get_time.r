@@ -12,5 +12,11 @@ add_MinuteNumber <- function(ds) {
 
 add_SecondNumber <- function(ds) {
   	dates <- as.POSIXlt(ds)
-	return (as.integer(format(dates,"%S")))
+	return (as.numeric(format(dates,"%OS6")))
 }
+
+add_milliSecondNumber <- function(ds) {
+  	dates <- as.POSIXlt(ds)
+	return (as.numeric(format(dates,"%OS6")))
+}
+

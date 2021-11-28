@@ -1994,7 +1994,7 @@ namespace WindowsFormsApplication1
                     cmd += "    }\r\n";
 
                     cmd += "    if ( s_ == 2){\r\n";
-                    cmd += "        " + newdf + "$'" + Names.Items[i].ToString() + "' <- as.POSIXlt(" + newdf + "$'" + Names.Items[i].ToString() + "')\r\n";
+                    cmd += "        " + newdf + "$'" + Names.Items[i].ToString() + "' <- as.POSIXct(" + newdf + "$'" + Names.Items[i].ToString() + "')\r\n";
                     cmd += "    }\r\n";
                     cmd += "},\r\n";
                     cmd += "error = function(e){\r\n";

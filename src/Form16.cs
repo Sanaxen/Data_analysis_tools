@@ -61,12 +61,25 @@ namespace WindowsFormsApplication1
             if (checkBox6.Checked) cmd += "df$friday<-add_friday(df$'" + comboBox2.Text + "')\r\n";
             if (checkBox7.Checked) cmd += "df$saturday<-add_saturday(df$'" + comboBox2.Text + "')\r\n";
 
-            if (checkBox8.Checked) cmd += "df$month<-add_MonthNumber(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox9.Checked) cmd += "df$day<-add_DayNumber(df$'" + comboBox2.Text + "')\r\n";
 
-            if (checkBox10.Checked) cmd += "df$hour<-add_HourNumber(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox11.Checked) cmd += "df$minute<-add_MinuteNumber(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox12.Checked) cmd += "df$second<-add_SecondNumber(df$'" + comboBox2.Text + "')\r\n";
+            if (checkBox13.Checked)
+            {
+                if (checkBox8.Checked) cmd += "df$month<-sin(2*pi*add_MonthNumber(df$'" + comboBox2.Text + "')/12)\r\n";
+                if (checkBox9.Checked) cmd += "df$day<-sin(2*pi*add_DayNumber(df$'" + comboBox2.Text + "')/30)\r\n";
+
+                if (checkBox10.Checked) cmd += "df$hour<-sin(2*pi*add_HourNumber(df$'" + comboBox2.Text + "')/24)\r\n";
+                if (checkBox11.Checked) cmd += "df$minute<-sin(2*pi*add_MinuteNumber(df$'" + comboBox2.Text + "')/60)\r\n";
+                if (checkBox12.Checked) cmd += "df$second<-sin(2*pi*add_SecondNumber(df$'" + comboBox2.Text + "')/60)\r\n";
+            }else
+            {
+                if (checkBox8.Checked) cmd += "df$month<-add_MonthNumber(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox9.Checked) cmd += "df$day<-add_DayNumber(df$'" + comboBox2.Text + "')\r\n";
+
+                if (checkBox10.Checked) cmd += "df$hour<-add_HourNumber(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox11.Checked) cmd += "df$minute<-add_MinuteNumber(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox12.Checked) cmd += "df$second<-add_SecondNumber(df$'" + comboBox2.Text + "')\r\n";
+            }
+
             if (cmd == "") return;
 
             form1.script_executestr(cmd);

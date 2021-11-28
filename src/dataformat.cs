@@ -352,7 +352,7 @@ namespace WindowsFormsApplication1
             string src = "Sys.setlocale(\"LC_TIME\", \"C\")\r\n";
             if ( radioButton1.Checked)
             {
-                src += "tmp_<- as.POSIXlt(" + "df" + Form1.Df_count.ToString() + "$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "')\r\n";
+                src += "tmp_<- as.POSIXct(" + "df" + Form1.Df_count.ToString() + "$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "', format = \"%Y-%m-%d %H:%M:%OS\")\r\n";
                 src += "tmp_<- as.numeric(tmp_)\r\n";
             }
             if (radioButton2.Checked)
@@ -362,7 +362,7 @@ namespace WindowsFormsApplication1
             }
             if (radioButton3.Checked)
             {
-                src += "tmp_<- as.POSIXlt(" + "df" + Form1.Df_count.ToString() + "$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "',origin=\"1970-01-01\")\r\n";
+                src += "tmp_<- as.POSIXct(" + "df" + Form1.Df_count.ToString() + "$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "',origin=\"1970-01-01\", format = \"%Y-%m-%d %H:%M:%OS\")\r\n";
             }
             if (radioButton4.Checked)
             {
