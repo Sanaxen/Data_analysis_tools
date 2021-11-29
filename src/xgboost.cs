@@ -232,6 +232,8 @@ namespace WindowsFormsApplication1
             else eval = 0;
             if (checkBox16.Checked) cutoff = 1;
             else cutoff = 0;
+            if (time_series_mode) checkBox2.Enabled = false;
+            else checkBox2.Enabled = true;
             try
             {
                 form1.FileDelete("curvplot_temp.html");
@@ -351,7 +353,7 @@ namespace WindowsFormsApplication1
 
                     if (form1.Int_func("coltype_time", "df") == 1)
                     {
-                        cmd1 += "df[,1] <- as.POSIXct(df[,1], format = \"%Y-%m-%d %H:%M:%OS\")\r\n";
+                        cmd1 += "df[,1] <- as.POSIXct(df[,1])\r\n";
                     }
 
                     if (System.IO.File.Exists("addtime_cols.csv"))
@@ -361,6 +363,7 @@ namespace WindowsFormsApplication1
 
                     cmd1 += "n_diffs <- 0\r\n";
                     cmd1 += "df_ts_tmp <- df\r\n";
+                    cmd1 += "df_ts_tmp[is.na(df_ts_tmp)] <- 0\r\n";
                     for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                     {
                         for (int j = 1; j <= lag; j++)
@@ -594,6 +597,10 @@ namespace WindowsFormsApplication1
                         cmd1 += "stl_r = as.matrix(t$time.series[,3])      #残差（Remainder）\r\n";
                         cmd1 += "df_ts_tmp$trend <- stl_t\r\n";
                         cmd1 += "df_ts_tmp$target_ <- df_ts_tmp$target_ - stl_t\r\n";
+                        cmd1 += "adf.test(df_ts_tmp$target_)\r\n";
+                        cmd1 += "png(\"stldecomp.png\", width = 100*6.4*3, height = 100*4.8)\r\n";
+                        cmd1 += "plot(t)\r\n";
+                        cmd1 += "dev.off()\r\n";
                     }
                     if ( !checkBox9.Checked )
                     {
@@ -1542,7 +1549,7 @@ namespace WindowsFormsApplication1
                         cmd += cmd2;
                         cmd += cmd3;
                     }
-                    if (checkBox2.Checked)
+                    if (checkBox2.Checked && !time_series_mode)
                     {
                         cmd += "xgb_cv <- xgb.cv(data = train_dmat";
                         cmd += ",nrounds = " + numericUpDown1.Value.ToString();
@@ -2138,7 +2145,7 @@ namespace WindowsFormsApplication1
                         if (checkBox18.Checked)
                         {
                             forecast_extension += "            m = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))/12)\r\n";
-                            forecast_extension += "            d = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/30)\r\n";
+                            forecast_extension += "            d = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/(numberOfDays(as.Date((test[nrow(test),1])))))\r\n";
                         }
                         else
                         {

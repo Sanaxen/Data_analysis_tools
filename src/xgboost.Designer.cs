@@ -36,6 +36,7 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.checkBox18 = new System.Windows.Forms.CheckBox();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.label41 = new System.Windows.Forms.Label();
             this.comboBox6 = new System.Windows.Forms.ComboBox();
@@ -178,7 +179,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox18 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -389,6 +389,18 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(277, 703);
             this.panel7.TabIndex = 147;
+            // 
+            // checkBox18
+            // 
+            this.checkBox18.AutoSize = true;
+            this.checkBox18.Checked = true;
+            this.checkBox18.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox18.Location = new System.Drawing.Point(155, 553);
+            this.checkBox18.Name = "checkBox18";
+            this.checkBox18.Size = new System.Drawing.Size(119, 19);
+            this.checkBox18.TabIndex = 170;
+            this.checkBox18.Text = "月日時連続化";
+            this.checkBox18.UseVisualStyleBackColor = true;
             // 
             // textBox14
             // 
@@ -643,7 +655,7 @@
             this.numericUpDown14.Location = new System.Drawing.Point(9, 161);
             this.numericUpDown14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown14.Maximum = new decimal(new int[] {
-            1000,
+            100000,
             0,
             0,
             0});
@@ -2246,18 +2258,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // checkBox18
-            // 
-            this.checkBox18.AutoSize = true;
-            this.checkBox18.Checked = true;
-            this.checkBox18.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox18.Location = new System.Drawing.Point(155, 553);
-            this.checkBox18.Name = "checkBox18";
-            this.checkBox18.Size = new System.Drawing.Size(119, 19);
-            this.checkBox18.TabIndex = 170;
-            this.checkBox18.Text = "月日時連続化";
-            this.checkBox18.UseVisualStyleBackColor = true;
             // 
             // xgboost
             // 
