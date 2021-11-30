@@ -52,6 +52,7 @@ namespace WindowsFormsApplication1
         public int lag = 0;
         public int start_lag = 0;
         int means_n = 3;
+        int means_n2 = 10;
         int befor_day = 5;  // befor_day >= 5
         int befor_3day = 3;
         int use_geom_point = 0;
@@ -384,6 +385,42 @@ namespace WindowsFormsApplication1
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
                         cmd1 += "	df_ts_tmp$'mean_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_n + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    if ( lag >= means_n2)
+                    {
+                        cmd1 += "df_ts_tmp$'mean2_" + targetName + "'" + "<- df_ts_tmp$'grad_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ means_n2 + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean2_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean2_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_n2 + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    if ( lag >= means_n)
+                    {
+                        cmd1 += "df_ts_tmp$'sd_" + targetName + "'" + "<- df_ts_tmp$'grad_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ means_n + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'sd_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'sd_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_n + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    if ( lag >= means_n2)
+                    {
+                        cmd1 += "df_ts_tmp$'sd2_" + targetName + "'" + "<- df_ts_tmp$'grad_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ means_n2 + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'sd2_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'sd2_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_n2 + "):(i-1)] )\r\n";
                         cmd1 += "}\r\n";
                     }
                     if ( lag >= befor_day)
@@ -910,6 +947,9 @@ namespace WindowsFormsApplication1
                     formuler += "+ grad2_" + targetName;
 
                     if (lag >= means_n) formuler += "+ mean_" + targetName;
+                    if (lag >= means_n) formuler += "+ sd_" + targetName;
+                    if (lag >= means_n2) formuler += "+ mean2_" + targetName;
+                    if (lag >= means_n2) formuler += "+ sd2_" + targetName;
                     if (lag >= befor_day)
                     {
                         formuler += "+ grad3_" + targetName;
@@ -2000,6 +2040,9 @@ namespace WindowsFormsApplication1
                         forecast_extension += "colidx3 = grep(\"^grad[0-9]?_" + targetName + "$\", colnames(test) )\r\n";
                         forecast_extension += "colidx4 = grep(\"^mean_" + targetName + "$\", colnames(test) )\r\n";
                         forecast_extension += "colidx5 = grep(\"^season[0-9]+$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx6 = grep(\"^sd_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx7 = grep(\"^mean2_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx8 = grep(\"^sd2_" + targetName + "$\", colnames(test) )\r\n";
                         forecast_extension += "mean_ <- apply(train[,-1],2, mean)\r\n";
                         forecast_extension += "sd_ <- apply(train[,-1],2, sd)\r\n";
                         forecast_extension += "st_ <- test[nrow(test),1]\r\n";
@@ -2065,7 +2108,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "                     }\r\n";
                             forecast_extension += "                }\r\n";
                         }
-                        forecast_extension += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && skip != TRUE)\r\n";
+                        forecast_extension += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && i != colidx6 && i != colidx7 && i != colidx8 && skip != TRUE)\r\n";
                         forecast_extension += "	            {\r\n";
                         forecast_extension += "                    test[nrow(test), i] <- rnorm(mean_, sd_)[i]\r\n";
                         forecast_extension += "                    if ( sample_metod == 1){\r\n";
@@ -2207,6 +2250,22 @@ namespace WindowsFormsApplication1
                             {
                                 forecast_extension += "        test$'mean_" + targetName + "'" +
                                "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
+                            }
+                            if (lag >= means_n2)
+                            {
+                                forecast_extension += "        test$'mean2_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n2 + "):(length(test$target_)-1)])\r\n";
+                            }
+
+                            if (lag >= means_n)
+                            {
+                                forecast_extension += "        test$'sd_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
+                            }
+                            if (lag >= means_n2)
+                            {
+                                forecast_extension += "        test$'sd2_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_n2 + "):(length(test$target_)-1)])\r\n";
                             }
 
                             if (lag >= befor_day)
