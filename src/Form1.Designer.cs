@@ -202,6 +202,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
+            this.button75 = new System.Windows.Forms.Button();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.panel1.SuspendLayout();
             this.panel15.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -230,6 +232,7 @@
             this.panel11.SuspendLayout();
             this.panel12.SuspendLayout();
             this.panel14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox2
@@ -2140,6 +2143,8 @@
             // 
             this.tabPage7.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.tabPage7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage7.Controls.Add(this.numericUpDown2);
+            this.tabPage7.Controls.Add(this.button75);
             this.tabPage7.Controls.Add(this.label17);
             this.tabPage7.Controls.Add(this.button72);
             this.tabPage7.Controls.Add(this.button70);
@@ -2845,6 +2850,28 @@
             this.timer3.Interval = 10;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
+            // button75
+            // 
+            this.button75.Location = new System.Drawing.Point(1018, 26);
+            this.button75.Name = "button75";
+            this.button75.Size = new System.Drawing.Size(157, 39);
+            this.button75.TabIndex = 116;
+            this.button75.Text = "間引き";
+            this.button75.UseVisualStyleBackColor = true;
+            this.button75.Click += new System.EventHandler(this.button75_Click);
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(1181, 35);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(65, 24);
+            this.numericUpDown2.TabIndex = 117;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -2904,6 +2931,7 @@
             this.panel12.PerformLayout();
             this.panel14.ResumeLayout(false);
             this.panel14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3081,6 +3109,8 @@
         public System.Windows.Forms.CheckBox checkBox4;
         public System.Windows.Forms.NumericUpDown numericUpDown5;
         public System.Windows.Forms.CheckBox checkBox10;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Button button75;
     }
 }
 

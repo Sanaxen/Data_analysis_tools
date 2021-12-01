@@ -2043,6 +2043,16 @@ namespace WindowsFormsApplication1
                         forecast_extension += "colidx6 = grep(\"^sd_" + targetName + "$\", colnames(test) )\r\n";
                         forecast_extension += "colidx7 = grep(\"^mean2_" + targetName + "$\", colnames(test) )\r\n";
                         forecast_extension += "colidx8 = grep(\"^sd2_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "if ( length(colidx0) != 1 ) colidx0 = -1\r\n";
+                        forecast_extension += "if ( length(colidx1) != 1 ) colidx1 = -1\r\n";
+                        forecast_extension += "if ( length(colidx2) != 1 ) colidx2 = -1\r\n";
+                        forecast_extension += "if ( length(colidx3) != 1 ) colidx3 = -1\r\n";
+                        forecast_extension += "if ( length(colidx4) != 1 ) colidx4 = -1\r\n";
+                        forecast_extension += "if ( length(colidx5) != 1 ) colidx5 = -1\r\n";
+                        forecast_extension += "if ( length(colidx6) != 1 ) colidx6 = -1\r\n";
+                        forecast_extension += "if ( length(colidx7) != 1 ) colidx7 = -1\r\n";
+                        forecast_extension += "if ( length(colidx8) != 1 ) colidx8 = -1\r\n";
+
                         forecast_extension += "mean_ <- apply(train[,-1],2, mean)\r\n";
                         forecast_extension += "sd_ <- apply(train[,-1],2, sd)\r\n";
                         forecast_extension += "st_ <- test[nrow(test),1]\r\n";
@@ -2565,6 +2575,7 @@ namespace WindowsFormsApplication1
                     forecast_debug_plot += "	}\r\n";
                     forecast_debug_plot += "	\r\n";
                     forecast_debug_plot += "    ggsave(file = savename, predict_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
+                    forecast_debug_plot += "    saveRDS(predict_plt, paste(savename,\".rds\"))\r\n";
                     forecast_debug_plot += "	return(predict_plt)\r\n";
                     forecast_debug_plot += "}\r\n";
 
@@ -3225,6 +3236,7 @@ namespace WindowsFormsApplication1
                                         sw.Write("geom_vline(data = test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[nrow(test_org),1])))+\r\n");
                                     }
                                     sw.Write("scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n");
+                                    sw.Write("saveRDS(predict_plt, \"predict_plt.rds\")\r\n");
 
                                     sw.Write("\r\n");
                                 }
@@ -3969,7 +3981,83 @@ namespace WindowsFormsApplication1
                     sw.Write("回帰,false\r\n");
                     sw.Write("分類,true\r\n");
                 }
-                sw.Close();
+                sw.Write("target_weight,");sw.Write(numericUpDown4.Value.ToString() + "\r\n");
+                sw.Write("coef_weight,");sw.Write(comboBox4.Text + "\r\n");
+                sw.Write("booster,");sw.Write(comboBox1.Text + "\r\n");
+                sw.Write("objective,");sw.Write(comboBox2.Text + "\r\n");
+                sw.Write("eval_metric,");sw.Write(comboBox3.Text + "\r\n");
+                sw.Write("eta,");sw.Write(textBox3.Text + "\r\n");
+                sw.Write("nthread,");sw.Write(numericUpDown10.Value.ToString() + "\r\n");
+                sw.Write("gamma,");sw.Write(textBox4.Text + "\r\n");
+                sw.Write("min_child_weight,");sw.Write(textBox9.Text + "\r\n");
+                sw.Write("subsample,");sw.Write(textBox8.Text + "\r\n");
+                sw.Write("max_depth,");sw.Write(numericUpDown6.Value.ToString() + "\r\n");
+                sw.Write("n_gpus,");sw.Write(numericUpDown11.Value.ToString() + "\r\n");
+                sw.Write("alpha,");sw.Write(textBox5.Text + "\r\n");
+                sw.Write("lambda,");sw.Write(textBox6.Text + "\r\n");
+                sw.Write("num_class,");sw.Write(numericUpDown7.Value.ToString() + "\r\n");
+
+                sw.Write("transform,");sw.Write(numericUpDown16.Value.ToString() + "\r\n");
+                sw.Write("ndiff,");sw.Write(numericUpDown17.Value.ToString() + "\r\n");
+                sw.Write("rolling,");sw.Write(numericUpDown19.Value.ToString() + "\r\n");
+                sw.Write("frequency,");sw.Write(numericUpDown14.Value.ToString() + "\r\n");
+                sw.Write("s_previous,");sw.Write(numericUpDown15.Value.ToString() + "\r\n");
+                sw.Write("num_previous,");sw.Write(numericUpDown8.Value.ToString() + "\r\n");
+                sw.Write("extend,");sw.Write(numericUpDown5.Value.ToString() + "\r\n");
+                sw.Write("plot_interval,");sw.Write(numericUpDown18.Value.ToString() + "\r\n");
+                
+                sw.Write("トレンド分離,");
+				if ( checkBox9.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("トレンド推定,");
+				if ( checkBox15.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("周期分離,");
+				if ( checkBox10.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("混合周期分離,");
+				if ( checkBox14.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("異常検知,");
+				if ( checkBox12.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("X軸時間軸,");
+				if ( checkBox8.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("全区間,");
+				if ( checkBox11.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("上下制限,");
+				if ( checkBox16.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("l_ambda,");sw.Write(textBox10.Text + "\r\n");
+                sw.Write("a_lpha,");sw.Write(textBox11.Text + "\r\n");
+                sw.Write("upper,");sw.Write(textBox12.Text + "\r\n");
+                sw.Write("lower,");sw.Write(textBox13.Text + "\r\n");
+                sw.Write("time_form,");sw.Write(textBox14.Text + "\r\n");
+
+                sw.Write("fast,");
+				if ( checkBox17.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                
+                if (radioButton5.Checked)
+                {
+                    sw.Write("SARIMA,true\r\n");
+                    sw.Write("prophet,false\r\n");
+                }else
+                {
+                    sw.Write("SARIMA,false\r\n");
+                    sw.Write("prophet,true\r\n");
+                }
+              	sw.Close();
             }
 
             form1.comboBox1.Text = cmd;
@@ -4074,30 +4162,327 @@ namespace WindowsFormsApplication1
             System.IO.StreamReader sr = new System.IO.StreamReader(file + ".options", Encoding.GetEncoding("SHIFT_JIS"));
             if (sr != null)
             {
-                string s = sr.ReadLine();
-                var ss = s.Split(',');
-                if (ss[1].Replace("\r\n", "") == "true")
+                while (sr.EndOfStream == false)
                 {
-                    checkBox1.Checked = true;
+                    string s = sr.ReadLine();
+                    var ss = s.Split(',');
+                    if (ss[0].IndexOf("正規化") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox1.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox1.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("回帰") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    radioButton1.Checked = true;
+		                    radioButton2.Checked = false;
+		                }
+		                else
+		                {
+		                    radioButton1.Checked = false;
+		                    radioButton2.Checked = true;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("分類") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    radioButton1.Checked = false;
+		                    radioButton2.Checked = true;
+		                }
+		                else
+		                {
+		                    radioButton1.Checked = true;
+		                    radioButton2.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("target_weight") >= 0)
+                    {
+                        numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("coef_weight") >= 0)
+                    {
+                        comboBox4.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("booster") >= 0)
+                    {
+                        comboBox1.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("objective") >= 0)
+                    {
+                        comboBox2.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("eval_metric") >= 0)
+                    {
+                        comboBox3.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("eta") >= 0)
+                    {
+                        textBox3.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("nthread") >= 0)
+                    {
+                        numericUpDown10.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("gamma") >= 0)
+                    {
+                        textBox4.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("min_child_weight") >= 0)
+                    {
+                        textBox9.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("subsample") >= 0)
+                    {
+                        textBox8.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("max_depth") >= 0)
+                    {
+                        numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("n_gpus") >= 0)
+                    {
+                        numericUpDown11.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("alpha") >= 0)
+                    {
+                        textBox5.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("lambda") >= 0)
+                    {
+                        textBox6.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("num_class") >= 0)
+                    {
+                        numericUpDown7.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("transform") >= 0)
+                    {
+                        numericUpDown16.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("ndiff") >= 0)
+                    {
+                        numericUpDown17.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("rolling") >= 0)
+                    {
+                        numericUpDown19.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("frequency") >= 0)
+                    {
+                        numericUpDown14.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("s_previous") >= 0)
+                    {
+                        numericUpDown15.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("num_previous") >= 0)
+                    {
+                        numericUpDown8.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("extend") >= 0)
+                    {
+                        numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("plot_interval") >= 0)
+                    {
+                        numericUpDown18.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("トレンド分離") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox9.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox9.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("トレンド推定") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox15.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox15.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("混合周期分離") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox14.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox14.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("周期分離") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox10.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox10.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("異常検知") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox12.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox12.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("X軸時間軸") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox8.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox8.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("全区間") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox11.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox11.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("上下制限") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox16.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox16.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("l_ambda") >= 0)
+                    {
+                        textBox10.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("a_lpha") >= 0)
+                    {
+                        textBox11.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("upper") >= 0)
+                    {
+                        textBox12.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("lower") >= 0)
+                    {
+                        textBox13.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("time_form") >= 0)
+                    {
+                        textBox14.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("fast") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    checkBox17.Checked = true;
+		                }
+		                else
+		                {
+		                    checkBox17.Checked = false;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("SARIMA") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    radioButton5.Checked = true;
+		                    radioButton6.Checked = false;
+		                }
+		                else
+		                {
+		                    radioButton5.Checked = false;
+		                    radioButton6.Checked = true;
+		                }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("prophet") >= 0)
+                    {
+		                if (ss[1].Replace("\r\n", "") == "true")
+		                {
+		                    radioButton5.Checked = false;
+		                    radioButton6.Checked = true;
+		                }
+		                else
+		                {
+		                    radioButton5.Checked = true;
+		                    radioButton6.Checked = false;
+		                }
+                        continue;
+                    }
                 }
-                else
-                {
-                    checkBox1.Checked = false;
-                }
-
-                s = sr.ReadLine();
-                ss = s.Split(',');
-                if (ss[1].Replace("\r\n", "") == "true")
-                {
-                    radioButton1.Checked = true;
-                    radioButton2.Checked = false;
-                }
-                else
-                {
-                    radioButton1.Checked = false;
-                    radioButton2.Checked = true;
-                }
-
                 sr.Close();
             }
 
