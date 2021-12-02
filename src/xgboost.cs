@@ -47,7 +47,9 @@ namespace WindowsFormsApplication1
         int random_serch = 1;
         int use_AnomalyDetectionTs = 0;
         public ImageView _ImageView3;
+        public ImageView _ImageView4;
         interactivePlot interactivePlot2 = null;
+        interactivePlot interactivePlot3 = null;
 
         public int lag = 0;
         public int start_lag = 0;
@@ -427,12 +429,12 @@ namespace WindowsFormsApplication1
                     {
                         cmd1 += "df_ts_tmp$'grad3_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= " + (befor_3day) + " )\r\n";
+                        cmd1 += "	if ( i <= " + (befor_3day+1) + " )\r\n";
                         cmd1 += "	{\r\n";
                         cmd1 += "		df_ts_tmp$'grad3_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
-                        cmd1 += "   df_ts_tmp$'grad3_" + targetName + "'[i] <- df$'" + targetName + "'[i] - df$'" + targetName + "'[i-" + (befor_3day) + "]\r\n";
+                        cmd1 += "   df_ts_tmp$'grad3_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_3day+1) + "]\r\n";
                         cmd1 += "}\r\n\r\n";
                         cmd1 += "df_ts_tmp$'grad4_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
@@ -1923,6 +1925,23 @@ namespace WindowsFormsApplication1
                     form1.ComboBoxItemAdd(form1.comboBox2, "predict.xgboost");
 
                     string forecast_extension = "";
+
+                    string cmd_tmp = "";
+                    cmd_tmp = Form1.MyPath + "..\\script\\weekdays.r";
+                    cmd_tmp = cmd_tmp.Replace("\\", "/");
+                    cmd_tmp = "source(\"" + cmd_tmp + "\")\r\n";
+                    forecast_extension += cmd_tmp;
+
+                    cmd_tmp = Form1.MyPath + "..\\script\\get_month_day.r";
+                    cmd_tmp = cmd_tmp.Replace("\\", "/");
+                    cmd_tmp = "source(\"" + cmd_tmp + "\")\r\n";
+                    forecast_extension += cmd_tmp; 
+
+                    cmd_tmp = Form1.MyPath + "..\\script\\get_time.r";
+                    cmd_tmp = cmd_tmp.Replace("\\", "/");
+                    cmd_tmp = "source(\"" + cmd_tmp + "\")\r\n";
+                    forecast_extension += cmd_tmp;
+
                     forecast_extension += "df_<-test\r\n";
                     forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     //if (use_diff == 1 || use_decompose == 1)
@@ -2379,7 +2398,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                             max.P = 2,\r\n";
                                 forecast_extension += "                             max.Q = 2,\r\n";
                                 forecast_extension += "                             nmodels = 100,\r\n";
-                                forecast_extension += "                             #approximation=F,\r\n";
+                                forecast_extension += "                             approximation=F,\r\n";
                                 forecast_extension += "                             seasonal = T, stepwise=F, trace=T)\r\n";
                                 forecast_extension += "                     }else{\r\n";
                                 forecast_extension += "                         trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
@@ -5341,6 +5360,30 @@ namespace WindowsFormsApplication1
             else
             {
                 use_arima = 0;
+            }
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists("stldecomp.png"))
+            {
+                if (_ImageView4 == null) _ImageView4 = new ImageView();
+                _ImageView4.form1 = this.form1;
+                _ImageView4.pictureBox1.ImageLocation = "stldecomp.png";
+                _ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                _ImageView4.pictureBox1.Dock = DockStyle.Fill;
+                _ImageView4.Show();
+
+                if (interactivePlot3 == null) interactivePlot3 = new interactivePlot();
+                if (checkBox5.Checked)
+                {
+                    MessageBox.Show("未実装です");
+                    interactivePlot3.Show();
+                }
+            }
+            else
+            {
+                button21.Enabled = false;
             }
         }
     }

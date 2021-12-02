@@ -148,6 +148,8 @@
             this.button44 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.button75 = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.button72 = new System.Windows.Forms.Button();
             this.button70 = new System.Windows.Forms.Button();
@@ -202,8 +204,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
-            this.button75 = new System.Windows.Forms.Button();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.button76 = new System.Windows.Forms.Button();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.panel1.SuspendLayout();
             this.panel15.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -221,6 +223,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.tabPage8.SuspendLayout();
             this.tabPage9.SuspendLayout();
@@ -232,7 +235,7 @@
             this.panel11.SuspendLayout();
             this.panel12.SuspendLayout();
             this.panel14.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox2
@@ -2143,6 +2146,8 @@
             // 
             this.tabPage7.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.tabPage7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage7.Controls.Add(this.numericUpDown4);
+            this.tabPage7.Controls.Add(this.button76);
             this.tabPage7.Controls.Add(this.numericUpDown2);
             this.tabPage7.Controls.Add(this.button75);
             this.tabPage7.Controls.Add(this.label17);
@@ -2168,6 +2173,28 @@
             this.tabPage7.Size = new System.Drawing.Size(1527, 430);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "時系列モデル";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(1181, 35);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(65, 24);
+            this.numericUpDown2.TabIndex = 117;
+            // 
+            // button75
+            // 
+            this.button75.Location = new System.Drawing.Point(1018, 26);
+            this.button75.Name = "button75";
+            this.button75.Size = new System.Drawing.Size(157, 39);
+            this.button75.TabIndex = 116;
+            this.button75.Text = "間引き";
+            this.button75.UseVisualStyleBackColor = true;
+            this.button75.Click += new System.EventHandler(this.button75_Click);
             // 
             // label17
             // 
@@ -2850,27 +2877,27 @@
             this.timer3.Interval = 10;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
-            // button75
+            // button76
             // 
-            this.button75.Location = new System.Drawing.Point(1018, 26);
-            this.button75.Name = "button75";
-            this.button75.Size = new System.Drawing.Size(157, 39);
-            this.button75.TabIndex = 116;
-            this.button75.Text = "間引き";
-            this.button75.UseVisualStyleBackColor = true;
-            this.button75.Click += new System.EventHandler(this.button75_Click);
+            this.button76.Location = new System.Drawing.Point(1018, 73);
+            this.button76.Name = "button76";
+            this.button76.Size = new System.Drawing.Size(157, 39);
+            this.button76.TabIndex = 118;
+            this.button76.Text = "resampleing";
+            this.button76.UseVisualStyleBackColor = true;
+            this.button76.Click += new System.EventHandler(this.button76_Click);
             // 
-            // numericUpDown2
+            // numericUpDown4
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(1181, 35);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.numericUpDown4.Location = new System.Drawing.Point(1182, 82);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(65, 24);
-            this.numericUpDown2.TabIndex = 117;
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(65, 24);
+            this.numericUpDown4.TabIndex = 119;
             // 
             // Form1
             // 
@@ -2914,6 +2941,7 @@
             this.tabPage3.PerformLayout();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.tabPage8.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
@@ -2931,7 +2959,7 @@
             this.panel12.PerformLayout();
             this.panel14.ResumeLayout(false);
             this.panel14.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3111,6 +3139,8 @@
         public System.Windows.Forms.CheckBox checkBox10;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.Button button75;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.Button button76;
     }
 }
 

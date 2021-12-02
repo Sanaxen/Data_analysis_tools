@@ -24,4 +24,22 @@ thinning_out <- function(df, r)
 	return( df )
 }
 
+thinning_out_resample <- function(df, r)
+{
+	n <- nrow(df)
+
+	x <- df[r,]
+	k = 1
+	for ( i in 2:(n/r) ){
+		k = k + 1
+		if ( i*r > n ) break
+		x = rbind(x, df[i*r,])
+	}
+	newdf <- as.data.frame(x)
+	rownames(newdf) <- NULL
+		
+	df <- newdf
+	return( df )
+}
+
 	
