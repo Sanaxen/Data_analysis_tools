@@ -28,7 +28,7 @@ Applications that make the most of **R** without writing **R** programs
 - [Ookii.Dialogs.WinForms v1.1.0](https://github.com/augustoproiete/ookii-dialogs-winforms)
 
 Libraries required to execute the built application
-- [R-3.6.1](https://www.r-project.org/)
+- [R-3.6.1](https://www.r-project.org/)　=> [R-4.1.2](https://www.r-project.org/)
 - [gnuplot](http://www.gnuplot.info/)
 - [Graphviz](http://www.graphviz.org/)
 - [Rtools](https://cran.r-project.org/bin/windows/Rtools/history.html)  
