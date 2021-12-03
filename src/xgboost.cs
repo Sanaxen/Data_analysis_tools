@@ -724,6 +724,8 @@ namespace WindowsFormsApplication1
                             cmd1 += "       test$target_ <- log_diff_tmp[[1]]\r\n";
                         }
                     }
+                    cmd1 += "write.csv(train, file =\"train.csv\",row.names=F)\r\n";
+                    cmd1 += "write.csv(test, file =\"test.csv\",row.names=F)\r\n";
 
 
                     form1.script_executestr(cmd1);
@@ -2540,7 +2542,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "        predict_y_org[length(test$target_)] = limit_cutoff(predict_y_org[length(test$target_)], upper_limit, lower_limit)\r\n";
                             forecast_extension += "        predict_y[length(test$target_)] = limit_cutoff(predict_y[length(test$target_)], upper_limit, lower_limit)\r\n";
                         }
-                        forecast_extension += "        predict.y<-as.data.frame(predict_y)\r\n";
+                        forecast_extension += "        predict.y <- data.frame(\"predict\" = predict_y)\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "	    #データの最後を予測値で更新\r\n";
                         forecast_extension += "	    test$target_[length(test$target_)] <- predict_y_org[length(predict_y)]\r\n";
@@ -2662,7 +2664,7 @@ namespace WindowsFormsApplication1
                     cmd += "write.csv(df_tmp, file =\"時系列tmp.csv\",row.names=F)\r\n";
 
                     cmd += "predict.xgboost<-cbind(df_,predict.y)\r\n";
-                    cmd += "write.csv(predict.xgboost, file =\"時系列.csv\",row.names=F)\r\n";
+                    cmd += "write.csv(predict.xgboost, file =\"時系列予測.csv\",row.names=F)\r\n";
                     if (comboBox2.Text == "\"multi:softmax\"")
                     {
                         cmd += "names(predict.xgboost)[ncol(predict.xgboost)]<-\"Predict\"\r\n";
