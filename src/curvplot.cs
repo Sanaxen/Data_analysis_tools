@@ -65,11 +65,15 @@ namespace WindowsFormsApplication1
 
         private void button12_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < listBox2.Items.Count; i++)
+            if ( listBox2.SelectedIndex >= 0 )
             {
-                listBox2.SetSelected(i, false);
+                listBox2.SetSelected(listBox2.SelectedIndex, false);
             }
-            button1_Click(sender, e);
+            //for (int i = 0; i < listBox2.Items.Count; i++)
+            //{
+            //    listBox2.SetSelected(i, false);
+            //}
+            //button1_Click(sender, e);
         }
 
         bool invers_selection_all = false;
@@ -392,7 +396,7 @@ namespace WindowsFormsApplication1
                     using (System.IO.StreamWriter sw = new System.IO.StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
                     {
                         //sw.Write("png(\"tmp_curv.png\", height = 960, width = 960)\r\n");
-                        sw.Write("png(\"tmp_curv.png\", height = " + (480 * M).ToString() + "*" + form1._setting.numericUpDown4.Value.ToString() + ",width =" + (480 * N).ToString() + "*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
+                        sw.Write("png(\"tmp_curv.png\", height = " + (480 * M).ToString() + "*" + form1._setting.numericUpDown4.Value.ToString() + ",width = 2.5*" + (640 * N).ToString() + "*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
 
                         sw.Write("par(mar=c(5, 4, 4, 2) + 3)\r\n");
                         if (num > 1)
