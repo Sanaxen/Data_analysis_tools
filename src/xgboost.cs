@@ -2596,7 +2596,22 @@ namespace WindowsFormsApplication1
                     forecast_debug_plot += "	}\r\n";
                     forecast_debug_plot += "	\r\n";
                     forecast_debug_plot += "    ggsave(file = savename, predict_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
-                    forecast_debug_plot += "    saveRDS(predict_plt, paste(savename,\".rds\"))\r\n";
+                    forecast_debug_plot += "    saveRDS(list(predict_plt,test_org, test, train), paste(savename,\".rds\"))\r\n";
+                    forecast_debug_plot += "	srcfile <- file(paste(savename,\".r\"), open = \"w\")\r\n";
+                    forecast_debug_plot += "\r\n";
+                    forecast_debug_plot += "	x_str <- \"x <- readRDS(\\\"\"+paste(savename,\".rds\")+\"\\\")\\r\\n\"\r\n";
+                    forecast_debug_plot += "\r\n";
+                    forecast_debug_plot += "	writeLines(x_str, srcfile)\r\n";
+                    forecast_debug_plot += "	\r\n";
+                    forecast_debug_plot += "	writeLines(\"test_org<- x[[2]]\\r\\n\", srcfile)\r\n";
+                    forecast_debug_plot += "	writeLines(\"test<- x[[3]]\\r\\n\", srcfile)\r\n";
+                    forecast_debug_plot += "	writeLines(\"train<- x[[4]]\\r\\n\", srcfile)\r\n";
+                    forecast_debug_plot += "	writeLines(\"predict_plt <- x[[1]]\\r\\n\", srcfile)\r\n";
+                    forecast_debug_plot += "	writeLines(\"predict_plt\\r\\n\", srcfile)\r\n";
+                    forecast_debug_plot += "\r\n";
+                    forecast_debug_plot += "    writeLines(\"library(plotly)\\r\\n\", srcfile)\r\n";
+                    forecast_debug_plot += "    writeLines(\"ggplotly(predict_plt)\\r\\n\", srcfile)\r\n";
+                    forecast_debug_plot += "	close(srcfile)\r\n";
                     forecast_debug_plot += "	return(predict_plt)\r\n";
                     forecast_debug_plot += "}\r\n";
 

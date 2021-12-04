@@ -39,6 +39,7 @@
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -163,11 +164,22 @@
             this.toolTip1.SetToolTip(this.checkBox3, "データが機種名等の文字列は機種ごとに1から因子番号の数値に変換します。\r\n");
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(625, 55);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(125, 19);
+            this.checkBox5.TabIndex = 58;
+            this.checkBox5.Text = "今後表示しない";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
             // Form18
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 291);
+            this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.button3);
@@ -197,5 +209,6 @@
         public System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.ToolTip toolTip1;
         public System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox5;
     }
 }

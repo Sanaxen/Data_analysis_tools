@@ -8960,6 +8960,11 @@ namespace WindowsFormsApplication1
 
         private void timer3_Tick(object sender, EventArgs e)
         {
+            if ( System.IO.File.Exists(MyPath+ "\\startup_daialog.txt"))
+            {
+                Show();
+                return;
+            }
             if (Visible)
             {
 #if !USE_METRO_UI

@@ -66,6 +66,10 @@ namespace WindowsFormsApplication1
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if ( checkBox3.Checked)
+            {
+                System.IO.File.Create(Form1.MyPath + "\\startup_daialog.txt");
+            }
             Close();
         }
     }
