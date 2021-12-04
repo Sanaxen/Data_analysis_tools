@@ -62,10 +62,14 @@ namespace WindowsFormsApplication1
 
         private void button12_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < listBox2.Items.Count; i++)
+            if (listBox2.SelectedIndex >= 0 )
             {
-                listBox2.SetSelected(i, false);
+                listBox2.SetSelected(listBox2.SelectedIndex, false);
             }
+            //for (int i = 0; i < listBox2.Items.Count; i++)
+            //{
+            //    listBox2.SetSelected(i, false);
+            //}
             button1_Click(sender, e);
         }
 
@@ -522,10 +526,10 @@ namespace WindowsFormsApplication1
 
         private void listBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (checkBox5.Checked) return;
-            button1_Click(sender, e);
-            TopMost = true;
-            TopMost = false;
+            //if (checkBox5.Checked) return;
+            //button1_Click(sender, e);
+            //TopMost = true;
+            //TopMost = false;
         }
 
         private void checkBox1_CheckStateChanged(object sender, EventArgs e)
