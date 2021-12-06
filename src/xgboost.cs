@@ -1928,7 +1928,7 @@ namespace WindowsFormsApplication1
                     string cmd_tmp = "";
                     cmd_tmp = Form1.MyPath + "..\\script\\weekdays.r";
                     cmd_tmp = cmd_tmp.Replace("\\", "/");
-                    cmd_tmp = "source(\"" + cmd_tmp + "\")\r\n";
+                    cmd_tmp = "\r\nsource(\"" + cmd_tmp + "\")\r\n";
                     forecast_extension += cmd_tmp;
 
                     cmd_tmp = Form1.MyPath + "..\\script\\get_month_day.r";
@@ -1942,6 +1942,35 @@ namespace WindowsFormsApplication1
                     forecast_extension += cmd_tmp;
 
                     forecast_extension += "df_<-test\r\n";
+                    forecast_extension += "add_ext <-  0\r\n";
+                    if (time_series_mode)
+                    {
+                        forecast_extension += "obs_test_step <- max("+ lag.ToString() +", nrow(test)*" + numericUpDown20.Value.ToString()+"*0.01)\r\n";
+                        forecast_extension += "test <- test[1:obs_test_step,]\r\n";
+                        forecast_extension += "add_ext <- nrow(df_) - nrow(test)\r\n";
+                        forecast_extension += "if ( add_ext < 0 ){\r\n";
+                        forecast_extension += "    test <- df_\r\n";
+                        forecast_extension += "    obs_test_step <- nrow(test)\r\n";
+                        forecast_extension += "    add_ext <- 0\r\n";
+                        forecast_extension += "}\r\n";
+                        forecast_extension += "test_mx<-";
+                        forecast_extension += "sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        forecast_extension += "test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        if (comboBox4.Text != "")
+                        {
+                            forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
+                        }
+                        else
+                        {
+                            if (add_enevt_data == 1)
+                            {
+                                forecast_extension += ",weight = test$event";
+                            }
+                        }
+                        forecast_extension += ")\r\n";
+                    }
+                    forecast_extension += "\r\n";
+
                     forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
                     //if (use_diff == 1 || use_decompose == 1)
                     {
@@ -2089,8 +2118,8 @@ namespace WindowsFormsApplication1
                         }
                         forecast_extension += "t_step_forcast = 1\r\n";
 
-                        forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "> 0 ){\r\n";
-                        forecast_extension += "    for ( t_step in 1:" + numericUpDown5.Value.ToString()+"){\r\n";
+                        forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "+ add_ext > 0 ){\r\n";
+                        forecast_extension += "    for ( t_step in 1:(" + numericUpDown5.Value.ToString()+ " + add_ext)){\r\n";
                         forecast_extension += "	        # 1行追加\r\n";
                         forecast_extension += "	        test<-rbind(test, test[nrow(test),])\r\n";
                         forecast_extension += "        #test[nrow(test),1] <- st_ + t_step*dt_\r\n";
@@ -2531,7 +2560,7 @@ namespace WindowsFormsApplication1
                             }
                         }
                         forecast_extension += "        )\r\n";
-                        forecast_extension += "	    df_ <- test\r\n";
+                        //forecast_extension += "	    df_ <- test\r\n";
                         forecast_extension += "	    \r\n";
                         forecast_extension += "	    #testデータ区間を予測\r\n";
                         forecast_extension += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
@@ -2553,11 +2582,11 @@ namespace WindowsFormsApplication1
                         forecast_extension += "\r\n";
                         forecast_extension += "    }\r\n";
                         forecast_extension += "}\r\n";
-                        forecast_extension += "forecast_debug_plot(train, test, NULL, \"seasonal\", \"seasonal2.png\")\r\n";
-                        forecast_extension += "forecast_debug_plot(train, test, NULL, \"deseasonal\", \"deseasonal2.png\")\r\n";
-                        forecast_extension += "forecast_debug_plot(train, test, NULL, \"trend\", \"trend2.png\")\r\n";
-                        forecast_extension += "forecast_debug_plot(train, test, predict.y, \"" + targetName +"\", \"forecast_plot.png\")\r\n";
-                        forecast_extension += "return(list(predict_y, predict.y, test, test_dmat))\r\n";
+                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"seasonal\", \"seasonal2.png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"deseasonal\", \"deseasonal2.png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"trend\", \"trend2.png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, predict.y, \"" + targetName +"\", \"forecast_plot.png\")\r\n";
+                        forecast_extension += "return(list(predict_y, predict.y, test, test_dmat, obs_test_step))\r\n";
                         forecast_extension += "#test<- test[-length(test$target_)]\r\n";
                     }else
                     {
@@ -2578,7 +2607,7 @@ namespace WindowsFormsApplication1
                     }
 
                     string forecast_debug_plot = "";
-                    forecast_debug_plot += "forecast_debug_plot<- function(train, test, predict, targetname, savename)\r\n";
+                    forecast_debug_plot += "forecast_debug_plot<- function(obs_test_step, train, test, predict, targetname, savename)\r\n";
                     forecast_debug_plot += "{\r\n";
                     forecast_debug_plot += "	ptn = gsub( \" \", \"\", paste(paste(\"^\", targetname), \"$\"))\r\n";
                     forecast_debug_plot += "	colidx = grep(ptn, colnames(train) )\r\n";
@@ -2593,8 +2622,9 @@ namespace WindowsFormsApplication1
                     forecast_debug_plot += "            predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict[,1], colour=\"予測値\"))\r\n";
                     forecast_debug_plot += "        }\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test[,colidx], colour=\"予測値\"))\r\n";
-                    forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test_org[nrow(test_org),1])))\r\n";
-                    forecast_debug_plot += "		predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test_org[,1]), y=test_org[,colidx], colour=\"観測値(test)\"))\r\n";
+                    forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
+                    forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test_org, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test_org[nrow(test_org),1])))\r\n";
+                    forecast_debug_plot += "		predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test_org[,1]), y=test_org[, colidx], colour=\"観測値(test)\"))\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \""+ numericUpDown18.Value.ToString()+ " "+ comboBox6.Text +"\"" +")\r\n";
                     forecast_debug_plot += "	}\r\n";
                     forecast_debug_plot += "	\r\n";
@@ -2632,6 +2662,7 @@ namespace WindowsFormsApplication1
                     cmd += "predict.y <- ret[[2]]\r\n";
                     cmd += "test <- ret[[3]]\r\n";
                     cmd += "test_dmat <- ret[[4]]\r\n";
+                    cmd += "obs_test_step <- ret[[5]]\r\n";
 
                     cmd += "output_tmp <- cbind(test, predict.y)\r\n";
                     if (checkBox6.Checked || checkBox7.Checked)
@@ -3236,7 +3267,7 @@ namespace WindowsFormsApplication1
                                 sw.Write("dev.off()\r\n");
                                 */
 
-                                sw.Write("residual.error2 <- predict.y[1:nrow(test),1] - as.numeric(test$'" + targetName + "'[1:nrow(test)])\r\n");
+                                sw.Write("residual.error2 <- predict.y[1:nrow(test_org),1] - as.numeric(test_org$'" + targetName + "'[1:nrow(test)])\r\n");
                                 if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                                 {
                                     sw.Write("test_st_ <- 1\r\n");
@@ -3252,6 +3283,7 @@ namespace WindowsFormsApplication1
                                     sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=residual.error2, colour=\"誤差\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=residual.error2, colour = \"誤差Point\"))+\r\n");
                                     sw.Write("geom_vline(data=test_org, aes(xintercept=as.POSIXct(test[1,1])))+\r\n");
+                                    sw.Write("geom_vline(data=test, aes(xintercept=as.POSIXct(test[obs_test_step,1])))+\r\n");
                                     if (eval == 1)
                                     {
                                         sw.Write("geom_line(aes(x=as.POSIXct(train[,1]), y=numeric(nrow(train)), colour=\"train\"))+\r\n");
@@ -3262,13 +3294,14 @@ namespace WindowsFormsApplication1
                                     sw.Write("predict_plt<-ggplot()\r\n");
                                     sw.Write("predict_plt<-predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict.y[,1], colour=\"予測値\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=predict.y[,1], colour = \"予測Point\"))+\r\n");
-                                    sw.Write("geom_line(aes(x=as.POSIXct(test[,1]), y=test$'"+targetName +"', colour=\"観測値\"))+\r\n");
+                                    sw.Write("geom_line(aes(x=as.POSIXct(test_org[,1]), y=test_org$'" + targetName +"', colour=\"観測値\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("+ geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "', colour = \"観測Point\"))+\r\n");
                                     if (checkBox7.Checked)
                                     {
                                         sw.Write("geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n");
                                     }
                                     sw.Write("geom_vline(data = test, aes(xintercept=as.POSIXct(test[1,1])))+\r\n");
+                                    sw.Write("geom_vline(data = test, aes(xintercept=as.POSIXct(test[obs_test_step,1])))+\r\n");
                                     if (eval == 1)
                                     {
                                         sw.Write("geom_line(aes(x=as.POSIXct(train[,1]), y=train$'" + targetName + "', colour=\"train\"))+\r\n");
@@ -3291,23 +3324,24 @@ namespace WindowsFormsApplication1
                                     sw.Write("residual_plt<-ggplot()\r\n");
                                     sw.Write("residual_plt<-residual_plt + geom_line(aes(x=(test_st_:test_ed_), y=residual.error2, colour=\"誤差\"))+\r\n");
                                     sw.Write("geom_point(aes(x=test_st_:test_ed_,y=residual.error2, colour = \"誤差Point\"))+\r\n");
-                                    sw.Write("geom_vline(data=test,aes(xintercept=nrow(test_org)))");
+                                    sw.Write("geom_vline(data=test,aes(xintercept=test_st_))+\r\n");
+                                    sw.Write("geom_vline(data=test,aes(xintercept=test_st_+obs_test_step))");
                                     if (eval == 1)
                                     {
-                                        sw.Write("+\r\ngeom_line(aes(x=1:nrow(train), y=train$'" + targetName + "', colour=\"train\"))+\r\n");
-                                        sw.Write("geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=nrow(train)))\r\n");
+                                        sw.Write("+\r\ngeom_vline(data=test, linetype=\"dotdash\",aes(xintercept=test_st_+nrow(test_org)-1))\r\n");
                                     }
                                     sw.Write("\r\n");
                                     sw.Write("predict_plt<-ggplot()\r\n");
                                     sw.Write("predict_plt<-predict_plt + geom_line(aes(x=(test_st_:test_ed_), y=predict.y[,1], colour=\"予測値\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=test_st_:test_ed_,y=predict.y[,1], colour = \"予測Point\"))+\r\n");
-                                    sw.Write("geom_line(aes(x=test_st_:test_ed_, y=test$'" + targetName +"', colour=\"観測値\"))+");
+                                    sw.Write("geom_line(aes(x=test_st_:(test_st_+nrow(test_org)-1), y=test_org$'" + targetName +"', colour=\"観測値\"))+");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=test_st_:test_ed_,y=test$'" + targetName + "', colour = \"予測Point\"))+");
-                                    sw.Write("geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))");
+                                    sw.Write("geom_vline(data=test, aes(xintercept=test_st_))+");
+                                    sw.Write("geom_vline(data=test, aes(xintercept=test_st_+obs_test_step))");
                                     if (eval == 1)
                                     {
                                         sw.Write("+\r\ngeom_line(aes(x=1:nrow(train), y=train$'" + targetName + "', colour=\"train\"))+\r\n");
-                                        sw.Write("geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.numeric(nrow(train))))");
+                                        sw.Write("geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=test_st_+nrow(test_org)-1))");
                                     }
                                     if (checkBox7.Checked)
                                     {
@@ -4096,7 +4130,9 @@ namespace WindowsFormsApplication1
                     sw.Write("SARIMA,false\r\n");
                     sw.Write("prophet,true\r\n");
                 }
-              	sw.Close();
+                sw.Write("obs_test,"); sw.Write(numericUpDown20.Value.ToString() + "\r\n");
+
+                sw.Close();
             }
 
             form1.comboBox1.Text = cmd;
@@ -4521,6 +4557,12 @@ namespace WindowsFormsApplication1
 		                }
                         continue;
                     }
+                    if (ss[0].IndexOf("obs_test") >= 0)
+                    {
+                        numericUpDown20.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+
                 }
                 sr.Close();
             }

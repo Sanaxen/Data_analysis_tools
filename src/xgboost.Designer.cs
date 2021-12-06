@@ -47,6 +47,7 @@
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.checkBox16 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button21 = new System.Windows.Forms.Button();
             this.label42 = new System.Windows.Forms.Label();
             this.numericUpDown19 = new System.Windows.Forms.NumericUpDown();
             this.checkBox17 = new System.Windows.Forms.CheckBox();
@@ -179,7 +180,8 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button21 = new System.Windows.Forms.Button();
+            this.label43 = new System.Windows.Forms.Label();
+            this.numericUpDown20 = new System.Windows.Forms.NumericUpDown();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -212,6 +214,7 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -362,6 +365,8 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.panel7.Controls.Add(this.numericUpDown20);
+            this.panel7.Controls.Add(this.label43);
             this.panel7.Controls.Add(this.checkBox18);
             this.panel7.Controls.Add(this.textBox14);
             this.panel7.Controls.Add(this.label41);
@@ -499,7 +504,7 @@
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(63, 22);
             this.textBox12.TabIndex = 162;
-            this.textBox12.Text = "100000";
+            this.textBox12.Text = "10000";
             this.textBox12.Validating += new System.ComponentModel.CancelEventHandler(this.textBox4_Validating);
             // 
             // checkBox16
@@ -538,6 +543,17 @@
             this.groupBox2.TabIndex = 160;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "トレンドと周期と分離";
+            // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(70, 252);
+            this.button21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(137, 22);
+            this.button21.TabIndex = 171;
+            this.button21.Text = "show decompose2";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
             // 
             // label42
             // 
@@ -2275,16 +2291,29 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // button21
+            // label43
             // 
-            this.button21.Location = new System.Drawing.Point(70, 252);
-            this.button21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(137, 22);
-            this.button21.TabIndex = 171;
-            this.button21.Text = "show decompose2";
-            this.button21.UseVisualStyleBackColor = true;
-            this.button21.Click += new System.EventHandler(this.button21_Click);
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(9, 586);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(191, 15);
+            this.label43.TabIndex = 172;
+            this.label43.Text = "観測値を含むtestデータの割合";
+            this.toolTip1.SetToolTip(this.label43, "上限値");
+            // 
+            // numericUpDown20
+            // 
+            this.numericUpDown20.Location = new System.Drawing.Point(206, 584);
+            this.numericUpDown20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown20.Name = "numericUpDown20";
+            this.numericUpDown20.Size = new System.Drawing.Size(51, 22);
+            this.numericUpDown20.TabIndex = 173;
+            this.toolTip1.SetToolTip(this.numericUpDown20, "testデータの終端からさらに先を指定ステップ数分予測");
+            this.numericUpDown20.Value = new decimal(new int[] {
+            70,
+            0,
+            0,
+            0});
             // 
             // xgboost
             // 
@@ -2342,6 +2371,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2498,5 +2528,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown19;
         private System.Windows.Forms.CheckBox checkBox18;
         private System.Windows.Forms.Button button21;
+        public System.Windows.Forms.NumericUpDown numericUpDown20;
+        private System.Windows.Forms.Label label43;
     }
 }
