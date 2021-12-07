@@ -36,6 +36,8 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.numericUpDown20 = new System.Windows.Forms.NumericUpDown();
+            this.label43 = new System.Windows.Forms.Label();
             this.checkBox18 = new System.Windows.Forms.CheckBox();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.label41 = new System.Windows.Forms.Label();
@@ -180,11 +182,12 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label43 = new System.Windows.Forms.Label();
-            this.numericUpDown20 = new System.Windows.Forms.NumericUpDown();
+            this.button22 = new System.Windows.Forms.Button();
+            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown19)).BeginInit();
@@ -214,7 +217,6 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -395,6 +397,30 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(283, 734);
             this.panel7.TabIndex = 147;
+            // 
+            // numericUpDown20
+            // 
+            this.numericUpDown20.Location = new System.Drawing.Point(206, 584);
+            this.numericUpDown20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown20.Name = "numericUpDown20";
+            this.numericUpDown20.Size = new System.Drawing.Size(51, 22);
+            this.numericUpDown20.TabIndex = 173;
+            this.toolTip1.SetToolTip(this.numericUpDown20, "testデータの終端からさらに先を指定ステップ数分予測");
+            this.numericUpDown20.Value = new decimal(new int[] {
+            70,
+            0,
+            0,
+            0});
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(9, 586);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(191, 15);
+            this.label43.TabIndex = 172;
+            this.label43.Text = "観測値を含むtestデータの割合";
+            this.toolTip1.SetToolTip(this.label43, "上限値");
             // 
             // checkBox18
             // 
@@ -2015,10 +2041,10 @@
             this.panel5.Controls.Add(this.splitter2);
             this.panel5.Controls.Add(this.textBox1);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(0, 82);
+            this.panel5.Location = new System.Drawing.Point(0, 94);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(711, 796);
+            this.panel5.Size = new System.Drawing.Size(711, 784);
             this.panel5.TabIndex = 38;
             // 
             // webView21
@@ -2029,7 +2055,7 @@
             this.webView21.Location = new System.Drawing.Point(0, 0);
             this.webView21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(709, 600);
+            this.webView21.Size = new System.Drawing.Size(709, 588);
             this.webView21.TabIndex = 38;
             this.webView21.ZoomFactor = 1D;
             // 
@@ -2040,7 +2066,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(709, 600);
+            this.pictureBox1.Size = new System.Drawing.Size(709, 588);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 37;
             this.pictureBox1.TabStop = false;
@@ -2064,7 +2090,7 @@
             // 
             this.splitter2.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(0, 600);
+            this.splitter2.Location = new System.Drawing.Point(0, 588);
             this.splitter2.Margin = new System.Windows.Forms.Padding(4);
             this.splitter2.Name = "splitter2";
             this.splitter2.Size = new System.Drawing.Size(709, 10);
@@ -2076,7 +2102,7 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBox1.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox1.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.textBox1.Location = new System.Drawing.Point(0, 610);
+            this.textBox1.Location = new System.Drawing.Point(0, 598);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -2087,6 +2113,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.linkLabel4);
+            this.panel1.Controls.Add(this.button22);
             this.panel1.Controls.Add(this.checkBox13);
             this.panel1.Controls.Add(this.linkLabel2);
             this.panel1.Controls.Add(this.checkBox4);
@@ -2103,7 +2131,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(711, 82);
+            this.panel1.Size = new System.Drawing.Size(711, 94);
             this.panel1.TabIndex = 35;
             // 
             // checkBox13
@@ -2291,29 +2319,29 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // label43
+            // button22
             // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(9, 586);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(191, 15);
-            this.label43.TabIndex = 172;
-            this.label43.Text = "観測値を含むtestデータの割合";
-            this.toolTip1.SetToolTip(this.label43, "上限値");
+            this.button22.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button22.Location = new System.Drawing.Point(109, 70);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(57, 21);
+            this.button22.TabIndex = 136;
+            this.button22.Text = "image";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
             // 
-            // numericUpDown20
+            // linkLabel4
             // 
-            this.numericUpDown20.Location = new System.Drawing.Point(206, 584);
-            this.numericUpDown20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numericUpDown20.Name = "numericUpDown20";
-            this.numericUpDown20.Size = new System.Drawing.Size(51, 22);
-            this.numericUpDown20.TabIndex = 173;
-            this.toolTip1.SetToolTip(this.numericUpDown20, "testデータの終端からさらに先を指定ステップ数分予測");
-            this.numericUpDown20.Value = new decimal(new int[] {
-            70,
-            0,
-            0,
-            0});
+            this.linkLabel4.AutoSize = true;
+            this.linkLabel4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.linkLabel4.Location = new System.Drawing.Point(170, 74);
+            this.linkLabel4.Name = "linkLabel4";
+            this.linkLabel4.Size = new System.Drawing.Size(48, 15);
+            this.linkLabel4.TabIndex = 137;
+            this.linkLabel4.TabStop = true;
+            this.linkLabel4.Text = "image";
+            this.linkLabel4.Visible = false;
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
             // 
             // xgboost
             // 
@@ -2335,6 +2363,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -2371,7 +2400,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2530,5 +2558,7 @@
         private System.Windows.Forms.Button button21;
         public System.Windows.Forms.NumericUpDown numericUpDown20;
         private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.LinkLabel linkLabel4;
     }
 }
