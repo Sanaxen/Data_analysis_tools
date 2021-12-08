@@ -716,6 +716,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "test  <- df_ts_tmp[-1:-" + lag.ToString() + ",]\r\n";
                         cmd1 += "test_pre <- df_ts_tmp[" + lag.ToString() + "-1,]\r\n";
                     }
+                    //cmd1 += "train <- train[(nrow(train)-500):nrow(train),]\r\n";
+                    //cmd1 += "test  <- test[1:500,]\r\n";
+                    //cmd1 += "test_pre <- df_ts_tmp[nrow(train),]\r\n";
 
                     if (use_diff == 1 )
                     {
@@ -3518,15 +3521,16 @@ namespace WindowsFormsApplication1
                     {
                         button18.Enabled = true;
                         button22.Enabled = true;
-                        button23.Enabled = true;
                     }
                     if (checkBox4.Checked && xgboost_predict_parts_count == explain_num)
                     {
                         button18.Enabled = true;
                         button22.Enabled = true;
+                    }
+                    if (System.IO.File.Exists("trend2.png"))
+                    {
                         button23.Enabled = true;
                     }
-
                 }
                 if (Form1.RProcess.HasExited)
                 {
@@ -5571,7 +5575,6 @@ namespace WindowsFormsApplication1
                 _ImageView5.pictureBox1.ImageLocation = file;
                 _ImageView5.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 _ImageView5.pictureBox1.Dock = DockStyle.Fill;
-                _ImageView5.Show();
             }
             string cmd = "";
             if (radioButton1.Checked && radioButton3.Checked)
@@ -5605,8 +5608,20 @@ namespace WindowsFormsApplication1
                     interactivePlot4.webView21.Source = new Uri(webpath);
                     interactivePlot4.webView21.Refresh();
                     interactivePlot4.webView21.Show();
-                    TopMost = true;
-                    TopMost = false;
+                    //TopMost = true;
+                    //TopMost = false;
+                    if (checkBox5.Checked)
+                    {
+                        interactivePlot4.Show();
+                        interactivePlot4.TopMost = true;
+                        interactivePlot4.TopMost = false;
+                    }
+                    else
+                    {
+                        _ImageView5.Show();
+                        _ImageView5.TopMost = true;
+                        _ImageView5.TopMost = false;
+                    }
                 }
             }
         }
@@ -5648,7 +5663,14 @@ namespace WindowsFormsApplication1
                 _ImageView6.pictureBox1.ImageLocation = file;
                 _ImageView6.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 _ImageView6.pictureBox1.Dock = DockStyle.Fill;
+            }else
+            {
+                return;
+            }
+            if (!System.IO.File.Exists("trend2.png .r"))
+            {
                 _ImageView6.Show();
+                return;
             }
             string cmd = "";
             if (radioButton1.Checked && radioButton3.Checked)
@@ -5682,8 +5704,20 @@ namespace WindowsFormsApplication1
                     interactivePlot5.webView21.Source = new Uri(webpath);
                     interactivePlot5.webView21.Refresh();
                     interactivePlot5.webView21.Show();
-                    TopMost = true;
-                    TopMost = false;
+                    //TopMost = true;
+                    //TopMost = false;
+                    if (checkBox5.Checked)
+                    {
+                        interactivePlot5.Show();
+                        interactivePlot5.TopMost = true;
+                        interactivePlot5.TopMost = false;
+                    }
+                    else
+                    {
+                        _ImageView6.Show();
+                        _ImageView6.TopMost = true;
+                        _ImageView6.TopMost = false;
+                    }
                 }
             }
         }
