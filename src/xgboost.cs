@@ -2685,10 +2685,10 @@ namespace WindowsFormsApplication1
                     forecast_debug_plot += "            predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict[,1], colour=\"予測値\"))\r\n";
                     forecast_debug_plot += "        }\r\n";
                     forecast_debug_plot += "        if (obs_test_step >= 1){\r\n";
-                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[1:obs_test_step,1]), y=test[1:obs_test_step,colidx], colour=\"test\"))\r\n";
-                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[(obs_test_step+1):nrow(test),1]), y=test[(obs_test_step+1):nrow(test),colidx], colour=\"test\"))\r\n";
+                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[1:obs_test_step,1]), y=test[1:obs_test_step,colidx], colour=\"予測値(観測値参照)\"))\r\n";
+                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[(obs_test_step+1):nrow(test),1]), y=test[(obs_test_step+1):nrow(test),colidx], colour=\"予測値(観測値参照無し)\"))\r\n";
                     forecast_debug_plot += "        }else{\r\n";
-                    forecast_debug_plot += "            predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test[,colidx], colour=\"予測値\"))\r\n";
+                    forecast_debug_plot += "            if ( is.null(predict) )predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test[,colidx], colour=\"予測値\"))\r\n";
                     forecast_debug_plot += "        }\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test_org, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test_org[nrow(test_org),1])))\r\n";
@@ -5600,6 +5600,11 @@ namespace WindowsFormsApplication1
                 _ImageView5.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 _ImageView5.pictureBox1.Dock = DockStyle.Fill;
             }
+            if (!checkBox5.Checked)
+            {
+                _ImageView5.Show();
+                return;
+            }
             string cmd = "";
             if (radioButton1.Checked && radioButton3.Checked)
             {
@@ -5691,7 +5696,7 @@ namespace WindowsFormsApplication1
             {
                 return;
             }
-            if (!System.IO.File.Exists("trend2.png .r"))
+            if (!System.IO.File.Exists("trend2.png .r")|| !checkBox5.Checked)
             {
                 _ImageView6.Show();
                 return;

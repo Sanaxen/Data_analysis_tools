@@ -120,9 +120,14 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>399, 17</value>
   </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>399, 17</value>
-  </metadata>
+  <data name="label43.ToolTip" xml:space="preserve">
+    <value>予測開始の位置をtestデータの何パーセント以降から行うかを指定します。
+testデータには既に観測済の値や説明変数がセットされているためここで指定した以降は未観測状態として予測を行います。
+
+指定値が100を超える場合はtestデータの末端から指定ステップ数遡った位置が指定されたものとします。
+「データ終端から過去で指定」をONにすると無条件に指定ステップ数遡った位置が指定されたものとします。
+</value>
+  </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>テストデータに対する評価指標を意味します。
 デフォルトの基準はobjectiveパラメータによって決まります。
@@ -134,14 +139,6 @@
 　　　・mlogloss(多クラスの対数損失)
 　　　・aue(ROC曲線下の面積で性能の良さを表す)
 　　　・mae(平均絶対誤差)</value>
-  </data>
-  <data name="label43.ToolTip" xml:space="preserve">
-    <value>予測開始の位置をtestデータの何パーセント以降から行うかを指定します。
-testデータには既に観測済の値や説明変数がセットされているためここで指定した以降は未観測状態として予測を行います。
-
-指定値が100を超える場合はtestデータの末端から指定ステップ数遡った位置が指定されたものとします。
-「データ終端から過去で指定」をONにすると無条件に指定ステップ数遡った位置が指定されたものとします。
-</value>
   </data>
   <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>244, 17</value>
