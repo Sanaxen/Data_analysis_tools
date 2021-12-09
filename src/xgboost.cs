@@ -1989,10 +1989,16 @@ namespace WindowsFormsApplication1
                     forecast_extension += "add_ext <-  0\r\n";
                     if (time_series_mode)
                     {
-                        forecast_extension += "obs_test_step <- max( max(frequency_value," + lag.ToString() +"), nrow(test)*" + numericUpDown20.Value.ToString()+"*0.01)\r\n";
+                        if (numericUpDown20.Value > 100 || checkBox20.Checked)
+                        {
+                            forecast_extension += "obs_test_step <- max( max(frequency_value," + lag.ToString() + "), nrow(test)-" + numericUpDown20.Value.ToString()+")\r\n";
+                        }else
+                        {
+                            forecast_extension += "obs_test_step <- max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + numericUpDown20.Value.ToString() + "*0.01)\r\n";
+                        }
                         forecast_extension += "test <- test[1:obs_test_step,]\r\n";
                         forecast_extension += "add_ext <- nrow(df_) - nrow(test)\r\n";
-                        forecast_extension += "if ( add_ext < 0 ){\r\n";
+                        forecast_extension += "if ( add_ext <= 0 ){\r\n";
                         forecast_extension += "    test <- df_\r\n";
                         forecast_extension += "    obs_test_step <- nrow(test)\r\n";
                         forecast_extension += "    add_ext <- 0\r\n";
@@ -2680,7 +2686,10 @@ namespace WindowsFormsApplication1
                     forecast_debug_plot += "        }\r\n";
                     forecast_debug_plot += "        if (obs_test_step >= 1){\r\n";
                     forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[1:obs_test_step,1]), y=test[1:obs_test_step,colidx], colour=\"test\"))\r\n";
-                    forecast_debug_plot += "	    }\r\n";
+                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[(obs_test_step+1):nrow(test),1]), y=test[(obs_test_step+1):nrow(test),colidx], colour=\"test\"))\r\n";
+                    forecast_debug_plot += "        }else{\r\n";
+                    forecast_debug_plot += "            predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test[,colidx], colour=\"予測値\"))\r\n";
+                    forecast_debug_plot += "        }\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test_org, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test_org[nrow(test_org),1])))\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test_org[,1]), y=test_org[, colidx], colour=\"観測値(test)\"))\r\n";
@@ -4214,7 +4223,10 @@ namespace WindowsFormsApplication1
                 sw.Write("設定済説明変数使用,");
                 if (checkBox19.Checked) sw.Write("true\r\n");
                 else sw.Write("false\r\n");
-
+                //
+                sw.Write("データ終端から過去で指定,");
+                if (checkBox20.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
                 sw.Close();
             }
 
@@ -4657,6 +4669,18 @@ namespace WindowsFormsApplication1
                         }
                         continue;
                     }
+                    if (ss[0].IndexOf("データ終端から過去で指定") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox20.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox20.Checked = false;
+                        }
+                        continue;
+                    }                    //
                 }
                 sr.Close();
             }
