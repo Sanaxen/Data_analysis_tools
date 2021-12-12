@@ -36,6 +36,7 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.button24 = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
             this.checkBox20 = new System.Windows.Forms.CheckBox();
             this.label43 = new System.Windows.Forms.Label();
@@ -55,12 +56,13 @@
             this.linkLabel5 = new System.Windows.Forms.LinkLabel();
             this.button23 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
-            this.label42 = new System.Windows.Forms.Label();
-            this.numericUpDown19 = new System.Windows.Forms.NumericUpDown();
             this.checkBox17 = new System.Windows.Forms.CheckBox();
+            this.label42 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.numericUpDown19 = new System.Windows.Forms.NumericUpDown();
             this.checkBox15 = new System.Windows.Forms.CheckBox();
             this.button20 = new System.Windows.Forms.Button();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
@@ -196,8 +198,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown19)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown14)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown17)).BeginInit();
@@ -373,6 +375,7 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.panel7.Controls.Add(this.button24);
             this.panel7.Controls.Add(this.panel8);
             this.panel7.Controls.Add(this.checkBox19);
             this.panel7.Controls.Add(this.checkBox18);
@@ -401,8 +404,19 @@
             this.panel7.Location = new System.Drawing.Point(696, 140);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(283, 747);
+            this.panel7.Size = new System.Drawing.Size(283, 748);
             this.panel7.TabIndex = 147;
+            // 
+            // button24
+            // 
+            this.button24.Location = new System.Drawing.Point(205, 410);
+            this.button24.Margin = new System.Windows.Forms.Padding(4);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(51, 22);
+            this.button24.TabIndex = 177;
+            this.button24.Text = "auto";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
             // 
             // panel8
             // 
@@ -410,6 +424,7 @@
             this.panel8.Controls.Add(this.label43);
             this.panel8.Controls.Add(this.numericUpDown20);
             this.panel8.Location = new System.Drawing.Point(3, 599);
+            this.panel8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(277, 56);
             this.panel8.TabIndex = 176;
@@ -418,6 +433,7 @@
             // 
             this.checkBox20.AutoSize = true;
             this.checkBox20.Location = new System.Drawing.Point(5, 34);
+            this.checkBox20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox20.Name = "checkBox20";
             this.checkBox20.Size = new System.Drawing.Size(187, 19);
             this.checkBox20.TabIndex = 175;
@@ -432,11 +448,10 @@
             this.label43.Size = new System.Drawing.Size(191, 15);
             this.label43.TabIndex = 172;
             this.label43.Text = "観測値を含むtestデータの割合";
-            this.toolTip1.SetToolTip(this.label43, resources.GetString("label43.ToolTip"));
             // 
             // numericUpDown20
             // 
-            this.numericUpDown20.Location = new System.Drawing.Point(199, 6);
+            this.numericUpDown20.Location = new System.Drawing.Point(207, 5);
             this.numericUpDown20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown20.Maximum = new decimal(new int[] {
             10000,
@@ -521,7 +536,7 @@
             // 
             // numericUpDown18
             // 
-            this.numericUpDown18.Location = new System.Drawing.Point(149, 717);
+            this.numericUpDown18.Location = new System.Drawing.Point(149, 718);
             this.numericUpDown18.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown18.Minimum = new decimal(new int[] {
             1,
@@ -540,7 +555,7 @@
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(138, 568);
+            this.label40.Location = new System.Drawing.Point(139, 568);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(41, 15);
             this.label40.TabIndex = 165;
@@ -559,7 +574,7 @@
             // 
             // textBox13
             // 
-            this.textBox13.Location = new System.Drawing.Point(183, 563);
+            this.textBox13.Location = new System.Drawing.Point(183, 562);
             this.textBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(63, 22);
@@ -569,7 +584,7 @@
             // 
             // textBox12
             // 
-            this.textBox12.Location = new System.Drawing.Point(59, 563);
+            this.textBox12.Location = new System.Drawing.Point(59, 562);
             this.textBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(63, 22);
@@ -594,10 +609,10 @@
             this.groupBox2.Controls.Add(this.linkLabel5);
             this.groupBox2.Controls.Add(this.button23);
             this.groupBox2.Controls.Add(this.button21);
-            this.groupBox2.Controls.Add(this.label42);
-            this.groupBox2.Controls.Add(this.numericUpDown19);
             this.groupBox2.Controls.Add(this.checkBox17);
+            this.groupBox2.Controls.Add(this.label42);
             this.groupBox2.Controls.Add(this.groupBox3);
+            this.groupBox2.Controls.Add(this.numericUpDown19);
             this.groupBox2.Controls.Add(this.checkBox15);
             this.groupBox2.Controls.Add(this.button20);
             this.groupBox2.Controls.Add(this.linkLabel3);
@@ -620,7 +635,7 @@
             // 
             this.linkLabel5.AutoSize = true;
             this.linkLabel5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.linkLabel5.Location = new System.Drawing.Point(142, 34);
+            this.linkLabel5.Location = new System.Drawing.Point(141, 34);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(48, 15);
             this.linkLabel5.TabIndex = 173;
@@ -652,76 +667,63 @@
             this.button21.UseVisualStyleBackColor = true;
             this.button21.Click += new System.EventHandler(this.button21_Click);
             // 
+            // checkBox17
+            // 
+            this.checkBox17.AutoSize = true;
+            this.checkBox17.Checked = true;
+            this.checkBox17.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox17.Location = new System.Drawing.Point(209, 121);
+            this.checkBox17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox17.Name = "checkBox17";
+            this.checkBox17.Size = new System.Drawing.Size(53, 19);
+            this.checkBox17.TabIndex = 162;
+            this.checkBox17.Text = "fast";
+            this.toolTip1.SetToolTip(this.checkBox17, "SARIMAでパラメータ推定を簡素化する");
+            this.checkBox17.UseVisualStyleBackColor = true;
+            // 
             // label42
             // 
             this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(207, 75);
+            this.label42.Location = new System.Drawing.Point(222, 78);
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(44, 15);
             this.label42.TabIndex = 164;
             this.label42.Text = "rolling";
             this.toolTip1.SetToolTip(this.label42, "決定木の葉の重みに関するL2正則化項を意味します。\r\n値を大きくすることで過学習を防止します。\r\ndefault 1.0");
             // 
-            // numericUpDown19
-            // 
-            this.numericUpDown19.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown19.Location = new System.Drawing.Point(179, 94);
-            this.numericUpDown19.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numericUpDown19.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown19.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown19.Name = "numericUpDown19";
-            this.numericUpDown19.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown19.TabIndex = 163;
-            this.numericUpDown19.Value = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            // 
-            // checkBox17
-            // 
-            this.checkBox17.AutoSize = true;
-            this.checkBox17.Checked = true;
-            this.checkBox17.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox17.Location = new System.Drawing.Point(121, 98);
-            this.checkBox17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBox17.Name = "checkBox17";
-            this.checkBox17.Size = new System.Drawing.Size(53, 19);
-            this.checkBox17.TabIndex = 162;
-            this.checkBox17.Text = "fast";
-            this.checkBox17.UseVisualStyleBackColor = true;
-            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.radioButton7);
             this.groupBox3.Controls.Add(this.radioButton6);
             this.groupBox3.Controls.Add(this.radioButton5);
             this.groupBox3.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox3.Location = new System.Drawing.Point(21, 78);
+            this.groupBox3.Location = new System.Drawing.Point(4, 75);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox3.Size = new System.Drawing.Size(100, 68);
+            this.groupBox3.Size = new System.Drawing.Size(157, 68);
             this.groupBox3.TabIndex = 161;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "推定方法";
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.radioButton7.Location = new System.Drawing.Point(99, 44);
+            this.radioButton7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(59, 18);
+            this.radioButton7.TabIndex = 174;
+            this.radioButton7.TabStop = true;
+            this.radioButton7.Text = "naive";
+            this.radioButton7.UseVisualStyleBackColor = true;
             // 
             // radioButton6
             // 
             this.radioButton6.AutoSize = true;
             this.radioButton6.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.radioButton6.Location = new System.Drawing.Point(8, 44);
+            this.radioButton6.Location = new System.Drawing.Point(9, 43);
             this.radioButton6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.radioButton6.Name = "radioButton6";
             this.radioButton6.Size = new System.Drawing.Size(73, 18);
@@ -743,6 +745,34 @@
             this.radioButton5.TabStop = true;
             this.radioButton5.Text = "SARIMA";
             this.radioButton5.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown19
+            // 
+            this.numericUpDown19.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown19.Location = new System.Drawing.Point(197, 95);
+            this.numericUpDown19.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown19.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown19.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown19.Name = "numericUpDown19";
+            this.numericUpDown19.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown19.TabIndex = 163;
+            this.numericUpDown19.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
             // 
             // checkBox15
             // 
@@ -984,7 +1014,7 @@
             // checkBox12
             // 
             this.checkBox12.AutoSize = true;
-            this.checkBox12.Location = new System.Drawing.Point(10, 693);
+            this.checkBox12.Location = new System.Drawing.Point(11, 692);
             this.checkBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(89, 19);
@@ -2224,7 +2254,7 @@
             // 
             this.linkLabel4.AutoSize = true;
             this.linkLabel4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.linkLabel4.Location = new System.Drawing.Point(134, 71);
+            this.linkLabel4.Location = new System.Drawing.Point(133, 71);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(48, 15);
             this.linkLabel4.TabIndex = 137;
@@ -2456,9 +2486,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown19)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown14)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -2654,5 +2684,7 @@
         private System.Windows.Forms.Button button23;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.CheckBox checkBox20;
+        private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.RadioButton radioButton7;
     }
 }

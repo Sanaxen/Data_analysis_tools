@@ -2419,11 +2419,16 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        k = f/2\r\n";
                                 forecast_extension += "        #k =  max(1, min(round(f / 4 - 1), 10))\r\n";
                                 forecast_extension += "        if ( k > 0 ){\r\n";
-                                forecast_extension += "             fx <-  fourier(ts(y2,frequency=frequency_value) , K = k)\r\n";
+                                forecast_extension += "             #fx <-  fourier(ts(y2,frequency=frequency_value) , K = k)\r\n";
+                                forecast_extension += "             fx <-  fourier(ts(y2,frequency=frequency_value) , K = k, h = 1)\r\n";
 
                                 for (int j = 1; j <= Math.Min(max_seasonal, n_seasons-1); j++)
                                 {
-                                    forecast_extension += "             test$season" + j.ToString() + "[length(test$target_)]<- fx[length(test$target_)," + j.ToString() + "]\r\n";
+                                    forecast_extension += "             test$season" + j.ToString() + "[length(test$target_)]<- fx[1," + j.ToString() + "]\r\n";
+                                }
+                                for (int j = 1; j <= Math.Min(max_seasonal, n_seasons-1); j++)
+                                {
+                                    forecast_extension += "             #test$season" + j.ToString() + "[length(test$target_)]<- fx[length(test$target_)," + j.ToString() + "]\r\n";
                                 }
                                 for (int j = 1; j <= Math.Min(max_seasonal, n_seasons - 1); j++)
                                 {
@@ -2464,10 +2469,10 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        {\r\n";
                                 forecast_extension += "				overall$target_ <- overall$'" + targetName + "'\r\n";
                                 forecast_extension += "        }\r\n";
-                                forecast_extension += "        t<-stl(ts(as.vector(overall$target_),frequency=frequency_value), s.window=\"per\", robust=TRUE)\r\n";
-                                forecast_extension += "        stl_t = as.matrix(t$time.series[,2])      #トレンド（Trend）\r\n";
-                                forecast_extension += "        stl_s = as.matrix(t$time.series[,1])      #季節性（Seasonal）\r\n";
-                                forecast_extension += "        stl_r = as.matrix(t$time.series[,3])      #残差（Remainder）\r\n";
+                                forecast_extension += "        t_decomp<-stl(ts(as.vector(overall$target_),frequency=frequency_value), s.window=\"per\", robust=TRUE)\r\n";
+                                forecast_extension += "        stl_t = as.matrix(t_decomp$time.series[,2])      #トレンド（Trend）\r\n";
+                                forecast_extension += "        stl_s = as.matrix(t_decomp$time.series[,1])      #季節性（Seasonal）\r\n";
+                                forecast_extension += "        stl_r = as.matrix(t_decomp$time.series[,3])      #残差（Remainder）\r\n";
                                 forecast_extension += "        overall$trend[length(overall$target_)] <- stl_t[length(overall$target_),1]\r\n";
                                 forecast_extension += "        overall$target_[length(overall$target_)] <- overall$target_[length(overall$target_)] - overall$trend[length(overall$target_)]\r\n";
 
@@ -2483,11 +2488,14 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                         train_length = nrow(overall)-2\r\n";
                                 forecast_extension += "                     }\r\n";
                                 forecast_extension += "                     tmp = overall[(nrow(overall)-train_length-2):(nrow(overall)-1),]\r\n";
-                                forecast_extension += "                     df_t <- ts(tmp$trend,start=c(2015,1),frequency=frequency_value)\r\n";
+                                forecast_extension += "                     df_t <- ts(tmp$trend,start=c(2015,1),frequency=frequency_value)\r\n\r\n";
+                                forecast_extension += "                     #Dynamic harmonic regression\r\n";
+                                forecast_extension += "                     xreg = NULL\r\n";
+                                forecast_extension += "                     #if ( k > 0 ) xreg = fourier(ts(df_t,frequency=frequency_value) , K = 2)\r\n\r\n";
                                 forecast_extension += "                     if ( fast_arima == 0 ){\r\n";
                                 forecast_extension += "                         trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
 
-                                forecast_extension += "                             max.order=10,  #p+q+P+Q\r\n";
+                                forecast_extension += "                             max.order=14,  #p+q+P+Q\r\n";
                                 forecast_extension += "                             max.d = 2,\r\n";
                                 forecast_extension += "                             max.D = 1,\r\n";
                                 forecast_extension += "                             max.p = 5,\r\n";
@@ -2496,20 +2504,37 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                             max.Q = 2,\r\n";
                                 forecast_extension += "                             nmodels = 100,\r\n";
                                 forecast_extension += "                             approximation=F,\r\n";
-                                forecast_extension += "                             seasonal = T, stepwise=F, trace=T)\r\n";
+                                forecast_extension += "                             seasonal = T, stepwise=F, trace=T, xreg = xreg)\r\n";
                                 forecast_extension += "                     }else{\r\n";
-                                forecast_extension += "                         trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
+                                forecast_extension += "                         if ( "+(radioButton7.Checked ? "TRUE" : "FALSE")+"){\r\n";
+                                forecast_extension += "                             trendFit <- t_decomp\r\n";
+                                forecast_extension += "                         }else{\r\n";
+                                forecast_extension += "                             trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
 
-                                forecast_extension += "                             max.order=10,  #p+q+P+Q\r\n";
-                                forecast_extension += "                             #approximation=F,\r\n";
-                                forecast_extension += "                             seasonal = T, stepwise=T, trace=T)\r\n";
-
+                                forecast_extension += "                                 max.order=14,  #p+q+P+Q\r\n";
+                                forecast_extension += "                                 #approximation=F,\r\n";
+                                forecast_extension += "                                 seasonal = T, stepwise=T, trace=T, xreg = xreg)\r\n";
+                                forecast_extension += "                         }\r\n";
                                 forecast_extension += "                     }\r\n";
                                 forecast_extension += "                     t_step_forcast = t_step\r\n";
                                 forecast_extension += "\r\n";
                                 forecast_extension += "                 }\r\n";
                                 forecast_extension += "                 h = t_step-t_step_forcast+1\r\n";
-                                forecast_extension += "                 pred<-forecast(trendFit, level = c(50,95), h = h)\r\n";
+                                forecast_extension += "                 if ( "+ (radioButton7.Checked ? "TRUE" : "FALSE")+" ){\r\n";
+                                forecast_extension += "                     #Hyndman etal。のフレームワーク用語を使用した3文字の文字列識別方法。（2002）およびHyndman etal。（2008）。\r\n";
+                                forecast_extension += "                     #最初の文字はエラータイプ（「A」、「M」、または「Z」）を示します。\r\n";
+                                forecast_extension += "                     #2番目の文字は、トレンドタイプ（「N」、「A」、「M」、または「Z」）を示します。\r\n";
+                                forecast_extension += "                     #3番目の文字は、季節のタイプ（ N、 A、 M、または Z）を示します。\r\n";
+                                forecast_extension += "                     #すべての場合において、「N」=なし、「A」=加法、「M」=乗法、「Z」=自動的に選択されます。\r\n";
+                                forecast_extension += "                     #したがって、たとえば、「ANN」は加法誤差を伴う単純な指数平滑化であり、「MAM」は乗法誤差を伴う乗法Holt-Wintersの方法です。\r\n";
+                                forecast_extension += "                     #pred<-forecast(trendFit, method=\"ets\", etsmodel=\"MAM\", level = c(50,95), h = h)\r\n";
+                                forecast_extension += "                     pred<-forecast(trendFit, method=\"naive\", level = c(50,95), h = h)\r\n";
+                                forecast_extension += "                 }else{\r\n";
+                                forecast_extension += "                     #Dynamic harmonic regression\r\n";
+                                forecast_extension += "                     xreg = NULL\r\n";
+                                forecast_extension += "                     #if ( k > 0 ) xreg = fourier(ts(df_t,frequency=frequency_value) , K = 2, h = h)\r\n\r\n";
+                                forecast_extension += "                     pred<-forecast(trendFit, level = c(50,95), h = h, xreg = xreg)\r\n";
+                                forecast_extension += "                 }\r\n";
                                 forecast_extension += "                 #Point Forecast\r\n";
                                 forecast_extension += "	                overall$trend[nrow(overall)] <- as.data.frame(pred)[h,1]\r\n";
                                 if (cutoff == 1)
@@ -2684,7 +2709,7 @@ namespace WindowsFormsApplication1
                     forecast_debug_plot += "        if ( !is.null(predict) ){\r\n";
                     forecast_debug_plot += "            predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict[,1], colour=\"予測値\"))\r\n";
                     forecast_debug_plot += "        }\r\n";
-                    forecast_debug_plot += "        if (obs_test_step >= 1){\r\n";
+                    forecast_debug_plot += "        if (obs_test_step >= 1 && obs_test_step < nrow(test_org)){\r\n";
                     forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[1:obs_test_step,1]), y=test[1:obs_test_step,colidx], colour=\"予測値(観測値参照)\"))\r\n";
                     forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[(obs_test_step+1):nrow(test),1]), y=test[(obs_test_step+1):nrow(test),colidx], colour=\"予測値(観測値参照無し)\"))\r\n";
                     forecast_debug_plot += "        }else{\r\n";
@@ -2785,10 +2810,10 @@ namespace WindowsFormsApplication1
                     cmd += "\r\n";
 
                     cmd += "x_<- train[nrow(train),1]\r\n";
-                    cmd += "write.csv(df_tmp, file =\"時系列tmp.csv\",row.names=F)\r\n";
+                    cmd += "write.csv(df_tmp, file =\"予測input_tmp.csv\",row.names=F)\r\n";
 
                     cmd += "predict.xgboost<-cbind(df_,predict.y)\r\n";
-                    cmd += "write.csv(predict.xgboost, file =\"時系列予測.csv\",row.names=F)\r\n";
+                    cmd += "write.csv(predict.xgboost, file =\"予測.csv\",row.names=F)\r\n";
                     if (comboBox2.Text == "\"multi:softmax\"")
                     {
                         cmd += "names(predict.xgboost)[ncol(predict.xgboost)]<-\"Predict\"\r\n";
@@ -4214,11 +4239,21 @@ namespace WindowsFormsApplication1
                 {
                     sw.Write("SARIMA,true\r\n");
                     sw.Write("prophet,false\r\n");
-                }else
+                    sw.Write("naive,false\r\n");
+                }
+                if (radioButton6.Checked)
                 {
                     sw.Write("SARIMA,false\r\n");
                     sw.Write("prophet,true\r\n");
+                    sw.Write("naive,false\r\n");
                 }
+                if (radioButton7.Checked)
+                {
+                    sw.Write("SARIMA,false\r\n");
+                    sw.Write("prophet,false\r\n");
+                    sw.Write("naive,true\r\n");
+                }
+
                 sw.Write("obs_test,"); sw.Write(numericUpDown20.Value.ToString() + "\r\n");
                 sw.Write("設定済説明変数使用,");
                 if (checkBox19.Checked) sw.Write("true\r\n");
@@ -4630,12 +4665,8 @@ namespace WindowsFormsApplication1
 		                {
 		                    radioButton5.Checked = true;
 		                    radioButton6.Checked = false;
-		                }
-		                else
-		                {
-		                    radioButton5.Checked = false;
-		                    radioButton6.Checked = true;
-		                }
+                            radioButton7.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("prophet") >= 0)
@@ -4644,12 +4675,18 @@ namespace WindowsFormsApplication1
 		                {
 		                    radioButton5.Checked = false;
 		                    radioButton6.Checked = true;
-		                }
-		                else
-		                {
-		                    radioButton5.Checked = true;
-		                    radioButton6.Checked = false;
-		                }
+                            radioButton7.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("naive") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            radioButton5.Checked = false;
+                            radioButton6.Checked = false;
+                            radioButton7.Checked = true;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("obs_test") >= 0)
@@ -5768,6 +5805,23 @@ namespace WindowsFormsApplication1
                 return;
             }
             System.Diagnostics.Process.Start(image_link5);
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex < 0)
+            {
+                MessageBox.Show("目的変数を指定してください");
+                return;
+            }
+            string targetName = listBox1.Items[listBox1.SelectedIndex].ToString();
+            string arg = "adf.test(train$'" + targetName + "')$parameter";
+
+            int lag = form1.Int_func("as.integer", arg);
+            if ( lag > numericUpDown8.Value)
+            {
+                numericUpDown8.Value = lag;
+            }
         }
     }
 

@@ -599,7 +599,7 @@ namespace WindowsFormsApplication1
                                 sw.Write("tsdiag(sarima.model)\r\n");
                                 sw.Write("dev.off()\r\n");
 
-                                sw.Write("png(\"tmp_sarima.png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
+                                sw.Write("png(\"tmp_sarima.png\", height = 480*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 2.5*640*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                                 sw.Write("cat(\"帰無仮説「残差に自己相関が無い」が棄却されなければモデルが適切であるとする検定(Ljung-Box検定)\")\r\n");
                                 sw.Write("cat(\"\\n\")\r\n");
                                 sw.Write("checkresiduals(sarima.model)\r\n");
@@ -655,7 +655,7 @@ namespace WindowsFormsApplication1
                                 sw.Write("#plot(predict_sarima)\r\n");
                                 sw.Write("#dev.off()\r\n");
                                 sw.Write("g_ <- autoplot(predict_sarima, main = \"SARIMAによる予測\")\r\n");
-                                sw.Write("ggsave(file = \"tmp_sarima_predict.png\", plot = g_, height = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", dpi = 100)\r\n");
+                                sw.Write("ggsave(file = \"tmp_sarima_predict.png\", plot = g_, height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 2*6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", dpi = 100)\r\n");
                             }
                             sw.Write("cat(\"RMSE=\")\r\n");
                             sw.Write("cat(rmse_)\r\n");
