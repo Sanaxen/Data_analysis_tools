@@ -3366,7 +3366,7 @@ namespace WindowsFormsApplication1
                                 sw.Write("dev.off()\r\n");
                                 */
 
-                                sw.Write("residual.error2 <- predict.y[1:nrow(test_org),1] - as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)])\r\n");
+                                sw.Write("residual.error2 <- predict.y[1:nrow(test),1] - as.numeric(test$'" + targetName + "'[1:nrow(test)])\r\n");
                                 if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                                 {
                                     sw.Write("test_st_ <- 1\r\n");
@@ -3379,8 +3379,8 @@ namespace WindowsFormsApplication1
 
 
                                     sw.Write("residual_plt<-ggplot()\r\n");
-                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test_org[,1]), y=residual.error2, colour=\"誤差\"))+\r\n");
-                                    if (use_geom_point == 1) sw.Write("geom_point(aes(x=as.POSIXct(test_org[,1]),y=residual.error2, colour = \"誤差Point\"))+\r\n");
+                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=residual.error2, colour=\"誤差\"))+\r\n");
+                                    if (use_geom_point == 1) sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=residual.error2, colour = \"誤差Point\"))+\r\n");
                                     sw.Write("geom_vline(data=test_org, aes(xintercept=as.POSIXct(test_org[1,1])))+\r\n");
                                     sw.Write("geom_vline(data=test, aes(xintercept=as.POSIXct(test[obs_test_step,1])))+\r\n");
                                     if (eval == 1)
@@ -5815,12 +5815,34 @@ namespace WindowsFormsApplication1
                 return;
             }
             string targetName = listBox1.Items[listBox1.SelectedIndex].ToString();
-            string arg = "adf.test(train$'" + targetName + "')$parameter";
+            string arg = "adf.test(df$'" + targetName + "')$parameter";
 
             int lag = form1.Int_func("as.integer", arg);
             if ( lag > numericUpDown8.Value)
             {
                 numericUpDown8.Value = lag;
+            }
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex < 0)
+            {
+                MessageBox.Show("目的変数を指定してください");
+                return;
+            }
+            string targetName = listBox1.Items[listBox1.SelectedIndex].ToString();
+            string arg = "findfrequency(df$'" + targetName + "')";
+
+            float frequency = form1.Float_func("as.numeric", arg);
+            if ((int)(frequency + 0.5) <= 1)
+            {
+                MessageBox.Show("支配的なfrequencyは、時系列のスペクトル分析から決定されますが\nそのような支配的なfrequencyが見つかりませんでした");
+                return;
+            }
+            if ((int)(frequency+0.5) > 1)
+            {
+                numericUpDown14.Value = (int)(frequency + 0.5);
             }
         }
     }

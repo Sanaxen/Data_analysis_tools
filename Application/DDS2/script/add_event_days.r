@@ -21,36 +21,20 @@ add_event_days <- function(df)
 		
 		u = holidays$lower_window[i]
 		df$lower_window[clidx] = 1
-		if ( u < 0 )
-		{
-			du = -1/u
-			x = 1
-			for ( id in (clidx+u):clidx){
-				if (clidx+u >= 1)df$lower_window[id] = du*x
-				x = x + 1
-			}
-		}else
-		{
-			if ( u > 0 ){
-				du = 1/u
-				x = 1
-				for ( id in (clidx-u):clidx){
-					if (clidx-u >= 1)df$lower_window[id] = du*x
-					x = x + 1
-				}
-			}
+		du = 1/u
+		x = 1
+		for ( id in (clidx-u+1):clidx){
+			if (clidx-u >= 1)df$lower_window[id] = (du*x)^2
+			x = x + 1
 		}
 		
 		u = holidays$upper_window[i]
 		df$upper_window[clidx] = 1
-		if ( u > 0 )
-		{
-			du = 1/u
-			x = 0
-			for ( id in clidx:(clidx+u)){
-				if (clidx+u <=nrow(df))df$upper_window[id] = 1 - du*x
-				x = x + 1
-			}
+		du = 1/u
+		x = 0
+		for ( id in clidx:(clidx+u)){
+			if (clidx+u <=nrow(df))df$upper_window[id] = (1 - du*x)^2
+			x = x + 1
 		}
 	}
 	return(df)
