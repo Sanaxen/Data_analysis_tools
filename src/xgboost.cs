@@ -1985,6 +1985,11 @@ namespace WindowsFormsApplication1
                     cmd_tmp = "source(\"" + cmd_tmp + "\")\r\n";
                     forecast_extension += cmd_tmp;
 
+                    cmd_tmp = Form1.MyPath + "..\\script\\add_event_days.r";
+                    cmd_tmp = cmd_tmp.Replace("\\", "/");
+                    cmd_tmp = "source(\"" + cmd_tmp + "\")\r\n";
+                    forecast_extension += cmd_tmp;
+
                     forecast_extension += "df_<-test\r\n";
                     forecast_extension += "add_ext <-  0\r\n";
                     if (time_series_mode)
@@ -2166,10 +2171,12 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "use_prophet = 0\r\n";
                         }
+                        forecast_extension += "fast_predict = 1\r\n";
                         forecast_extension += "t_step_forcast = 1\r\n";
 
                         forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "+ add_ext > 0 ){\r\n";
                         forecast_extension += "    for ( t_step in 1:(" + numericUpDown5.Value.ToString()+ " + add_ext)){\r\n";
+                        forecast_extension += "        predict_y <- predict_y_org\r\n";
                         forecast_extension += "	        # 1行追加\r\n";
                         forecast_extension += "	        test<-rbind(test, test[nrow(test),])\r\n";
                         forecast_extension += "        #test[nrow(test),1] <- st_ + t_step*dt_\r\n";
@@ -2273,6 +2280,8 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "<- test_org$'" + var.Items[i].ToString() + "'[nrow(test)]\r\n";
                                 forecast_extension += "            }\r\n";
                             }
+                            forecast_extension += "        }else{\r\n";
+                            forecast_extension += "            test <- add_event(test)\r\n";
                             forecast_extension += "        }\r\n\r\n";
                         }
 
@@ -2630,12 +2639,17 @@ namespace WindowsFormsApplication1
                         //forecast_extension += "		}\r\n";
                         //forecast_extension += "		if ( id >= 0 ) test$target_[length(test$target_)-1] = train[kk,]$target_\r\n";
 
+                        forecast_extension += "         flush.console()\r\n";
+                        forecast_extension += "         if ( fast_predict == 1){\r\n";
+                        forecast_extension += "              test_sv <- test\r\n";
+                        forecast_extension += "              test <- test <- test[(nrow(test)-"+lag +"):nrow(test),]\r\n";
+                        forecast_extension += "         }\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
-                        forecast_extension += "	    #xgboostデータ形式に再構築して\r\n";
-                        forecast_extension += "        test_mx<-";
-                        forecast_extension += "        sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        forecast_extension += "        test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        forecast_extension += "         #xgboostデータ形式に再構築して\r\n";
+                        forecast_extension += "         test_mx<-";
+                        forecast_extension += "         sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        forecast_extension += "         test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
                         if (comboBox4.Text != "")
                         {
                             forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
@@ -2650,9 +2664,19 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        )\r\n";
                         //forecast_extension += "	    df_ <- test\r\n";
                         forecast_extension += "	    \r\n";
-                        forecast_extension += "	    #testデータ区間を予測\r\n";
-                        forecast_extension += "	    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
-                        forecast_extension += "	    predict_y_org <- predict_y\r\n";
+                        forecast_extension += "        #testデータ区間を予測\r\n";
+                        forecast_extension += "        if ( fast_predict == 1){\r\n";
+                        forecast_extension += "              y<- predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "              for ( i in 1:(length(y)-1)){\r\n";
+                        forecast_extension += "                  predict_y[(nrow(test)-"+lag +")-1+i] = y[i]\r\n";
+                        forecast_extension += "              }\r\n";
+                        forecast_extension += "              predict_y<-c(predict_y,y[length(y)])\r\n";
+                        forecast_extension += "              test <- test_sv\r\n";
+                        forecast_extension += "        } else {\r\n";
+                        forecast_extension += "             predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "        }\r\n";
+                        forecast_extension += "        predict_y_org <- predict_y\r\n";
+
                         //if (use_diff == 1 || use_decompose == 1)
                         {
                             forecast_extension += "        predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
@@ -2668,8 +2692,60 @@ namespace WindowsFormsApplication1
                         forecast_extension += "	    test$target_[length(test$target_)] <- predict_y_org[length(predict_y)]\r\n";
                         forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] <- predict_y[length(predict_y)]\r\n";
                         forecast_extension += "\r\n";
+                        
+                        forecast_extension += "\r\n";
+						forecast_extension += "        tryCatch({\r\n";
+						forecast_extension += "            sink(\"progress.txt\")\r\n";
+						forecast_extension += "            cat(t_step)\r\n";
+						forecast_extension += "            cat (\"/\")\r\n";
+						forecast_extension += "            cat((" + numericUpDown5.Value.ToString()+ " + add_ext))\r\n";
+						forecast_extension += "            cat(\"\\r\\n\")\r\n";
+						forecast_extension += "            flush.console()\r\n";
+						forecast_extension += "            sink()\r\n";
+						forecast_extension += "        },\r\n";
+						forecast_extension += "        error = function(e) {\r\n";
+						forecast_extension += "            sink()\r\n";
+						forecast_extension += "        },\r\n";
+						forecast_extension += "        finally   = {\r\n";
+						forecast_extension += "        },silent = TRUE )\r\n";
+                        forecast_extension += "\r\n";
+                       
                         forecast_extension += "    }\r\n";
                         forecast_extension += "}\r\n";
+                        
+                        forecast_extension += "\r\n";
+                        forecast_extension += "#再予測による予測結果仕上げ\r\n";
+                        forecast_extension += "test_mx<-";
+                        forecast_extension += "sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        forecast_extension += "test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        if (comboBox4.Text != "")
+                        {
+                            forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
+                        }
+                        else
+                        {
+                            if (add_enevt_data == 1)
+                            {
+                                forecast_extension += ",weight = test$event";
+                            }
+                        }
+                        forecast_extension += "        )\r\n";
+                        forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "predict_y_org <- predict_y\r\n";
+
+                        //if (use_diff == 1 || use_decompose == 1)
+                        {
+                            forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        }
+                        if ( cutoff == 1)
+                        {
+                            forecast_extension += "predict_y_org[length(test$target_)] = limit_cutoff(predict_y_org[length(test$target_)], upper_limit, lower_limit)\r\n";
+                            forecast_extension += "predict_y[length(test$target_)] = limit_cutoff(predict_y[length(test$target_)], upper_limit, lower_limit)\r\n";
+                        }
+                        forecast_extension += "predict.y <- data.frame(\"predict\" = predict_y)\r\n";
+                        forecast_extension += "test$target_ <- predict_y_org\r\n";
+                        forecast_extension += "test$'" + targetName + "' <- predict_y\r\n\r\n";
+
                         forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"seasonal\", \"seasonal2.png\")\r\n";
                         forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"deseasonal\", \"deseasonal2.png\")\r\n";
                         forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"trend\", \"trend2.png\")\r\n";
@@ -3366,7 +3442,7 @@ namespace WindowsFormsApplication1
                                 sw.Write("dev.off()\r\n");
                                 */
 
-                                sw.Write("residual.error2 <- predict.y[1:nrow(test),1] - as.numeric(test$'" + targetName + "'[1:nrow(test)])\r\n");
+                                sw.Write("residual.error2 <- predict.y[1:nrow(test_org),1] - as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)])\r\n");
                                 if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                                 {
                                     sw.Write("test_st_ <- 1\r\n");
@@ -3379,10 +3455,15 @@ namespace WindowsFormsApplication1
 
 
                                     sw.Write("residual_plt<-ggplot()\r\n");
-                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=residual.error2, colour=\"誤差\"))+\r\n");
+                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test_org[,1]), y=residual.error2, colour=\"誤差\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=residual.error2, colour = \"誤差Point\"))+\r\n");
                                     sw.Write("geom_vline(data=test_org, aes(xintercept=as.POSIXct(test_org[1,1])))+\r\n");
                                     sw.Write("geom_vline(data=test, aes(xintercept=as.POSIXct(test[obs_test_step,1])))+\r\n");
+                                    if ( numericUpDown5.Value > 0 )
+                                    {
+                                    	sw.Write("geom_line(aes(x=as.POSIXct(test[-c(1:nrow(test_org)),1]), y=numeric(length(test[-c(1:nrow(test_org)),1])), colour=\"test\"))+\r\n");
+                                    }
+
                                     if (eval == 1)
                                     {
                                         sw.Write("geom_line(aes(x=as.POSIXct(train[,1]), y=numeric(nrow(train)), colour=\"train\"))+\r\n");
@@ -3414,15 +3495,24 @@ namespace WindowsFormsApplication1
                                 else
                                 {
                                     sw.Write("test_st_ <- 1\r\n");
-                                    sw.Write("test_ed_ <- nrow(test)\r\n");
+                                    sw.Write("test_ed_ <- nrow(test_org)\r\n");
                                     if ( eval == 1)
                                     {
                                         sw.Write("test_st_ <- nrow(train)+1\r\n");
-                                        sw.Write("test_ed_ <- nrow(train)+nrow(test)\r\n");
+                                        sw.Write("test_ed_ <- nrow(train)+nrow(test_org)\r\n");
                                     }
                                     sw.Write("residual_plt<-ggplot()\r\n");
                                     sw.Write("residual_plt<-residual_plt + geom_line(aes(x=(test_st_:test_ed_), y=residual.error2, colour=\"誤差\"))+\r\n");
                                     sw.Write("geom_point(aes(x=test_st_:test_ed_,y=residual.error2, colour = \"誤差Point\"))+\r\n");
+                                    if ( numericUpDown5.Value > 0 )
+                                    {
+                                    	sw.Write("geom_line(aes(x=(nrow(test_org)+1):nrow(test), y=numeric(length(test[-c(1:nrow(test_org)),1])), colour=\"test\"))+\r\n");
+                                    }
+                                    if (eval == 1)
+                                    {
+                                        sw.Write("geom_line(aes(x=1:nrow(train), y=numeric(nrow(train)), colour=\"train\"))+\r\n");
+                                        sw.Write("geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[nrow(test_org),1])))+\r\n");
+                                    }
                                     sw.Write("geom_vline(data=test,aes(xintercept=test_st_))+\r\n");
                                     sw.Write("geom_vline(data=test,aes(xintercept=test_st_+obs_test_step))");
                                     if (eval == 1)
@@ -3539,9 +3629,17 @@ namespace WindowsFormsApplication1
                 pictureBox1.Image = null;
                 pictureBox1.Refresh();
 
+                form1.FileDelete("progress.txt");
+                timer2.Enabled = true;
+                timer2.Start();
                 button1.Enabled = false;
+                
                 string stat = form1.Execute_script(file);
+                
                 button1.Enabled = true;
+                timer2.Enabled = false;
+                timer2.Stop();
+                form1.FileDelete("progress.txt");
 
                 if ( System.IO.File.Exists("ts_transform.png"))
                 {
@@ -5843,6 +5941,37 @@ namespace WindowsFormsApplication1
             if ((int)(frequency+0.5) > 1)
             {
                 numericUpDown14.Value = (int)(frequency + 0.5);
+            }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            string line = "";
+            System.IO.StreamReader sr = null;
+            try
+            {
+                if (System.IO.File.Exists("progress.txt"))
+                {
+                    sr = new System.IO.StreamReader("progress.txt");
+                    line = sr.ReadLine();
+                }
+            }
+            catch { }
+            finally
+            {
+                if (sr != null)
+                {
+                    sr.Close();
+                }
+            }
+
+            if ( line != "")
+            {
+                line = line.Replace("\r\n", "");
+                var count = line.Split('/')[0];
+                var tot = line.Split('/')[1];
+                progressBar1.Maximum = int.Parse(tot);
+                progressBar1.Value = int.Parse(count);
             }
         }
     }
