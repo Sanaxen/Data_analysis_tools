@@ -3473,6 +3473,11 @@ namespace WindowsFormsApplication1
                                 */
 
                                 sw.Write("residual.error2 <- predict.y[1:nrow(test_org),1] - as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)])\r\n");
+								sw.Write("reserr2 <- data.frame(reserr = residual.error2)\r\n");
+								sw.Write("error2_plt <- ggplot(reserr2, aes(x = reserr)) +\r\n");
+								sw.Write("geom_histogram(colour = \"gray10\", fill = \"dodgerblue4\")\r\n");
+								sw.Write("ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = error2_plt)\r\n");
+								
                                 if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                                 {
                                     sw.Write("test_st_ <- 1\r\n");
