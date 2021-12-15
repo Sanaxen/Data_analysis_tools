@@ -268,6 +268,24 @@ namespace WindowsFormsApplication1
             InitDragDropFile(textbox);
         }
 #endif
+
+        public bool WebViewIsInstalled()
+        {
+            string regKey = @"SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients";
+            using (Microsoft.Win32.RegistryKey edgeKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(regKey))
+            {
+                if (edgeKey != null)
+                {
+                    string[] productKeys = edgeKey.GetSubKeyNames();
+                    if (productKeys.Any())
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
         static public int WaitForExitLimit = 300000;
         bool unusable = false;          // = true --> 利用不可状態
         public string App_userinfo = "";
@@ -3150,6 +3168,17 @@ namespace WindowsFormsApplication1
             InitDragDropFile();
 
             timer3.Start();
+
+            if (!System.IO.File.Exists(MyPath + "\\webview2_chk_daialog.txt"))
+            {
+                bool webview2_install = WebViewIsInstalled();
+                if (!webview2_install)
+                {
+                    webview2_chk webview2_chk = new webview2_chk();
+                    webview2_chk.Show();
+                    webview2_chk.TopMost = true;
+                }
+            }
         }
 
         //複数行コマンドの実行

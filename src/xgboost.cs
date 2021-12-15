@@ -1208,6 +1208,8 @@ namespace WindowsFormsApplication1
 
                         cmd2 += "for (i in 1:ncol(predictions)){ #\r\n";
                         cmd2 += "\r\n";
+                        cmd2 += "   c = 0.8\r\n";
+                        cmd2 += "   if ( i == 1 ) c = 1.0\r\n";
                         cmd2 += "	set.seed(seeds[i]) \r\n";
                         cmd2 += "   l_params_tmp =" + l_params_tmp + "\r\n";
                         /*
@@ -1217,11 +1219,11 @@ namespace WindowsFormsApplication1
                         cmd2 += "		,eta=0.1\r\n";
                         cmd2 += "		,gamma=0.0\r\n";
                         cmd2 += "		,min_child_weight=2\r\n";
-                        cmd2 += "		,subsample=1\r\n";
+                        cmd2 += "		,subsample=1*c\r\n";
                         cmd2 += "		,max_depth=6\r\n";
                         cmd2 += "		,alpha=0.0\r\n";
                         cmd2 += "		,lambda=1.0\r\n";
-                        cmd2 += "		,colsample_bytree=0.5\r\n";
+                        cmd2 += "		,colsample_bytree=0.8*c\r\n";
                         cmd2 += "		,nthread=3\r\n";
                         cmd2 += "	)\r\n";
                         */
@@ -1283,9 +1285,9 @@ namespace WindowsFormsApplication1
                                 cmd2 += "{\r\n";
                                 cmd2 += "	t = (i - nrow(test_org)+2)\r\n";
                                 cmd2 += "	#t = t*t*t\r\n";
-                                cmd2 += "	t = t*t/100\r\n";
-                                cmd2 += "	x = t*safety_factor*y_delta_mean\r\n";
-                                cmd2 += "   y = x*sqrt(log(1 + x))\r\n";
+                                cmd2 += "	t = t*t/10000\r\n";
+                                cmd2 += "	x = t*safety_factor*abs(target_max-target_min)\r\n";
+                                cmd2 += "   y = x*(log(1 + x))\r\n";
                                 cmd2 += "	up[i] = up[i] + y\r\n";
                                 cmd2 += "	lo[i] = lo[i] - y\r\n";
                                 cmd2 += "}\r\n";
@@ -1322,9 +1324,9 @@ namespace WindowsFormsApplication1
                                 cmd2 += "	#t = t*t*t\r\n";
                                 cmd2 += "	#up[i] = up[i] + t*safety_factor*abs(y_upper_smooth[i]-y_lower_smooth[i])/1000\r\n";
                                 cmd2 += "	#lo[i] = lo[i] - t*safety_factor*abs(y_upper_smooth[i]-y_lower_smooth[i])/1000\r\n";
-                                cmd2 += "	t = t*t/100\r\n";
-                                cmd2 += "	x = t*safety_factor*abs(target_max-target_min)/10\r\n";
-                                cmd2 += "   y = x*sqrt(log(1 + x))\r\n";
+                                cmd2 += "	t = t*t/10000\r\n";
+                                cmd2 += "	x = t*safety_factor*abs(target_max-target_min)\r\n";
+                                cmd2 += "   y = x*(log(1 + x))\r\n";
                                 cmd2 += "	up[i] = up[i] + y\r\n";
                                 cmd2 += "	lo[i] = lo[i] - y\r\n";
                                 cmd2 += "}\r\n";
@@ -1522,9 +1524,9 @@ namespace WindowsFormsApplication1
                                 cmd3 += "	#lo2[i] = lo2[i] - t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
                                 cmd3 += "	#up2[i] = up2[i] + t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
                                 cmd3 += "	#lo2[i] = lo2[i] - t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
-                                cmd3 += "	t = t*t/100\r\n";
-                                cmd3 += "	x = t*safety_factor*abs(target_max-target_min)/10\r\n";
-                                cmd3 += "   y = x*sqrt(log(1 + x))\r\n";
+                                cmd3 += "	t = t*t/10000\r\n";
+                                cmd3 += "	x = t*safety_factor*abs(target_max-target_min)\r\n";
+                                cmd3 += "   y = x*(log(1 + x))\r\n";
                                 cmd3 += "	up2[i] = up2[i] + y\r\n";
                                 cmd3 += "	lo2[i] = lo2[i] - y\r\n";
                                 cmd3 += "}\r\n";
@@ -1540,8 +1542,14 @@ namespace WindowsFormsApplication1
                             cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
 
                             cmd3 += "geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
-                            cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"予測\"))+\r\n";
-                            if (use_geom_point == 1) cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "',colour = \"予測Point\"))+\r\n";
+                            if ( radioButton4.Checked )
+                            {
+	                            cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
+	                            if (use_geom_point == 1) cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
+                            }else{
+	                            cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"予測\"))+\r\n";
+	                            if (use_geom_point == 1) cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "',colour = \"予測Point\"))+\r\n";
+                            }
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=predictions[,1], colour=\"予測値\"))+\r\n";
                             cmd3 += "geom_vline(data=test, aes(xintercept=as.POSIXct(test[1,1])))+\r\n";
                             if (eval == 1)
@@ -1574,9 +1582,9 @@ namespace WindowsFormsApplication1
                                 cmd3 += "	#t = t*t*t\r\n";
                                 cmd3 += "	#up2[i] = up2[i] + t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
                                 cmd3 += "	#lo2[i] = lo2[i] - t*safety_factor*abs(y_upper_smooth2[i]-y_lower_smooth2[i])/1000\r\n";
-                                cmd3 += "	t = t*t/100\r\n";
-                                cmd3 += "	x = t*safety_factor*abs(target_max-target_min)/10\r\n";
-                                cmd3 += "   y = x*sqrt(log(1 + x))\r\n";
+                                cmd3 += "	t = t*t/10000\r\n";
+                                cmd3 += "	x = t*safety_factor*abs(target_max-target_min)\r\n";
+                                cmd3 += "   y = x*(log(1 + x))\r\n";
                                 cmd3 += "	up2[i] = up2[i] + y\r\n";
                                 cmd3 += "	lo2[i] = lo2[i] - y\r\n";
                                 cmd3 += "}\r\n";
@@ -1597,8 +1605,14 @@ namespace WindowsFormsApplication1
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
                             cmd3 += "geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
-                            cmd3 += "geom_line(aes(x=test_st_:test_ed_, y=test$'" + targetName + "', colour=\"予測値\"))+\r\n";
-                            if (use_geom_point == 1) cmd3 += "geom_point(aes(x=test_st_:test_ed_,y=test$'" + targetName + "',colour = \"予測Point\"))+\r\n";
+                            if ( radioButton4.Checked)
+                            {
+	                            cmd3 += "geom_line(aes(x=test_st_:test_ed_, y=test$'" + targetName + "', colour=\"観測値\"))+\r\n";
+	                            if (use_geom_point == 1) cmd3 += "geom_point(aes(x=test_st_:test_ed_,y=test$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
+                            }else{
+	                            cmd3 += "geom_line(aes(x=test_st_:test_ed_, y=test$'" + targetName + "', colour=\"予測値\"))+\r\n";
+	                            if (use_geom_point == 1) cmd3 += "geom_point(aes(x=test_st_:test_ed_,y=test$'" + targetName + "',colour = \"予測Point\"))+\r\n";
+                            }
                             cmd3 += "geom_line(aes(x=test_st_:test_ed_, y=predictions[,1], colour=\"予測値\"))+\r\n";
                             cmd3 += "geom_vline(data=test, aes(xintercept=as.numeric(nrow(test_org))))";
                             if (eval == 1)
@@ -2280,10 +2294,11 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "<- test_org$'" + var.Items[i].ToString() + "'[nrow(test)]\r\n";
                                 forecast_extension += "            }\r\n";
                             }
-                            forecast_extension += "        }else{\r\n";
-                            forecast_extension += "            test <- add_event(test)\r\n";
-                            forecast_extension += "        }\r\n\r\n";
+                            forecast_extension += "        }\r\n";
                         }
+                        forecast_extension += "\r\n";
+                        forecast_extension += "        test <- add_event(test)\r\n";
+                        forecast_extension += " \r\n\r\n";
 
                         forecast_extension += "        coln = colnames(test)\r\n";
                         forecast_extension += "        colidx_1 = grep(\"^sunday$\",  coln)\r\n";
@@ -3023,6 +3038,20 @@ namespace WindowsFormsApplication1
                             }
                         }
                         predict_probability += "   test <- test_sv\r\n";
+						predict_probability += "   tryCatch({\r\n";
+						predict_probability += "       sink(\"predict_sampling.txt\")\r\n";
+						predict_probability += "       cat(i)\r\n";
+						predict_probability += "       cat (\"/\")\r\n";
+						predict_probability += "       cat(ncol(predictions))\r\n";
+						predict_probability += "       cat(\"\r\n\")\r\n";
+						predict_probability += "       flush.console()\r\n";
+						predict_probability += "       sink()\r\n";
+						predict_probability += "   },\r\n";
+						predict_probability += "   error = function(e) {\r\n";
+						predict_probability += "       sink()\r\n";
+						predict_probability += "   },\r\n";
+						predict_probability += "   finally   = {\r\n";
+						predict_probability += "   },silent = TRUE )\r\n";
                         predict_probability += "} \r\n";
                         predict_probability += "\r\n";
 
@@ -3202,6 +3231,7 @@ namespace WindowsFormsApplication1
                         predict_probability += "	geom_vline(xintercept = prob_interval_e, colour=\"red\", linetype = \"dotted\")+\r\n";
                         predict_probability += "	geom_density(color = \"black\", alpha = 0.7, fill=col2, show.legend = F)+\r\n";
                         predict_probability += "	annotate(\"rect\", xmin = prob_interval_s, xmax = prob_interval_e, ymin = 0, ymax = Inf, alpha = 0.1)+\r\n";
+                        predict_probability += "	annotate(\"text\", x = -Inf, y = -Inf, label=paste(sprintf(\"%.1f\",prob*100), \"%\", sep=\"\"), family=\"serif\",fontface=\"italic\",colour=\"blue\",size=32,alpha = 0.8,hjust=-0.1, vjust=-2.5)+\r\n";
                         predict_probability += "	ggtitle(s)\r\n";
                         predict_probability += "	\r\n";
                         predict_probability += "	return (list(p, g))\r\n";
@@ -3630,6 +3660,8 @@ namespace WindowsFormsApplication1
                 pictureBox1.Refresh();
 
                 form1.FileDelete("progress.txt");
+                form1.FileDelete("predict_sampling.txt");
+                label44.Text = "";
                 timer2.Enabled = true;
                 timer2.Start();
                 button1.Enabled = false;
@@ -3640,6 +3672,9 @@ namespace WindowsFormsApplication1
                 timer2.Enabled = false;
                 timer2.Stop();
                 form1.FileDelete("progress.txt");
+                form1.FileDelete("predict_sampling.txt");
+                label44.Text = "";
+
 
                 if ( System.IO.File.Exists("ts_transform.png"))
                 {
@@ -5944,6 +5979,113 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private void timer2_Tick3(object sender, EventArgs e)
+        {
+            if ( !checkBox4.Checked && !checkBox13.Checked)
+            {
+                return;
+            }
+            string line = "";
+            try
+            {
+               line = label27.Text;
+            }
+            catch { }
+            finally
+            {
+            }
+
+            if (line != "")
+            {
+                line = line.Replace("\r\n", "");
+
+                try
+                {
+                    var count = line.Split('/')[0].TrimStart('0');
+                    var tot = line.Split('/')[1].TrimStart('0');
+
+                    if (checkBox4.Checked && checkBox13.Checked)
+                    {
+                        progressBar3.Maximum = int.Parse(tot);
+                        if (xgboost_predict_probability_count > 1 && xgboost_predict_parts_count > 1)
+                        {
+                            progressBar3.Value = (int.Parse(count) + explain_num) / 2;
+                        }else
+                        {
+                            progressBar3.Value = int.Parse(count) / 2;
+                        }
+                    }
+                    else
+                    {
+                        progressBar3.Maximum = int.Parse(tot);
+                        progressBar3.Value = int.Parse(count);
+                    }
+                    if (xgboost_predict_probability_count == 1 && xgboost_predict_parts_count > 1)
+                    {
+                        if (progressBar2.Value % 2 == 0)
+                        {
+                            label44.Text = "予測値に至る理由（判断根拠）を生成中";
+                        }
+                        else
+                        {
+                            label44.Text = "予測値に至る理由（判断根拠）を生成中";
+                        }
+                    }
+                    if (xgboost_predict_probability_count > 1)
+                    {
+                        if (progressBar2.Value % 2 == 0)
+                        {
+                            label44.Text = "予測値の確率を生成中";
+                        }
+                        else
+                        {
+                            label44.Text = "予測値の確率を生成中";
+                        }
+                        label44.Refresh();
+                    }
+                }
+                catch { }
+            }
+        }
+        private void timer2_Tick2(object sender, EventArgs e)
+        {
+            string line = "";
+            System.IO.StreamReader sr = null;
+            try
+            {
+                if (System.IO.File.Exists("predict_sampling.txt"))
+                {
+                    sr = new System.IO.StreamReader("predict_sampling.txt");
+                    line = sr.ReadLine();
+                }
+            }
+            catch { }
+            finally
+            {
+                if (sr != null)
+                {
+                    sr.Close();
+                }
+            }
+
+            if (line != "")
+            {
+                line = line.Replace("\r\n", "");
+                var count = line.Split('/')[0].TrimStart('0');
+                var tot = line.Split('/')[1].TrimStart('0');
+                progressBar2.Maximum = int.Parse(tot);
+                progressBar2.Value = int.Parse(count);
+                if (progressBar2.Value % 2 == 0)
+                {
+                    label44.Text = "予測確率の為のアンサンブル予測中";
+                }else
+                {
+                    label44.Text = "予測確率の為のアンサンブル予測中";
+                }
+                label44.Refresh();
+            }
+        }
+
         private void timer2_Tick(object sender, EventArgs e)
         {
             string line = "";
@@ -5968,11 +6110,14 @@ namespace WindowsFormsApplication1
             if ( line != "")
             {
                 line = line.Replace("\r\n", "");
-                var count = line.Split('/')[0];
-                var tot = line.Split('/')[1];
+                var count = line.Split('/')[0].TrimStart('0');
+                var tot = line.Split('/')[1].TrimStart('0');
                 progressBar1.Maximum = int.Parse(tot);
                 progressBar1.Value = int.Parse(count);
             }
+
+            timer2_Tick3(sender, e);
+            timer2_Tick2(sender, e);
         }
     }
 

@@ -535,6 +535,12 @@
     <Compile Include="valuechange.designer.cs">
       <DependentUpon>valuechange.cs</DependentUpon>
     </Compile>
+    <Compile Include="webview2_chk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="webview2_chk.Designer.cs">
+      <DependentUpon>webview2_chk.cs</DependentUpon>
+    </Compile>
     <Compile Include="wordcloud.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -785,6 +791,9 @@
     <EmbeddedResource Include="valuechange.resx">
       <DependentUpon>valuechange.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="webview2_chk.resx">
+      <DependentUpon>webview2_chk.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wordcloud.resx">
       <DependentUpon>wordcloud.cs</DependentUpon>
     </EmbeddedResource>
@@ -860,6 +869,9 @@
     <PackageReference Include="WindowsAPICodePack-Core">
       <Version>1.1.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="webview2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
