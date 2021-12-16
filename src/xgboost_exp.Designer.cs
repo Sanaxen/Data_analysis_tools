@@ -44,7 +44,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.splitter4 = new System.Windows.Forms.Splitter();
             this.panel12 = new System.Windows.Forms.Panel();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -66,6 +65,7 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.button7 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel10.SuspendLayout();
@@ -84,6 +84,7 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -93,18 +94,18 @@
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1501, 625);
+            this.panel1.Size = new System.Drawing.Size(1390, 536);
             this.panel1.TabIndex = 0;
             // 
             // splitter1
             // 
             this.splitter1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.splitter1.Location = new System.Drawing.Point(333, 0);
-            this.splitter1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter1.Location = new System.Drawing.Point(250, 0);
+            this.splitter1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(11, 625);
+            this.splitter1.Size = new System.Drawing.Size(8, 536);
             this.splitter1.TabIndex = 2;
             this.splitter1.TabStop = false;
             // 
@@ -113,10 +114,10 @@
             this.panel5.AutoScroll = true;
             this.panel5.Controls.Add(this.panel10);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(333, 0);
-            this.panel5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel5.Location = new System.Drawing.Point(250, 0);
+            this.panel5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1168, 625);
+            this.panel5.Size = new System.Drawing.Size(1140, 536);
             this.panel5.TabIndex = 3;
             // 
             // panel10
@@ -128,9 +129,9 @@
             this.panel10.Controls.Add(this.panel6);
             this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel10.Location = new System.Drawing.Point(0, 0);
-            this.panel10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(1168, 625);
+            this.panel10.Size = new System.Drawing.Size(1140, 536);
             this.panel10.TabIndex = 5;
             // 
             // panel13
@@ -139,29 +140,27 @@
             this.panel13.Controls.Add(this.splitter7);
             this.panel13.Controls.Add(this.panel14);
             this.panel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel13.Location = new System.Drawing.Point(566, 0);
-            this.panel13.Margin = new System.Windows.Forms.Padding(4);
+            this.panel13.Location = new System.Drawing.Point(425, 0);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(602, 541);
+            this.panel13.Size = new System.Drawing.Size(715, 367);
             this.panel13.TabIndex = 11;
             // 
             // pictureBox4
             // 
             this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox4.Location = new System.Drawing.Point(0, 76);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox4.Location = new System.Drawing.Point(0, 61);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(602, 465);
+            this.pictureBox4.Size = new System.Drawing.Size(715, 306);
             this.pictureBox4.TabIndex = 9;
             this.pictureBox4.TabStop = false;
             // 
             // splitter7
             // 
             this.splitter7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter7.Location = new System.Drawing.Point(0, 72);
-            this.splitter7.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter7.Location = new System.Drawing.Point(0, 58);
             this.splitter7.Name = "splitter7";
-            this.splitter7.Size = new System.Drawing.Size(602, 4);
+            this.splitter7.Size = new System.Drawing.Size(715, 3);
             this.splitter7.TabIndex = 13;
             this.splitter7.TabStop = false;
             // 
@@ -172,29 +171,29 @@
             this.panel14.Controls.Add(this.button3);
             this.panel14.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel14.Location = new System.Drawing.Point(0, 0);
-            this.panel14.Margin = new System.Windows.Forms.Padding(4);
             this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(602, 72);
+            this.panel14.Size = new System.Drawing.Size(715, 58);
             this.panel14.TabIndex = 12;
             // 
             // textBox2
             // 
             this.textBox2.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Font = new System.Drawing.Font("MS UI Gothic", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.textBox2.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.textBox2.Location = new System.Drawing.Point(242, 6);
+            this.textBox2.Location = new System.Drawing.Point(182, 5);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(274, 27);
+            this.textBox2.Size = new System.Drawing.Size(206, 16);
             this.textBox2.TabIndex = 44;
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(129, 4);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(97, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(85, 29);
+            this.button1.Size = new System.Drawing.Size(64, 23);
             this.button1.TabIndex = 43;
             this.button1.Text = "Viewer";
             this.button1.UseVisualStyleBackColor = true;
@@ -202,10 +201,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(21, 4);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
+            this.button3.Location = new System.Drawing.Point(16, 3);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 29);
+            this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 42;
             this.button3.Text = "クリップボード";
             this.button3.UseVisualStyleBackColor = true;
@@ -214,10 +212,9 @@
             // splitter8
             // 
             this.splitter8.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.splitter8.Location = new System.Drawing.Point(553, 0);
-            this.splitter8.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter8.Location = new System.Drawing.Point(415, 0);
             this.splitter8.Name = "splitter8";
-            this.splitter8.Size = new System.Drawing.Size(13, 541);
+            this.splitter8.Size = new System.Drawing.Size(10, 367);
             this.splitter8.TabIndex = 12;
             this.splitter8.TabStop = false;
             // 
@@ -228,72 +225,59 @@
             this.panel11.Controls.Add(this.panel12);
             this.panel11.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel11.Location = new System.Drawing.Point(0, 0);
-            this.panel11.Margin = new System.Windows.Forms.Padding(4);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(553, 541);
+            this.panel11.Size = new System.Drawing.Size(415, 367);
             this.panel11.TabIndex = 10;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 72);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 61);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(553, 469);
+            this.pictureBox1.Size = new System.Drawing.Size(415, 306);
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
             // splitter4
             // 
             this.splitter4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter4.Location = new System.Drawing.Point(0, 68);
-            this.splitter4.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter4.Location = new System.Drawing.Point(0, 58);
             this.splitter4.Name = "splitter4";
-            this.splitter4.Size = new System.Drawing.Size(553, 4);
+            this.splitter4.Size = new System.Drawing.Size(415, 3);
             this.splitter4.TabIndex = 11;
             this.splitter4.TabStop = false;
             // 
             // panel12
             // 
-            this.panel12.Controls.Add(this.dateTimePicker1);
             this.panel12.Controls.Add(this.textBox1);
             this.panel12.Controls.Add(this.button5);
             this.panel12.Controls.Add(this.button4);
             this.panel12.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel12.Location = new System.Drawing.Point(0, 0);
-            this.panel12.Margin = new System.Windows.Forms.Padding(4);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(553, 68);
+            this.panel12.Size = new System.Drawing.Size(415, 58);
             this.panel12.TabIndex = 10;
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.CustomFormat = "yyyy-MM-dd hh:mm:ss";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(308, 39);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(211, 22);
-            this.dateTimePicker1.TabIndex = 43;
-            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("MS UI Gothic", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.textBox1.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.textBox1.Location = new System.Drawing.Point(245, 6);
+            this.textBox1.Location = new System.Drawing.Point(184, 5);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(274, 27);
+            this.textBox1.Size = new System.Drawing.Size(206, 16);
             this.textBox1.TabIndex = 42;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(12, 4);
-            this.button5.Margin = new System.Windows.Forms.Padding(4);
+            this.button5.Location = new System.Drawing.Point(9, 3);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(100, 29);
+            this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 40;
             this.button5.Text = "クリップボード";
             this.button5.UseVisualStyleBackColor = true;
@@ -301,10 +285,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(120, 4);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
+            this.button4.Location = new System.Drawing.Point(90, 3);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(85, 29);
+            this.button4.Size = new System.Drawing.Size(64, 23);
             this.button4.TabIndex = 41;
             this.button4.Text = "Viewer";
             this.button4.UseVisualStyleBackColor = true;
@@ -314,22 +297,23 @@
             // 
             this.splitter3.BackColor = System.Drawing.SystemColors.ControlLight;
             this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter3.Location = new System.Drawing.Point(0, 541);
-            this.splitter3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter3.Location = new System.Drawing.Point(0, 367);
+            this.splitter3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter3.Name = "splitter3";
-            this.splitter3.Size = new System.Drawing.Size(1168, 12);
+            this.splitter3.Size = new System.Drawing.Size(1140, 10);
             this.splitter3.TabIndex = 7;
             this.splitter3.TabStop = false;
             // 
             // panel6
             // 
+            this.panel6.Controls.Add(this.pictureBox5);
             this.panel6.Controls.Add(this.textBox3);
             this.panel6.Controls.Add(this.trackBar1);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel6.Location = new System.Drawing.Point(0, 553);
-            this.panel6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel6.Location = new System.Drawing.Point(0, 377);
+            this.panel6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1168, 72);
+            this.panel6.Size = new System.Drawing.Size(1140, 159);
             this.panel6.TabIndex = 4;
             this.panel6.Paint += new System.Windows.Forms.PaintEventHandler(this.panel6_Paint);
             // 
@@ -339,21 +323,23 @@
             this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox3.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.textBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.textBox3.Location = new System.Drawing.Point(434, 45);
+            this.textBox3.Location = new System.Drawing.Point(322, 134);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(181, 17);
+            this.textBox3.Size = new System.Drawing.Size(470, 14);
             this.textBox3.TabIndex = 45;
             this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // trackBar1
             // 
             this.trackBar1.LargeChange = 1;
-            this.trackBar1.Location = new System.Drawing.Point(23, 8);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.trackBar1.Location = new System.Drawing.Point(59, 104);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trackBar1.Maximum = 100;
             this.trackBar1.Minimum = 1;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(1018, 56);
+            this.trackBar1.Size = new System.Drawing.Size(968, 45);
             this.trackBar1.TabIndex = 0;
             this.trackBar1.Value = 1;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
@@ -366,9 +352,9 @@
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(333, 625);
+            this.panel2.Size = new System.Drawing.Size(250, 536);
             this.panel2.TabIndex = 0;
             // 
             // panel4
@@ -378,29 +364,29 @@
             this.panel4.Controls.Add(this.splitter6);
             this.panel4.Controls.Add(this.panel9);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 255);
-            this.panel4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel4.Location = new System.Drawing.Point(0, 204);
+            this.panel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(333, 370);
+            this.panel4.Size = new System.Drawing.Size(250, 332);
             this.panel4.TabIndex = 5;
             // 
             // pictureBox3
             // 
             this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox3.Location = new System.Drawing.Point(0, 58);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox3.Location = new System.Drawing.Point(0, 46);
+            this.pictureBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(333, 312);
+            this.pictureBox3.Size = new System.Drawing.Size(250, 286);
             this.pictureBox3.TabIndex = 5;
             this.pictureBox3.TabStop = false;
             // 
             // splitter6
             // 
             this.splitter6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter6.Location = new System.Drawing.Point(0, 50);
-            this.splitter6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter6.Location = new System.Drawing.Point(0, 40);
+            this.splitter6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter6.Name = "splitter6";
-            this.splitter6.Size = new System.Drawing.Size(333, 8);
+            this.splitter6.Size = new System.Drawing.Size(250, 6);
             this.splitter6.TabIndex = 4;
             this.splitter6.TabStop = false;
             // 
@@ -410,17 +396,16 @@
             this.panel9.Controls.Add(this.button9);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel9.Location = new System.Drawing.Point(0, 0);
-            this.panel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(333, 50);
+            this.panel9.Size = new System.Drawing.Size(250, 40);
             this.panel9.TabIndex = 3;
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(240, 11);
-            this.button8.Margin = new System.Windows.Forms.Padding(4);
+            this.button8.Location = new System.Drawing.Point(180, 9);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 29);
+            this.button8.Size = new System.Drawing.Size(56, 23);
             this.button8.TabIndex = 41;
             this.button8.Text = "Viewer";
             this.button8.UseVisualStyleBackColor = true;
@@ -428,10 +413,9 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(132, 11);
-            this.button9.Margin = new System.Windows.Forms.Padding(4);
+            this.button9.Location = new System.Drawing.Point(99, 9);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(100, 29);
+            this.button9.Size = new System.Drawing.Size(75, 23);
             this.button9.TabIndex = 40;
             this.button9.Text = "クリップボード";
             this.button9.UseVisualStyleBackColor = true;
@@ -441,10 +425,10 @@
             // 
             this.splitter2.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter2.Location = new System.Drawing.Point(0, 245);
-            this.splitter2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter2.Location = new System.Drawing.Point(0, 196);
+            this.splitter2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(333, 10);
+            this.splitter2.Size = new System.Drawing.Size(250, 8);
             this.splitter2.TabIndex = 4;
             this.splitter2.TabStop = false;
             // 
@@ -456,28 +440,28 @@
             this.panel3.Controls.Add(this.panel8);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(333, 245);
+            this.panel3.Size = new System.Drawing.Size(250, 196);
             this.panel3.TabIndex = 1;
             // 
             // pictureBox2
             // 
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 58);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox2.Location = new System.Drawing.Point(0, 46);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(333, 187);
+            this.pictureBox2.Size = new System.Drawing.Size(250, 150);
             this.pictureBox2.TabIndex = 4;
             this.pictureBox2.TabStop = false;
             // 
             // splitter5
             // 
             this.splitter5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter5.Location = new System.Drawing.Point(0, 50);
-            this.splitter5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitter5.Location = new System.Drawing.Point(0, 40);
+            this.splitter5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitter5.Name = "splitter5";
-            this.splitter5.Size = new System.Drawing.Size(333, 8);
+            this.splitter5.Size = new System.Drawing.Size(250, 6);
             this.splitter5.TabIndex = 3;
             this.splitter5.TabStop = false;
             // 
@@ -487,17 +471,16 @@
             this.panel8.Controls.Add(this.button2);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel8.Location = new System.Drawing.Point(0, 0);
-            this.panel8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(333, 50);
+            this.panel8.Size = new System.Drawing.Size(250, 40);
             this.panel8.TabIndex = 2;
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(240, 11);
-            this.button7.Margin = new System.Windows.Forms.Padding(4);
+            this.button7.Location = new System.Drawing.Point(180, 9);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 29);
+            this.button7.Size = new System.Drawing.Size(56, 23);
             this.button7.TabIndex = 41;
             this.button7.Text = "Viewer";
             this.button7.UseVisualStyleBackColor = true;
@@ -505,22 +488,29 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(132, 11);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Location = new System.Drawing.Point(99, 9);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 29);
+            this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 40;
             this.button2.Text = "クリップボード";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Location = new System.Drawing.Point(13, 5);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(1098, 94);
+            this.pictureBox5.TabIndex = 46;
+            this.pictureBox5.TabStop = false;
+            // 
             // xgboost_exp
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1501, 625);
+            this.ClientSize = new System.Drawing.Size(1390, 536);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "xgboost_exp";
             this.Text = "xgboost_exp";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.xgboost_exp_FormClosing);
@@ -546,6 +536,7 @@
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -589,6 +580,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        public System.Windows.Forms.PictureBox pictureBox5;
     }
 }

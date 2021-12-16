@@ -21,6 +21,7 @@ namespace WindowsFormsApplication1
 
         public int explain_num = 1;
         public ListBox timestanplist = null;
+        public string targetName = "";
 
         public xgboost_exp()
         {
@@ -208,84 +209,33 @@ namespace WindowsFormsApplication1
         private void xgboost_exp_Shown(object sender, EventArgs e)
         {
             if (timestanplist == null) return;
-            textBox1.Text = timestanplist.Items[0].ToString();
-            textBox2.Text = timestanplist.Items[0].ToString();
-            textBox3.Text = timestanplist.Items[0].ToString();
-
-            try
-            {
-                string yymmdd = textBox1.Text.Split(' ')[0];
-                string yy = yymmdd.Split('-')[0];
-                string mm = yymmdd.Split('-')[1];
-                string dd = yymmdd.Split('-')[2];
-
-                dateTimePicker1.Value = new DateTime(int.Parse(yy), int.Parse(mm), int.Parse(dd));
-            } catch { }
+            textBox1.Text = timestanplist.Items[1].ToString();
+            textBox2.Text = timestanplist.Items[1].ToString();
+            textBox3.Text = timestanplist.Items[1].ToString();
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            try
-            {
-                int yy = dateTimePicker1.Value.Year;
-                int mm = dateTimePicker1.Value.Month;
-                int dd = dateTimePicker1.Value.Day;
-
-                string yyyy = yy.ToString();
-                string yyyymm = yyyy + "-" + string.Format("{0:D2}", mm);
-                string yyyymmdd = yyyymm + "-" + string.Format("{0:D2}", dd);
-
-                int pos = -1;
-                for (int i = 0; i < timestanplist.Items.Count; i++)
-                {
-                    if (timestanplist.Items[i].ToString().IndexOf(yyyy) >= 0)
-                    {
-                        pos = i;
-                        break;
-                    }
-                }
-                if (pos >= 1)
-                {
-                    int pos2 = -1;
-                    for (int i = 0; i < timestanplist.Items.Count; i++)
-                    {
-                        if (timestanplist.Items[i].ToString().IndexOf(yyyymm) >= 0)
-                        {
-                            pos2 = i;
-                            break;
-                        }
-                    }
-                    if (pos2 >= 1)
-                    {
-                        int pos3 = -1;
-                        for (int i = 0; i < timestanplist.Items.Count; i++)
-                        {
-                            if (timestanplist.Items[i].ToString().IndexOf(yyyymmdd) >= 0)
-                            {
-                                pos3 = i;
-                                break;
-                            }
-                        }
-                        if (pos3 >= 0)
-                        {
-                            pos = pos3;
-                        }
-                        else
-                        {
-                            pos = pos2;
-                        }
-                    }
-                }
-                if (pos >= 1)
-                {
-                    trackBar1.Value = pos;
-                }
-            }
-            catch { }
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
+            string cmd = "";
+
+            try
+            {
+                int pos = trackBar1.Value;
+
+                string file = string.Format("explain_predict\\position_maker{0}.png", pos);
+                if (System.IO.File.Exists(file))
+                {
+                    pictureBox5.Image = Form1.CreateImage(file);
+                    pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+            }
+            catch { }
+
+
             try
             {
                 int pos = trackBar1.Value;
@@ -295,13 +245,6 @@ namespace WindowsFormsApplication1
                     textBox1.Text = timestanplist.Items[pos].ToString();
                     textBox2.Text = timestanplist.Items[pos].ToString();
                     textBox3.Text = timestanplist.Items[pos].ToString();
-
-                    string yymmdd = textBox1.Text.Split(' ')[0];
-                    string yy = yymmdd.Split('-')[0];
-                    string mm = yymmdd.Split('-')[1];
-                    string dd = yymmdd.Split('-')[2];
-
-                    dateTimePicker1.Value = new DateTime(int.Parse(yy), int.Parse(mm), int.Parse(dd));
                 }
                 catch { }
                 string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", pos);
@@ -329,6 +272,35 @@ namespace WindowsFormsApplication1
                 }
             }
             catch { }
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            if (timestanplist == null) return;
+            if (trackBar1.Value < 1) return;
+            if (timestanplist.Items[trackBar1.Value].ToString() == textBox3.Text)
+            {
+                return;
+            }
+
+            int pos = -1;
+            for ( int i = 1; i < timestanplist.Items.Count; i++)
+            {
+                if(timestanplist.Items[i].ToString() == textBox3.Text)
+                {
+                    pos = i;
+                    break;
+                }
+            }
+            if (pos > 0) trackBar1.Value = pos;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
         }
     }
 }

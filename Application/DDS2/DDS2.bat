@@ -1,6 +1,6 @@
 :@echo off
 
-
+goto init
 if exist ..\MicrosoftEdgeWebview2Setup._ (
 	echo -------- MicrosoftEdgeWebview2をインストールします-----------------
 	
@@ -18,6 +18,7 @@ if exist ..\MicrosoftEdgeWebview2Setup._ (
 	del ..\MicrosoftEdgeWebview2Setup._
  ) 
 
+:init
 call ..\setup_ini.bat
 
 
