@@ -747,7 +747,8 @@ namespace WindowsFormsApplication1
 					cmd1 += "		}\r\n";
 					cmd1 += "	}\r\n";
 					cmd1 += "	\r\n";
-					cmd1 += "	plt\r\n";
+					cmd1 += "	plt <- plt + labs(x=\"時間\")\r\n";
+					cmd1 += "	plt <- plt + labs(y=\""+ targetName +"\")\r\n";
 					cmd1 += "	ggsave(file = \"split_train_test.png\", plot = plt, dpi = 100, width = 6.4*4, height = 3.4*1)\r\n";
 					cmd1 += "}\r\n";
 					cmd1 += "\r\n";
@@ -1374,6 +1375,9 @@ namespace WindowsFormsApplication1
                                 cmd2 += "geom_vline(data= test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[1,1])))+\r\n";
                             }
                             cmd2 += "scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n";
+                            cmd2 += "interval_plt <- interval_plt + labs(x=\"時間\")\r\n";
+                            cmd2 += "interval_plt <- interval_plt + labs(y=\""+ targetName +"\")\r\n";
+
                             cmd2 += "\r\n";
                         }
                         else
@@ -1419,6 +1423,8 @@ namespace WindowsFormsApplication1
                                 cmd2 += "+\r\ngeom_line(aes(x=1:nrow(train), y=train$'" + targetName + "', colour=\"train\"))+\r\n";
                                 cmd2 += "geom_vline(data = test, linetype=\"dotdash\",aes(xintercept=as.numeric(nrow(train))))\r\n";
                             }
+                            cmd2 += "interval_plt <- interval_plt + labs(x=\"index\")\r\n";
+                            cmd2 += "interval_plt <- interval_plt + labs(y=\""+ targetName +"\")\r\n";
                             cmd2 += "\r\n";
                         }
                         cmd2 += "\r\n";
@@ -1620,6 +1626,9 @@ namespace WindowsFormsApplication1
                                 cmd3 += "geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[1,1])))+\r\n";
                             }
                             cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n";
+                            cmd3 += "interval_plt2 <- interval_plt2 + labs(x=\"時間\")\r\n";
+                            cmd3 += "interval_plt2 <- interval_plt2 + labs(y=\""+ targetName +"\")\r\n";
+
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt3 <- interval_plt + \r\n";
                             cmd3 += "geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
@@ -1633,7 +1642,9 @@ namespace WindowsFormsApplication1
                                 cmd3 += "geom_vline(data = test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[1,1])))+\r\n";
                             }
                             cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n";
-                        }
+                            cmd3 += "interval_plt3 <- interval_plt + labs(x=\"時間\")\r\n";
+                            cmd3 += "interval_plt3 <- interval_plt + labs(y=\""+ targetName +"\")\r\n";
+                       }
                         else
                         {
                             if (time_series_mode && numericUpDown5.Value > 2)
@@ -1682,6 +1693,9 @@ namespace WindowsFormsApplication1
                                 cmd3 += "+\r\ngeom_line(aes(x=1:nrow(train), y=train$'" + targetName + "', colour=\"train\"))+\r\n";
                                 cmd3 += "geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.numeric(nrow(train))))\r\n";
                             }
+                            cmd3 += "interval_plt2 <- interval_plt2 + labs(x=\"index\")\r\n";
+                            cmd3 += "interval_plt2 <- interval_plt2 + labs(y=\""+ targetName +"\")\r\n";
+
                             cmd3 += "\r\n";
                             cmd3 += "interval_plt3 <- interval_plt + \r\n";
                             cmd3 += "geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
@@ -1694,6 +1708,8 @@ namespace WindowsFormsApplication1
                                 cmd3 += "+\r\ngeom_line(aes(x=1:norw(train), y=train$'" + targetName + "', colour=\"train\"))+\r\n";
                                 cmd3 += "geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.numeric(nrow(train))))\r\n";
                             }
+                            cmd3 += "interval_plt3 <- interval_plt3 + labs(x=\"index\")\r\n";
+                            cmd3 += "interval_plt3 <- interval_plt32 + labs(y=\""+ targetName +"\")\r\n";
                         }
                         cmd3 += "\r\n";
                     }
@@ -1915,12 +1931,16 @@ namespace WindowsFormsApplication1
                                     if (use_geom_point == 1) cmd_tmp += "geom_point(aes(x=as.POSIXct("+ view_data+"[,1]),y=" + view_data + "$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                                     cmd_tmp += "geom_line(aes(x=as.POSIXct(" + view_data + "[,1]), y=predict_tmp,colour =\"予測値\"))";
                                     if (use_geom_point == 1) cmd_tmp += "+ geom_point(aes(x=as.POSIXct(" + view_data + "[,1]),y=predict_tmp,colour = \"予測値Point\"))\r\n";
+	                            	cmd_tmp += "\r\n interval_plt4 <- interval_plt4 + labs(x=\"時間\")\r\n";
+	                            	cmd_tmp += "interval_plt4 <- interval_plt4 + labs(y=\""+ targetName +"\")\r\n";
                                 }else
                                 {
                                     cmd_tmp += "interval_plt4 <- interval_plt4 + geom_line(aes(x=1:length(" + view_data + "$'" + targetName + "'), y =" + view_data + "$'" + targetName + "', colour = \"観測値\"))+\r\n";
                                     if (use_geom_point == 1) cmd_tmp += "geom_point(aes(x=1:length(" + view_data + "$target_),y=" + view_data + "$'" + targetName + "',colour = \"観測値Point\"))";
                                     cmd_tmp += "geom_line(aes(x=1:length(" + view_data + "$target_), y=predict_tmp,colour =\"予測値\"))";
                                     if (use_geom_point == 1) cmd_tmp += "+ geom_point(aes(x=1:length(" + view_data + "$target_),y=predict_tmp,colour = \"予測値Point\"))\r\n";
+	                            	cmd_tmp += "\r\n interval_plt4 <- interval_plt4 + labs(x=\"index\")\r\n";
+	                            	cmd_tmp += "interval_plt4 <- interval_plt4 + labs(y=\""+ targetName +"\")\r\n";
                                 }
                                 sw.Write(cmd_tmp);
                                 sw.Write("\r\nggsave(filename = \"interval_plt4.png\", plot = interval_plt4)\r\n");
@@ -2247,8 +2267,10 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "use_prophet = 0\r\n";
                         }
-                        forecast_extension += "# dnot! fast_predict = 1 <-- bug!!\r\n";
-                        forecast_extension += "fast_predict = 0\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "#\r\n";
+                        forecast_extension += "fast_predict = 1\r\n";
+                        forecast_extension += "\r\n";
                         forecast_extension += "t_step_forcast = 1\r\n";
 
                         forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "+ add_ext > 0 ){\r\n";
@@ -2793,7 +2815,6 @@ namespace WindowsFormsApplication1
                         
                         forecast_extension += "\r\n";
                         forecast_extension += "if ( fast_predict == 1 ){\r\n";
-                        forecast_extension += "    #再予測による予測結果仕上げ\r\n";
                         forecast_extension += "    test_mx<-";
                         forecast_extension += "    sparse.model.matrix(" + formuler + ", data = test)\r\n";
                         forecast_extension += "    test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
@@ -2822,8 +2843,8 @@ namespace WindowsFormsApplication1
                             forecast_extension += "    predict_y[length(test$target_)] = limit_cutoff(predict_y[length(test$target_)], upper_limit, lower_limit)\r\n";
                         }
                         forecast_extension += "    predict.y <- data.frame(\"predict\" = predict_y)\r\n";
-                        forecast_extension += "    test$target_ <- predict_y_org\r\n";
-                        forecast_extension += "    test$'" + targetName + "' <- predict_y\r\n\r\n";
+                        forecast_extension += "    test$target_[nrow(test_org):nrow(test)] <- predict_y_org[nrow(test_org):nrow(test)]\r\n";
+                        forecast_extension += "    test$'" + targetName + "'[nrow(test_org):nrow(test)] <- predict_y[nrow(test_org):nrow(test)]\r\n\r\n";
                         forecast_extension += "}\r\n";
 
                         forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"seasonal\", \"seasonal2.png\")\r\n";
@@ -2875,6 +2896,8 @@ namespace WindowsFormsApplication1
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test_org, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test_org[nrow(test_org),1])))\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test_org[,1]), y=test_org[, colidx], colour=\"観測値(test)\"))\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \""+ numericUpDown18.Value.ToString()+ " "+ comboBox6.Text +"\"" +")\r\n";
+                	forecast_debug_plot += "		predict_plt <- predict_plt + labs(x=\"時間\")\r\n";
+                	forecast_debug_plot += "		predict_plt <- predict_plt + labs(y=\""+ targetName +"\")\r\n";
                     forecast_debug_plot += "	}\r\n";
                     forecast_debug_plot += "	\r\n";
                     forecast_debug_plot += "    ggsave(file = savename, predict_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
@@ -3153,6 +3176,8 @@ namespace WindowsFormsApplication1
                         predict_probability += "geom_ribbon(aes(ymin=lo, ymax=up, x=(1:length(up)), fill = \"band\"), alpha = 0.2)+\r\n";
                         predict_probability += "ggtitle(\"Prediction results considering the variability of observables\")\r\n";
                         predict_probability += "plot\r\n";
+	                	predict_probability += "plot <- plot + labs(x=\"時間\")\r\n";
+	                	predict_probability += "plot <- plot + labs(y=\""+ targetName +"\")\r\n";
                         predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測結果.png\", plot = plot)\r\n";
 
                         predict_probability += "\r\n";
@@ -3428,6 +3453,8 @@ namespace WindowsFormsApplication1
                         }
                         predict_probability += "}\r\n";
                         predict_probability += "predict_probability_plt <- predict_probability_plt + ggtitle(\"予測値の確率\")\r\n";
+	                	predict_probability += "predict_probability_plt <- predict_probability_plt + labs(x=\"時間\")\r\n";
+	                	predict_probability += "predict_probability_plt <- predict_probability_plt + labs(y=\""+ targetName +"\")\r\n";
                         predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2.png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
                         predict_probability += "\r\n";
                         predict_probability += "predict_probability_plt\r\n";
@@ -3594,6 +3621,8 @@ namespace WindowsFormsApplication1
                                         sw.Write("geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[nrow(test_org),1])))+\r\n");
                                     }
                                     sw.Write("scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n");
+									sw.Write("residual_plt <- residual_plt + labs(x=\"時間\")\r\n");
+									sw.Write("residual_plt <- residual_plt + labs(y=\"誤差\")\r\n");
                                     
                                     sw.Write("predict_plt<-ggplot()\r\n");
                                     sw.Write("predict_plt<-predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict.y[,1], colour=\"予測値\"))+\r\n");
@@ -3612,6 +3641,8 @@ namespace WindowsFormsApplication1
                                         sw.Write("geom_vline(data = test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[nrow(test_org),1])))+\r\n");
                                     }
                                     sw.Write("scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n");
+									sw.Write("predict_plt <- predict_plt + labs(x=\"時間\")\r\n");
+									sw.Write("predict_plt <- predict_plt + labs(y=\"予測値\")\r\n");
                                     sw.Write("saveRDS(predict_plt, \"predict_plt.rds\")\r\n");
 
                                     sw.Write("\r\n");
@@ -3643,6 +3674,9 @@ namespace WindowsFormsApplication1
                                     {
                                         sw.Write("+\r\ngeom_vline(data=test, linetype=\"dotdash\",aes(xintercept=test_st_+nrow(test_org)-1))\r\n");
                                     }
+									sw.Write("residual_plt <- residual_plt + labs(x=\"index\")\r\n");
+									sw.Write("residual_plt <- residual_plt + labs(y=\"予測値\")\r\n");
+
                                     sw.Write("\r\n");
                                     sw.Write("predict_plt<-ggplot()\r\n");
                                     sw.Write("predict_plt<-predict_plt + geom_line(aes(x=(test_st_:test_ed_), y=predict.y[,1], colour=\"予測値\"))+\r\n");
@@ -3661,21 +3695,27 @@ namespace WindowsFormsApplication1
                                         sw.Write("+\r\n");
                                         sw.Write("geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)\r\n");
                                     }
+									sw.Write("predict_plt <- predict_plt + labs(x=\"index\")\r\n");
+									sw.Write("predict_plt <- predict_plt + labs(y=\"予測値\")\r\n");
                                     sw.Write("\r\n");
                                 }
+								sw.Write("reserr3<-ggplot()\r\n");
+								sw.Write("reserr3<-reserr3 + geom_line(aes(x=test_org$'住宅価格'[1:nrow(test_org)], y=predict.y[1:nrow(test_org),1]), color=\"dodgerblue4\")\r\n");
+								sw.Write("reserr3 <- reserr3 + labs(x=\"観測値\")\r\n");
+								sw.Write("reserr3 <- reserr3 + labs(y=\"予測値\")\r\n");
 
                                 int nrow2 = 1;
                                 if ( use_AnomalyDetectionTs == 1 )
                                 {
                                     nrow2 = 2;
                                     //sw.Write("p_<-gridExtra::grid.arrange(error2_plt, residual_plt, predict_plt, anomaly_det[[3]], nrow = 4)\r\n");
-                                    sw.Write("p_<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt,ncol=1, nrow=1), gridExtra::arrangeGrob(residual_plt, predict_plt, anomaly_det[[3]], ncol = 1, nrow = 3), heights=c(1,1), widths=c(1,4))\r\n");
+                                    sw.Write("p_<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt,reserr3, ncol=1, nrow=2), gridExtra::arrangeGrob(residual_plt, predict_plt, anomaly_det[[3]], ncol = 1, nrow = 3), heights=c(8,1), widths=c(1,4))\r\n");
                                 }
                                 else
                                 {
                                     nrow2 = 3;
                                     //sw.Write("p_<-gridExtra::grid.arrange(error2_plt, residual_plt, predict_plt, nrow = 3)\r\n");
-                                    sw.Write("p_<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt,ncol=1, nrow=1), gridExtra::arrangeGrob(residual_plt, predict_plt, ncol = 1, nrow = 2), heights=c(1,1), widths=c(1,4))\r\n");
+                                    sw.Write("p_<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt,reserr3, ncol=1, nrow=2), gridExtra::arrangeGrob(residual_plt, predict_plt, ncol = 1, nrow = 2), heights=c(8,1), widths=c(1,4))\r\n");
                                 }
                                 sw.Write("ggsave(file = \"tmp_xgboost_predict.png\", p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
 
