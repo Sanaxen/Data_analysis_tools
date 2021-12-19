@@ -3700,7 +3700,7 @@ namespace WindowsFormsApplication1
                                     sw.Write("\r\n");
                                 }
 								sw.Write("reserr3<-ggplot()\r\n");
-								sw.Write("reserr3<-reserr3 + geom_point(aes(x=test_org$'住宅価格'[1:nrow(test_org)], y=predict.y[1:nrow(test_org),1]), color=\"dodgerblue4\")\r\n");
+								sw.Write("reserr3<-reserr3 + geom_point(aes(x=test_org$'"+ targetName+"'[1:nrow(test_org)], y=predict.y[1:nrow(test_org),1]), color=\"dodgerblue4\")\r\n");
 								sw.Write("reserr3 <- reserr3 + labs(x=\"観測値\")\r\n");
 								sw.Write("reserr3 <- reserr3 + labs(y=\"予測値\")\r\n");
 
