@@ -8609,6 +8609,7 @@ namespace WindowsFormsApplication1
             _xgboost.form1 = this;
             _xgboost.BackColor = BackColor;
             _xgboost.add_enevt_data = 0;
+            _xgboost.checkBox8.Checked = true;
 
 
             string cmd = "";

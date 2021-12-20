@@ -3674,7 +3674,7 @@ namespace WindowsFormsApplication1
                                     {
                                         sw.Write("+\r\ngeom_vline(data=test, linetype=\"dotdash\",aes(xintercept=test_st_+nrow(test_org)-1))\r\n");
                                     }
-									sw.Write("residual_plt <- residual_plt + labs(x=\"index\")\r\n");
+									sw.Write("\r\nresidual_plt <- residual_plt + labs(x=\"index\")\r\n");
 									sw.Write("residual_plt <- residual_plt + labs(y=\"予測値\")\r\n");
 
                                     sw.Write("\r\n");
@@ -3695,7 +3695,7 @@ namespace WindowsFormsApplication1
                                         sw.Write("+\r\n");
                                         sw.Write("geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)\r\n");
                                     }
-									sw.Write("predict_plt <- predict_plt + labs(x=\"index\")\r\n");
+									sw.Write("\r\npredict_plt <- predict_plt + labs(x=\"index\")\r\n");
 									sw.Write("predict_plt <- predict_plt + labs(y=\"予測値\")\r\n");
                                     sw.Write("\r\n");
                                 }
@@ -6298,6 +6298,15 @@ namespace WindowsFormsApplication1
                     MessageBox.Show("未実装です");
                     interactivePlot6.Show();
                 }
+            }
+        }
+
+        private void checkBox8_CheckedChanged(object sender, EventArgs e)
+        {
+            if ( time_series_mode && !checkBox8.Checked)
+            {
+                MessageBox.Show("時系列データのため時間軸指定は解除出来ません");
+                checkBox8.Checked = true;
             }
         }
     }
