@@ -62,13 +62,18 @@ namespace WindowsFormsApplication1
 
         public int lag = 0;
         public int start_lag = 0;
-        int means_n = 3;
-        int means_n2 = 10;
-        int befor_day = 5;  // befor_day >= 5
+        int means_3n = 3;
+        int means_5n = 5;
+        int means_12n = 12;
+        int means_30n = 30;
         int befor_3day = 3;
+        int befor_5day = 5;
+        int befor_7day = 7;
+        int befor_12day = 12;
+        int befor_30day = 30;
         int use_geom_point = 0;
         int use_decompose = 1;
-        int max_seasonal = 10;
+        int max_seasonal = 24;
         int use_arima = 1;
         int cutoff = 0;
         double split_train = 0.7;
@@ -324,7 +329,7 @@ namespace WindowsFormsApplication1
                     xgb_weight += "df$event <- xgb_weight\r\n";
                     form1.script_executestr(xgb_weight);
                 }
-
+                
                 targetName = listBox1.Items[listBox1.SelectedIndex].ToString();
                 if (time_series_mode)
                 {
@@ -372,10 +377,13 @@ namespace WindowsFormsApplication1
                         exist_time_axis = 0;
                     }
 
-                    int datalenchk = form1.Int_func("nrow", "df");
-                    if ((checkBox9.Checked || checkBox10.Checked) && (datalenchk * (1.0 - (double)split_train * 0.01)) < ((int)numericUpDown14.Value) * 2)
+                    //int datalenchk = form1.Int_func("nrow", "df");
+                    //if ((checkBox9.Checked || checkBox10.Checked) && (datalenchk * (1.0 - (double)split_train * 0.01)) < ((int)numericUpDown14.Value) * 2)
+                    int datalenchk = form1.Int_func("nrow", "train");
+                    if ((checkBox9.Checked || checkBox10.Checked) && datalenchk  < ((int)numericUpDown14.Value) * 2)
                     {
                         MessageBox.Show("データ長が足りません(train/test分割後のデータでfrequencyの2倍が必要です)");
+                        numericUpDown14.Value = Math.Max(2, datalenchk / 2 - 1);
                         return;
                     }
                     string cmd1 = "";
@@ -406,44 +414,80 @@ namespace WindowsFormsApplication1
                     cmd1 += "df_ts_tmp$'day1_diff_" + targetName + "'" + "<- c(0, 0, diff(df$'" + targetName + "')[1:(length(df[,1])-2)])\r\n";
                     cmd1 += "df_ts_tmp$'day1diff_diff_" + targetName + "'" + "<- c(0, 0, diff(df_ts_tmp$'day1_diff_" + targetName + "')[1:(length(df[,1])-2)])\r\n";
 
-                    if ( lag >= means_n)
+                    if ( lag >= means_3n)
                     {
-                        cmd1 += "df_ts_tmp$'mean_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'sd_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'mean3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'median_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= "+ means_n + " )\r\n";
+                        cmd1 += "	if ( i <= "+ means_3n + " )\r\n";
                         cmd1 += "	{\r\n";
-                        cmd1 += "		df_ts_tmp$'mean_" + targetName + "'[i] = 0\r\n";
-                        cmd1 += "		df_ts_tmp$'sd_" + targetName + "'[i] = 0\r\n";
-                        cmd1 += "		df_ts_tmp$'median_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'mean3_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd3_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median3_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
-                        cmd1 += "	df_ts_tmp$'mean_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'sd_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'median_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'mean3_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_3n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd3_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_3n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median3_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_3n + "):(i-1)] )\r\n";
                         cmd1 += "}\r\n";
                     }
                     
-                    if ( lag >= means_n2)
+                    if ( lag >= means_5n)
                     {
-                        cmd1 += "df_ts_tmp$'mean2_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'sd2_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'median2_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'mean5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= "+ means_n2 + " )\r\n";
+                        cmd1 += "	if ( i <= "+ means_5n + " )\r\n";
                         cmd1 += "	{\r\n";
-                        cmd1 += "		df_ts_tmp$'mean2_" + targetName + "'[i] = 0\r\n";
-                        cmd1 += "		df_ts_tmp$'sd2_" + targetName + "'[i] = 0\r\n";
-                        cmd1 += "		df_ts_tmp$'median2_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'mean5_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd5_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median5_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
-                        cmd1 += "	df_ts_tmp$'mean2_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_n2 + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'sd2_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_n2 + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'median2_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_n2 + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'mean5_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_5n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd5_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_5n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median5_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_5n + "):(i-1)] )\r\n";
                         cmd1 += "}\r\n";
                     }
-                    if ( lag >= befor_day)
+                    if ( lag >= means_12n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ means_12n + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean12_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd12_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median12_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean12_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_12n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd12_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_12n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median12_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_12n + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }                    
+                    if ( lag >= means_30n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ means_30n + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean30_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd30_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median30_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean30_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_30n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd30_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_30n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median30_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_30n + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    if ( lag >= befor_3day)
                     {
                         cmd1 += "df_ts_tmp$'day3_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
@@ -454,9 +498,21 @@ namespace WindowsFormsApplication1
                         cmd1 += "	}\r\n";
                         cmd1 += "   df_ts_tmp$'day3_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_3day+1) + "]\r\n";
                         cmd1 += "}\r\n\r\n";
+                    }
+                    if ( lag >= befor_5day)
+                    {
+                        cmd1 += "df_ts_tmp$'day5_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_5day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day5_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day5_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_5day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
                         cmd1 += "df_ts_tmp$'second_derivative_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= " + befor_day + " )\r\n";
+                        cmd1 += "	if ( i <= " + befor_5day + " )\r\n";
                         cmd1 += "	{\r\n";
                         cmd1 += "		df_ts_tmp$'second_derivative_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
@@ -465,14 +521,51 @@ namespace WindowsFormsApplication1
                         cmd1 += "}\r\n\r\n";
                         cmd1 += "df_ts_tmp$'curvature_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= " + befor_day + " )\r\n";
+                        cmd1 += "	if ( i <= " + befor_5day + " )\r\n";
                         cmd1 += "	{\r\n";
                         cmd1 += "		df_ts_tmp$'curvature_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
                         cmd1 += "   df_ts_tmp$'curvature_" + targetName + "'[i] <- curvature(df_ts_tmp$'" + targetName + "', i-3, 0.01)\r\n";
                         cmd1 += "}\r\n\r\n";
+                    }                   
+                    if ( lag >= befor_7day)
+                    {
+                        cmd1 += "df_ts_tmp$'day7_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_7day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day7_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day7_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_7day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
                     }
+                    if ( lag >= befor_12day)
+                    {
+                        cmd1 += "df_ts_tmp$'day12_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_12day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day12_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day12_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_12day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    if ( lag >= befor_30day)
+                    {
+                        cmd1 += "df_ts_tmp$'day30_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_30day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day30_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day30_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_30day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    
                     if (n_seasons/2 > 0 && checkBox14.Checked)
                     { 
                         if (n_seasons / 2 < 1 )
@@ -763,7 +856,9 @@ namespace WindowsFormsApplication1
                     {
                         cmd1 += "obs_test_step <- max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + numericUpDown20.Value.ToString() + "*0.01)\r\n";
                     }
-					cmd1 += "vali_e = nrow(train) + nrow(test[1:obs_test_step,])\r\n";
+                    cmd1 += "if ( obs_test_step > nrow(test)) obs_test_step = nrow(test)\r\n";
+
+                    cmd1 += "vali_e = nrow(train) + nrow(test[1:obs_test_step,])\r\n";
                     cmd1 += "if ( nrow(test[1:obs_test_step,]) < nrow(test)){\r\n";
                     cmd1 += "    test_s = vali_e + 1\r\n";
                     cmd1 += "    test_e = nrow(train) + nrow(test)\r\n";
@@ -1026,23 +1121,45 @@ namespace WindowsFormsApplication1
                     formuler += "+ day1_diff_" + targetName;
                     formuler += "+ day1diff_diff_" + targetName;
 
-                    if (lag >= means_n)
+                    if (lag >= means_3n)
                     {
-                    	formuler += "+ mean_" + targetName;
-                    	formuler += "+ sd_" + targetName;
-                    	formuler += "+ median_" + targetName;
+                    	formuler += "+ mean3_" + targetName;
+                    	formuler += "+ sd3_" + targetName;
+                    	formuler += "+ median3_" + targetName;
                     }
-                    if (lag >= means_n2)
+                    if (lag >= means_5n)
                     {
-                    	formuler += "+ mean2_" + targetName;
-                    	formuler += "+ sd2_" + targetName;
-                    	formuler += "+ median2_" + targetName;
+                    	formuler += "+ mean5_" + targetName;
+                    	formuler += "+ sd5_" + targetName;
+                    	formuler += "+ median5_" + targetName;
                     }
-                    if (lag >= befor_day)
+                    if (lag >= means_12n)
+                    {
+                    	formuler += "+ mean12_" + targetName;
+                    	formuler += "+ sd12_" + targetName;
+                    	formuler += "+ median12_" + targetName;
+                    }
+                    if (lag >= befor_3day)
+                    {
+                        formuler += "+ day3_diff_" + targetName;
+                    }
+                    if (lag >= befor_5day)
                     {
                         formuler += "+ day3_diff_" + targetName;
                         formuler += "+ second_derivative_" + targetName;
                         formuler += "+ curvature_" + targetName;
+                    }
+                    if (lag >= befor_7day)
+                    {
+                        formuler += "+ day7_diff_" + targetName;
+                    }
+                    if (lag >= befor_12day)
+                    {
+                        formuler += "+ day12_diff_" + targetName;
+                    }
+                    if (lag >= befor_30day)
+                    {
+                        formuler += "+ day30_diff_" + targetName;
                     }
 
                     if (checkBox14.Checked)
@@ -1837,7 +1954,7 @@ namespace WindowsFormsApplication1
                                 sw.Write("#plt_<-xgb.ggplot.importance(imp_, top_n = 6, measure = NULL, rel_to_first = F)\r\n");
                                 sw.Write("plt_<-plot(imp_)\r\n");
 
-                                sw.Write("ggsave(\"tmp_xgboost2.png\", plt_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
+                                sw.Write("ggsave(\"xgboost_importance.png\", plt_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + Math.Max(1, lag/10) + "*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                             }
                             if (use_AnomalyDetectionTs == 1)
                             {
@@ -1943,7 +2060,7 @@ namespace WindowsFormsApplication1
 	                            	cmd_tmp += "interval_plt4 <- interval_plt4 + labs(y=\""+ targetName +"\")\r\n";
                                 }
                                 sw.Write(cmd_tmp);
-                                sw.Write("\r\nggsave(filename = \"interval_plt4.png\", plot = interval_plt4)\r\n");
+                                sw.Write("\r\nggsave(filename = \"interval_plt4.png\", plot = interval_plt4, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
 
                                 int nrow2 = 1;
                                 if (use_AnomalyDetectionTs == 1)
@@ -2097,6 +2214,8 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "obs_test_step <- max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + numericUpDown20.Value.ToString() + "*0.01)\r\n";
                         }
+                        forecast_extension += "if ( obs_test_step > nrow(test)) obs_test_step = nrow(test)\r\n";
+
                         forecast_extension += "test <- test[1:obs_test_step,]\r\n";
                         forecast_extension += "add_ext <- nrow(df_) - nrow(test)\r\n";
                         forecast_extension += "if ( add_ext <= 0 ){\r\n";
@@ -2226,6 +2345,7 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "fast_arima = 0\r\n";
                         }
+                        
                         //forecast_extension += "test<- test_org\r\n";
                         //forecast_extension += "test$target_[length(test$target_)] = predict_y_org[length(predict_y)]\r\n";
                         //forecast_extension += "test$target_ = predict_y_org\r\n";
@@ -2255,8 +2375,12 @@ namespace WindowsFormsApplication1
                         forecast_extension += "if ( length(colidx9) != 1 ) colidx9 = -1\r\n";
                         forecast_extension += "if ( length(colidx10) != 1 ) colidx10 = -1\r\n";
 
-                        forecast_extension += "mean_ <- apply(train[,-1],2, mean)\r\n";
-                        forecast_extension += "sd_ <- apply(train[,-1],2, sd)\r\n";
+                        forecast_extension += "suppressWarnings(\r\n";
+                        forecast_extension += "    mean_ <- apply(train[,-1],2, function(x){ return(mean(as.numeric(x)))})\r\n";
+                        forecast_extension += ")\r\n";
+                        forecast_extension += "suppressWarnings(\r\n";
+                        forecast_extension += "    sd_ <- apply(train[,-1],2, function(x){ return(sd(as.numeric(x)))})\r\n";
+                        forecast_extension += ")\r\n";
                         forecast_extension += "st_ <- test[nrow(test),1]\r\n";
                         forecast_extension += "trendFit <- NULL\r\n";
 
@@ -2272,6 +2396,12 @@ namespace WindowsFormsApplication1
                         forecast_extension += "fast_predict = 1\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "t_step_forcast = 1\r\n";
+						forecast_extension += "xreg = NULL\r\n";
+						forecast_extension += "df_tt = NULL\r\n";
+						forecast_extension += "trend_freq = 1\r\n";
+                        forecast_extension += "#use_xreg_trend_freq = 0(auto) 1(skipp) 2 < this value\r\n";
+                        forecast_extension += "use_xreg_trend_freq = " + numericUpDown21.Value.ToString() +"\r\n";
+                        forecast_extension += "\r\n";
 
                         forecast_extension += "if ( " + numericUpDown5.Value.ToString() + "+ add_ext > 0 ){\r\n";
                         forecast_extension += "    for ( t_step in 1:(" + numericUpDown5.Value.ToString()+ " + add_ext)){\r\n";
@@ -2480,41 +2610,72 @@ namespace WindowsFormsApplication1
                             forecast_extension += "        test$'day1diff_diff_" + targetName + "'" +
                             "[length(test$target_)]<- test$'day1_diff_" + targetName+"'[length(test$target_)-1]-test$'day1_diff_" + targetName+"'[length(test$target_)-2]\r\n";
 
-                            if (lag >= means_n)
+                            if (lag >= means_3n)
                             {
-                                forecast_extension += "        test$'mean_" + targetName + "'" +
-                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'mean3_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_3n + "):(length(test$target_)-1)])\r\n";
                                 
-                                forecast_extension += "        test$'sd_" + targetName + "'" +
-                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'sd3_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_3n + "):(length(test$target_)-1)])\r\n";
                                
-                                forecast_extension += "        test$'median_" + targetName + "'" +
-                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + means_n + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'median3_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + means_3n + "):(length(test$target_)-1)])\r\n";
                             }
-                            if (lag >= means_n2)
+                            if (lag >= means_5n)
                             {
-                                forecast_extension += "        test$'mean2_" + targetName + "'" +
-                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_n2 + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'mean5_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_5n + "):(length(test$target_)-1)])\r\n";
                                 
-                                forecast_extension += "        test$'sd2_" + targetName + "'" +
-                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_n2 + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'sd5_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_5n + "):(length(test$target_)-1)])\r\n";
                                 
-                                forecast_extension += "        test$'median2_" + targetName + "'" +
-                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + means_n2 + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'median5_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + means_5n + "):(length(test$target_)-1)])\r\n";
+                            }
+                            if (lag >= means_12n)
+                            {
+                                forecast_extension += "        test$'mean12_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_12n + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd12_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_12n + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median12_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + means_12n + "):(length(test$target_)-1)])\r\n";
                             }
 
-                            if (lag >= befor_day)
+                            if (lag >= befor_3day)
                             {
                                 forecast_extension += "        test$'day3_diff_" + targetName + "'" +
                                 "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_3day) + "]\r\n";
+                            }
+                            if (lag >= befor_5day)
+                            {
+                                forecast_extension += "        test$'day5_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_5day) + "]\r\n";
                                 
                                 forecast_extension += "        test$'second_derivative_" + targetName + "'" +
                                "[length(test$target_)]<- numdiff2_5(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
 
-                                forecast_extension += "        min_ <- min(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
-                                forecast_extension += "        max_ <- max(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_day + ")])\r\n";
+                                forecast_extension += "        min_ <- min(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_5day + ")])\r\n";
+                                forecast_extension += "        max_ <- max(test$'" + targetName + "'[(length(test$target_)-1):(length(test$target_)-1-" + befor_5day + ")])\r\n";
                                 forecast_extension += "        test$'curvature_" + targetName + "'" +
                                "[length(test$target_)]<- curvature(test$'" + targetName + "', length(test$target_)-3, 0.01)\r\n";
+                            }
+                            if (lag >= befor_7day)
+                            {
+                                forecast_extension += "        test$'day7_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_7day) + "]\r\n";
+                            }
+                            if (lag >= befor_12day)
+                            {
+                                forecast_extension += "        test$'day12_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_12day) + "]\r\n";
+                            }
+                            if (lag >= befor_30day)
+                            {
+                                forecast_extension += "        test$'day30_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_30day) + "]\r\n";
                             }
 
 
@@ -2591,18 +2752,37 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "             tryCatch({\r\n";
                                 forecast_extension += "                 if ( is.null(trendFit)){\r\n";
                                 forecast_extension += "                     # rolling forecast\r\n";
-                                forecast_extension += "                     train_length = " +numericUpDown19.Value.ToString()+"\r\n";
+                                forecast_extension += "                     train_length = max(frequency_value," + numericUpDown19.Value.ToString()+")\r\n";
                                 forecast_extension += "                     if ( nrow(overall)- train_length -2 <= 0 )\r\n";
                                 forecast_extension += "                     {\r\n";
                                 forecast_extension += "                         train_length = nrow(overall)-2\r\n";
                                 forecast_extension += "                     }\r\n";
                                 forecast_extension += "                     tmp = overall[(nrow(overall)-train_length-2):(nrow(overall)-1),]\r\n";
-                                forecast_extension += "                     df_t <- ts(tmp$trend,start=c(2015,1),frequency=frequency_value)\r\n\r\n";
+                                forecast_extension += "                     df_tt <- ts(tmp$trend,start=c(2015,1),frequency=frequency_value)\r\n\r\n";
+                                
                                 forecast_extension += "                     #Dynamic harmonic regression\r\n";
                                 forecast_extension += "                     xreg = NULL\r\n";
-                                forecast_extension += "                     #if ( k > 0 ) xreg = fourier(ts(df_t,frequency=frequency_value) , K = 2)\r\n\r\n";
+                                forecast_extension += "                     if ( use_xreg_trend_freq == 0 ){\r\n";
+								forecast_extension += "                         trend_freq = as.numeric(findfrequency(overall$trend[1:(nrow(test)-1)]))\r\n";
+								forecast_extension += "                     }else{\r\n";
+								forecast_extension += "                         trend_freq = use_xreg_trend_freq\r\n";
+								forecast_extension += "                     }\r\n";
+								forecast_extension += "                     cat(\"findfrequency=\")\r\n";
+								forecast_extension += "                     print(trend_freq)\r\n";
+								
+								forecast_extension += "                     if ( k > 0 && trend_freq > 2 ) {\r\n";
+								forecast_extension += "                         xreg = fourier(ts(overall$trend,frequency=trend_freq) , K = min(4, max(2, trend_freq/2)))\r\n";
+								forecast_extension += "                         xreg = xreg[1:nrow(tmp),]\r\n";
+								forecast_extension += "                         print(head(xreg))\r\n";
+								forecast_extension += "                         if ( is.rankdeficient(xreg))\r\n";
+								forecast_extension += "                         {\r\n";
+								forecast_extension += "                             xreg = NULL\r\n";
+								forecast_extension += "                             print(\"xreg=NULL\")\r\n";
+								forecast_extension += "                         }\r\n";
+								forecast_extension += "                     }\r\n";
+
                                 forecast_extension += "                     if ( fast_arima == 0 ){\r\n";
-                                forecast_extension += "                         trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
+                                forecast_extension += "                         trendFit <- auto.arima(df_tt, ic=\"aic\",\r\n";
 
                                 forecast_extension += "                             max.order=14,  #p+q+P+Q\r\n";
                                 forecast_extension += "                             max.d = 2,\r\n";
@@ -2618,13 +2798,15 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                         if ( "+(radioButton7.Checked ? "TRUE" : "FALSE")+"){\r\n";
                                 forecast_extension += "                             trendFit <- t_decomp\r\n";
                                 forecast_extension += "                         }else{\r\n";
-                                forecast_extension += "                             trendFit <- auto.arima(df_t, ic=\"aic\",\r\n";
+                                forecast_extension += "                             trendFit <- auto.arima(df_tt, ic=\"aic\",\r\n";
 
                                 forecast_extension += "                                 max.order=14,  #p+q+P+Q\r\n";
                                 forecast_extension += "                                 #approximation=F,\r\n";
                                 forecast_extension += "                                 seasonal = T, stepwise=T, trace=T, xreg = xreg)\r\n";
                                 forecast_extension += "                         }\r\n";
                                 forecast_extension += "                     }\r\n";
+                                forecast_extension += "                     print(trendFit)\r\n";
+                                forecast_extension += "                     flush.console()\r\n";
                                 forecast_extension += "                     t_step_forcast = t_step\r\n";
                                 forecast_extension += "\r\n";
                                 forecast_extension += "                 }\r\n";
@@ -2640,8 +2822,10 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                     pred<-forecast(trendFit, method=\"naive\", level = c(50,95), h = h)\r\n";
                                 forecast_extension += "                 }else{\r\n";
                                 forecast_extension += "                     #Dynamic harmonic regression\r\n";
-                                forecast_extension += "                     xreg = NULL\r\n";
-                                forecast_extension += "                     #if ( k > 0 ) xreg = fourier(ts(df_t,frequency=frequency_value) , K = 2, h = h)\r\n\r\n";
+                                forecast_extension += "                     if ( k > 0 && !is.null(xreg))\r\n";
+								forecast_extension += "                     {\r\n";
+                                forecast_extension += "                         xreg = fourier(ts(df_tt,frequency=trend_freq) , K = min(4, max(2, trend_freq/2)), h = h)\r\n";
+                                forecast_extension += "                     }\r\n";
                                 forecast_extension += "                     pred<-forecast(trendFit, level = c(50,95), h = h, xreg = xreg)\r\n";
                                 forecast_extension += "                 }\r\n";
                                 forecast_extension += "                 #Point Forecast\r\n";
@@ -2661,7 +2845,7 @@ namespace WindowsFormsApplication1
                                     forecast_extension += "	                }\r\n";
                                     forecast_extension += "                 overall$trend[nrow(overall)] = limit_cutoff(overall$trend[nrow(overall)], upper_limit, lower_limit)\r\n";
                                 }
-                                forecast_extension += "	                if ( t_step %% (train_length/6) == 0) trendFit = NULL\r\n";
+                                forecast_extension += "	                if ( as.integer(t_step) %% as.integer(max(2,(train_length/20))) == 0) trendFit = NULL\r\n";
 
                                 forecast_extension += "                 #if ( t_step %% frequency_value == 0) trendFit = NULL\r\n";
                                 forecast_extension += "             },\r\n";
@@ -2859,6 +3043,19 @@ namespace WindowsFormsApplication1
                     }
 
                     string forecast_extension_f = "";
+
+					forecast_extension_f += "is.rankdeficient <- function(xregg) {\r\n";
+					forecast_extension_f += "  constant_columns <- apply(xregg, 2, is.constant)\r\n";
+					forecast_extension_f += "  if (any(constant_columns)) {\r\n";
+					forecast_extension_f += "    xregg <- xregg[, -which(constant_columns)[1]]\r\n";
+					forecast_extension_f += "  }\r\n";
+					forecast_extension_f += "  sv <- svd(na.omit(cbind(rep(1, NROW(xregg)), xregg)))$d\r\n";
+					forecast_extension_f += "  min(sv)/sum(sv) < .Machine$double.eps\r\n";
+					forecast_extension_f += "}\r\n";
+					forecast_extension_f += "\r\n";
+
+
+
                     forecast_extension_f += "forecast_extension <- function(test, train){\r\n";
                     forecast_extension = forecast_extension.Replace("\r\n", "\r\n\t");
 
@@ -4457,6 +4654,7 @@ namespace WindowsFormsApplication1
                 sw.Write("ndiff,");sw.Write(numericUpDown17.Value.ToString() + "\r\n");
                 sw.Write("rolling,");sw.Write(numericUpDown19.Value.ToString() + "\r\n");
                 sw.Write("frequency,");sw.Write(numericUpDown14.Value.ToString() + "\r\n");
+                sw.Write("trend_frequency,"); sw.Write(numericUpDown21.Value.ToString() + "\r\n");
                 sw.Write("s_previous,");sw.Write(numericUpDown15.Value.ToString() + "\r\n");
                 sw.Write("num_previous,");sw.Write(numericUpDown8.Value.ToString() + "\r\n");
                 sw.Write("extend,");sw.Write(numericUpDown5.Value.ToString() + "\r\n");
@@ -4768,6 +4966,11 @@ namespace WindowsFormsApplication1
                     if (ss[0].IndexOf("rolling") >= 0)
                     {
                         numericUpDown19.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("trend_frequency") >= 0)
+                    {
+                        numericUpDown21.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
                     if (ss[0].IndexOf("frequency") >= 0)
@@ -6308,6 +6511,21 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("時系列データのため時間軸指定は解除出来ません");
                 checkBox8.Checked = true;
             }
+        }
+
+        private void progressBar1_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(progressBar1, ((int)((1000.0*(double)progressBar1.Value/ (double)progressBar1.Maximum)/10)).ToString()+"%");
+        }
+
+        private void progressBar3_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(progressBar3, ((int)((1000.0 * (double)progressBar3.Value / (double)progressBar3.Maximum) / 10)).ToString() + "%");
+        }
+
+        private void progressBar2_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(progressBar2, ((int)((1000.0 * (double)progressBar2.Value / (double)progressBar2.Maximum) / 10)).ToString() + "%");
         }
     }
 
