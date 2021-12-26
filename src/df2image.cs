@@ -79,7 +79,7 @@ namespace WindowsFormsApplication1
                 cmd += "    g_ <- gridExtra::tableGrob(df_[c(1:n_),])\r\n";
                 cmd += "}\r\n";
             }
-            cmd += "ggsave(file = \"" + imagefile +"\", plot = g_,dpi=" + numericUpDown2.Value.ToString() + ",width=4*" + form1._setting.numericUpDown4.Value.ToString() + ",height=4*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n";
+            cmd += "ggsave(file = \"" + imagefile +"\", plot = g_,dpi=" + numericUpDown2.Value.ToString() + ",width=4*" + form1._setting.numericUpDown4.Value.ToString() + ",height=4*" + form1._setting.numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n";
             cmd += "grid.draw(g_)\r\n";
 
             if (System.IO.File.Exists(imagefile)) form1.FileDelete(imagefile);
@@ -123,7 +123,7 @@ namespace WindowsFormsApplication1
                     cmd += "    g_ <- gridExtra::tableGrob(df[c(1:n_),])\r\n";
                     cmd += "}\r\n";
                 }
-                cmd += "ggsave(file = \"tmp_df2image.png\", plot = g_,dpi=" + numericUpDown2.Value.ToString() + ",width=" + numericUpDown3.Value.ToString() + ",height=" + numericUpDown4.Value.ToString() + ")\r\n";
+                cmd += "ggsave(file = \"tmp_df2image.png\", plot = g_,dpi=" + numericUpDown2.Value.ToString() + ",width=" + numericUpDown3.Value.ToString() + ",height=" + numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n";
                 cmd += "grid.draw(g_)\r\n";
 
                 if (System.IO.File.Exists("tmp_df2image.png")) form1.FileDelete("tmp_df2image.png");

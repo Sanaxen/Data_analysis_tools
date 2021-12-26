@@ -205,7 +205,7 @@ namespace WindowsFormsApplication1
                     cmd += "print(df_summary)\r\n";
                     cmd += "\r\n";
                     cmd += "g_ <- gridExtra::tableGrob(df_summary)\r\n";
-                    cmd += "ggsave(file = \"tmp_dfsummary.png\", plot = g_,dpi=" + numericUpDown2.Value.ToString() + ",width=" + numericUpDown3.Value.ToString() + ",height=" + numericUpDown4.Value.ToString() + ")\r\n";
+                    cmd += "ggsave(file = \"tmp_dfsummary.png\", plot = g_,dpi=" + numericUpDown2.Value.ToString() + ",width=" + numericUpDown3.Value.ToString() + ",height=" + numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n";
                     cmd += "grid.draw(g_)\r\n";
                     cmd += "\r\n";
                 }

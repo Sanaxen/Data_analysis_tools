@@ -49,23 +49,27 @@ namespace WindowsFormsApplication1
         int eval = 0;
         int random_serch = 1;
         int use_AnomalyDetectionTs = 0;
-        public ImageView _ImageView3;
-        public ImageView _ImageView4;
+        public ImageView _ImageView3 = null;
+        public ImageView _ImageView4 = null;
         interactivePlot interactivePlot2 = null;
         interactivePlot interactivePlot3 = null;
-        public ImageView _ImageView5;
+        public ImageView _ImageView5 = null;
         interactivePlot interactivePlot4 = null;
-        public ImageView _ImageView6;
+        public ImageView _ImageView6 = null;
         interactivePlot interactivePlot5 = null;
-        public ImageView _ImageView7;
+        public ImageView _ImageView7 = null;
         interactivePlot interactivePlot6 = null;
+        public ImageView _ImageView8 = null;
 
         public int lag = 0;
         public int start_lag = 0;
         int means_3n = 3;
-        int means_5n = 5;
+        int means_6n = 6;
         int means_12n = 12;
+        int means_24n = 24;
         int means_30n = 30;
+        int means_60n = 60;
+        int means_90n = 90;
         int befor_3day = 3;
         int befor_5day = 5;
         int befor_7day = 7;
@@ -418,55 +422,89 @@ namespace WindowsFormsApplication1
                     {
                         cmd1 += "df_ts_tmp$'mean3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'sd3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'median_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= "+ means_3n + " )\r\n";
+                        cmd1 += "	if ( i <= "+ (means_3n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
                         cmd1 += "		df_ts_tmp$'mean3_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		df_ts_tmp$'sd3_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		df_ts_tmp$'median3_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
-                        cmd1 += "	df_ts_tmp$'mean3_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_3n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'sd3_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_3n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'median3_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_3n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'mean3_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd3_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median3_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max3_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min3_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )\r\n";
                         cmd1 += "}\r\n";
                     }
                     
-                    if ( lag >= means_5n)
+                    if ( lag >= means_6n)
                     {
-                        cmd1 += "df_ts_tmp$'mean5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'sd5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'median5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'mean6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= "+ means_5n + " )\r\n";
+                        cmd1 += "	if ( i <= "+ (means_6n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
-                        cmd1 += "		df_ts_tmp$'mean5_" + targetName + "'[i] = 0\r\n";
-                        cmd1 += "		df_ts_tmp$'sd5_" + targetName + "'[i] = 0\r\n";
-                        cmd1 += "		df_ts_tmp$'median5_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'mean6_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd6_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median6_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
-                        cmd1 += "	df_ts_tmp$'mean5_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_5n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'sd5_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_5n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'median5_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_5n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'mean6_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd6_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median6_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max6_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min6_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )\r\n";
                         cmd1 += "}\r\n";
                     }
                     if ( lag >= means_12n)
                     {
-                        cmd1 += "df_ts_tmp$'mean5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'sd5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'median5_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'mean12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= "+ means_12n + " )\r\n";
+                        cmd1 += "	if ( i <= "+ (means_12n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
                         cmd1 += "		df_ts_tmp$'mean12_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		df_ts_tmp$'sd12_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		df_ts_tmp$'median12_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
-                        cmd1 += "	df_ts_tmp$'mean12_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_12n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'sd12_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_12n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'median12_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_12n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'mean12_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd12_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median12_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max12_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min12_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    if ( lag >= means_24n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean24_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd24_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median24_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min24_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max24_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_24n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean24_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd24_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median24_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean24_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd24_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median24_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max24_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min24_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )\r\n";
                         cmd1 += "}\r\n";
                     }                    
                     if ( lag >= means_30n)
@@ -474,17 +512,65 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'mean30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'sd30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'median30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
-                        cmd1 += "	if ( i <= "+ means_30n + " )\r\n";
+                        cmd1 += "	if ( i <= "+ (means_30n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
                         cmd1 += "		df_ts_tmp$'mean30_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		df_ts_tmp$'sd30_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		df_ts_tmp$'median30_" + targetName + "'[i] = 0\r\n";
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
-                        cmd1 += "	df_ts_tmp$'mean30_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + means_30n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'sd30_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + means_30n + "):(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'median30_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + means_30n + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'mean30_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd30_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median30_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max30_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min30_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    if ( lag >= means_60n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean60_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd60_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median60_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min60_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max60_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_60n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean60_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd60_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median60_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean60_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd60_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median60_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max60_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min60_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    if ( lag >= means_90n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean90_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd90_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median90_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min90_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max90_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_90n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean90_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd90_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median90_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean90_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd90_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median90_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max90_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min90_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )\r\n";
                         cmd1 += "}\r\n";
                     }
                     if ( lag >= befor_3day)
@@ -716,7 +802,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "}\r\n";
                         cmd1 += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(zz_tmp)), y = zz_tmp, colour = \"undo\"))\r\n";
                         cmd1 += "debug_plt\r\n";
-                        cmd1 += "ggsave(file = \"tmp_xgboost_debug0.png\", debug_plt, , dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
+                        cmd1 += "ggsave(file = \"tmp_xgboost_debug0.png\", debug_plt, , dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                         cmd1 += "\r\n";
                         cmd1 += "dat4<-as.data.frame(as.matrix(log_diff[[1]]))\r\n";
                         cmd1 += "dat4_plt <- ggplot()\r\n";
@@ -784,7 +870,7 @@ namespace WindowsFormsApplication1
                     {
                         button20.Enabled = true;
                         cmd1 += "dat0_plt<-gridExtra::grid.arrange(" + plot_rows + ", nrow = " + plot_nrows + ")\r\n";
-                        cmd1 += "ggsave(file=\"ts_transform.png\", dat0_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ plot_nrows+"*4.8 *" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
+                        cmd1 += "ggsave(file=\"ts_transform.png\", dat0_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ plot_nrows+"*4.8 *" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                     }
                     cmd1 += "\r\n";
                     if (false)
@@ -798,6 +884,10 @@ namespace WindowsFormsApplication1
                     else
                     {
                         cmd1 += "num_ <-" + split_train.ToString() + "*0.01*nrow(df_ts_tmp)\r\n";
+                        if ( numericUpDown22.Value > 0)
+                        {
+                            cmd1 += "num_ <- " + numericUpDown22.Value.ToString() + "-" + lag + "\r\n";
+                        }
                         cmd1 += "if ( num_ < 1 ) num_ <- 1\r\n";
                         cmd1 += "train <- df_ts_tmp[c(1:num_),]\r\n";
                         cmd1 += "test <- df_ts_tmp[-c(1:num_),]\r\n";
@@ -842,7 +932,7 @@ namespace WindowsFormsApplication1
 					cmd1 += "	\r\n";
 					cmd1 += "	plt <- plt + labs(x=\"時間\")\r\n";
 					cmd1 += "	plt <- plt + labs(y=\""+ targetName +"\")\r\n";
-					cmd1 += "	ggsave(file = \"split_train_test.png\", plot = plt, dpi = 100, width = 6.4*4, height = 3.4*1)\r\n";
+					cmd1 += "	ggsave(file = \"split_train_test.png\", plot = plt, dpi = 100, width = 6.4*4, height = 3.4*1, limitsize = FALSE)\r\n";
 					cmd1 += "}\r\n";
 					cmd1 += "\r\n";
 					cmd1 += "\r\n";
@@ -851,10 +941,10 @@ namespace WindowsFormsApplication1
 					cmd1 += "vali_s = train_e + 1\r\n";
                     if (numericUpDown20.Value > 100 || checkBox20.Checked)
                     {
-                        cmd1 += "obs_test_step <- max( max(frequency_value," + lag.ToString() + "), nrow(test)-" + numericUpDown20.Value.ToString()+")\r\n";
+                        cmd1 += "obs_test_step <- as.integer(max( max(frequency_value," + lag.ToString() + "), nrow(test)-" + numericUpDown20.Value.ToString()+"))\r\n";
                     }else
                     {
-                        cmd1 += "obs_test_step <- max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + numericUpDown20.Value.ToString() + "*0.01)\r\n";
+                        cmd1 += "obs_test_step <- as.integer(max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + numericUpDown20.Value.ToString() + "*0.01))\r\n";
                     }
                     cmd1 += "if ( obs_test_step > nrow(test)) obs_test_step = nrow(test)\r\n";
 
@@ -1126,18 +1216,56 @@ namespace WindowsFormsApplication1
                     	formuler += "+ mean3_" + targetName;
                     	formuler += "+ sd3_" + targetName;
                     	formuler += "+ median3_" + targetName;
+                        formuler += "+ max3_" + targetName;
+                        formuler += "+ min3_" + targetName;
                     }
-                    if (lag >= means_5n)
+                    if (lag >= means_6n)
                     {
-                    	formuler += "+ mean5_" + targetName;
-                    	formuler += "+ sd5_" + targetName;
-                    	formuler += "+ median5_" + targetName;
+                    	formuler += "+ mean6_" + targetName;
+                    	formuler += "+ sd6_" + targetName;
+                    	formuler += "+ median6_" + targetName;
+                        formuler += "+ max6_" + targetName;
+                        formuler += "+ min6_" + targetName;
                     }
                     if (lag >= means_12n)
                     {
                     	formuler += "+ mean12_" + targetName;
                     	formuler += "+ sd12_" + targetName;
                     	formuler += "+ median12_" + targetName;
+                        formuler += "+ max12_" + targetName;
+                        formuler += "+ min12_" + targetName;
+                    }
+                    if (lag >= means_24n)
+                    {
+                        formuler += "+ mean24_" + targetName;
+                        formuler += "+ sd24_" + targetName;
+                        formuler += "+ median24_" + targetName;
+                        formuler += "+ max24_" + targetName;
+                        formuler += "+ min24_" + targetName;
+                    }
+                    if (lag >= means_30n)
+                    {
+                        formuler += "+ mean30_" + targetName;
+                        formuler += "+ sd30_" + targetName;
+                        formuler += "+ median30_" + targetName;
+                        formuler += "+ max30_" + targetName;
+                        formuler += "+ min30_" + targetName;
+                    }
+                    if (lag >= means_60n)
+                    {
+                        formuler += "+ mean60_" + targetName;
+                        formuler += "+ sd60_" + targetName;
+                        formuler += "+ median60_" + targetName;
+                        formuler += "+ max60_" + targetName;
+                        formuler += "+ min60_" + targetName;
+                    }
+                    if (lag >= means_90n)
+                    {
+                        formuler += "+ mean90_" + targetName;
+                        formuler += "+ sd90_" + targetName;
+                        formuler += "+ median90_" + targetName;
+                        formuler += "+ max90_" + targetName;
+                        formuler += "+ min90_" + targetName;
                     }
                     if (lag >= befor_3day)
                     {
@@ -1954,11 +2082,11 @@ namespace WindowsFormsApplication1
                                 sw.Write("#plt_<-xgb.ggplot.importance(imp_, top_n = 6, measure = NULL, rel_to_first = F)\r\n");
                                 sw.Write("plt_<-plot(imp_)\r\n");
 
-                                sw.Write("ggsave(\"xgboost_importance.png\", plt_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + Math.Max(1, lag/10) + "*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
+                                sw.Write("ggsave(\"xgboost_importance.png\", plt_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + Math.Max(1, lag/10) + "*" + form1._setting.numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n");
                             }
                             if (use_AnomalyDetectionTs == 1)
                             {
-                                sw.Write("ggsave(filename = \"anomaly_det.png\", plot = anomaly_det[[3]], dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                sw.Write("ggsave(filename = \"anomaly_det.png\", plot = anomaly_det[[3]], dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                             }
                             if ((checkBox6.Checked || checkBox7.Checked )&& radioButton1.Checked)
                             {
@@ -1967,7 +2095,7 @@ namespace WindowsFormsApplication1
                                     sw.Write("if (file.exists(\"tmp_xgboost2.png\")){\r\n");
                                     sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
                                     sw.Write("}\r\n");
-                                    sw.Write("ggsave(filename = \"interval_plt.png\", plot = interval_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                    sw.Write("ggsave(filename = \"interval_plt.png\", plot = interval_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
 
 
                                     int nrow2 = 1;
@@ -1981,14 +2109,14 @@ namespace WindowsFormsApplication1
                                         nrow2 = 3;
                                         sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, nrow = 2)\r\n");
                                     }
-                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                                 }
                                 if (!checkBox6.Checked && checkBox7.Checked)
                                 {
                                     sw.Write("if (file.exists(\"tmp_xgboost2.png\")){\r\n");
                                     sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
                                     sw.Write("}\r\n");
-                                    sw.Write("ggsave(filename = \"interval_plt2.png\", plot = interval_plt2, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                    sw.Write("ggsave(filename = \"interval_plt2.png\", plot = interval_plt2, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
 
 
                                     int nrow2 = 1;
@@ -2003,14 +2131,14 @@ namespace WindowsFormsApplication1
                                         nrow2 = 2;
                                         sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, nrow = 2)\r\n");
                                     }
-                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                                 }
                                 if (checkBox6.Checked && checkBox7.Checked)
                                 {
                                     sw.Write("if (file.exists(\"tmp_xgboost2.png\")){\r\n");
                                     sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
                                     sw.Write("}\r\n");
-                                    sw.Write("ggsave(filename = \"interval_plt3.png\", plot = interval_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                    sw.Write("ggsave(filename = \"interval_plt3.png\", plot = interval_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                                     
                                     int nrow2 = 1;
                                     if (use_AnomalyDetectionTs == 1)
@@ -2023,7 +2151,7 @@ namespace WindowsFormsApplication1
                                         nrow2 = 3;
                                         sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, interval_plt2, nrow = 3)\r\n");
                                     }
-                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                                 }
                             }
                             else
@@ -2060,7 +2188,7 @@ namespace WindowsFormsApplication1
 	                            	cmd_tmp += "interval_plt4 <- interval_plt4 + labs(y=\""+ targetName +"\")\r\n";
                                 }
                                 sw.Write(cmd_tmp);
-                                sw.Write("\r\nggsave(filename = \"interval_plt4.png\", plot = interval_plt4, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                sw.Write("\r\nggsave(filename = \"interval_plt4.png\", plot = interval_plt4, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
 
                                 int nrow2 = 1;
                                 if (use_AnomalyDetectionTs == 1)
@@ -2073,7 +2201,7 @@ namespace WindowsFormsApplication1
                                     nrow2 = 3;
                                     sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt4, nrow = 2)\r\n");
                                 }
-                                sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2+"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2+"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                             }
                             sw.Write("\r\n");
                         }
@@ -2165,7 +2293,7 @@ namespace WindowsFormsApplication1
                         //explain += "ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = plt_)\r\n";
                     }
                     explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square))\r\n";
-                    explain += "ggsave(filename = \"tmp_xgboost_feature_importance.png\", plot = plt_)\r\n";
+                    explain += "ggsave(filename = \"tmp_xgboost_feature_importance.png\", plot = plt_, limitsize = FALSE)\r\n";
 
                     using (System.IO.StreamWriter sw = new System.IO.StreamWriter("explain.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
                     {
@@ -2209,10 +2337,10 @@ namespace WindowsFormsApplication1
                     {
                         if (numericUpDown20.Value > 100 || checkBox20.Checked)
                         {
-                            forecast_extension += "obs_test_step <- max( max(frequency_value," + lag.ToString() + "), nrow(test)-" + numericUpDown20.Value.ToString()+")\r\n";
+                            forecast_extension += "obs_test_step <- as.integer(max( max(frequency_value," + lag.ToString() + "), nrow(test)-" + numericUpDown20.Value.ToString()+"))\r\n";
                         }else
                         {
-                            forecast_extension += "obs_test_step <- max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + numericUpDown20.Value.ToString() + "*0.01)\r\n";
+                            forecast_extension += "obs_test_step <- as.integer(max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + numericUpDown20.Value.ToString() + "*0.01))\r\n";
                         }
                         forecast_extension += "if ( obs_test_step > nrow(test)) obs_test_step = nrow(test)\r\n";
 
@@ -2259,7 +2387,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
                             forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = predict_y, colour = \"pred\"))\r\n";
                             forecast_extension += "debug_plt\r\n";
-                            forecast_extension += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
+                            forecast_extension += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                         }
 
                         forecast_extension += "\r\n";
@@ -2613,35 +2741,121 @@ namespace WindowsFormsApplication1
                             if (lag >= means_3n)
                             {
                                 forecast_extension += "        test$'mean3_" + targetName + "'" +
-                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_3n + "):(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])\r\n";
                                 
                                 forecast_extension += "        test$'sd3_" + targetName + "'" +
-                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_3n + "):(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])\r\n";
                                
                                 forecast_extension += "        test$'median3_" + targetName + "'" +
-                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + means_3n + "):(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max3_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min3_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])\r\n";
                             }
-                            if (lag >= means_5n)
+                            if (lag >= means_6n)
                             {
-                                forecast_extension += "        test$'mean5_" + targetName + "'" +
-                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_5n + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'mean6_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])\r\n";
                                 
-                                forecast_extension += "        test$'sd5_" + targetName + "'" +
-                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_5n + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'sd6_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])\r\n";
                                 
-                                forecast_extension += "        test$'median5_" + targetName + "'" +
-                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + means_5n + "):(length(test$target_)-1)])\r\n";
+                                forecast_extension += "        test$'median6_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max6_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min6_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])\r\n";
                             }
                             if (lag >= means_12n)
                             {
                                 forecast_extension += "        test$'mean12_" + targetName + "'" +
-                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + means_12n + "):(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])\r\n";
                                 
                                 forecast_extension += "        test$'sd12_" + targetName + "'" +
-                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + means_12n + "):(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])\r\n";
                                 
                                 forecast_extension += "        test$'median12_" + targetName + "'" +
-                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + means_12n + "):(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max12_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min12_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])\r\n";
+                            }
+                            if (lag >= means_24n)
+                            {
+                                forecast_extension += "        test$'mean24_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd24_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median24_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max24_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min24_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])\r\n";
+                            }
+                            if (lag >= means_30n)
+                            {
+                                forecast_extension += "        test$'mean30_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd30_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median30_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max30_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min30_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])\r\n";
+                            }
+                            if (lag >= means_60n)
+                            {
+                                forecast_extension += "        test$'mean60_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd60_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median60_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max60_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min60_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])\r\n";
+                            }
+                            if (lag >= means_90n)
+                            {
+                                forecast_extension += "        test$'mean90_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd90_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median90_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max90_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min90_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])\r\n";
                             }
 
                             if (lag >= befor_3day)
@@ -2996,7 +3210,13 @@ namespace WindowsFormsApplication1
                        
                         forecast_extension += "    }\r\n";
                         forecast_extension += "}\r\n";
+                        forecast_extension += "\r\n";
                         
+						forecast_extension += "if ( obs_test_step < nrow(test_org))\r\n";
+						forecast_extension += "{\r\n";
+						forecast_extension += "    test$"+targetName +"[1:nrow(test_org)] <- test_org$"+targetName+"[1:nrow(test_org)]\r\n";
+						forecast_extension += "}\r\n";
+                        forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "if ( fast_predict == 1 ){\r\n";
                         forecast_extension += "    test_mx<-";
@@ -3084,10 +3304,10 @@ namespace WindowsFormsApplication1
                     forecast_debug_plot += "            predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict[,1], colour=\"予測値\"))\r\n";
                     forecast_debug_plot += "        }\r\n";
                     forecast_debug_plot += "        if (obs_test_step >= 1 && obs_test_step < nrow(test_org)){\r\n";
-                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[1:obs_test_step,1]), y=test[1:obs_test_step,colidx], colour=\"予測値(観測値参照)\"))\r\n";
-                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[(obs_test_step+1):nrow(test),1]), y=test[(obs_test_step+1):nrow(test),colidx], colour=\"予測値(観測値参照無し)\"))\r\n";
+                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[1:obs_test_step,1]), y=test[1:obs_test_step,colidx], colour=\"観測値参照用Test区間\"))\r\n";
+                    forecast_debug_plot += "		    predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[(obs_test_step+1):nrow(test),1]), y=test[(obs_test_step+1):nrow(test),colidx], colour=\"観測値参照無し用Test区間\"))\r\n";
                     forecast_debug_plot += "        }else{\r\n";
-                    forecast_debug_plot += "            if ( is.null(predict) )predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test[,colidx], colour=\"予測値\"))\r\n";
+                    forecast_debug_plot += "            if ( is.null(predict) )predict_plt<- predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test[,colidx], colour=\"観測値参照用Test区間\"))\r\n";
                     forecast_debug_plot += "        }\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
                     forecast_debug_plot += "		predict_plt<- predict_plt + geom_vline(data = test_org, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test_org[nrow(test_org),1])))\r\n";
@@ -3097,7 +3317,7 @@ namespace WindowsFormsApplication1
                 	forecast_debug_plot += "		predict_plt <- predict_plt + labs(y=\""+ targetName +"\")\r\n";
                     forecast_debug_plot += "	}\r\n";
                     forecast_debug_plot += "	\r\n";
-                    forecast_debug_plot += "    ggsave(file = savename, predict_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
+                    forecast_debug_plot += "    ggsave(file = savename, predict_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                     forecast_debug_plot += "    saveRDS(list(predict_plt,test_org, test, train), paste(savename,\".rds\"))\r\n";
                     forecast_debug_plot += "	srcfile <- file(paste(savename,\".r\"), open = \"w\")\r\n";
                     forecast_debug_plot += "\r\n";
@@ -3139,7 +3359,14 @@ namespace WindowsFormsApplication1
                     cmd += "test <- ret[[3]]\r\n";
                     cmd += "test_dmat <- ret[[4]]\r\n";
                     cmd += "obs_test_step <- ret[[5]]\r\n";
-
+                    
+                    if ( checkBox16.Checked )
+                    {
+                    	cmd += "predict.y <- as.data.frame(ifelse(predict.y[,1] > as.numeric("+ textBox12.Text +"),as.numeric("+textBox12.Text+"),predict.y[,1]))\r\n"; 
+                    	cmd += "predict.y <- as.data.frame(ifelse(predict.y[,1] < as.numeric("+ textBox13.Text +"),as.numeric("+textBox13.Text+"),predict.y[,1]))\r\n"; 
+                    	cmd += "colnames(predict.y)<- c(\"predict\")\r\n";
+					}
+					
                     cmd += "output_tmp <- cbind(test, predict.y)\r\n";
                     if (checkBox6.Checked || checkBox7.Checked)
                     {
@@ -3375,7 +3602,7 @@ namespace WindowsFormsApplication1
                         predict_probability += "plot\r\n";
 	                	predict_probability += "plot <- plot + labs(x=\"時間\")\r\n";
 	                	predict_probability += "plot <- plot + labs(y=\""+ targetName +"\")\r\n";
-                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測結果.png\", plot = plot)\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測結果.png\", plot = plot, limitsize = FALSE)\r\n";
 
                         predict_probability += "\r\n";
                         predict_probability += "prob_value <- function(predictions, predict_y, i, bins=10, offset=1)\r\n";
@@ -3626,7 +3853,7 @@ namespace WindowsFormsApplication1
                         }
                         predict_probability += "}\r\n";
                         predict_probability += "predict_probability_plt\r\n";
-                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率.png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率.png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                         predict_probability += "\r\n";
                         predict_probability += "x <- predict_probability_df\r\n";
                         predict_probability += "#predict_probability_plt<-ggplot()\r\n";
@@ -3652,7 +3879,7 @@ namespace WindowsFormsApplication1
                         predict_probability += "predict_probability_plt <- predict_probability_plt + ggtitle(\"予測値の確率\")\r\n";
 	                	predict_probability += "predict_probability_plt <- predict_probability_plt + labs(x=\"時間\")\r\n";
 	                	predict_probability += "predict_probability_plt <- predict_probability_plt + labs(y=\""+ targetName +"\")\r\n";
-                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2.png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2.png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                         predict_probability += "\r\n";
                         predict_probability += "predict_probability_plt\r\n";
                         predict_probability += "\r\n";
@@ -3688,7 +3915,7 @@ namespace WindowsFormsApplication1
 		                position_maker += "	#plt\r\n";
                         position_maker += "    file = paste(\"explain_predict/position_maker\", pos, sep=\"\")\r\n";
                         position_maker += "    file = paste(file, \".png\", sep=\"\")\r\n";
-		                position_maker += "    ggsave(file = file, plot = plt, dpi = 100, width = 6.4*4, height = 3.4*1)\r\n";
+		                position_maker += "    ggsave(file = file, plot = plt, dpi = 100, width = 6.4*4, height = 3.4*1, limitsize = FALSE)\r\n";
 		                position_maker += "}\r\n";
 		                position_maker += "\r\n";
                         position_maker += "for (i in 1:length(test$target_)){ \r\n";
@@ -3789,7 +4016,7 @@ namespace WindowsFormsApplication1
 								sw.Write("reserr2 <- data.frame(reserr = residual.error2)\r\n");
 								sw.Write("error2_plt <- ggplot(reserr2, aes(x = reserr)) +\r\n");
 								sw.Write("geom_histogram(colour = \"gray10\", fill = \"dodgerblue4\")\r\n");
-								sw.Write("ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = error2_plt)\r\n");
+								sw.Write("ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = error2_plt, limitsize = FALSE)\r\n");
 								
                                 if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                                 {
@@ -3914,7 +4141,7 @@ namespace WindowsFormsApplication1
                                     //sw.Write("p_<-gridExtra::grid.arrange(error2_plt, residual_plt, predict_plt, nrow = 3)\r\n");
                                     sw.Write("p_<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt,reserr3, ncol=1, nrow=2), gridExtra::arrangeGrob(residual_plt, predict_plt, ncol = 1, nrow = 2), heights=c(8,1), widths=c(1,4))\r\n");
                                 }
-                                sw.Write("ggsave(file = \"tmp_xgboost_predict.png\", p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+")\r\n");
+                                sw.Write("ggsave(file = \"tmp_xgboost_predict.png\", p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
 
                             }
                             if (radioButton2.Checked)
@@ -4579,6 +4806,124 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private void save_param(string file)
+        {
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(file + ".options", false, Encoding.GetEncoding("SHIFT_JIS"));
+            if (sw != null)
+            {
+                sw.Write("正規化,");
+                if (checkBox1.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                if (radioButton1.Checked)
+                {
+                    sw.Write("回帰,true\r\n");
+                    sw.Write("分類,false\r\n");
+                }
+                else
+                {
+                    sw.Write("回帰,false\r\n");
+                    sw.Write("分類,true\r\n");
+                }
+                sw.Write("target_weight,"); sw.Write(numericUpDown4.Value.ToString() + "\r\n");
+                sw.Write("coef_weight,"); sw.Write(comboBox4.Text + "\r\n");
+                sw.Write("booster,"); sw.Write(comboBox1.Text + "\r\n");
+                sw.Write("objective,"); sw.Write(comboBox2.Text + "\r\n");
+                sw.Write("eval_metric,"); sw.Write(comboBox3.Text + "\r\n");
+                sw.Write("eta,"); sw.Write(textBox3.Text + "\r\n");
+                sw.Write("nthread,"); sw.Write(numericUpDown10.Value.ToString() + "\r\n");
+                sw.Write("gamma,"); sw.Write(textBox4.Text + "\r\n");
+                sw.Write("min_child_weight,"); sw.Write(textBox9.Text + "\r\n");
+                sw.Write("subsample,"); sw.Write(textBox8.Text + "\r\n");
+                sw.Write("max_depth,"); sw.Write(numericUpDown6.Value.ToString() + "\r\n");
+                sw.Write("n_gpus,"); sw.Write(numericUpDown11.Value.ToString() + "\r\n");
+                sw.Write("alpha,"); sw.Write(textBox5.Text + "\r\n");
+                sw.Write("lambda,"); sw.Write(textBox6.Text + "\r\n");
+                sw.Write("num_class,"); sw.Write(numericUpDown7.Value.ToString() + "\r\n");
+
+                sw.Write("transform,"); sw.Write(numericUpDown16.Value.ToString() + "\r\n");
+                sw.Write("ndiff,"); sw.Write(numericUpDown17.Value.ToString() + "\r\n");
+                sw.Write("rolling,"); sw.Write(numericUpDown19.Value.ToString() + "\r\n");
+                sw.Write("frequency,"); sw.Write(numericUpDown14.Value.ToString() + "\r\n");
+                sw.Write("trend_frequency,"); sw.Write(numericUpDown21.Value.ToString() + "\r\n");
+                sw.Write("s_previous,"); sw.Write(numericUpDown15.Value.ToString() + "\r\n");
+                sw.Write("num_previous,"); sw.Write(numericUpDown8.Value.ToString() + "\r\n");
+                sw.Write("extend,"); sw.Write(numericUpDown5.Value.ToString() + "\r\n");
+                sw.Write("plot_interval,"); sw.Write(numericUpDown18.Value.ToString() + "\r\n");
+
+                sw.Write("トレンド分離,");
+                if (checkBox9.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("トレンド推定,");
+                if (checkBox15.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("周期分離,");
+                if (checkBox10.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("混合周期分離,");
+                if (checkBox14.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("異常検知,");
+                if (checkBox12.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("X軸時間軸,");
+                if (checkBox8.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("全区間,");
+                if (checkBox11.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("上下制限,");
+                if (checkBox16.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("l_ambda,"); sw.Write(textBox10.Text + "\r\n");
+                sw.Write("a_lpha,"); sw.Write(textBox11.Text + "\r\n");
+                sw.Write("upper,"); sw.Write(textBox12.Text + "\r\n");
+                sw.Write("lower,"); sw.Write(textBox13.Text + "\r\n");
+                sw.Write("time_form,"); sw.Write(textBox14.Text + "\r\n");
+
+                sw.Write("fast,");
+                if (checkBox17.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                if (radioButton5.Checked)
+                {
+                    sw.Write("SARIMA,true\r\n");
+                    sw.Write("prophet,false\r\n");
+                    sw.Write("naive,false\r\n");
+                }
+                if (radioButton6.Checked)
+                {
+                    sw.Write("SARIMA,false\r\n");
+                    sw.Write("prophet,true\r\n");
+                    sw.Write("naive,false\r\n");
+                }
+                if (radioButton7.Checked)
+                {
+                    sw.Write("SARIMA,false\r\n");
+                    sw.Write("prophet,false\r\n");
+                    sw.Write("naive,true\r\n");
+                }
+
+                sw.Write("obs_test,"); sw.Write(numericUpDown20.Value.ToString() + "\r\n");
+                sw.Write("設定済説明変数使用,");
+                if (checkBox19.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                //
+                sw.Write("データ終端から過去で指定,");
+                if (checkBox20.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("train_step_num,"); sw.Write(numericUpDown22.Value.ToString() + "\r\n");
+                sw.Close();
+            }
+        }
         private void button4_Click(object sender, EventArgs e)
         {
             if (!System.IO.Directory.Exists("model"))
@@ -4619,118 +4964,7 @@ namespace WindowsFormsApplication1
                 form1.SelectionVarWrite_(listBox1, listBox2, file+".select_variables.dat");
                 cmd = "saveRDS(xgboost.model, file = \"" + file +"\")\r\n";
             }
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(file + ".options", false, Encoding.GetEncoding("SHIFT_JIS"));
-            if (sw != null)
-            {
-                sw.Write("正規化,");
-                if ( checkBox1.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-                if (radioButton1.Checked)
-                {
-                    sw.Write("回帰,true\r\n");
-                    sw.Write("分類,false\r\n");
-                }else
-                {
-                    sw.Write("回帰,false\r\n");
-                    sw.Write("分類,true\r\n");
-                }
-                sw.Write("target_weight,");sw.Write(numericUpDown4.Value.ToString() + "\r\n");
-                sw.Write("coef_weight,");sw.Write(comboBox4.Text + "\r\n");
-                sw.Write("booster,");sw.Write(comboBox1.Text + "\r\n");
-                sw.Write("objective,");sw.Write(comboBox2.Text + "\r\n");
-                sw.Write("eval_metric,");sw.Write(comboBox3.Text + "\r\n");
-                sw.Write("eta,");sw.Write(textBox3.Text + "\r\n");
-                sw.Write("nthread,");sw.Write(numericUpDown10.Value.ToString() + "\r\n");
-                sw.Write("gamma,");sw.Write(textBox4.Text + "\r\n");
-                sw.Write("min_child_weight,");sw.Write(textBox9.Text + "\r\n");
-                sw.Write("subsample,");sw.Write(textBox8.Text + "\r\n");
-                sw.Write("max_depth,");sw.Write(numericUpDown6.Value.ToString() + "\r\n");
-                sw.Write("n_gpus,");sw.Write(numericUpDown11.Value.ToString() + "\r\n");
-                sw.Write("alpha,");sw.Write(textBox5.Text + "\r\n");
-                sw.Write("lambda,");sw.Write(textBox6.Text + "\r\n");
-                sw.Write("num_class,");sw.Write(numericUpDown7.Value.ToString() + "\r\n");
-
-                sw.Write("transform,");sw.Write(numericUpDown16.Value.ToString() + "\r\n");
-                sw.Write("ndiff,");sw.Write(numericUpDown17.Value.ToString() + "\r\n");
-                sw.Write("rolling,");sw.Write(numericUpDown19.Value.ToString() + "\r\n");
-                sw.Write("frequency,");sw.Write(numericUpDown14.Value.ToString() + "\r\n");
-                sw.Write("trend_frequency,"); sw.Write(numericUpDown21.Value.ToString() + "\r\n");
-                sw.Write("s_previous,");sw.Write(numericUpDown15.Value.ToString() + "\r\n");
-                sw.Write("num_previous,");sw.Write(numericUpDown8.Value.ToString() + "\r\n");
-                sw.Write("extend,");sw.Write(numericUpDown5.Value.ToString() + "\r\n");
-                sw.Write("plot_interval,");sw.Write(numericUpDown18.Value.ToString() + "\r\n");
-                
-                sw.Write("トレンド分離,");
-				if ( checkBox9.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-
-                sw.Write("トレンド推定,");
-				if ( checkBox15.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-
-                sw.Write("周期分離,");
-				if ( checkBox10.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-
-                sw.Write("混合周期分離,");
-				if ( checkBox14.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-
-                sw.Write("異常検知,");
-				if ( checkBox12.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-
-                sw.Write("X軸時間軸,");
-				if ( checkBox8.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-
-                sw.Write("全区間,");
-				if ( checkBox11.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-
-                sw.Write("上下制限,");
-				if ( checkBox16.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-
-                sw.Write("l_ambda,");sw.Write(textBox10.Text + "\r\n");
-                sw.Write("a_lpha,");sw.Write(textBox11.Text + "\r\n");
-                sw.Write("upper,");sw.Write(textBox12.Text + "\r\n");
-                sw.Write("lower,");sw.Write(textBox13.Text + "\r\n");
-                sw.Write("time_form,");sw.Write(textBox14.Text + "\r\n");
-
-                sw.Write("fast,");
-				if ( checkBox17.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-                
-                if (radioButton5.Checked)
-                {
-                    sw.Write("SARIMA,true\r\n");
-                    sw.Write("prophet,false\r\n");
-                    sw.Write("naive,false\r\n");
-                }
-                if (radioButton6.Checked)
-                {
-                    sw.Write("SARIMA,false\r\n");
-                    sw.Write("prophet,true\r\n");
-                    sw.Write("naive,false\r\n");
-                }
-                if (radioButton7.Checked)
-                {
-                    sw.Write("SARIMA,false\r\n");
-                    sw.Write("prophet,false\r\n");
-                    sw.Write("naive,true\r\n");
-                }
-
-                sw.Write("obs_test,"); sw.Write(numericUpDown20.Value.ToString() + "\r\n");
-                sw.Write("設定済説明変数使用,");
-                if (checkBox19.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-                //
-                sw.Write("データ終端から過去で指定,");
-                if (checkBox20.Checked) sw.Write("true\r\n");
-                else sw.Write("false\r\n");
-                sw.Close();
-            }
+            save_param(file);
 
             form1.comboBox1.Text = cmd;
             form1.evalute_cmd(sender, e);
@@ -4818,19 +5052,8 @@ namespace WindowsFormsApplication1
             this.TopMost = false;
         }
 
-        public void load_model(string modelfile, object sender, EventArgs e)
+        private void load_param(string file)
         {
-            string file = modelfile.Replace("\\", "/");
-
-            string obj = Form1.FnameToDataFrameName(file, true);
-            form1.comboBox1.Text = "xgboost.model<- readRDS(" + "\"" + file + "\"" + ")";
-            form1.evalute_cmd(sender, e);
-
-            form1.comboBox1.Text = "xgb_train<- readRDS(" + "\"" + file + ".xgb_train.robj" + "\"" + ")";
-            form1.evalute_cmd(sender, e);
-            form1.comboBox1.Text = "train<-xgb_train";
-            form1.evalute_cmd(sender, e);
-
             System.IO.StreamReader sr = new System.IO.StreamReader(file + ".options", Encoding.GetEncoding("SHIFT_JIS"));
             if (sr != null)
             {
@@ -4840,42 +5063,42 @@ namespace WindowsFormsApplication1
                     var ss = s.Split(',');
                     if (ss[0].IndexOf("正規化") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox1.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox1.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox1.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox1.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("回帰") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    radioButton1.Checked = true;
-		                    radioButton2.Checked = false;
-		                }
-		                else
-		                {
-		                    radioButton1.Checked = false;
-		                    radioButton2.Checked = true;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            radioButton1.Checked = true;
+                            radioButton2.Checked = false;
+                        }
+                        else
+                        {
+                            radioButton1.Checked = false;
+                            radioButton2.Checked = true;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("分類") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    radioButton1.Checked = false;
-		                    radioButton2.Checked = true;
-		                }
-		                else
-		                {
-		                    radioButton1.Checked = true;
-		                    radioButton2.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            radioButton1.Checked = false;
+                            radioButton2.Checked = true;
+                        }
+                        else
+                        {
+                            radioButton1.Checked = true;
+                            radioButton2.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("target_weight") >= 0)
@@ -5000,98 +5223,98 @@ namespace WindowsFormsApplication1
                     }
                     if (ss[0].IndexOf("トレンド分離") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox9.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox9.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox9.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox9.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("トレンド推定") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox15.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox15.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox15.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox15.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("混合周期分離") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox14.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox14.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox14.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox14.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("周期分離") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox10.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox10.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox10.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox10.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("異常検知") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox12.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox12.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox12.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox12.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("X軸時間軸") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox8.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox8.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox8.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox8.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("全区間") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox11.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox11.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox11.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox11.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("上下制限") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox16.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox16.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox16.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox16.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("l_ambda") >= 0)
@@ -5121,32 +5344,32 @@ namespace WindowsFormsApplication1
                     }
                     if (ss[0].IndexOf("fast") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    checkBox17.Checked = true;
-		                }
-		                else
-		                {
-		                    checkBox17.Checked = false;
-		                }
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox17.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox17.Checked = false;
+                        }
                         continue;
                     }
                     if (ss[0].IndexOf("SARIMA") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    radioButton5.Checked = true;
-		                    radioButton6.Checked = false;
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            radioButton5.Checked = true;
+                            radioButton6.Checked = false;
                             radioButton7.Checked = false;
                         }
                         continue;
                     }
                     if (ss[0].IndexOf("prophet") >= 0)
                     {
-		                if (ss[1].Replace("\r\n", "") == "true")
-		                {
-		                    radioButton5.Checked = false;
-		                    radioButton6.Checked = true;
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            radioButton5.Checked = false;
+                            radioButton6.Checked = true;
                             radioButton7.Checked = false;
                         }
                         continue;
@@ -5189,10 +5412,31 @@ namespace WindowsFormsApplication1
                             checkBox20.Checked = false;
                         }
                         continue;
-                    }                    //
+                    }
+                    if (ss[0].IndexOf("train_step_num") >= 0)
+                    {
+                        numericUpDown22.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
                 }
                 sr.Close();
             }
+        }
+
+        public void load_model(string modelfile, object sender, EventArgs e)
+        {
+            string file = modelfile.Replace("\\", "/");
+
+            string obj = Form1.FnameToDataFrameName(file, true);
+            form1.comboBox1.Text = "xgboost.model<- readRDS(" + "\"" + file + "\"" + ")";
+            form1.evalute_cmd(sender, e);
+
+            form1.comboBox1.Text = "xgb_train<- readRDS(" + "\"" + file + ".xgb_train.robj" + "\"" + ")";
+            form1.evalute_cmd(sender, e);
+            form1.comboBox1.Text = "train<-xgb_train";
+            form1.evalute_cmd(sender, e);
+
+            load_param(file);
 
             Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
             radioButton4.Checked = false;
@@ -6526,6 +6770,32 @@ namespace WindowsFormsApplication1
         private void progressBar2_MouseHover(object sender, EventArgs e)
         {
             toolTip1.SetToolTip(progressBar2, ((int)((1000.0 * (double)progressBar2.Value / (double)progressBar2.Maximum) / 10)).ToString() + "%");
+        }
+
+        private void button26_Click_1(object sender, EventArgs e)
+        {
+            save_param("xgboost_tmp");
+        }
+
+        private void button27_Click(object sender, EventArgs e)
+        {
+            load_param("xgboost_tmp");
+        }
+
+        private void button28_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists("xgboost_importance.png"))
+            {
+                if (_ImageView8 == null) _ImageView8 = new ImageView();
+                _ImageView8.form1 = this.form1;
+                _ImageView8.pictureBox1.Image = null;
+                _ImageView8.pictureBox1.Image = Form1.CreateImage("xgboost_importance.png");
+                _ImageView8.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                _ImageView8.pictureBox1.Dock = DockStyle.Fill;
+                _ImageView8.Width = 640;
+                _ImageView8.Height = 480*2;
+                _ImageView8.Show();
+            }
         }
     }
 

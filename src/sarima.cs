@@ -593,7 +593,7 @@ namespace WindowsFormsApplication1
                                 sw.Write("#plot(decompose(df_))\r\n");
                                 sw.Write("#dev.off()\r\n");
                                 sw.Write("g_ <- autoplot(decompose(df_), main = \"decompose\")\r\n");
-                                sw.Write("ggsave(file = \"tmp_decompose.png\", plot = g_, height = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", dpi = 100)\r\n");
+                                sw.Write("ggsave(file = \"tmp_decompose.png\", plot = g_, height = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 9.6*" + form1._setting.numericUpDown4.Value.ToString() + ", dpi = 100, limitsize = FALSE)\r\n");
 
                                 sw.Write("png(\"tmp_tsdiag.png\", height = 960, width = 960)\r\n");
                                 sw.Write("tsdiag(sarima.model)\r\n");
@@ -655,7 +655,7 @@ namespace WindowsFormsApplication1
                                 sw.Write("#plot(predict_sarima)\r\n");
                                 sw.Write("#dev.off()\r\n");
                                 sw.Write("g_ <- autoplot(predict_sarima, main = \"SARIMAによる予測\")\r\n");
-                                sw.Write("ggsave(file = \"tmp_sarima_predict.png\", plot = g_, height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 2*6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", dpi = 100)\r\n");
+                                sw.Write("ggsave(file = \"tmp_sarima_predict.png\", plot = g_, height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 2*6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", dpi = 100, limitsize = FALSE)\r\n");
                             }
                             sw.Write("cat(\"RMSE=\")\r\n");
                             sw.Write("cat(rmse_)\r\n");

@@ -306,7 +306,7 @@ namespace WindowsFormsApplication1
             cmd += "g_ <- g_ + coord_flip() \r\n";
             cmd += "g_ <- g_+ theme(text = element_text(size = 12*" + form1._setting.numericUpDown4.Value.ToString() + "))\r\n";
 
-            cmd += "ggsave(file = \"frequency.png\", plot = g_, dpi = 100, width = 6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n";
+            cmd += "ggsave(file = \"frequency.png\", plot = g_, dpi = 100, width = 6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n";
 
             if (checkBox1.Checked)
             {

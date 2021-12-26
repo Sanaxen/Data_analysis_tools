@@ -751,7 +751,7 @@ namespace WindowsFormsApplication1
                             }
 
                             //cmd += "g\r\n";
-                            cmd += "ggsave(file = \"tmp_KFAS.png\", plot = g, dpi = 100, width = 6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ")";
+                            cmd += "ggsave(file = \"tmp_KFAS.png\", plot = g, dpi = 100, width = 6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n";
 
                             //sw.Write("png(\"tmp_KFAS.png\", height = " + (480).ToString() + "*" + form1._setting.numericUpDown4.Value.ToString() + ",width =" + (480).ToString() + "*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                             //cmd = "plot( y1$y, type=\"l\",col=\"blue\")\r\n";
@@ -804,7 +804,7 @@ namespace WindowsFormsApplication1
                                 cmd += "g <-g + geom_line(data = predict_KFAS.y, aes(x = time, y = predict_y), color = \"chocolate1\")\r\n";
                                 cmd += "g <-g + geom_point(data = predict_KFAS.y, aes(x = time, y = y), color = \"cornflowerblue\", size = 0.5)\r\n";
                                 cmd += "g <-g + geom_line(data = predict_KFAS.y, aes(x = time, y = y), color = \"cornflowerblue\")\r\n";
-                                cmd += "ggsave(file = \"tmp_KFAS_predict.png\", plot = g, dpi = 100, width = 6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n";
+                                cmd += "ggsave(file = \"tmp_KFAS_predict.png\", plot = g, dpi = 100, width = 6.4*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n";
                                 sw.Write(cmd);
 
                                 //sw.Write("png(\"tmp_KFAS_predict.png\", height = " + (480).ToString() + "*" + form1._setting.numericUpDown4.Value.ToString() + ",width =" + (480).ToString() + "*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
