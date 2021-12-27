@@ -64,13 +64,23 @@ namespace WindowsFormsApplication1
 
             if (checkBox13.Checked)
             {
-                if (checkBox8.Checked) cmd += "df$month<-sin(2*pi*add_MonthNumber(df$'" + comboBox2.Text + "')/12)\r\n";
-                if (checkBox9.Checked) cmd += "df$day<-sin(2*pi*add_DayNumber(df$'" + comboBox2.Text + "')/(numberOfDays(as.Date((df$'" + comboBox2.Text + "')))))\r\n";
+                if (checkBox8.Checked) cmd += "df$month_S<-sin(2*pi*add_MonthNumber(df$'" + comboBox2.Text + "')/12)\r\n";
+                if (checkBox9.Checked) cmd += "df$day_S<-sin(2*pi*add_DayNumber(df$'" + comboBox2.Text + "')/30.5)\r\n";
+                if (checkBox9.Checked) cmd += "#df$day_S<-sin(2*pi*add_DayNumber(df$'" + comboBox2.Text + "')/(numberOfDays(as.Date((df$'" + comboBox2.Text + "')))))\r\n";
 
-                if (checkBox10.Checked) cmd += "df$hour<-sin(2*pi*add_HourNumber(df$'" + comboBox2.Text + "')/24)\r\n";
-                if (checkBox11.Checked) cmd += "df$minute<-sin(2*pi*add_MinuteNumber(df$'" + comboBox2.Text + "')/60)\r\n";
-                if (checkBox12.Checked) cmd += "df$second<-sin(2*pi*add_SecondNumber(df$'" + comboBox2.Text + "')/60)\r\n";
-            }else
+                if (checkBox10.Checked) cmd += "df$hour_S<-sin(2*pi*add_HourNumber(df$'" + comboBox2.Text + "')/24)\r\n";
+                if (checkBox11.Checked) cmd += "df$minute_S<-sin(2*pi*add_MinuteNumber(df$'" + comboBox2.Text + "')/60)\r\n";
+                if (checkBox12.Checked) cmd += "df$second_S<-sin(2*pi*add_SecondNumber(df$'" + comboBox2.Text + "')/60)\r\n";
+                
+                if (checkBox8.Checked) cmd += "df$month_C<-cos(2*pi*add_MonthNumber(df$'" + comboBox2.Text + "')/12)\r\n";
+                if (checkBox9.Checked) cmd += "df$day_C<-cos(2*pi*add_DayNumber(df$'" + comboBox2.Text + "')/30.5)\r\n";
+                if (checkBox9.Checked) cmd += "#df$day_C<-cos(2*pi*add_DayNumber(df$'" + comboBox2.Text + "')/(numberOfDays(as.Date((df$'" + comboBox2.Text + "')))))\r\n";
+
+                if (checkBox10.Checked) cmd += "df$hour_C<-cos(2*pi*add_HourNumber(df$'" + comboBox2.Text + "')/24)\r\n";
+                if (checkBox11.Checked) cmd += "df$minute_C<-cos(2*pi*add_MinuteNumber(df$'" + comboBox2.Text + "')/60)\r\n";
+                if (checkBox12.Checked) cmd += "df$second_C<-cos(2*pi*add_SecondNumber(df$'" + comboBox2.Text + "')/60)\r\n";
+            }
+            else
             {
                 if (checkBox8.Checked) cmd += "df$month<-add_MonthNumber(df$'" + comboBox2.Text + "')\r\n";
                 if (checkBox9.Checked) cmd += "df$day<-add_DayNumber(df$'" + comboBox2.Text + "')\r\n";

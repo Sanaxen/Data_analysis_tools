@@ -2652,11 +2652,27 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        colidx_6 = grep(\"^friday$\", coln )\r\n";
                         forecast_extension += "        colidx_7 = grep(\"^saturday$\", coln )\r\n";
 
-                        forecast_extension += "        colidx_8 = grep(\"^month$\", coln )\r\n";
-                        forecast_extension += "        colidx_9 = grep(\"^day$\", coln )\r\n";
-                        forecast_extension += "        colidx_10 = grep(\"^hour$\", coln )\r\n";
-                        forecast_extension += "        colidx_11 = grep(\"^minute$\", coln )\r\n";
-                        forecast_extension += "        colidx_12 = grep(\"^second$\", coln )\r\n";
+                        if (checkBox18.Checked)
+                        {
+	                        forecast_extension += "        colidx_8s = grep(\"^month_S$\", coln )\r\n";
+	                        forecast_extension += "        colidx_9s = grep(\"^day_S$\", coln )\r\n";
+	                        forecast_extension += "        colidx_10s = grep(\"^hour_S$\", coln )\r\n";
+	                        forecast_extension += "        colidx_11s = grep(\"^minute_S$\", coln )\r\n";
+	                        forecast_extension += "        colidx_12s = grep(\"^second_S$\", coln )\r\n";
+	                        
+	                        forecast_extension += "        colidx_8c = grep(\"^month_C$\", coln )\r\n";
+	                        forecast_extension += "        colidx_9c = grep(\"^day_C$\", coln )\r\n";
+	                        forecast_extension += "        colidx_10c = grep(\"^hour_C$\", coln )\r\n";
+	                        forecast_extension += "        colidx_11c = grep(\"^minute_C$\", coln )\r\n";
+	                        forecast_extension += "        colidx_12c = grep(\"^second_C$\", coln )\r\n";
+                        }else
+                        {
+	                        forecast_extension += "        colidx_8 = grep(\"^month$\", coln )\r\n";
+	                        forecast_extension += "        colidx_9 = grep(\"^day$\", coln )\r\n";
+	                        forecast_extension += "        colidx_10 = grep(\"^hour$\", coln )\r\n";
+	                        forecast_extension += "        colidx_11 = grep(\"^minute$\", coln )\r\n";
+	                        forecast_extension += "        colidx_12 = grep(\"^second$\", coln )\r\n";
+                        }
 
                         forecast_extension += "        if ( length(colidx_1) == 1 )test[nrow(test),colidx_1] <- 0\r\n";
                         forecast_extension += "        if ( length(colidx_2) == 1 )test[nrow(test),colidx_2] <- 0\r\n";
@@ -2678,8 +2694,12 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        tryCatch({\r\n";
                         if (checkBox18.Checked)
                         {
-                            forecast_extension += "            m = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))/12)\r\n";
-                            forecast_extension += "            d = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/(numberOfDays(as.Date((test[nrow(test),1])))))\r\n";
+                            forecast_extension += "            mS = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))/12)\r\n";
+                            forecast_extension += "            dS = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/30.5)\r\n";
+                            forecast_extension += "            #dS = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/(numberOfDays(as.Date((test[nrow(test),1])))))\r\n";
+                            forecast_extension += "            mC = cos(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))/12)\r\n";
+                            forecast_extension += "            dC = cos(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/30.5)\r\n";
+                            forecast_extension += "            #dC = cos(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/(numberOfDays(as.Date((test[nrow(test),1])))))\r\n";
                         }
                         else
                         {
@@ -2692,8 +2712,17 @@ namespace WindowsFormsApplication1
                         forecast_extension += "            #print(e)\r\n";
                         forecast_extension += "        },\r\n";
                         forecast_extension += "        finally ={\r\n";
-                        forecast_extension += "            if ( length(colidx_8) == 1 ) test[nrow(test),colidx_8] = m\r\n";
-                        forecast_extension += "            if ( length(colidx_9) == 1 ) test[nrow(test),colidx_9] = d\r\n";
+                        if (checkBox18.Checked)
+                        {
+	                        forecast_extension += "            if ( length(colidx_8s) == 1 ) test[nrow(test),colidx_8s] = mS\r\n";
+	                        forecast_extension += "            if ( length(colidx_9s) == 1 ) test[nrow(test),colidx_9s] = dS\r\n";
+	                        forecast_extension += "            if ( length(colidx_8c) == 1 ) test[nrow(test),colidx_8c] = mC\r\n";
+	                        forecast_extension += "            if ( length(colidx_9c) == 1 ) test[nrow(test),colidx_9c] = dC\r\n";
+                        }else
+                        {
+	                        forecast_extension += "            if ( length(colidx_8) == 1 ) test[nrow(test),colidx_8] = m\r\n";
+	                        forecast_extension += "            if ( length(colidx_9) == 1 ) test[nrow(test),colidx_9] = d\r\n";
+                        }
                         forecast_extension += "        },\r\n";
                         forecast_extension += "            silent = FALSE\r\n";
                         forecast_extension += "        )\r\n";
@@ -2701,9 +2730,12 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        tryCatch({\r\n";
                         if (checkBox18.Checked)
                         {
-                            forecast_extension += "            h = sin(2*pi*as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))/24)\r\n";
-                            forecast_extension += "            m = sin(2*pi*as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))/60)\r\n";
-                            forecast_extension += "            s = sin(2*pi*as.numeric(format(as.POSIXlt(test[nrow(test),1]),\"%OS6\"))/60)\r\n";
+                            forecast_extension += "            hS = sin(2*pi*as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))/24)\r\n";
+                            forecast_extension += "            mS = sin(2*pi*as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))/60)\r\n";
+                            forecast_extension += "            sS = sin(2*pi*as.numeric(format(as.POSIXlt(test[nrow(test),1]),\"%OS6\"))/60)\r\n";
+                            forecast_extension += "            hC = cos(2*pi*as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))/24)\r\n";
+                            forecast_extension += "            mC = cos(2*pi*as.integer(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))/60)\r\n";
+                            forecast_extension += "            sC = cos(2*pi*as.numeric(format(as.POSIXlt(test[nrow(test),1]),\"%OS6\"))/60)\r\n";
                         }
                         else
                         {
@@ -2717,9 +2749,20 @@ namespace WindowsFormsApplication1
                         forecast_extension += "            #print(e)\r\n";
                         forecast_extension += "        },\r\n";
                         forecast_extension += "        finally ={\r\n";
-                        forecast_extension += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] <- h\r\n";
-                        forecast_extension += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] <- m\r\n";
-                        forecast_extension += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] <- s\r\n";
+                        if (checkBox18.Checked)
+                        {
+	                        forecast_extension += "            if ( length(colidx_10s) == 1 ) test[nrow(test),colidx_10s] <- hS\r\n";
+	                        forecast_extension += "            if ( length(colidx_11s) == 1 ) test[nrow(test),colidx_11s] <- mS\r\n";
+	                        forecast_extension += "            if ( length(colidx_12s) == 1 ) test[nrow(test),colidx_12s] <- sS\r\n";
+	                        forecast_extension += "            if ( length(colidx_10c) == 1 ) test[nrow(test),colidx_10c] <- hC\r\n";
+	                        forecast_extension += "            if ( length(colidx_11c) == 1 ) test[nrow(test),colidx_11c] <- mC\r\n";
+	                        forecast_extension += "            if ( length(colidx_12c) == 1 ) test[nrow(test),colidx_12c] <- sC\r\n";
+                        }else
+                        {
+	                        forecast_extension += "            if ( length(colidx_10) == 1 ) test[nrow(test),colidx_10] <- h\r\n";
+	                        forecast_extension += "            if ( length(colidx_11) == 1 ) test[nrow(test),colidx_11] <- m\r\n";
+	                        forecast_extension += "            if ( length(colidx_12) == 1 ) test[nrow(test),colidx_12] <- s\r\n";
+                        }
                         forecast_extension += "        },\r\n";
                         forecast_extension += "            silent = FALSE\r\n";
                         forecast_extension += "        )\r\n";
