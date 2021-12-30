@@ -42,6 +42,7 @@ namespace WindowsFormsApplication1
         int explain_num = 1;
         int xgboost_predict_parts_count = 0;
         int xgboost_predict_probability_count = 0;
+        int xgboost_predict_debug_plot_count = 0;
         int exist_time_axis = 0;
         public int add_enevt_data = 0;
         int use_diff = 0;
@@ -60,6 +61,7 @@ namespace WindowsFormsApplication1
         public ImageView _ImageView7 = null;
         interactivePlot interactivePlot6 = null;
         public ImageView _ImageView8 = null;
+        public ImageView _ImageView9 = null;
 
         public int lag = 0;
         public int start_lag = 0;
@@ -271,6 +273,7 @@ namespace WindowsFormsApplication1
                 use_decompose = 0;
                 use_diff = 0;
             }
+            xgboost_predict_debug_plot_count = 0;
 
             try
             {
@@ -1400,6 +1403,28 @@ namespace WindowsFormsApplication1
                 xgboost_initial_cmd += "\r\n";
                 xgboost_initial_cmd += "\r\n";
 
+				xgboost_initial_cmd += "obs_test_step_df <- test\r\n";
+                if (time_series_mode)
+                {
+                    if (numericUpDown20.Value > 100 || checkBox20.Checked)
+                    {
+                        xgboost_initial_cmd += "obs_test_step <- as.integer(max( max(frequency_value," + lag.ToString() + "), nrow(test)-" + numericUpDown20.Value.ToString()+"))\r\n";
+                    }else
+                    {
+                        xgboost_initial_cmd += "obs_test_step <- as.integer(max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + numericUpDown20.Value.ToString() + "*0.01))\r\n";
+                    }
+                    xgboost_initial_cmd += "if ( obs_test_step > nrow(test)) obs_test_step = nrow(test)\r\n";
+
+                    xgboost_initial_cmd += "obs_test_step_df <- test[1:obs_test_step,]\r\n";
+                    xgboost_initial_cmd += "add_ext <- nrow(df_) - nrow(obs_test_step_df)\r\n";
+                    xgboost_initial_cmd += "if ( add_ext <= 0 ){\r\n";
+                    xgboost_initial_cmd += "    test <- df_\r\n";
+                    xgboost_initial_cmd += "    obs_test_step <- nrow(obs_test_step_df)\r\n";
+                    xgboost_initial_cmd += "    add_ext <- 0\r\n";
+                    xgboost_initial_cmd += "}\r\n";
+                }
+                xgboost_initial_cmd += "\r\n";
+
                 if (use_diff == 1 || use_decompose == 1)
                 {
                     xgboost_initial_cmd += "y_ <- test$target_\r\n";
@@ -1441,6 +1466,55 @@ namespace WindowsFormsApplication1
                 xgboost_initial_cmd += ")\r\n";
                 xgboost_initial_cmd += "\r\n";
                 xgboost_initial_cmd += "\r\n";
+
+				//////////////////////////////////////
+				//if (time_series_mode)
+				{
+		            if (use_diff == 1 || use_decompose == 1)
+		            {
+		                xgboost_initial_cmd += "y_ <- obs_test_step_df$target_\r\n";
+		            }
+		            else
+		            {
+		                xgboost_initial_cmd += "y_ <- obs_test_step_df$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
+		            }
+		            if (checkBox9.Checked && time_series_mode) xgboost_initial_cmd += "y_ <- obs_test_step_df$target_\r\n";
+		            
+		            if (radioButton2.Checked)
+		            {
+		                xgboost_initial_cmd += "if ( is.character(y_)){\r\n";
+		                xgboost_initial_cmd += "    y_  <- as.factor(y_)\r\n";
+		                xgboost_initial_cmd += "}\r\n";
+		                xgboost_initial_cmd += "if ( is.factor(y_)){\r\n";
+		                xgboost_initial_cmd += "    y_  <- as.integer(y_)\r\n";
+		                xgboost_initial_cmd += "}\r\n";
+		                xgboost_initial_cmd += "if ( min(y_) > 0){\r\n";
+		                xgboost_initial_cmd += "   y_ <- y_ - min(y_)\r\n";
+		                xgboost_initial_cmd += "}\r\n";
+		            }
+		            xgboost_initial_cmd += "obs_test_step_df$target_<- y_\r\n";
+
+		            xgboost_initial_cmd += "obs_test_step_df_mx<-";
+		            xgboost_initial_cmd += "sparse.model.matrix(" + formuler + ", data = obs_test_step_df)\r\n";
+		            xgboost_initial_cmd += "obs_test_step_df_dmat <- xgb.DMatrix(obs_test_step_df_mx, label = obs_test_step_df$target_";
+		            if (comboBox4.Text != "")
+		            {
+		                xgboost_initial_cmd += ",weight = obs_test_step_df_mx$'" + comboBox4.Text + "'";
+		            }
+		            else
+		            {
+		                if (add_enevt_data == 1)
+		                {
+		                    xgboost_initial_cmd += ",weight = obs_test_step_df_mx$event";
+		                }
+		            }
+		            xgboost_initial_cmd += ")\r\n";
+		            xgboost_initial_cmd += "\r\n";
+		            xgboost_initial_cmd += "\r\n";
+                }
+                //////////////////////////////////////
+
+
                 xgboost_initial_cmd += "if ( is.null(test_org$target_)) test_org$target_ <- test$target_\r\n";
 
                 cmd += xgboost_initial_cmd;
@@ -1539,7 +1613,7 @@ namespace WindowsFormsApplication1
                         cmd2 += "	xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
                         cmd2 += "	,early_stopping_rounds = 100,\r\n";
                         cmd2 += "	params = l_params_tmp,\r\n";
-                        cmd2 += "	watchlist = list(train = train_dmat, eval = test_dmat))\r\n";
+                        cmd2 += "	watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat))\r\n";
                         cmd2 += "\r\n";
                         cmd2 += "	predictions[,i] <- predict(xgboost_tmp.model,newdata = test_dmat) \r\n";
 
@@ -1752,7 +1826,7 @@ namespace WindowsFormsApplication1
                         cmd3 += "   xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
                         cmd3 += "   ,early_stopping_rounds = 100,\r\n";
                         cmd3 += "   params = l_params_tmp,\r\n";
-                        cmd3 += "   watchlist = list(train = train_dmat, eval = test_dmat))\r\n";
+                        cmd3 += "   watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat))\r\n";
                         cmd3 += "\r\n";
                         cmd3 += "   if(xgboost_tmp.model$best_iteration > 1 ){\r\n";
                         cmd3 += "       break\r\n";
@@ -1782,7 +1856,7 @@ namespace WindowsFormsApplication1
                         cmd3 += "   xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
                         cmd3 += "   ,early_stopping_rounds = 100,\r\n";
                         cmd3 += "   params = l_params_tmp,\r\n";
-                        cmd3 += "   watchlist = list(train = train_dmat, eval = test_dmat))\r\n";
+                        cmd3 += "   watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat))\r\n";
                         cmd3 += "\r\n";
                         cmd3 += "   if(xgboost_tmp.model$best_iteration > 1 ){\r\n";
                         cmd3 += "       break\r\n";
@@ -1990,7 +2064,7 @@ namespace WindowsFormsApplication1
                         cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
                         cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
                         cmd += ",params = l_params";
-                        cmd += ",watchlist = list(train = train_dmat, eval = test_dmat)";
+                        cmd += ",watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat)";
                         cmd += ")\r\n";
                     }
                     if (radioButton2.Checked)
@@ -2366,6 +2440,10 @@ namespace WindowsFormsApplication1
                             }
                         }
                         forecast_extension += ")\r\n";
+                        forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+						forecast_extension += "predict_y_org <- predict_y\r\n";
+                        forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=textBox10.Text)\r\n";
+
                     }
                     forecast_extension += "\r\n";
 
@@ -2522,6 +2600,13 @@ namespace WindowsFormsApplication1
                         forecast_extension += "\r\n";
                         forecast_extension += "#\r\n";
                         forecast_extension += "fast_predict = 1\r\n";
+                        if ( checkBox21.Checked)
+                        {
+                            forecast_extension += "debug_plotting = 2\r\n";
+                        }else
+                        {
+                            forecast_extension += "debug_plotting = 0\r\n";
+                        }
                         forecast_extension += "\r\n";
                         forecast_extension += "t_step_forcast = 1\r\n";
 						forecast_extension += "xreg = NULL\r\n";
@@ -2983,6 +3068,8 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "	            #if ( t_step > 2 ) overall$deseasonal[length(overall$target_) - 1] = tmp[length(overall$target_) - 1, 1]\r\n";
                                 forecast_extension += "	            overall$deseasonal[length(overall$target_)] = tmp[length(overall$target_), 1]\r\n";
                                 forecast_extension += "\r\n";
+		            			forecast_extension += "            test$deseasonal <- overall$deseasonal[(length(train$target_)+1):length(overall$target_)]\r\n";
+		            			forecast_extension += "            test$seasonal <- overall$seasonal[(length(train$target_)+1):length(overall$target_)]\r\n";
                                 forecast_extension += "        }\r\n";
                                 forecast_extension += "\r\n";
                             }
@@ -3233,7 +3320,116 @@ namespace WindowsFormsApplication1
                         forecast_extension += "	    test$target_[length(test$target_)] <- predict_y_org[length(predict_y)]\r\n";
                         forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] <- predict_y[length(predict_y)]\r\n";
                         forecast_extension += "\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "	    if ( debug_plotting == 1 ){\r\n";
                         
+forecast_extension += "	        plt1 <- NULL\r\n";
+forecast_extension += "	        plt2 <- NULL\r\n";
+forecast_extension += "	        plt3 <- NULL\r\n";
+forecast_extension += "	        plt4 <- NULL\r\n";
+forecast_extension += "	        plt1<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$"+targetName +", color=\"#4169e1\"))\r\n";
+forecast_extension += "	        plt1<- plt1 + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
+forecast_extension += "	        plt1 <- plt1 + labs(x=\"時間\")\r\n";
+forecast_extension += "	        plt1 <- plt1 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$'" + targetName + "'[nrow(test)], color = \"#800000\", size = 4))\r\n";
+forecast_extension += "	        plt1 <- plt1 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())\r\n";
+forecast_extension += "	        plot_col = 1\r\n";
+forecast_extension += "	        if ( !is.null(decompose_df)){\r\n";
+forecast_extension += "	            if ( !is.null(test$seasonal) )\r\n";
+forecast_extension += "	            {\r\n";
+forecast_extension += "	                plot_col = plot_col + 1\r\n";
+forecast_extension += "	                plt2<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$seasonal, color=\"#006400\"))\r\n";
+forecast_extension += "	                plt2<- plt2 + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
+forecast_extension += "	                plt2 <- plt2 + labs(x=\"時間\")\r\n";
+forecast_extension += "	                plt2 <- plt2 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$seasonal[nrow(test)], color = \"#191970\", size = 4))\r\n";
+forecast_extension += "	                plt2 <- plt2 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())\r\n";
+forecast_extension += "	            }\r\n";
+forecast_extension += "	            if ( !is.null(test$deseasonal) )\r\n";
+forecast_extension += "	            {\r\n";
+forecast_extension += "	                plot_col = plot_col + 1\r\n";
+forecast_extension += "	                plt3<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$deseasonal, color=\"#006400\"))\r\n";
+forecast_extension += "	                plt3<- plt3 + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
+forecast_extension += "	                plt3 <- plt3 + labs(x=\"時間\")\r\n";
+forecast_extension += "	                plt3 <- plt3 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$deseasonal[nrow(test)], color = \"#191970\", size = 4))\r\n";
+forecast_extension += "	                plt3 <- plt3 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())\r\n";
+forecast_extension += "	            }\r\n";
+forecast_extension += "	        }\r\n";
+forecast_extension += "	        if ( !is.null(test$trend) )\r\n";
+forecast_extension += "	        {\r\n";
+forecast_extension += "	            plot_col = plot_col + 1\r\n";
+forecast_extension += "	            plt4<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$trend, color=\"#006400\"))\r\n";
+forecast_extension += "	            plt4<- plt4 + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
+forecast_extension += "	            plt4 <- plt4 + labs(x=\"時間\")\r\n";
+forecast_extension += "	            plt4 <- plt4 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$trend[nrow(test)], color = \"#191970\", size = 4))\r\n";
+forecast_extension += "	            plt4 <- plt4 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())\r\n";
+forecast_extension += "	        }\r\n";
+forecast_extension += "	        if ( !is.null(decompose_df)){\r\n";
+forecast_extension += "	            plts<-gridExtra::grid.arrange(plt1, plt2, plt3, plt4, nrow = 4)\r\n";
+forecast_extension += "	        }else{\r\n";
+forecast_extension += "	            plts<-gridExtra::grid.arrange(plt1, plt4, nrow = 2)\r\n";
+forecast_extension += "	        }\r\n";
+forecast_extension += "         tryCatch({\r\n";
+forecast_extension += "	            plts\r\n";
+forecast_extension += "	            ggsave(file = paste(paste(\"ts_debug_plot/tmp\", t_step, sep=\"\"), \".png\", sep=\"\"), plts, dpi = 120, width = 6.4*4*1, height = 3*4.8*1, limitsize = FALSE)\r\n";
+forecast_extension += "         },\r\n";
+forecast_extension += "         error = function(e) {\r\n";
+forecast_extension += "            sink()\r\n";
+forecast_extension += "         },\r\n";
+forecast_extension += "         finally   = {\r\n";
+forecast_extension += "         },silent = TRUE )\r\n";
+forecast_extension += "	    }\r\n";
+forecast_extension += "\r\n";
+
+forecast_extension += "	    if ( debug_plotting == 2 ){\r\n";
+forecast_extension += "         tryCatch({\r\n";
+forecast_extension += "             png(paste(paste(\"ts_debug_plot/tmp\", t_step, sep=\"\"), \".png\", sep=\"\"), width = 100*6.4*4*1, height = 100*3*4.8*1)\r\n";
+forecast_extension += "	            plot_col = 1\r\n";
+forecast_extension += "	            if ( !is.null(test$seasonal) ) plot_col = plot_col + 1\r\n";
+forecast_extension += "	            if ( !is.null(test$deseasonal) ) plot_col = plot_col + 1\r\n";
+forecast_extension += "	            if ( !is.null(test$trend) ) plot_col = plot_col + 1\r\n";
+forecast_extension += "	            par(mfrow=c(plot_col,1))\r\n";
+forecast_extension += "	            if ( !is.null(test$seasonal) ){\r\n";
+forecast_extension += "	                color = \"#006400\"\r\n";
+forecast_extension += "	                if ( t_step > obs_test_step ) color = \"#8b008b\"\r\n"; 
+forecast_extension += "	                plot(test$seasonal, xlim=c(0,nrow(test)), ylim=c(min(test$seasonal),max(test$seasonal)), type = \"l\", lwd = 1.8, col = color)\r\n";	
+forecast_extension += "	                par(new=T)\r\n";	
+forecast_extension += "	                points(nrow(test), test$seasonal[nrow(test)], xlim=c(0,nrow(test)), ylim=c(min(test$seasonal),max(test$seasonal)), ylab=\"\", pch=16, cex=3.5, col = \"#ff4500\")\r\n";	
+forecast_extension += "	                par(new=F)\r\n";	
+forecast_extension += "	            }\r\n";
+forecast_extension += "	            if ( !is.null(test$deseasonal) ){\r\n";
+forecast_extension += "	                color = \"#006400\"\r\n";
+forecast_extension += "	                if ( t_step > obs_test_step ) color = \"#8b008b\"\r\n"; 
+forecast_extension += "	                plot(test$deseasonal, xlim=c(0,nrow(test)), ylim=c(min(test$deseasonal),max(test$deseasonal)), type = \"l\", lwd = 1.8, col = color)\r\n";	
+forecast_extension += "	                par(new=T)\r\n";	
+forecast_extension += "	                points(nrow(test), test$deseasonal[nrow(test)], xlim=c(0,nrow(test)), ylim=c(min(test$deseasonal),max(test$deseasonal)), pch=16, cex=3.5, col = \"#ff4500\")\r\n";	
+forecast_extension += "	                par(new=F)\r\n";	
+forecast_extension += "	            }\r\n";
+forecast_extension += "	            if ( !is.null(test$trend) ){\r\n";
+forecast_extension += "	                color = \"#006400\"\r\n";
+forecast_extension += "	                if ( t_step > obs_test_step ) color = \"#8b008b\"\r\n";
+forecast_extension += "	                plot(test$trend, xlim=c(0,nrow(test)), ylim=c(min(test$trend),max(test$trend)),, type = \"l\", lwd = 1.8, col = color)\r\n";	
+forecast_extension += "	                par(new=T)\r\n";	
+forecast_extension += "	                points(nrow(test), test$trend[nrow(test)], xlim=c(0,nrow(test)), ylim=c(min(test$trend),max(test$trend)),ylab=\"\", pch=16, cex=3.5, col = \"#ff4500\")\r\n";	
+forecast_extension += "	                par(new=F)\r\n";	
+forecast_extension += "	            }\r\n";
+forecast_extension += "	            if ( !is.null(test$"+targetName+") ){\r\n";
+forecast_extension += "	                color = \"#4169e1\"\r\n";
+forecast_extension += "	                if ( t_step > obs_test_step ) color = \"#8b008b\"\r\n";
+forecast_extension += "	                plot(test$"+targetName+", xlim=c(0,nrow(test)), ylim=c(min(test$"+targetName+"),max(test$"+targetName+")), type = \"l\", lwd = 2.0, col = color)\r\n";	
+forecast_extension += "	                par(new=T)\r\n";	
+forecast_extension += "	                points(nrow(test), test$"+targetName+"[nrow(test)], xlim=c(0,nrow(test)), ylim=c(min(test$"+targetName+"),max(test$"+targetName+ ")), ylab=\"\", pch=16, cex=3.5, col = \"#ff4500\")\r\n";	
+forecast_extension += "	            }\r\n";
+forecast_extension += "	            par(new=F)\r\n";	
+forecast_extension += "	            dev.off()\r\n";
+forecast_extension += "         },\r\n";
+forecast_extension += "         error = function(e) {\r\n";
+forecast_extension += "            sink()\r\n";
+forecast_extension += "	           dev.off()\r\n";
+forecast_extension += "         },\r\n";
+forecast_extension += "         finally   = {\r\n";
+forecast_extension += "         },silent = TRUE )\r\n";
+forecast_extension += "	    }\r\n";
+                        
+                        forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
 						forecast_extension += "        tryCatch({\r\n";
 						forecast_extension += "            sink(\"progress.txt\")\r\n";
@@ -3975,6 +4171,11 @@ namespace WindowsFormsApplication1
 
                     try
                     {
+	                    if (!System.IO.Directory.Exists("ts_debug_plot"))
+	                    {
+	                        // Try to create the directory.
+	                        System.IO.Directory.CreateDirectory("ts_debug_plot");
+	                    }
                         using (System.IO.StreamWriter sw = new System.IO.StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
                         {
                             sw.Write("options(width=" + form1._setting.numericUpDown2.Value.ToString() + ")\r\n");
@@ -4220,6 +4421,24 @@ namespace WindowsFormsApplication1
                 {
                     for (int ii = 1; ii < 1000000; ii++)
                     {
+                        string pngfile = string.Format("ts_debug_plot\\tmp{0}.png", ii);
+
+                        if (System.IO.File.Exists(pngfile))
+                        {
+                            System.IO.File.Delete(pngfile);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    for (int ii = 1; ii < 1000000; ii++)
+                    {
                         string pngfile = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", ii);
 
                         if (System.IO.File.Exists(pngfile))
@@ -4268,9 +4487,19 @@ namespace WindowsFormsApplication1
                 timer2.Enabled = true;
                 timer2.Start();
                 button1.Enabled = false;
-                
+
+                if ( checkBox21.Checked)
+                {
+                    timer3.Enabled = true;
+                    timer3.Start();
+                }
+                xgboost_predict_debug_plot_count = 1;
                 string stat = form1.Execute_script(file);
-                
+
+                timer3.Stop();
+                timer3.Enabled = false;
+                xgboost_predict_debug_plot_count = 0;
+
                 button1.Enabled = true;
                 timer2.Enabled = false;
                 timer2.Stop();
@@ -4964,6 +5193,7 @@ namespace WindowsFormsApplication1
                 else sw.Write("false\r\n");
 
                 sw.Write("train_step_num,"); sw.Write(numericUpDown22.Value.ToString() + "\r\n");
+                sw.Write("timeunit,"); sw.Write(comboBox6.Text + "\r\n");
                 sw.Close();
             }
         }
@@ -5461,6 +5691,12 @@ namespace WindowsFormsApplication1
                         numericUpDown22.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
+                    if (ss[0].IndexOf("timeunit") >= 0)
+                    {
+                        comboBox6.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+
                 }
                 sr.Close();
             }
@@ -6838,6 +7074,51 @@ namespace WindowsFormsApplication1
                 _ImageView8.Width = 640;
                 _ImageView8.Height = 480*2;
                 _ImageView8.Show();
+            }
+        }
+
+        private void button29_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            if (!checkBox21.Checked) return;
+            try
+            {
+                string pngfile = string.Format("ts_debug_plot\\tmp{0}.png", xgboost_predict_debug_plot_count);
+                if (System.IO.File.Exists(pngfile))
+                {
+                    if (_ImageView9 == null)
+                    {
+                        _ImageView9 = new ImageView();
+                        _ImageView9.form1 = this.form1;
+                        _ImageView9.pictureBox1.Image = null;
+                        _ImageView9.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                        _ImageView9.pictureBox1.Dock = DockStyle.Fill;
+                        _ImageView9.Width = 640 * 3;
+                        _ImageView9.Height = 480;
+                        _ImageView9.Show();
+                    }
+                    _ImageView9.pictureBox1.Image = Form1.CreateImage(pngfile);
+                    if (xgboost_predict_debug_plot_count == 1)
+                    {
+                        _ImageView9.Show();
+                    }
+                    xgboost_predict_debug_plot_count++;
+                }
+            }
+            catch { }
+        }
+
+        private void checkBox21_CheckedChanged(object sender, EventArgs e)
+        {
+            if ( !checkBox21.Checked)
+            {
+                if (_ImageView9 != null) _ImageView9.Hide();
+            }else
+            {
+                if (_ImageView9 != null) _ImageView9.Show();
             }
         }
     }

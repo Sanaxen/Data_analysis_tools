@@ -37,6 +37,8 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.label46 = new System.Windows.Forms.Label();
+            this.numericUpDown22 = new System.Windows.Forms.NumericUpDown();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button24 = new System.Windows.Forms.Button();
@@ -203,11 +205,12 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.label46 = new System.Windows.Forms.Label();
-            this.numericUpDown22 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox21 = new System.Windows.Forms.CheckBox();
+            this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
@@ -241,7 +244,6 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown22)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -402,6 +404,7 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.panel7.Controls.Add(this.checkBox21);
             this.panel7.Controls.Add(this.label46);
             this.panel7.Controls.Add(this.numericUpDown22);
             this.panel7.Controls.Add(this.pictureBox2);
@@ -437,6 +440,31 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(329, 800);
             this.panel7.TabIndex = 147;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.ForeColor = System.Drawing.Color.Black;
+            this.label46.Location = new System.Drawing.Point(6, 456);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(79, 15);
+            this.label46.TabIndex = 180;
+            this.label46.Text = "訓練step数";
+            this.toolTip1.SetToolTip(this.label46, "何時点過去からのデータを参照するかをしてします。\r\n１時点過去を参照する場合は１時点過去のデータは真の予測値に近い事が多いため\r\n１時点過去を予測値する方がMSE" +
+        "が小さくなることが良くあります。");
+            // 
+            // numericUpDown22
+            // 
+            this.numericUpDown22.Location = new System.Drawing.Point(90, 456);
+            this.numericUpDown22.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown22.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numericUpDown22.Name = "numericUpDown22";
+            this.numericUpDown22.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown22.TabIndex = 179;
             // 
             // pictureBox2
             // 
@@ -2630,30 +2658,23 @@
             this.timer2.Interval = 500;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // label46
+            // checkBox21
             // 
-            this.label46.AutoSize = true;
-            this.label46.ForeColor = System.Drawing.Color.Black;
-            this.label46.Location = new System.Drawing.Point(6, 456);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(79, 15);
-            this.label46.TabIndex = 180;
-            this.label46.Text = "訓練step数";
-            this.toolTip1.SetToolTip(this.label46, "何時点過去からのデータを参照するかをしてします。\r\n１時点過去を参照する場合は１時点過去のデータは真の予測値に近い事が多いため\r\n１時点過去を予測値する方がMSE" +
-        "が小さくなることが良くあります。");
+            this.checkBox21.AutoSize = true;
+            this.checkBox21.Checked = true;
+            this.checkBox21.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox21.Location = new System.Drawing.Point(250, 746);
+            this.checkBox21.Name = "checkBox21";
+            this.checkBox21.Size = new System.Drawing.Size(66, 19);
+            this.checkBox21.TabIndex = 181;
+            this.checkBox21.Text = "debug";
+            this.checkBox21.UseVisualStyleBackColor = true;
+            this.checkBox21.CheckedChanged += new System.EventHandler(this.checkBox21_CheckedChanged);
             // 
-            // numericUpDown22
+            // timer3
             // 
-            this.numericUpDown22.Location = new System.Drawing.Point(90, 456);
-            this.numericUpDown22.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numericUpDown22.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.numericUpDown22.Name = "numericUpDown22";
-            this.numericUpDown22.Size = new System.Drawing.Size(64, 22);
-            this.numericUpDown22.TabIndex = 179;
+            this.timer3.Interval = 500;
+            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
             // xgboost
             // 
@@ -2675,6 +2696,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
@@ -2716,7 +2738,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown22)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2898,5 +2919,7 @@
         private System.Windows.Forms.Button button28;
         public System.Windows.Forms.Label label46;
         public System.Windows.Forms.NumericUpDown numericUpDown22;
+        private System.Windows.Forms.CheckBox checkBox21;
+        private System.Windows.Forms.Timer timer3;
     }
 }
