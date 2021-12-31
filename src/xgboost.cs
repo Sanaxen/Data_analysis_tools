@@ -2602,7 +2602,7 @@ namespace WindowsFormsApplication1
                         forecast_extension += "fast_predict = 1\r\n";
                         if ( checkBox21.Checked)
                         {
-                            forecast_extension += "debug_plotting = 2\r\n";
+                            forecast_extension += "debug_plotting = 1\r\n";
                         }else
                         {
                             forecast_extension += "debug_plotting = 0\r\n";
@@ -3321,45 +3321,51 @@ namespace WindowsFormsApplication1
                         forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] <- predict_y[length(predict_y)]\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
+                        forecast_extension += "     if ( debug_plotting > 0 && file.exists(\"no_debug_plotting\") ) debug_plotting = 0\r\n";
+
+                        if ( checkBox21.Checked)
+                        {
+                            forecast_extension += "     if ( !file.exists(\"no_debug_plotting\") ) debug_plotting = 1\r\n";
+                        }
                         forecast_extension += "	    if ( debug_plotting == 1 ){\r\n";
                         
 forecast_extension += "	        plt1 <- NULL\r\n";
 forecast_extension += "	        plt2 <- NULL\r\n";
 forecast_extension += "	        plt3 <- NULL\r\n";
 forecast_extension += "	        plt4 <- NULL\r\n";
-forecast_extension += "	        plt1<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$"+targetName +", color=\"#4169e1\"))\r\n";
+forecast_extension += "	        plt1<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$"+targetName +", color=\"#4169e1\",size = 1.3))\r\n";
 forecast_extension += "	        plt1<- plt1 + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
 forecast_extension += "	        plt1 <- plt1 + labs(x=\"時間\")\r\n";
-forecast_extension += "	        plt1 <- plt1 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$'" + targetName + "'[nrow(test)], color = \"#800000\", size = 4))\r\n";
+forecast_extension += "	        plt1 <- plt1 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$'" + targetName + "'[nrow(test)], color = \"#800000\", size = 5))\r\n";
 forecast_extension += "	        plt1 <- plt1 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())\r\n";
 forecast_extension += "	        plot_col = 1\r\n";
 forecast_extension += "	        if ( !is.null(decompose_df)){\r\n";
 forecast_extension += "	            if ( !is.null(test$seasonal) )\r\n";
 forecast_extension += "	            {\r\n";
 forecast_extension += "	                plot_col = plot_col + 1\r\n";
-forecast_extension += "	                plt2<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$seasonal, color=\"#006400\"))\r\n";
+forecast_extension += "	                plt2<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$seasonal, color=\"#006400\",size = 1.3))\r\n";
 forecast_extension += "	                plt2<- plt2 + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
 forecast_extension += "	                plt2 <- plt2 + labs(x=\"時間\")\r\n";
-forecast_extension += "	                plt2 <- plt2 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$seasonal[nrow(test)], color = \"#191970\", size = 4))\r\n";
+forecast_extension += "	                plt2 <- plt2 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$seasonal[nrow(test)], color = \"#191970\", size = 5))\r\n";
 forecast_extension += "	                plt2 <- plt2 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())\r\n";
 forecast_extension += "	            }\r\n";
 forecast_extension += "	            if ( !is.null(test$deseasonal) )\r\n";
 forecast_extension += "	            {\r\n";
 forecast_extension += "	                plot_col = plot_col + 1\r\n";
-forecast_extension += "	                plt3<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$deseasonal, color=\"#006400\"))\r\n";
+forecast_extension += "	                plt3<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$deseasonal, color=\"#006400\",size = 1.3))\r\n";
 forecast_extension += "	                plt3<- plt3 + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
 forecast_extension += "	                plt3 <- plt3 + labs(x=\"時間\")\r\n";
-forecast_extension += "	                plt3 <- plt3 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$deseasonal[nrow(test)], color = \"#191970\", size = 4))\r\n";
+forecast_extension += "	                plt3 <- plt3 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$deseasonal[nrow(test)], color = \"#191970\", size = 5))\r\n";
 forecast_extension += "	                plt3 <- plt3 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())\r\n";
 forecast_extension += "	            }\r\n";
 forecast_extension += "	        }\r\n";
 forecast_extension += "	        if ( !is.null(test$trend) )\r\n";
 forecast_extension += "	        {\r\n";
 forecast_extension += "	            plot_col = plot_col + 1\r\n";
-forecast_extension += "	            plt4<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$trend, color=\"#006400\"))\r\n";
+forecast_extension += "	            plt4<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=test$trend, color=\"#006400\",size = 1.3))\r\n";
 forecast_extension += "	            plt4<- plt4 + geom_vline(data = test, linetype=\"dotdash\", aes(xintercept=as.POSIXct(test[obs_test_step, 1])))\r\n";
 forecast_extension += "	            plt4 <- plt4 + labs(x=\"時間\")\r\n";
-forecast_extension += "	            plt4 <- plt4 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$trend[nrow(test)], color = \"#191970\", size = 4))\r\n";
+forecast_extension += "	            plt4 <- plt4 + geom_point(aes(x=as.POSIXct(test[nrow(test),1]),y=test$trend[nrow(test)], color = \"#191970\", size = 5))\r\n";
 forecast_extension += "	            plt4 <- plt4 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())\r\n";
 forecast_extension += "	        }\r\n";
 forecast_extension += "	        if ( !is.null(decompose_df)){\r\n";
@@ -4481,6 +4487,7 @@ forecast_extension += "	    }\r\n";
                 pictureBox1.Image = null;
                 pictureBox1.Refresh();
 
+                form1.FileDelete("no_debug_plotting");
                 form1.FileDelete("progress.txt");
                 form1.FileDelete("predict_sampling.txt");
                 label44.Text = "";
@@ -4488,7 +4495,7 @@ forecast_extension += "	    }\r\n";
                 timer2.Start();
                 button1.Enabled = false;
 
-                if ( checkBox21.Checked)
+                if ( checkBox21.Checked && radioButton3.Checked)
                 {
                     timer3.Enabled = true;
                     timer3.Start();
@@ -4505,6 +4512,7 @@ forecast_extension += "	    }\r\n";
                 timer2.Stop();
                 form1.FileDelete("progress.txt");
                 form1.FileDelete("predict_sampling.txt");
+                form1.FileDelete("no_debug_plotting");
                 label44.Text = "";
 
 
@@ -5056,6 +5064,10 @@ forecast_extension += "	    }\r\n";
 
         private void button7_Click_1(object sender, EventArgs e)
         {
+            if ( timer3.Enabled && _ImageView9 != null)
+            {
+                _ImageView9.Show();
+            }
             if (checkBox5.Checked)
             {
                 interactivePlot.Show();
@@ -7087,6 +7099,18 @@ forecast_extension += "	    }\r\n";
             try
             {
                 string pngfile = string.Format("ts_debug_plot\\tmp{0}.png", xgboost_predict_debug_plot_count);
+                if (!System.IO.File.Exists(pngfile))
+                {
+                    for ( int i = xgboost_predict_debug_plot_count; i < 100000; i+= 10)
+                    {
+                        pngfile = string.Format("ts_debug_plot\\tmp{0}.png", i);
+                        if (System.IO.File.Exists(pngfile))
+                        {
+                            xgboost_predict_debug_plot_count = i;
+                            break;
+                        }
+                    }
+                }
                 if (System.IO.File.Exists(pngfile))
                 {
                     if (_ImageView9 == null)
@@ -7101,6 +7125,8 @@ forecast_extension += "	    }\r\n";
                         _ImageView9.Show();
                     }
                     _ImageView9.pictureBox1.Image = Form1.CreateImage(pngfile);
+                    //_ImageView.pictureBox1.Image = Form1.CreateImage(pngfile);
+                    pictureBox1.Image = Form1.CreateImage(pngfile);
                     if (xgboost_predict_debug_plot_count == 1)
                     {
                         _ImageView9.Show();
@@ -7116,9 +7142,19 @@ forecast_extension += "	    }\r\n";
             if ( !checkBox21.Checked)
             {
                 if (_ImageView9 != null) _ImageView9.Hide();
+                if ( !System.IO.File.Exists("no_debug_plotting"))
+                {
+                    using (System.IO.FileStream fs = System.IO.File.Create("no_debug_plotting"))
+                    {
+                    }
+                }
             }else
             {
                 if (_ImageView9 != null) _ImageView9.Show();
+                if (System.IO.File.Exists("no_debug_plotting"))
+                {
+                    System.IO.File.Delete("no_debug_plotting");
+                }
             }
         }
     }
