@@ -63,11 +63,13 @@ mydiff <- function( y, f, use_log_diff, ndiff=1, lambda=0.9, alpha=-1 )
 	return (list((as.matrix(y)), diffs, s))
 }
 
-inv_diff <- function(base, use_log_diff, x, s, diffs, lambda)
+inv_diff <- function(base, type, use_log_diff, x, s, diffs, lambda)
 {
 	if ( use_log_diff == 0 ){
 		if ( !is.null(base$seasonal) ){
-			x <- x * base$seasonal
+			print(type)
+	    	if ( type == "multiplicative") x <- x * base$seasonal
+	    	if ( type == "additive") x <- x + base$seasonal
 		}
 		return (x)
 	}
@@ -101,7 +103,8 @@ inv_diff <- function(base, use_log_diff, x, s, diffs, lambda)
 	
 	ts.plot((x))
 	if ( !is.null(base$seasonal) ){
-		x <- x * base$seasonal
+	    if ( type == "multiplicative") x <- x * base$seasonal
+	    if ( type == "additive") x <- x + base$seasonal
 	}
 	
 	return ((as.matrix(x)))

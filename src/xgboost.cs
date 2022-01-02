@@ -31,6 +31,7 @@ namespace WindowsFormsApplication1
         string image_link4 = "";
         string image_link5 = "";
         string targetName = "";
+        string decomp_type = "additive";//"multiplicative"; //additive
 
         int grid_serch_stop = 0;
         ListBox importance_var = new ListBox();
@@ -237,7 +238,8 @@ namespace WindowsFormsApplication1
             }
 
             running = 1;
-            
+
+            decomp_type = comboBox7.Text;
             this.split_train = (double)form1.numericUpDown5.Value;
 
             linkLabel1.Visible = false;
@@ -742,7 +744,7 @@ namespace WindowsFormsApplication1
                     {
                         cmd1 += "tmp <- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "#時系列データの分解（トレンド＋周期＋ノイズ）\r\n";
-                        cmd1 += "tmp<-decompose(ts(tmp, frequency=frequency_value), type =\"multiplicative\")\r\n";
+                        cmd1 += "tmp<-decompose(ts(tmp, frequency=frequency_value), type =\"" + decomp_type +"\")\r\n";
                         cmd1 += "decompose_df <- tmp\r\n";
                         cmd1 += "#時系列データから周期を削除 <- これを予測するようにする。\r\n";
                         cmd1 += "tmp<- seasadj(tmp)\r\n";
@@ -798,7 +800,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "colnames(df_ts_tmp)[ncol(df_ts_tmp)] <- c(\"log_diff\")\r\n";
                         cmd1 += "\r\n";
 
-                        cmd1 += "zz_tmp<- inv_diff(df_ts_tmp, use_log_diff, log_diff[[1]] + df_ts_tmp$trend, tmp_sv[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                        cmd1 += "zz_tmp<- inv_diff(df_ts_tmp, \""+decomp_type+"\""+",use_log_diff, log_diff[[1]] + df_ts_tmp$trend, tmp_sv[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         cmd1 += "debug_plt <- ggplot()\r\n";
                         cmd1 += "if ( use_log_diff > 0){\r\n";
                         cmd1 += "   debug_plt <- debug_plt + geom_line(aes(x = (1:length(tmp_sv)), y = tmp_sv, colour = \"org\"))\r\n";
@@ -1619,7 +1621,7 @@ namespace WindowsFormsApplication1
 
                         if (time_series_mode)
                         {
-                            cmd2 += "   predictions[,i] <- inv_diff(test, use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            cmd2 += "   predictions[,i] <- inv_diff(test,\""+decomp_type+"\""+ ",use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         }
                         if (cutoff == 1)
                         {
@@ -1836,7 +1838,7 @@ namespace WindowsFormsApplication1
                         cmd3 += "y_upper_smooth2 <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
                         if (time_series_mode)
                         {
-                            cmd3 += "y_upper_smooth2<- inv_diff(test, use_log_diff, y_upper_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            cmd3 += "y_upper_smooth2<- inv_diff(test,\""+decomp_type+"\""+ ",use_log_diff, y_upper_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         }
                         if (cutoff == 1)
                         {
@@ -1866,7 +1868,7 @@ namespace WindowsFormsApplication1
                         cmd3 += "y_lower_smooth2  <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
                         if (time_series_mode)
                         {
-                            cmd3 += "y_lower_smooth2 <- inv_diff(test, use_log_diff, y_lower_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            cmd3 += "y_lower_smooth2 <- inv_diff(test,\""+decomp_type+"\""+ ",use_log_diff, y_lower_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         }
                         if (cutoff == 1)
                         {
@@ -2240,7 +2242,7 @@ namespace WindowsFormsApplication1
 
                                 if (time_series_mode)
                                 {
-                                    cmd_tmp += "predict_tmp<- inv_diff(" + view_data + ", use_log_diff, predict_tmp + " + view_data + "$trend, " + view_data + "$" + targetName + "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                                    cmd_tmp += "predict_tmp<- inv_diff(" + view_data + ",\""+decomp_type+"\""+",use_log_diff, predict_tmp + " + view_data + "$trend, " + view_data + "$" + targetName + "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                                 }
                                 cmd_tmp += "interval_plt4<-ggplot()\r\n";
 
@@ -2442,7 +2444,7 @@ namespace WindowsFormsApplication1
                         forecast_extension += ")\r\n";
                         forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
 						forecast_extension += "predict_y_org <- predict_y\r\n";
-                        forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=textBox10.Text)\r\n";
+                        forecast_extension += "predict_y<- inv_diff(test,\""+decomp_type+"\""+ ",use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=textBox10.Text)\r\n";
 
                     }
                     forecast_extension += "\r\n";
@@ -2453,13 +2455,13 @@ namespace WindowsFormsApplication1
                         if (time_series_mode)
                         {
                             forecast_extension += "predict_y_org <- predict_y\r\n";
-                            forecast_extension += "predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            forecast_extension += "predict_y<- inv_diff(test, \""+decomp_type+"\""+",use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                             if (cutoff == 1)
                             {
                                 forecast_extension += "predict_y<-limit_cutoff(predict_y, upper_limit, lower_limit)\r\n";
                             }
                             forecast_extension += "\r\n";
-                            forecast_extension += "zz_tmp<- inv_diff(test, use_log_diff, test$target_ + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            forecast_extension += "zz_tmp<- inv_diff(test, \""+decomp_type+"\""+",use_log_diff, test$target_ + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                             forecast_extension += "debug_plt <- ggplot()\r\n";
                             forecast_extension += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(test$target_)), y = test$'" + targetName + "', colour = \"org\"))+\r\n";
                             forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
@@ -3058,7 +3060,7 @@ namespace WindowsFormsApplication1
                             {
                                 forecast_extension += "        #The value of the variable 'test$seasonal' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
                                 forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
-                                forecast_extension += "	            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency=frequency_value), type =\"multiplicative\")\r\n";
+                                forecast_extension += "	            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency=frequency_value), type =\"" + decomp_type + "\")\r\n";
                                 forecast_extension += "	            decompose_df <<- tmp\r\n";
                                 forecast_extension += "	            #if ( t_step > 2 ) overall$seasonal[length(overall$target_)-1] = decompose_df$seasonal[length(overall$target_)-1]   #update\r\n";
                                 forecast_extension += "	            overall$seasonal[length(overall$target_)] = decompose_df$seasonal[length(overall$target_)]\r\n";
@@ -3307,7 +3309,7 @@ namespace WindowsFormsApplication1
 
                         //if (use_diff == 1 || use_decompose == 1)
                         {
-                            forecast_extension += "        predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            forecast_extension += "        predict_y<- inv_diff(test, \""+decomp_type+"\""+",use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         }
                         if ( cutoff == 1)
                         {
@@ -3484,7 +3486,7 @@ forecast_extension += "	    }\r\n";
 
                         //if (use_diff == 1 || use_decompose == 1)
                         {
-                            forecast_extension += "    predict_y<- inv_diff(test, use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                            forecast_extension += "    predict_y<- inv_diff(test, \""+decomp_type+"\""+",use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                         }
                         if ( cutoff == 1)
                         {
@@ -3791,7 +3793,7 @@ forecast_extension += "	    }\r\n";
                             predict_probability += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
                             if (time_series_mode)
                             {
-                                predict_probability += "	predictions[,i]<- inv_diff(test, use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
+                                predict_probability += "	predictions[,i]<- inv_diff(test, \""+decomp_type+"\""+",use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                             }
                         }
                         predict_probability += "   test <- test_sv\r\n";
@@ -4425,57 +4427,26 @@ forecast_extension += "	    }\r\n";
 
                 try
                 {
-                    for (int ii = 1; ii < 1000000; ii++)
-                    {
-                        string pngfile = string.Format("ts_debug_plot\\tmp{0}.png", ii);
-
-                        if (System.IO.File.Exists(pngfile))
-                        {
-                            System.IO.File.Delete(pngfile);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
+                    System.IO.DirectoryInfo di = new System.IO.DirectoryInfo("ts_debug_plot");
+                    System.IO.FileInfo[] files = di.GetFiles();
+		            foreach (System.IO.FileInfo pngfile in files)
+		            {
+                        pngfile.Delete();
+		            }
                 }
                 catch { }
 
                 try
                 {
-                    for (int ii = 1; ii < 1000000; ii++)
+                    System.IO.DirectoryInfo di = new System.IO.DirectoryInfo("explain_predict");
+                    System.IO.FileInfo[] files = di.GetFiles();
+                    foreach (System.IO.FileInfo pngfile in files)
                     {
-                        string pngfile = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", ii);
-
-                        if (System.IO.File.Exists(pngfile))
-                        {
-                            System.IO.File.Delete(pngfile);
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        pngfile.Delete();
                     }
                 }
                 catch { }
 
-                try
-                {
-                    for (int ii = 1; ii < 1000000; ii++)
-                    {
-                        string pngfile = string.Format("explain_predict\\predict_probability{0}.png", ii);
-
-                        if (System.IO.File.Exists(pngfile))
-                        {
-                            System.IO.File.Delete(pngfile);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-                catch { }
 
                 if ( radioButton3.Enabled && (checkBox4.Checked || checkBox13.Checked))
                 {
@@ -5206,6 +5177,7 @@ forecast_extension += "	    }\r\n";
 
                 sw.Write("train_step_num,"); sw.Write(numericUpDown22.Value.ToString() + "\r\n");
                 sw.Write("timeunit,"); sw.Write(comboBox6.Text + "\r\n");
+                sw.Write("decomp_type,"); sw.Write(comboBox7.Text + "\r\n");
                 sw.Close();
             }
         }
@@ -5708,7 +5680,11 @@ forecast_extension += "	    }\r\n";
                         comboBox6.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
-
+                    if (ss[0].IndexOf("decomp_type") >= 0)
+                    {
+                        comboBox7.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
                 }
                 sr.Close();
             }

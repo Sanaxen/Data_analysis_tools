@@ -207,6 +207,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
+            this.comboBox7 = new System.Windows.Forms.ComboBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -705,6 +706,7 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Moccasin;
+            this.groupBox2.Controls.Add(this.comboBox7);
             this.groupBox2.Controls.Add(this.numericUpDown21);
             this.groupBox2.Controls.Add(this.label45);
             this.groupBox2.Controls.Add(this.button25);
@@ -2676,6 +2678,20 @@
             this.timer3.Interval = 1000;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
+            // comboBox7
+            // 
+            this.comboBox7.FormattingEnabled = true;
+            this.comboBox7.Items.AddRange(new object[] {
+            "multiplicative",
+            "additive"});
+            this.comboBox7.Location = new System.Drawing.Point(194, 25);
+            this.comboBox7.Name = "comboBox7";
+            this.comboBox7.Size = new System.Drawing.Size(116, 23);
+            this.comboBox7.TabIndex = 177;
+            this.comboBox7.Text = "additive";
+            this.toolTip1.SetToolTip(this.comboBox7, "Additive:  = Trend + Seasonal + Random\r\nMultiplicative:  = Trend * Seasonal * Ran" +
+        "dom\r\n");
+            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -2921,5 +2937,6 @@
         public System.Windows.Forms.NumericUpDown numericUpDown22;
         private System.Windows.Forms.CheckBox checkBox21;
         private System.Windows.Forms.Timer timer3;
+        public System.Windows.Forms.ComboBox comboBox7;
     }
 }
