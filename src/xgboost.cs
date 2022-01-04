@@ -2782,10 +2782,10 @@ namespace WindowsFormsApplication1
                         if (checkBox18.Checked)
                         {
                             forecast_extension += "            mS = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))/12)\r\n";
-                            forecast_extension += "            dS = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/30.5)\r\n";
+                            forecast_extension += "            dS = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/30.437)\r\n";
                             forecast_extension += "            #dS = sin(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/(numberOfDays(as.Date((test[nrow(test),1])))))\r\n";
                             forecast_extension += "            mC = cos(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))/12)\r\n";
-                            forecast_extension += "            dC = cos(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/30.5)\r\n";
+                            forecast_extension += "            dC = cos(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/30.437)\r\n";
                             forecast_extension += "            #dC = cos(2*pi*as.integer(format(as.POSIXct(test[nrow(test),1]),\"%d\"))/(numberOfDays(as.Date((test[nrow(test),1])))))\r\n";
                         }
                         else
@@ -3101,7 +3101,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                     train_length = max(frequency_value," + numericUpDown19.Value.ToString()+")\r\n";
                                 forecast_extension += "                     if ( nrow(overall)- train_length -2 <= 0 )\r\n";
                                 forecast_extension += "                     {\r\n";
-                                forecast_extension += "                         train_length = nrow(overall)-2\r\n";
+                                forecast_extension += "                         train_length = nrow(overall)-3\r\n";
                                 forecast_extension += "                     }\r\n";
                                 forecast_extension += "                     tmp = overall[(nrow(overall)-train_length-2):(nrow(overall)-1),]\r\n";
                                 forecast_extension += "                     df_tt <- ts(tmp$trend,start=c(2015,1),frequency=frequency_value)\r\n\r\n";
@@ -3130,13 +3130,13 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                     if ( fast_arima == 0 ){\r\n";
                                 forecast_extension += "                         trendFit <- auto.arima(df_tt, ic=\"aic\",\r\n";
 
-                                forecast_extension += "                             max.order=14,  #p+q+P+Q\r\n";
+                                forecast_extension += "                             max.order=20,  #p+q+P+Q\r\n";
                                 forecast_extension += "                             max.d = 2,\r\n";
-                                forecast_extension += "                             max.D = 1,\r\n";
+                                forecast_extension += "                             max.D = 2,\r\n";
                                 forecast_extension += "                             max.p = 5,\r\n";
                                 forecast_extension += "                             max.q = 5,\r\n";
-                                forecast_extension += "                             max.P = 2,\r\n";
-                                forecast_extension += "                             max.Q = 2,\r\n";
+                                forecast_extension += "                             max.P = 5,\r\n";
+                                forecast_extension += "                             max.Q = 5,\r\n";
                                 forecast_extension += "                             nmodels = 100,\r\n";
                                 forecast_extension += "                             approximation=F,\r\n";
                                 forecast_extension += "                             seasonal = T, stepwise=F, trace=T, xreg = xreg)\r\n";
@@ -3146,7 +3146,13 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                         }else{\r\n";
                                 forecast_extension += "                             trendFit <- auto.arima(df_tt, ic=\"aic\",\r\n";
 
-                                forecast_extension += "                                 max.order=14,  #p+q+P+Q\r\n";
+                                forecast_extension += "                                 max.order=20,  #p+q+P+Q\r\n";
+                                forecast_extension += "                                 max.d = 2,\r\n";
+                                forecast_extension += "                                 max.D = 2,\r\n";
+                                forecast_extension += "                                 max.p = 5,\r\n";
+                                forecast_extension += "                                 max.q = 5,\r\n";
+                                forecast_extension += "                                 max.P = 5,\r\n";
+                                forecast_extension += "                                 max.Q = 5,\r\n";
                                 forecast_extension += "                                 #approximation=F,\r\n";
                                 forecast_extension += "                                 seasonal = T, stepwise=T, trace=T, xreg = xreg)\r\n";
                                 forecast_extension += "                         }\r\n";

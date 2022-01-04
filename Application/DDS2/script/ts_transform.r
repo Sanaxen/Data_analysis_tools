@@ -67,7 +67,7 @@ inv_diff <- function(base, type, use_log_diff, x, s, diffs, lambda)
 {
 	if ( use_log_diff == 0 ){
 		if ( !is.null(base$seasonal) ){
-			print(type)
+			#print(type)
 	    	if ( type == "multiplicative") x <- x * base$seasonal
 	    	if ( type == "additive") x <- x + base$seasonal
 		}
