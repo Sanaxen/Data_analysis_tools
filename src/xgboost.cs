@@ -63,6 +63,10 @@ namespace WindowsFormsApplication1
         interactivePlot interactivePlot6 = null;
         public ImageView _ImageView8 = null;
         public ImageView _ImageView9 = null;
+        public ImageView _ImageView10 = null;
+        interactivePlot interactivePlot7 = null;
+
+        int force_plot = 1;
 
         public int lag = 0;
         public int start_lag = 0;
@@ -1350,6 +1354,10 @@ namespace WindowsFormsApplication1
                 cmd += "require(DALEXtra)\r\n";
                 cmd += "require(ingredients)\r\n";
                 cmd += "require(mlr)\r\n";
+                if ( force_plot != 0 )
+                {
+                	cmd += "library(SHAPforxgboost)\r\n";
+                }
                 cmd += "\r\n";
                 cmd += "\r\n";
                 cmd += "previous_na_action <- options()$na.action\r\n";
@@ -1501,13 +1509,13 @@ namespace WindowsFormsApplication1
 		            xgboost_initial_cmd += "obs_test_step_df_dmat <- xgb.DMatrix(obs_test_step_df_mx, label = obs_test_step_df$target_";
 		            if (comboBox4.Text != "")
 		            {
-		                xgboost_initial_cmd += ",weight = obs_test_step_df_mx$'" + comboBox4.Text + "'";
+		                xgboost_initial_cmd += ",weight = obs_test_step_df$'" + comboBox4.Text + "'";
 		            }
 		            else
 		            {
 		                if (add_enevt_data == 1)
 		                {
-		                    xgboost_initial_cmd += ",weight = obs_test_step_df_mx$event";
+		                    xgboost_initial_cmd += ",weight = obs_test_step_df$event";
 		                }
 		            }
 		            xgboost_initial_cmd += ")\r\n";
@@ -2088,6 +2096,15 @@ namespace WindowsFormsApplication1
                     }
                     cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square)\r\n";
                    
+                    if ( force_plot != 0 )
+                    {
+                        cmd += "shap_values <- shap.values(xgb_model = xgboost.model, X_train = train_dmat)\r\n";
+						cmd += "plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score,top_n = 6, n_groups = 1)\r\n";
+						cmd += "shap.plot.force_plot(plot_data, zoom_in_location=1)\r\n";
+						cmd += "train_force_plot_plt <- shap.plot.force_plot_bygroup(plot_data)\r\n";
+						cmd += "ggsave(\"xgboost_train_force_plot.png\", train_force_plot_plt, dpi = 100, width = 6.4*3*"+form1._setting.numericUpDown4.Value.ToString()+", height = 4.8*1*"+form1._setting.numericUpDown4.Value.ToString()+", limitsize = FALSE)\r\n";
+                    }
+                    
                     if (dup_var)
                     {
                         MessageBox.Show("説明変数に目的変数があるので無視されました", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2370,6 +2387,19 @@ namespace WindowsFormsApplication1
                     }
                     explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square))\r\n";
                     explain += "ggsave(filename = \"tmp_xgboost_feature_importance.png\", plot = plt_, limitsize = FALSE)\r\n";
+
+					
+					string predict_force_plot_cmd = "";
+                    if ( force_plot != 0 )
+                    {
+                    	predict_force_plot_cmd += "\r\n\r\n";
+                        predict_force_plot_cmd += "shap_values <- shap.values(xgb_model = xgboost.model, X_train = test_dmat)\r\n";
+						predict_force_plot_cmd += "plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score,top_n = 6, n_groups = 1)\r\n";
+						predict_force_plot_cmd += "shap.plot.force_plot(plot_data, zoom_in_location=1)\r\n";
+						predict_force_plot_cmd += "predict_force_plot_plt <- shap.plot.force_plot_bygroup(plot_data)\r\n";
+						predict_force_plot_cmd += "ggsave(\"xgboost_predict_force_plot.png\", predict_force_plot_plt, dpi = 100, width = 6.4*3*"+form1._setting.numericUpDown4.Value.ToString()+", height = 4.8*1*"+form1._setting.numericUpDown4.Value.ToString()+", limitsize = FALSE)\r\n";
+                    	predict_force_plot_cmd += "\r\n\r\n";
+                    }
 
                     using (System.IO.StreamWriter sw = new System.IO.StreamWriter("explain.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
                     {
@@ -3613,6 +3643,10 @@ forecast_extension += "	    }\r\n";
                     cmd += "test_dmat <- ret[[4]]\r\n";
                     cmd += "obs_test_step <- ret[[5]]\r\n";
                     
+                    if ( force_plot != 0)
+                    {
+                    	cmd += predict_force_plot_cmd;
+                    }
                     if ( checkBox16.Checked )
                     {
                     	cmd += "predict.y <- as.data.frame(ifelse(predict.y[,1] > as.numeric("+ textBox12.Text +"),as.numeric("+textBox12.Text+"),predict.y[,1]))\r\n"; 
@@ -4193,8 +4227,8 @@ forecast_extension += "	    }\r\n";
                         using (System.IO.StreamWriter sw = new System.IO.StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
                         {
                             sw.Write("options(width=" + form1._setting.numericUpDown2.Value.ToString() + ")\r\n");
-                            sw.Write("sink(file = \"summary.txt\")\r\n");
                             sw.Write(cmd);
+                            sw.Write("sink(file = \"summary.txt\")\r\n");
                             //sw.Write("print(str(xgboost.model))\r\n");
                             //sw.Write("print(summary(predict.y))\r\n");
                             if (radioButton1.Checked)
@@ -4238,6 +4272,8 @@ forecast_extension += "	    }\r\n";
                                     sw.Write("cat(\"\\n\")\r\n");
                                 }
                             }
+                            sw.Write("\r\n");
+                            sw.Write("sink()\r\n");
                             
                             sw.Write("\r\n");
                             sw.Write(position_maker);
@@ -4248,8 +4284,6 @@ forecast_extension += "	    }\r\n";
                                 sw.Write("output_tmp <- cbind(output_tmp, predict_probability_df)\r\n");
                                 sw.Write("write.csv(output_tmp, \"predict_probability.csv\", row.names =F)\r\n");
                             }
-                            sw.Write("\r\n");
-                            sw.Write("sink()\r\n");
 
                             if (radioButton1.Checked)
                             {
@@ -7137,6 +7171,109 @@ forecast_extension += "	    }\r\n";
                 {
                     System.IO.File.Delete("no_debug_plotting");
                 }
+            }
+        }
+
+        private void button29_Click_1(object sender, EventArgs e)
+        {
+            if ( force_plot == 0)
+            {
+                button29.Enabled = false;
+                return;
+            }
+            if ( checkBox5.Checked)
+            {
+                string cmd = "";
+                string webpath = "";
+                bool force_plot_plt = false;
+                if (radioButton3.Checked)
+                {
+                    if (System.IO.File.Exists("xgboost_predict_force_plot_plt_tmp.html")) form1.FileDelete("xgboost_predict_force_plot_plt_tmp.html");
+
+                    force_plot_plt = form1.ExistObj("predict_force_plot_plt");
+                    if (force_plot_plt)
+                    {
+                        cmd += "library(plotly)\r\n";
+                        cmd += "print(predict_force_plot_plt)\r\n";
+                        cmd += "p_ <- ggplotly(predict_force_plot_plt)\r\n";
+                        cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_predict_force_plot_plt_tmp.html\", selfcontained = F)\r\n";
+                        form1.script_executestr(cmd);
+
+                        System.Threading.Thread.Sleep(50);
+                        if (System.IO.File.Exists("xgboost_predict_force_plot_plt_tmp.html"))
+                        {
+                            webpath = Form1.curDir + "/xgboost_predict_force_plot_plt_tmp.html";
+                            webpath = webpath.Replace("\\", "/").Replace("//", "/");
+                        }
+                    }else
+                    {
+                        MessageBox.Show("not found [predict_force_plot_plt]");
+                        return;
+                    }
+                }
+                if (radioButton4.Checked)
+                {
+                    if (System.IO.File.Exists("xgboost_train_force_plot_plt_tmp.html")) form1.FileDelete("xgboost_train_force_plot_plt_tmp.html");
+
+                    force_plot_plt = form1.ExistObj("train_force_plot_plt");
+                    if (force_plot_plt)
+                    {
+                        cmd += "library(plotly)\r\n";
+                        cmd += "print(train_force_plot_plt)\r\n";
+                        cmd += "p_ <- ggplotly(train_force_plot_plt)\r\n";
+                        cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_train_force_plot_plt_tmp.html\", selfcontained = F)\r\n";
+                        form1.script_executestr(cmd);
+
+                        System.Threading.Thread.Sleep(50);
+                        if (System.IO.File.Exists("xgboost_train_force_plot_plt_tmp.html"))
+                        {
+                            webpath = Form1.curDir + "/xgboost_train_force_plot_plt_tmp.html";
+                            webpath = webpath.Replace("\\", "/").Replace("//", "/");
+                        }
+                    }else
+                    {
+                        MessageBox.Show("not found [train_force_plot_plt]");
+                        return;
+                    }
+                }
+                //
+                if (form1._setting.checkBox1.Checked)
+                {
+                    System.Diagnostics.Process.Start(webpath, null);
+                }
+                else
+                {
+                    if (interactivePlot7 == null) interactivePlot7 = new interactivePlot();
+                    interactivePlot7.webView21.Source = new Uri(webpath);
+                    interactivePlot7.webView21.Refresh();
+                    interactivePlot7.webView21.Show();
+                    interactivePlot7.Show();
+                }
+                return;
+            }
+            if (radioButton3.Checked && System.IO.File.Exists("xgboost_predict_force_plot.png"))
+            {
+                if (_ImageView10 == null) _ImageView10 = new ImageView();
+                _ImageView10.form1 = this.form1;
+                _ImageView10.pictureBox1.Image = null;
+                _ImageView10.pictureBox1.Image = Form1.CreateImage("xgboost_predict_force_plot.png");
+                _ImageView10.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                _ImageView10.pictureBox1.Dock = DockStyle.Fill;
+                _ImageView10.Width = 640*2;
+                _ImageView10.Height = 480;
+                _ImageView10.Show();
+            }
+            if (radioButton4.Checked && System.IO.File.Exists("xgboost_train_force_plot.png"))
+            {
+                if (_ImageView10 == null) _ImageView10 = new ImageView();
+                _ImageView10.form1 = this.form1;
+                _ImageView10.pictureBox1.Image = null;
+                _ImageView10.pictureBox1.Image = Form1.CreateImage("xgboost_train_force_plot.png");
+                _ImageView10.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                _ImageView10.pictureBox1.Dock = DockStyle.Fill;
+                _ImageView10.Width = 640*2;
+                _ImageView10.Height = 480;
+                _ImageView10.Show();
             }
         }
     }
