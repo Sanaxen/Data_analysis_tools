@@ -309,12 +309,14 @@ namespace WindowsFormsApplication1
 
                 if ( radioButton4.Checked)
                 {
-                    form1.FileDelete("tmp_xgboost.png");
+					form1.FileDelete("xgboost_train_force_plot.png");
+                   	form1.FileDelete("tmp_xgboost.png");
                     form1.FileDelete("tmp_xgboost2.png");
                     form1.FileDelete("split_train_test.png");
                 }
                 if (radioButton3.Checked)
                 {
+ 					form1.FileDelete("xgboost_predict_force_plot.png");
                     form1.FileDelete("tmp_xgboost_predict.png");
                     form1.FileDelete("tmp_xgboost_feature_importance.png");
                     form1.FileDelete("tmp_xgboost_model_performance.png");
@@ -343,6 +345,11 @@ namespace WindowsFormsApplication1
                     form1.script_executestr(xgb_weight);
                 }
                 
+                if (listBox1.SelectedIndex < 0)
+                {
+                    MessageBox.Show("目的変数を選択して下さい");
+                    return;
+                }
                 targetName = listBox1.Items[listBox1.SelectedIndex].ToString();
                 if (time_series_mode)
                 {
@@ -1186,9 +1193,12 @@ namespace WindowsFormsApplication1
                 formuler += "target_";
                 formuler += " ~";
                 ListBox var = new ListBox();
+                
+                ListBox uniques = form1.GetUniquesList(listBox1);
+
                 for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
                 {
-                    if (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor")
+                    if ( int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
                     {
                         var.Items.Add(listBox2.Items[listBox2.SelectedIndices[i]].ToString());
                     }
@@ -1314,7 +1324,7 @@ namespace WindowsFormsApplication1
                 {
                     if (typeNG)
                     {
-                        MessageBox.Show("数値/因子型以外のデータ列の選択を未選択扱いにしました");
+                        MessageBox.Show("数値/因子型以外/全て同一値のデータ列の選択を未選択扱いにしました");
                     }
                 }
 
@@ -2089,14 +2099,15 @@ namespace WindowsFormsApplication1
                     if (radioButton2.Checked)
                     {
                         cmd += "explainer <-explain_xgboost(xgboost.model, data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
+	                    cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\")\r\n";
                     }
                     else
                     {
                         cmd += "explainer <-explain_xgboost(xgboost.model, data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+	                    cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square)\r\n";
                     }
-                    cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square)\r\n";
                    
-                    if ( force_plot != 0 )
+                    if ( radioButton1.Checked && force_plot != 0 )
                     {
                         cmd += "shap_values <- shap.values(xgb_model = xgboost.model, X_train = train_dmat)\r\n";
 						cmd += "plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score,top_n = 6, n_groups = 1)\r\n";
@@ -2342,7 +2353,16 @@ namespace WindowsFormsApplication1
                         explain += "cluster = makeCluster(getOption(\"mc.cores\", 3L), type = \"PSOCK\")\r\n";
                         explain += "registerDoParallel(cluster)\r\n";
                         explain += "\r\n";
-                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+                        
+	                    if (radioButton2.Checked)
+	                    {
+	                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
+	                    }
+	                    else
+	                    {
+	                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+	                    }
+                        //explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
                         explain += "\r\n";
                         explain += "foreach(x = seq(1, "+ explain_num+"), .export =c('ggplot', 'predict_parts', 'ggsave')) %dopar% {\r\n";
                         explain += "	predict_parts_plt = predict_parts(explainer, test_mx[x,, drop = FALSE])\r\n";
@@ -2385,12 +2405,18 @@ namespace WindowsFormsApplication1
                         //explain += "plt_<-plot(model_performance(explainer, label=\"誤差\"),geom = \"histogram\")\r\n";
                         //explain += "ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = plt_)\r\n";
                     }
-                    explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square))\r\n";
+                    if (radioButton2.Checked)
+                    {
+                    	explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\"))\r\n";
+                    }else
+                    {
+                    	explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square))\r\n";
+                    }
                     explain += "ggsave(filename = \"tmp_xgboost_feature_importance.png\", plot = plt_, limitsize = FALSE)\r\n";
 
 					
 					string predict_force_plot_cmd = "";
-                    if ( force_plot != 0 )
+                    if ( radioButton1.Checked && force_plot != 0 )
                     {
                     	predict_force_plot_cmd += "\r\n\r\n";
                         predict_force_plot_cmd += "shap_values <- shap.values(xgb_model = xgboost.model, X_train = test_dmat)\r\n";
@@ -2520,7 +2546,7 @@ namespace WindowsFormsApplication1
                         }
                         if (comboBox2.Text == "\"multi:softmax\"")
                         {
-                            forecast_extension += "confusion_tbl<-table(predict_y, " + "test$target_)\r\n";
+                            forecast_extension += "confusion_tbl<<-table(predict_y, " + "test$target_)\r\n";
                             forecast_extension += "x_<- data.frame(confusion_tbl[,1])\r\n";
                             forecast_extension += "    for (i in 2:ncol(confusion_tbl)){\r\n";
                             forecast_extension += "    x_ <- cbind(x_, confusion_tbl[,i])\r\n";
@@ -2535,9 +2561,9 @@ namespace WindowsFormsApplication1
                             forecast_extension += "error = function(e) {\r\n";
                             forecast_extension += " #print(e)\r\n";
                             forecast_extension += "})\r\n";
-                            forecast_extension += "confusion_test <- x_\r\n";
+                            forecast_extension += "confusion_test <<- x_\r\n";
 
-                            forecast_extension += "ac_ <- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
+                            forecast_extension += "ac_ <<- sum(diag(confusion_tbl))/sum(confusion_tbl)\r\n";
                             forecast_extension += "tmp_ <- df_\r\n";
                             forecast_extension += "tmp_ <- cbind(tmp_, predict_y)\r\n";
                             forecast_extension += "predict.xgboost <- cbind(tmp_, predict_y)\r\n";
@@ -4196,8 +4222,15 @@ forecast_extension += "	    }\r\n";
 		                position_maker += "position_maker <- function(y, pos)\r\n";
 		                position_maker += "{\r\n";
 		                position_maker += "    plt<-ggplot()\r\n";
-		                position_maker += "    plt <- plt + geom_line(aes(x=as.POSIXct(y[,1]), y =y$" + targetName + ", colour = \"input data\"), size = 0.5)\r\n";
-		                position_maker += "    plt <- plt + geom_vline(data = y, aes(xintercept=as.POSIXct(y[pos,1])), size = 1.5)\r\n";
+		                if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
+		                {
+			                position_maker += "    plt <- plt + geom_line(aes(x=as.POSIXct(y[,1]), y =y$" + targetName + ", colour = \"input data\"), size = 0.5)\r\n";
+			                position_maker += "    plt <- plt + geom_vline(data = y, aes(xintercept=as.POSIXct(y[pos,1])), size = 1.5)\r\n";
+		                }else
+		                {
+			                position_maker += "    plt <- plt + geom_line(aes(x=c(1:length(y$" + targetName +")), y =y$" + targetName + ", colour = \"input data\"), size = 0.5)\r\n";
+			                position_maker += "    plt <- plt + geom_vline(data = y, aes(xintercept=pos), size = 1.5)\r\n";
+		                }
 		                position_maker += "	\r\n";
 		                position_maker += "	#plt\r\n";
                         position_maker += "    file = paste(\"explain_predict/position_maker\", pos, sep=\"\")\r\n";

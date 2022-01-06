@@ -756,6 +756,43 @@ namespace WindowsFormsApplication1
             return output;
         }
 
+        public ListBox GetUniquesList(ListBox list, bool listupNA = false)
+        {
+            ListBox output = new ListBox(); ;
+            string s = textBox1.Text;
+            string ss = textBox6.Text;
+            string cmd = "";
+            for (int i = 0; i < list.Items.Count; i++)
+            {
+                cmd += "unq_ <- length( unique(" + "df$'" + list.Items[i].ToString() + "'))\r\n";
+                cmd += "cat(unq_)\r\n";
+                cmd += "cat(\"\\n\")\r\n";
+            }
+            textBox1.Text = cmd;
+
+            if (System.IO.File.Exists("summary.txt")) form1.FileDelete("summary.txt");
+            script_execute(null, null);
+
+            textBox1.Text = s;
+            textBox6.Text = ss;
+            string lines = "";
+            if (System.IO.File.Exists("summary.txt"))
+            {
+                System.IO.StreamReader sr = new System.IO.StreamReader("summary.txt", System.Text.Encoding.GetEncoding("shift_jis"));
+                if (sr != null)
+                {
+                    lines = sr.ReadToEnd();
+                    sr.Close();
+                }
+            }
+            var lines2 = lines.Split('\n');
+            for (int i = 0; i < list.Items.Count; i++)
+            {
+                output.Items.Add(lines2[i].Replace("\r", ""));
+            }
+            return output;
+        }
+        
         public ListBox GetTypeNameList(ListBox list, bool listupNA = false)
         {
             ListBox output = new ListBox(); ;
