@@ -8726,6 +8726,7 @@ namespace WindowsFormsApplication1
                 _xgboost.checkBox8.Visible = true;
                 _xgboost.numericUpDown16.Visible = true;
                 _xgboost.label33.Visible = true;
+                _xgboost.checkBox2.Enabled = false;
             }
             else
             {

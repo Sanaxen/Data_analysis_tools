@@ -152,7 +152,7 @@ namespace WindowsFormsApplication1
             //    textBox2.Text = timestanplist.Items[pos].ToString();
             //    textBox3.Text = timestanplist.Items[pos].ToString();
                 
-            //    string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", pos);
+            //    string file = string.Format("explain_predict\\tmp_xgboost_predict_parts_"+targetName+"{0}.png", pos);
             //    if (System.IO.File.Exists(file))
             //    {
             //        _ImageView.pictureBox1.ImageLocation = file;
@@ -164,7 +164,7 @@ namespace WindowsFormsApplication1
             //        pictureBox1.Dock = DockStyle.Fill;
             //    }
                 
-            //    file = string.Format("explain_predict\\predict_probability{0}.png", pos);
+            //    file = string.Format("explain_predict\\predict_probability_"+targetName+"{0}.png", pos);
             //    if (System.IO.File.Exists(file))
             //    {
             //        _ImageView4.pictureBox1.ImageLocation = file;
@@ -226,9 +226,11 @@ namespace WindowsFormsApplication1
             {
                 int pos = trackBar1.Value;
 
-                string file = string.Format("explain_predict\\position_maker{0}.png", pos);
+                string file = string.Format("explain_predict\\position_maker_"+targetName+"{0}.png", pos);
                 if (System.IO.File.Exists(file))
                 {
+                    label1.Text = file;
+                    label1.Refresh();
                     pictureBox5.Image = Form1.CreateImage(file);
                     pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
                 }
@@ -247,7 +249,7 @@ namespace WindowsFormsApplication1
                     textBox3.Text = timestanplist.Items[pos].ToString();
                 }
                 catch { }
-                string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", pos);
+                string file = string.Format("explain_predict\\tmp_xgboost_predict_parts_"+targetName+"{0}.png", pos);
                 if (System.IO.File.Exists(file))
                 {
                     _ImageView.pictureBox1.ImageLocation = file;
@@ -259,7 +261,7 @@ namespace WindowsFormsApplication1
                     pictureBox1.Dock = DockStyle.Fill;
                 }
 
-                file = string.Format("explain_predict\\predict_probability{0}.png", pos);
+                file = string.Format("explain_predict\\predict_probability_"+targetName+"{0}.png", pos);
                 if (System.IO.File.Exists(file))
                 {
                     _ImageView4.pictureBox1.ImageLocation = file;

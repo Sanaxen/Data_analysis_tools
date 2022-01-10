@@ -294,6 +294,12 @@ namespace WindowsFormsApplication1
                 form1._svm.load_model(model, sender, e);
                 return;
             }
+            if (model.IndexOf("tsxgboost.model") >= 0)
+            {
+                form1.button67_Click_1(sender, e);
+                form1._xgboost.load_model(model, sender, e);
+                return;
+            }
             if (model.IndexOf("xgboost.model") >= 0)
             {
                 form1.button60_Click_2(sender, e);

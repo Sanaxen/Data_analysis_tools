@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -33,6 +34,9 @@ namespace WindowsFormsApplication1
         string targetName = "";
         string decomp_type = "additive";//"multiplicative"; //additive
 
+        Dictionary<string,Dictionary<string, string>> image_links = new Dictionary<string, Dictionary<string, string>>();
+        Dictionary<string, string> estimative = new Dictionary<string, string>()
+;
         int grid_serch_stop = 0;
         ListBox importance_var = new ListBox();
 
@@ -89,6 +93,8 @@ namespace WindowsFormsApplication1
         int cutoff = 0;
         double split_train = 0.7;
 
+        bool comboBox8_edit = false;
+        int multi_target_count = 0;
 
 
 
@@ -222,8 +228,305 @@ namespace WindowsFormsApplication1
             }
         }
 
+        void draw_plot_images()
+        {
+            try
+            {
+                if (radioButton3.Checked)
+                {
+                    label6.Text = "RMSE=" + estimative[targetName + "_RMSE"];
+                    label5.Text = "Accuracy=" + estimative[targetName + "_ACC"];
+                    label14.Text = "adjR2=" + estimative[targetName + "_adjR2"];
+                    label15.Text = "R2=" + estimative[targetName + "_R2"];
+                    label22.Text = "MER=" + estimative[targetName + "_MER"];
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (radioButton4.Checked)
+                {
+                    //webBrowser1.Hide();
+                    //button2.Visible = true;
+                    //button3.Visible = true;
+                    //pictureBox1.Image = Form1.CreateImage("tmp_xgboost_"+targetName + ".png");
+                    pictureBox1.Image = Form1.CreateImage("tmp_xgboost2_" + targetName + ".png");
+                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox1.Dock = DockStyle.Fill;
+                    pictureBox1.Show();
+                }
+                if (radioButton3.Checked)
+                {
+                    pictureBox1.Image = Form1.CreateImage("tmp_xgboost_predict_" + targetName + ".png");
+                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox1.Dock = DockStyle.Fill;
+                    pictureBox1.Show();
+
+                    if (xgboost_exp_ != null) xgboost_exp_.pictureBox1.Image = Form1.CreateImage("explain_predict\\tmp_xgboost_predict_" + targetName + ".png");
+                    if (System.IO.File.Exists("explain_predict\\tmp_xgboost_predict_parts_" + targetName + "1.png"))
+                    {
+                        button18.Enabled = true;
+                        button22.Enabled = true;
+                        button23.Enabled = true;
+                    }
+                    if (xgboost_exp_ != null) xgboost_exp_.pictureBox4.Image = Form1.CreateImage("explain_predict\\tmp_xgboost_predict_" + targetName + ".png");
+                    if (System.IO.File.Exists("explain_predict\\predict_probability_" + targetName + "1.png"))
+                    {
+                        button18.Enabled = true;
+                        button22.Enabled = true;
+                        button23.Enabled = true;
+                    }
+                }
+            }
+            catch { }
+
+            if (checkBox5.Checked)
+            {
+                string x_axis = "";
+                if (time_series_mode && checkBox8.Checked)
+                {
+                    x_axis = ",x=as.POSIXct(test[,1])";
+                }
+
+                string mode = "lines";
+                mode = "\"lines+markers\"";
+
+                string cmd = "";
+                cmd += "library(plotly)\r\n";
+                cmd += "library(htmlwidgets)\r\n";
+
+                if (radioButton1.Checked && radioButton3.Checked)
+                {
+                    cmd += "p1_<-ggplotly(residual_plt_"+targetName +")\r\n";
+                    cmd += "p2_<-ggplotly(predict_plt_"+targetName +")\r\n";
+                    if (use_AnomalyDetectionTs == 1)
+                    {
+                        cmd += "anom_p <- ggplotly(anomaly_det_"+targetName +"[[3]])\r\n";
+                    }
+
+                    if (checkBox7.Checked)
+                    {
+                        cmd += "p2<-ggplotly(interval_plt2_"+targetName +")\r\n";
+                    }
+                    if (checkBox6.Checked)
+                    {
+                        cmd += "p3<-ggplotly(interval_plt_"+targetName +")\r\n";
+                    }
+                    if (checkBox6.Checked && checkBox7.Checked)
+                    {
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "p_ <-subplot(p1_, p2_, p3, anom_p, nrows = 4)\r\n";
+                        }
+                        else
+                        {
+                            cmd += "p_ <- subplot(p1_, p2_, p3, nrows = 3)\r\n";
+                        }
+                    }
+                    if (checkBox6.Checked && !checkBox7.Checked)
+                    {
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "p_ <-subplot(p1_, p2_, p3, anom_p, nrows = 4)\r\n";
+                        }
+                        else
+                        {
+                            cmd += "p_ <- subplot(p1_, p2_, p3, nrows = 3)\r\n";
+                        }
+                    }
+                    if (!checkBox6.Checked && checkBox7.Checked)
+                    {
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "p_ <-subplot(p1_, p2_, anom_p, nrows = 3)\r\n";
+                        }
+                        else
+                        {
+                            cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
+                        }
+                    }
+                    if (!checkBox6.Checked && !checkBox7.Checked)
+                    {
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "p_ <-subplot(p1_, p2_, anom_p, nrows = 3)\r\n";
+                        }
+                        else
+                        {
+                            cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
+                        }
+                    }
+                }
+                if (radioButton2.Checked && radioButton3.Checked)
+                {
+                    cmd += "p_<-plot_ly(test, alpha=0.6, type = \"histogram\"";
+                    cmd += x_axis + ",y = predict_y)\r\n";
+                }
+                if (radioButton1.Checked && radioButton4.Checked)
+                {
+                    cmd += "p1<-ggplotly(plt__"+targetName +")\r\n";
+                    cmd += "p_<-p1\r\n";
+                    if (checkBox7.Checked)
+                    {
+                        cmd += "p2<-ggplotly(interval_plt2_"+targetName +")\r\n";
+                    }
+                    if (checkBox6.Checked)
+                    {
+                        cmd += "p3<-ggplotly(interval_plt_"+targetName +")\r\n";
+                    }
+                    if (use_AnomalyDetectionTs == 1)
+                    {
+                        cmd += "anom_p <- ggplotly(anomaly_det_"+targetName +"[[3]])\r\n";
+                    }
+                    if (checkBox6.Checked && !checkBox7.Checked)
+                    {
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "p_ <-subplot(p1, p3, anom_p, nrows = 3)\r\n";
+                        }
+                        else
+                        {
+                            cmd += "p_ <-subplot(p1, p3, nrows = 2)\r\n";
+                        }
+                    }
+                    if (!checkBox6.Checked && checkBox7.Checked)
+                    {
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "p_ <-subplot(p1, p2, anom_p, nrows = 3)\r\n";
+                        }
+                        else
+                        {
+                            cmd += "p_ <-subplot(p1, p2, nrows = 2)\r\n";
+                        }
+                    }
+                    if (checkBox6.Checked && checkBox7.Checked)
+                    {
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "p_ <-subplot(p1, p2, p3, anom_p, nrows = 4)\r\n";
+                        }
+                        else
+                        {
+                            cmd += "p_ <-subplot(p1, p2, p3, nrows = 3)\r\n";
+                        }
+                    }
+                    if (!checkBox6.Checked && !checkBox7.Checked)
+                    {
+                        cmd += "p4<-ggplotly(interval_plt4_"+targetName +")\r\n";
+                        if (use_AnomalyDetectionTs == 1)
+                        {
+                            cmd += "p_ <-subplot(p1, p4, anom_p, nrows = 3)\r\n";
+                        }
+                        else
+                        {
+                            cmd += "p_ <-subplot(p1, p4, nrows = 2)\r\n";
+                        }
+                    }
+                }
+                if (radioButton2.Checked && radioButton4.Checked)
+                {
+                    cmd += "p_<-ggplotly(plt__"+targetName +")\r\n";
+                }
+
+                if (System.IO.File.Exists("xgboost_plot_temp_" + targetName + ".html")) form1.FileDelete("xgboost_plot_temp_" + targetName + ".html");
+                cmd += "print(p_)\r\n";
+                cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_plot_temp_" + targetName + ".html\", selfcontained = F)\r\n";
+                form1.script_executestr(cmd);
+
+                image_link2 = "";
+                System.Threading.Thread.Sleep(50);
+                if (System.IO.File.Exists("xgboost_plot_temp_" + targetName + ".html"))
+                {
+                    string webpath = Form1.curDir + "/xgboost_plot_temp_" + targetName + ".html";
+                    webpath = webpath.Replace("\\", "/").Replace("//", "/");
+
+                    image_link2 = webpath;
+                    var s = new Dictionary<string, string>();
+                    s.Add("linkLabel2", webpath);
+                    image_links[targetName] =  s;
+
+                    linkLabel2.Visible = true;
+                    linkLabel2.LinkVisited = true;
+                    if (form1._setting.checkBox1.Checked)
+                    {
+                        System.Diagnostics.Process.Start(webpath, null);
+                    }
+                    else
+                    {
+                        //interactivePlot.webView21.CoreWebView2.Navigate(webpath);
+                        interactivePlot.webView21.Source = new Uri(webpath);
+                        interactivePlot.webView21.Refresh();
+                        //interactivePlot.Show();
+                        //interactivePlot.TopMost = true;
+                        //interactivePlot.TopMost = false;
+
+                        //webView21.CoreWebView2.Navigate(webpath);
+                        //webView21.CoreWebView2.CallDevToolsProtocolMethodAsync("Network.clearBrowserCache", "{}");
+                        webView21.Source = new Uri(webpath);
+                        webView21.Refresh();
+                        webView21.Show();
+                        TopMost = true;
+                        TopMost = false;
+                    }
+                }
+            }
+            try
+            {
+                pictureBox2.Image = null;
+                if (System.IO.File.Exists("split_train_test_" + targetName + ".png"))
+                {
+                    if (_ImageView7 != null)
+                    {
+                        _ImageView7.pictureBox1.Image = Form1.CreateImage("split_train_test_" + targetName + ".png");
+                        _ImageView7.pictureBox1.Refresh();
+                    }
+
+                    pictureBox2.Image = Form1.CreateImage("split_train_test_" + targetName + ".png");
+                    pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+            }
+            catch { }
+        }
 
         public void button1_Click(object sender, EventArgs e)
+        {
+            var backup = listBox1.SelectedIndices;
+
+            comboBox8_edit = true;
+            comboBox8.Items.Clear();
+            try
+            {
+                for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                {
+                    comboBox8.Items.Add(listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                }
+
+                multi_target_count = 0;
+                label47.Text = multi_target_count + "/" + (listBox1.SelectedIndices.Count);
+                for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                {
+                    if ( checkBox22.Checked)
+                    {
+                        break;
+                    }
+                    targetName = listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    button1_Click_target(sender, e);
+                    multi_target_count++;
+                    label47.Text = multi_target_count + "/" + (listBox1.SelectedIndices.Count);
+                }
+                comboBox8_edit = false;
+                checkBox22.Checked = false;
+            }
+            catch { }
+            finally
+            {
+                comboBox8_edit = false;
+            }
+        }
+
+        public void button1_Click_target(object sender, EventArgs e)
         {
             if (running != 0) return;
             if (form1.isSolverRunning(this))
@@ -281,10 +584,22 @@ namespace WindowsFormsApplication1
             }
             xgboost_predict_debug_plot_count = 0;
 
+            if (listBox1.SelectedIndex < 0)
+            {
+                MessageBox.Show("目的変数を選択して下さい");
+                return;
+            }
+            if (listBox1.SelectedIndices.Count == 1)
+            {
+                targetName = listBox1.Items[listBox1.SelectedIndex].ToString();
+            }
+
+            //MessageBox.Show(targetName);
+
             try
             {
-                form1.FileDelete("curvplot_temp.html");
-                form1.FileDelete("xgboost_plot_temp.html");
+                form1.FileDelete("curvplot_temp_"+targetName + ".html");
+                form1.FileDelete("xgboost_plot_temp_"+targetName + ".html");
 
                 pictureBox1.ImageLocation = "";
                 //webBrowser1.Navigate("");
@@ -309,22 +624,22 @@ namespace WindowsFormsApplication1
 
                 if ( radioButton4.Checked)
                 {
-					form1.FileDelete("xgboost_train_force_plot.png");
-                   	form1.FileDelete("tmp_xgboost.png");
-                    form1.FileDelete("tmp_xgboost2.png");
-                    form1.FileDelete("split_train_test.png");
+					form1.FileDelete("xgboost_train_force_plot_"+targetName + ".png");
+                   	form1.FileDelete("tmp_xgboost_"+targetName + ".png");
+                    form1.FileDelete("tmp_xgboost2_"+targetName + ".png");
+                    form1.FileDelete("split_train_test_"+targetName + ".png");
                 }
                 if (radioButton3.Checked)
                 {
- 					form1.FileDelete("xgboost_predict_force_plot.png");
-                    form1.FileDelete("tmp_xgboost_predict.png");
-                    form1.FileDelete("tmp_xgboost_feature_importance.png");
-                    form1.FileDelete("tmp_xgboost_model_performance.png");
+ 					form1.FileDelete("xgboost_predict_force_plot_"+targetName + ".png");
+                    form1.FileDelete("tmp_xgboost_predict_"+targetName + ".png");
+                    form1.FileDelete("tmp_xgboost_feature_importance_"+targetName + ".png");
+                    form1.FileDelete("tmp_xgboost_model_performance_"+targetName + ".png");
                     form1.FileDelete("tmp_xgboost_predict_parts0001.png");
-                    form1.FileDelete("観測値のばらつきを考慮した予測値の確率.png");
-                    form1.FileDelete("観測値のばらつきを考慮した予測値の確率2.png");
+                    form1.FileDelete("観測値のばらつきを考慮した予測値の確率_"+targetName + ".png");
+                    form1.FileDelete("観測値のばらつきを考慮した予測値の確率2_"+targetName + ".png");
                 }
-                form1.FileDelete("xgboost_plot_temp.html");
+                form1.FileDelete("xgboost_plot_temp_"+targetName + ".html");
 
                 string numdiff = Form1.MyPath + "..\\script\\numdiff.r";
                 numdiff = numdiff.Replace("\\", "/");
@@ -345,12 +660,7 @@ namespace WindowsFormsApplication1
                     form1.script_executestr(xgb_weight);
                 }
                 
-                if (listBox1.SelectedIndex < 0)
-                {
-                    MessageBox.Show("目的変数を選択して下さい");
-                    return;
-                }
-                targetName = listBox1.Items[listBox1.SelectedIndex].ToString();
+
                 if (time_series_mode)
                 {
                     if (numericUpDown16.Value >= 1)
@@ -687,7 +997,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "}\r\n";
                     }
                     cmd1 += "df_ts_tmp<- df_ts_tmp[-1:-" + lag.ToString() + ",]\r\n";
-                    cmd1 += "write.csv(df_ts_tmp, file=\"df_ts_tmp.csv\",row.names=F)\r\n";
+                    cmd1 += "write.csv(df_ts_tmp, file=\"df_ts_tmp_"+targetName + ".csv\",row.names=F)\r\n";
 
                     if (exist_time_axis == 0)
                     {
@@ -734,9 +1044,9 @@ namespace WindowsFormsApplication1
                     }
                     button20.Enabled = false;
 
-                    if (System.IO.File.Exists("ts_transform.png"))
+                    if (System.IO.File.Exists("ts_transform_"+targetName + ".png"))
                     {
-                        System.IO.File.Delete("ts_transform.png");
+                        System.IO.File.Delete("ts_transform_"+targetName + ".png");
                     }
                     int plot_nrows = 0;
                     string plot_rows = "";
@@ -769,21 +1079,21 @@ namespace WindowsFormsApplication1
                         cmd1 += "dat2<-as.data.frame(as.matrix(decompose_df$trend))\r\n";
                         cmd1 += "dat3<-as.data.frame(as.matrix(tmp))\r\n";
                         cmd1 += "\r\n";
-                        cmd1 += "dat1_plt <- ggplot()\r\n";
-                        cmd1 += "dat1_plt <- dat1_plt + geom_line(aes(x = (1:nrow(dat1)), y = dat1[,1], colour = \"seasonal\"))\r\n";
-                        cmd1 += "dat1_plt <- dat1_plt + labs(title =\"周期\", x=\"t\", y=\"value\", caption=\"XX\")\r\n";
+                        cmd1 += "dat1_plt_"+targetName +" <- ggplot()\r\n";
+                        cmd1 += "dat1_plt_"+targetName +" <- dat1_plt_"+targetName +" + geom_line(aes(x = (1:nrow(dat1)), y = dat1[,1], colour = \"seasonal\"))\r\n";
+                        cmd1 += "dat1_plt_"+targetName +" <- dat1_plt_"+targetName +" + labs(title =\"周期\", x=\"t\", y=\"value\", caption=\"XX\")\r\n";
                         cmd1 += "\r\n";
-                        cmd1 += "dat2_plt <- ggplot()\r\n";
-                        cmd1 += "dat2_plt <- dat2_plt + geom_line(aes(x = (1:nrow(dat2)), y = dat2[,1], colour = \"trend\"))\r\n";
-                        cmd1 += "dat2_plt <- dat2_plt + labs(title =\"トレンド\", x=\"t\", y=\"value\", caption=\"XX\")\r\n";
+                        cmd1 += "dat2_plt_"+targetName +" <- ggplot()\r\n";
+                        cmd1 += "dat2_plt_"+targetName +" <- dat2_plt_"+targetName +" + geom_line(aes(x = (1:nrow(dat2)), y = dat2[,1], colour = \"trend\"))\r\n";
+                        cmd1 += "dat2_plt_"+targetName +" <- dat2_plt_"+targetName +" + labs(title =\"トレンド\", x=\"t\", y=\"value\", caption=\"XX\")\r\n";
                         cmd1 += " \r\n";
                         cmd1 += "\r\n";
-                        cmd1 += "dat3_plt <- ggplot()\r\n";
-                        cmd1 += "dat3_plt <- dat3_plt + geom_line(aes(x = (1:nrow(dat3)), y = dat3[,1], colour = \"deseasonal\"))\r\n";
-                        cmd1 += "dat3_plt <- dat3_plt + labs(title =\"周期削除\", x=\"t\", y=\"value\", caption=\"XX\")\r\n";
-                        plot_rows += "dat1_plt, dat2_plt, dat3_plt";
+                        cmd1 += "dat3_plt_"+targetName +" <- ggplot()\r\n";
+                        cmd1 += "dat3_plt_"+targetName +" <- dat3_plt_"+targetName +" + geom_line(aes(x = (1:nrow(dat3)), y = dat3[,1], colour = \"deseasonal\"))\r\n";
+                        cmd1 += "dat3_plt_"+targetName +" <- dat3_plt_"+targetName +" + labs(title =\"周期削除\", x=\"t\", y=\"value\", caption=\"XX\")\r\n";
+                        plot_rows += "dat1_plt_"+targetName +", dat2_plt_"+targetName +", dat3_plt_"+targetName;
                         plot_nrows = 3;
-                        plotly_rows += "ggplotly(dat1_plt),ggplotly(dat2_plt),ggplotly(dat3_plt)";
+                        plotly_rows += "ggplotly(dat1_plt_"+targetName +"),ggplotly(dat2_plt_"+targetName +"),ggplotly(dat3_plt_"+targetName +")";
                         cmd1 += "\r\n";
                     }
 
@@ -812,24 +1122,24 @@ namespace WindowsFormsApplication1
                         cmd1 += "\r\n";
 
                         cmd1 += "zz_tmp<- inv_diff(df_ts_tmp, \""+decomp_type+"\""+",use_log_diff, log_diff[[1]] + df_ts_tmp$trend, tmp_sv[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
-                        cmd1 += "debug_plt <- ggplot()\r\n";
+                        cmd1 += "debug_plt_"+targetName +" <- ggplot()\r\n";
                         cmd1 += "if ( use_log_diff > 0){\r\n";
-                        cmd1 += "   debug_plt <- debug_plt + geom_line(aes(x = (1:length(tmp_sv)), y = tmp_sv, colour = \"org\"))\r\n";
+                        cmd1 += "   debug_plt_"+targetName +" <- debug_plt_"+targetName +" + geom_line(aes(x = (1:length(tmp_sv)), y = tmp_sv, colour = \"org\"))\r\n";
                         cmd1 += "}\r\n";
-                        cmd1 += "debug_plt <- debug_plt + geom_line(aes(x = (1:length(zz_tmp)), y = zz_tmp, colour = \"undo\"))\r\n";
-                        cmd1 += "debug_plt\r\n";
-                        cmd1 += "ggsave(file = \"tmp_xgboost_debug0.png\", debug_plt, , dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
+                        cmd1 += "debug_plt_"+targetName +" <- debug_plt_"+targetName +" + geom_line(aes(x = (1:length(zz_tmp)), y = zz_tmp, colour = \"undo\"))\r\n";
+                        cmd1 += "debug_plt_"+targetName +"\r\n";
+                        cmd1 += "ggsave(file = \"tmp_xgboost_debug0_"+targetName + ".png\", debug_plt_"+targetName +", , dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                         cmd1 += "\r\n";
                         cmd1 += "dat4<-as.data.frame(as.matrix(log_diff[[1]]))\r\n";
-                        cmd1 += "dat4_plt <- ggplot()\r\n";
-                        cmd1 += "dat4_plt <- dat4_plt + geom_line(aes(x = (1:nrow(dat4)), y = dat4[,1], colour = \"diff\"))\r\n";
-                        cmd1 += "dat4_plt <- dat4_plt + labs(title =\"差分\", x=\"t\", y=\"value\", caption=\"XX\")+ggtitle(\"差分\")\r\n";
+                        cmd1 += "dat4_plt_"+targetName +" <- ggplot()\r\n";
+                        cmd1 += "dat4_plt_"+targetName +" <- dat4_plt_"+targetName +" + geom_line(aes(x = (1:nrow(dat4)), y = dat4[,1], colour = \"diff\"))\r\n";
+                        cmd1 += "dat4_plt_"+targetName +" <- dat4_plt_"+targetName +" + labs(title =\"差分\", x=\"t\", y=\"value\", caption=\"XX\")+ggtitle(\"差分\")\r\n";
                         cmd1 += "\r\n";
                         if (plot_rows != "") plot_rows += ",";
-                        plot_rows += "dat4_plt";
+                        plot_rows += "dat4_plt_"+targetName +"";
                         plot_nrows++;
                         if (plotly_rows != "") plotly_rows += ",";
-                        plotly_rows += "ggplotly(dat4_plt)";
+                        plotly_rows += "ggplotly(dat4_plt_"+targetName +")";
                     }
 
                     if (use_decompose == 1)
@@ -850,7 +1160,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$trend <- stl_t\r\n";
                         cmd1 += "df_ts_tmp$target_ <- df_ts_tmp$target_ - stl_t\r\n";
                         cmd1 += "adf.test(df_ts_tmp$target_)\r\n";
-                        cmd1 += "png(\"stldecomp.png\", width = 100*6.4*3, height = 100*4.8)\r\n";
+                        cmd1 += "png(\"stldecomp_"+targetName + ".png\", width = 100*6.4*3, height = 100*4.8)\r\n";
                         cmd1 += "plot(t)\r\n";
                         cmd1 += "dev.off()\r\n";
                     }
@@ -886,7 +1196,7 @@ namespace WindowsFormsApplication1
                     {
                         button20.Enabled = true;
                         cmd1 += "dat0_plt<-gridExtra::grid.arrange(" + plot_rows + ", nrow = " + plot_nrows + ")\r\n";
-                        cmd1 += "ggsave(file=\"ts_transform.png\", dat0_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ plot_nrows+"*4.8 *" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
+                        cmd1 += "ggsave(file=\"ts_transform_"+targetName + ".png\", dat0_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ plot_nrows+"*4.8 *" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                     }
                     cmd1 += "\r\n";
                     if (false)
@@ -948,7 +1258,7 @@ namespace WindowsFormsApplication1
 					cmd1 += "	\r\n";
 					cmd1 += "	plt <- plt + labs(x=\"時間\")\r\n";
 					cmd1 += "	plt <- plt + labs(y=\""+ targetName +"\")\r\n";
-					cmd1 += "	ggsave(file = \"split_train_test.png\", plot = plt, dpi = 100, width = 6.4*4, height = 3.4*1, limitsize = FALSE)\r\n";
+					cmd1 += "	ggsave(file = \"split_train_test_"+targetName + ".png\", plot = plt, dpi = 100, width = 6.4*4, height = 3.4*1, limitsize = FALSE)\r\n";
 					cmd1 += "}\r\n";
 					cmd1 += "\r\n";
 					cmd1 += "\r\n";
@@ -993,17 +1303,17 @@ namespace WindowsFormsApplication1
                             cmd1 += "       test$target_ <- log_diff_tmp[[1]]\r\n";
                         }
                     }
-                    cmd1 += "write.csv(train, file =\"train.csv\",row.names=F)\r\n";
-                    cmd1 += "write.csv(test, file =\"test.csv\",row.names=F)\r\n";
+                    cmd1 += "write.csv(train, file =\"train_"+targetName + ".csv\",row.names=F)\r\n";
+                    cmd1 += "write.csv(test, file =\"test_"+targetName + ".csv\",row.names=F)\r\n";
 
 
                     form1.script_executestr(cmd1);
 
                     {
                         pictureBox2.Image = null;
-                        if (System.IO.File.Exists("split_train_test.png"))
+                        if (System.IO.File.Exists("split_train_test_"+targetName + ".png"))
                         {
-                            pictureBox2.Image = Form1.CreateImage("split_train_test.png");
+                            pictureBox2.Image = Form1.CreateImage("split_train_test_"+targetName + ".png");
                             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
                         }
                     }
@@ -1013,20 +1323,24 @@ namespace WindowsFormsApplication1
                         {
                             //cmd1 += "dat_plt<-ggplotly(dat0_plt)\r\n";
                             cmd1 += "library(plotly)\r\n";
-                            cmd1 += "dat_plt <- subplot(" + plotly_rows + ",nrows = " + plot_nrows + ")\r\n";
-                            if (System.IO.File.Exists("xgboost_ts_transform_temp.html")) form1.FileDelete("xgboost_ts_transform_temp.html");
-                            cmd1 += "print(dat_plt)\r\n";
-                            cmd1 += "htmlwidgets::saveWidget(as_widget(dat_plt), \"xgboost_ts_transform_temp.html\", selfcontained = F)\r\n";
+                            cmd1 += "dat_plt_"+targetName +" <- subplot(" + plotly_rows + ",nrows = " + plot_nrows + ")\r\n";
+                            if (System.IO.File.Exists("xgboost_ts_transform_temp_"+targetName + ".html")) form1.FileDelete("xgboost_ts_transform_temp_"+targetName + ".html");
+                            cmd1 += "print(dat_plt_"+targetName +")\r\n";
+                            cmd1 += "htmlwidgets::saveWidget(as_widget(dat_plt_"+targetName +"), \"xgboost_ts_transform_temp_"+targetName + ".html\", selfcontained = F)\r\n";
                             form1.script_executestr(cmd1);
 
                             image_link3 = "";
                             System.Threading.Thread.Sleep(50);
-                            if (System.IO.File.Exists("xgboost_ts_transform_temp.html"))
+                            if (System.IO.File.Exists("xgboost_ts_transform_temp_"+targetName + ".html"))
                             {
-                                string webpath = Form1.curDir + "/xgboost_ts_transform_temp.html";
+                                string webpath = Form1.curDir + "/xgboost_ts_transform_temp_"+targetName + ".html";
                                 webpath = webpath.Replace("\\", "/").Replace("//", "/");
 
                                 image_link3 = webpath;
+                                var s = new Dictionary<string, string>();
+                                s.Add("linkLabel3", webpath);
+                                image_links[targetName] =  s;
+                                
                                 linkLabel3.Visible = true;
                                 linkLabel3.LinkVisited = true;
                                 if (form1._setting.checkBox1.Checked)
@@ -1346,10 +1660,17 @@ namespace WindowsFormsApplication1
                 l_params += ",lambda=" + textBox6.Text + "\r\n";
                 l_params += ",colsample_bytree=" + textBox7.Text + "\r\n";
                 l_params += ",nthread=" + numericUpDown10.Value.ToString() + "\r\n";
-                if (checkBox3.Checked)
+                if ( checkBox3.Checked )
                 {
-                    l_params += ",n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-                    l_params += ",tree_method='gpu_hist'" + "\r\n";
+                    l_params += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+               		l_params += "		,single_precision_histogram = T\r\n";
+               		l_params += "		,gpu_id = 0\r\n";
+               		l_params += "		,tree_method = 'gpu_hist'\r\n";
+                	l_params += "		,predictor='gpu_predictor'\r\n";
+                }else
+                {
+                	l_params += "		,tree_method = 'hist'\r\n";
+                	l_params += "		,predictor='cpu_predictor'\r\n";
                 }
 
                 if (radioButton2.Checked)
@@ -1378,7 +1699,7 @@ namespace WindowsFormsApplication1
                 string xgboost_initial_cmd = "";
                 if (radioButton3.Checked)
                 {
-                    xgboost_initial_cmd += "train <- xgb_train\r\n";
+                    xgboost_initial_cmd += "train <- xgb_train_"+targetName+"\r\n";
                 }
 
                 if (use_diff == 1 || use_decompose == 1)
@@ -1387,7 +1708,7 @@ namespace WindowsFormsApplication1
                 }
                 else
                 {
-                    xgboost_initial_cmd += "y_ <- train$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
+                    xgboost_initial_cmd += "y_ <- train$'" + targetName + "'\r\n";
                 }
                 if (checkBox9.Checked && time_series_mode) xgboost_initial_cmd += "y_ <- train$target_\r\n";
 
@@ -1451,7 +1772,7 @@ namespace WindowsFormsApplication1
                 }
                 else
                 {
-                    xgboost_initial_cmd += "y_ <- test$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
+                    xgboost_initial_cmd += "y_ <- test$'" + targetName + "'\r\n";
                 }
                 if (checkBox9.Checked && time_series_mode) xgboost_initial_cmd += "y_ <- test$target_\r\n";
                 
@@ -1496,7 +1817,7 @@ namespace WindowsFormsApplication1
 		            }
 		            else
 		            {
-		                xgboost_initial_cmd += "y_ <- obs_test_step_df$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "'\r\n";
+		                xgboost_initial_cmd += "y_ <- obs_test_step_df$'" + targetName + "'\r\n";
 		            }
 		            if (checkBox9.Checked && time_series_mode) xgboost_initial_cmd += "y_ <- obs_test_step_df$target_\r\n";
 		            
@@ -1582,11 +1903,18 @@ namespace WindowsFormsApplication1
                         l_params_tmp += "   ,lambda=" + textBox6.Text + "\r\n";
                         l_params_tmp += "   ,colsample_bytree=" + textBox7.Text + "*0.8\r\n";
                         l_params_tmp += "   ,nthread=" + numericUpDown10.Value.ToString() + "\r\n";
-                        if (checkBox3.Checked)
-                        {
-                            l_params_tmp += "   ,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-                            l_params_tmp += "   ,tree_method='gpu_hist'" + "\r\n";
-                        }
+		                if ( checkBox3.Checked )
+		                {
+		                    l_params_tmp += "	#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+               				l_params_tmp += "		,single_precision_histogram = T\r\n";
+               				l_params_tmp += "		,gpu_id = 0\r\n";
+		               		l_params_tmp += "	,tree_method = 'gpu_hist'\r\n";
+		                	l_params_tmp += "	,predictor='gpu_predictor'\r\n";
+		                }else
+		                {
+		                	l_params_tmp += "	,tree_method = 'hist'\r\n";
+		                	l_params_tmp += "	,predictor='cpu_predictor'\r\n";
+		                }
 
                         if (radioButton2.Checked)
                         {
@@ -1595,11 +1923,11 @@ namespace WindowsFormsApplication1
                         l_params_tmp += "   )\r\n";
 
                         cmd2 += l_params_tmp;
-                        cmd2 += "data_mean = xgb_train\r\n";
-                        cmd2 += "data_sd = xgb_train\r\n";
-                        cmd2 += "for (i in 1:ncol(xgb_train)){ \r\n";
-                        cmd2 += "	data_mean[,i] = mean(xgb_train[,i])\r\n";
-                        cmd2 += "	data_sd[,i] = sd(xgb_train[,i])\r\n";
+                        cmd2 += "data_mean = xgb_train_"+targetName+"\r\n";
+                        cmd2 += "data_sd = xgb_train_"+targetName+"\r\n";
+                        cmd2 += "for (i in 1:ncol(xgb_train_"+targetName+")){ \r\n";
+                        cmd2 += "	data_mean[,i] = mean(xgb_train_"+targetName+"[,i])\r\n";
+                        cmd2 += "	data_sd[,i] = sd(xgb_train_"+targetName+"[,i])\r\n";
                         cmd2 += "} \r\n";
                         cmd2 += "\r\n";
                         cmd2 += "safety_factor = 1.5\r\n";
@@ -1627,15 +1955,27 @@ namespace WindowsFormsApplication1
                         cmd2 += "		,lambda=1.0\r\n";
                         cmd2 += "		,colsample_bytree=0.8*c\r\n";
                         cmd2 += "		,nthread=3\r\n";
+		                if ( checkBox3.Checked )
+		                {
+		                    cmd2 += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+               				cmd2 += "		,single_precision_histogram = T\r\n";
+               				cmd2 += "		,gpu_id = 0\r\n";
+		               		cmd2 += "		,tree_method = 'gpu_hist'\r\n";
+		                	cmd2 += "		,predictor='gpu_predictor'\r\n";
+		                }else
+		                {
+		                	cmd2 += "		,tree_method = 'hist'\r\n";
+		                	cmd2 += "		,predictor='cpu_predictor'\r\n";
+		                }
                         cmd2 += "	)\r\n";
                         */
                         cmd2 += "	\r\n";
-                        cmd2 += "	xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
+                        cmd2 += "	xgboost_tmp.model_"+targetName + " <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
                         cmd2 += "	,early_stopping_rounds = 100,\r\n";
                         cmd2 += "	params = l_params_tmp,\r\n";
                         cmd2 += "	watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat))\r\n";
                         cmd2 += "\r\n";
-                        cmd2 += "	predictions[,i] <- predict(xgboost_tmp.model,newdata = test_dmat) \r\n";
+                        cmd2 += "	predictions[,i] <- predict(xgboost_tmp.model_"+targetName + ",newdata = test_dmat) \r\n";
 
                         if (time_series_mode)
                         {
@@ -1677,8 +2017,8 @@ namespace WindowsFormsApplication1
                         cmd2 += "lo = y_mean_smooth - q*sqrt(y_delta_sd * y_delta_sd/(length(test_org$target_)-1))*safety_factor\r\n";
                         cmd2 += "\r\n";
 
-                        cmd2 += "target_max = max(xgb_train$'" + targetName + "')\r\n";
-                        cmd2 += "target_min = min(xgb_train$'" + targetName + "')\r\n";
+                        cmd2 += "target_max = max(xgb_train_"+targetName+"$'" + targetName + "')\r\n";
+                        cmd2 += "target_min = min(xgb_train_"+targetName+"$'" + targetName + "')\r\n";
                         if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                         {
                             if ( numericUpDown5.Value > 2)
@@ -1701,9 +2041,9 @@ namespace WindowsFormsApplication1
                             }
 
                             cmd2 += "\r\n";
-                            cmd2 += "interval_plt<-ggplot()\r\n";
+                            cmd2 += "interval_plt_"+targetName +"<-ggplot()\r\n";
                             cmd2 += "\r\n";
-                            cmd2 += "interval_plt <- interval_plt + geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo,ymax=up, fill='信頼区間'),alpha=0.4)+\r\n";
+                            cmd2 += "interval_plt_"+targetName +" <- interval_plt_"+targetName +" + geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo,ymax=up, fill='信頼区間'),alpha=0.4)+\r\n";
                             cmd2 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"予測\"))+\r\n";
                             if (use_geom_point == 1) cmd2 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "'"+",colour = \"予測Point\"))+\r\n";
                             cmd2 += "geom_line(aes(x=as.POSIXct(test[,1]), y=y_mean_smooth,colour =\"平均値\"))+\r\n";
@@ -1714,8 +2054,8 @@ namespace WindowsFormsApplication1
                                 cmd2 += "geom_vline(data= test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[1,1])))+\r\n";
                             }
                             cmd2 += "scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n";
-                            cmd2 += "interval_plt <- interval_plt + labs(x=\"時間\")\r\n";
-                            cmd2 += "interval_plt <- interval_plt + labs(y=\""+ targetName +"\")\r\n";
+                            cmd2 += "interval_plt_"+targetName +" <- interval_plt_"+targetName +" + labs(x=\"時間\")\r\n";
+                            cmd2 += "interval_plt_"+targetName +" <- interval_plt_"+targetName +" + labs(y=\""+ targetName +"\")\r\n";
 
                             cmd2 += "\r\n";
                         }
@@ -1750,9 +2090,9 @@ namespace WindowsFormsApplication1
                                 cmd2 += "test_ed_ <- nrow(train)+nrow(test)\r\n";
                             }
                             cmd2 += "\r\n";
-                            cmd2 += "interval_plt<-ggplot()\r\n";
+                            cmd2 += "interval_plt_"+targetName +"<-ggplot()\r\n";
                             cmd2 += "\r\n";
-                            cmd2 += "interval_plt <- interval_plt + geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo,ymax=up, fill='信頼区間'),alpha=0.4)+\r\n";
+                            cmd2 += "interval_plt_"+targetName +" <- interval_plt_"+targetName +" + geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo,ymax=up, fill='信頼区間'),alpha=0.4)+\r\n";
                             cmd2 += "geom_line(aes(x=test_st_:test_ed_, y =test$'" + targetName + "', colour = \"予測\"))+\r\n";
                             if (use_geom_point == 1) cmd2 += "geom_point(aes(x=test_st_:test_ed_,y=test$'" + targetName + "',colour = \"予測Point\"))+\r\n";
                             cmd2 += "geom_line(aes(x=test_st_:test_ed_, y=y_mean_smooth,colour =\"平均値\"))+\r\n";
@@ -1762,8 +2102,8 @@ namespace WindowsFormsApplication1
                                 cmd2 += "+\r\ngeom_line(aes(x=1:nrow(train), y=train$'" + targetName + "', colour=\"train\"))+\r\n";
                                 cmd2 += "geom_vline(data = test, linetype=\"dotdash\",aes(xintercept=as.numeric(nrow(train))))\r\n";
                             }
-                            cmd2 += "interval_plt <- interval_plt + labs(x=\"index\")\r\n";
-                            cmd2 += "interval_plt <- interval_plt + labs(y=\""+ targetName +"\")\r\n";
+                            cmd2 += "interval_plt_"+targetName +" <- interval_plt_"+targetName +" + labs(x=\"index\")\r\n";
+                            cmd2 += "interval_plt_"+targetName +" <- interval_plt_"+targetName +" + labs(y=\""+ targetName +"\")\r\n";
                             cmd2 += "\r\n";
                         }
                         cmd2 += "\r\n";
@@ -1788,11 +2128,18 @@ namespace WindowsFormsApplication1
                         l_params_tmp += "   ,lambda=" + textBox6.Text + "\r\n";
                         l_params_tmp += "   ,colsample_bytree=" + textBox7.Text + "*0.8\r\n";
                         l_params_tmp += "   ,nthread=" + numericUpDown10.Value.ToString() + "\r\n";
-                        if (checkBox3.Checked)
-                        {
-                            l_params_tmp += "   ,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-                            l_params_tmp += "   ,tree_method='gpu_hist'" + "\r\n";
-                        }
+		                if ( checkBox3.Checked )
+		                {
+		                    l_params_tmp += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+               				l_params_tmp += "		,single_precision_histogram = T\r\n";
+               				l_params_tmp += "		,gpu_id = 0\r\n";
+		               		l_params_tmp += "		,tree_method = 'gpu_hist'\r\n";
+		                	l_params_tmp += "		,predictor='gpu_predictor'\r\n";
+		                }else
+		                {
+		                	l_params_tmp += "		,tree_method = 'hist'\r\n";
+		                	l_params_tmp += "		,predictor='cpu_predictor'\r\n";
+		                }
 
                         if (radioButton2.Checked)
                         {
@@ -1834,6 +2181,18 @@ namespace WindowsFormsApplication1
                         cmd3 += "   ,lambda=1.0\r\n";
                         cmd3 += "   ,colsample_bytree=0.5 # １以下にする事で説明変数の選択が確率的になる\r\n";
                         cmd3 += "   ,nthread=3\r\n";
+		                if ( checkBox3.Checked )
+		                {
+		                    cmd3 += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+               				cmd3 += "		,single_precision_histogram = T\r\n";
+               				cmd3 += "		,gpu_id = 0\r\n";
+		               		cmd3 += "		,tree_method = 'gpu_hist'\r\n";
+		                	cmd3 += "		,predictor='gpu_predictor'\r\n";
+		                }else
+		                {
+		                	cmd3 += "		,tree_method = 'hist'\r\n";
+		                	cmd3 += "		,predictor='cpu_predictor'\r\n";
+		                }
                         cmd3 += ")\r\n";
                         */
                         cmd3 += "\r\n";
@@ -1843,17 +2202,17 @@ namespace WindowsFormsApplication1
 
                         cmd3 += "for ( i in 1:3 ){\r\n";
                         cmd3 += "   set.seed(seeds[i])\r\n";
-                        cmd3 += "   xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
+                        cmd3 += "   xgboost_tmp.model_"+targetName + " <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
                         cmd3 += "   ,early_stopping_rounds = 100,\r\n";
                         cmd3 += "   params = l_params_tmp,\r\n";
                         cmd3 += "   watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat))\r\n";
                         cmd3 += "\r\n";
-                        cmd3 += "   if(xgboost_tmp.model$best_iteration > 1 ){\r\n";
+                        cmd3 += "   if(xgboost_tmp.model_"+targetName + "$best_iteration > 1 ){\r\n";
                         cmd3 += "       break\r\n";
                         cmd3 += "   }\r\n";
                         cmd3 += "}\r\n";
                         cmd3 += "\r\n";
-                        cmd3 += "y_upper_smooth2 <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
+                        cmd3 += "y_upper_smooth2 <- predict(xgboost_tmp.model_"+targetName + ",newdata = test_dmat)\r\n";
                         if (time_series_mode)
                         {
                             cmd3 += "y_upper_smooth2<- inv_diff(test,\""+decomp_type+"\""+ ",use_log_diff, y_upper_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
@@ -1863,7 +2222,7 @@ namespace WindowsFormsApplication1
                             cmd3 += "y_upper_smooth2<-limit_cutoff(y_upper_smooth2, upper_limit, lower_limit)\r\n";
                         }
 
-                        cmd3 += "if (xgboost_tmp.model$best_iteration == 1  || y_upper_smooth2[length(y_upper_smooth2)] == Inf)\r\n";
+                        cmd3 += "if (xgboost_tmp.model_"+targetName + "$best_iteration == 1  || y_upper_smooth2[length(y_upper_smooth2)] == Inf)\r\n";
                         cmd3 += "{\r\n";
                         cmd3 += "   y_upper_smooth2 = y_upper_smooth\r\n";
                         cmd3 += "}\r\n";
@@ -1873,17 +2232,17 @@ namespace WindowsFormsApplication1
                         cmd3 += "for ( i in 1:3 ){\r\n";
                         cmd3 += "   set.seed(seeds[i])\r\n";
 
-                        cmd3 += "   xgboost_tmp.model <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
+                        cmd3 += "   xgboost_tmp.model_"+targetName + " <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 0\r\n";
                         cmd3 += "   ,early_stopping_rounds = 100,\r\n";
                         cmd3 += "   params = l_params_tmp,\r\n";
                         cmd3 += "   watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat))\r\n";
                         cmd3 += "\r\n";
-                        cmd3 += "   if(xgboost_tmp.model$best_iteration > 1 ){\r\n";
+                        cmd3 += "   if(xgboost_tmp.model_"+targetName + "$best_iteration > 1 ){\r\n";
                         cmd3 += "       break\r\n";
                         cmd3 += "   }\r\n";
                         cmd3 += "}\r\n";
                         cmd3 += "\r\n";
-                        cmd3 += "y_lower_smooth2  <- predict(xgboost_tmp.model,newdata = test_dmat)\r\n";
+                        cmd3 += "y_lower_smooth2  <- predict(xgboost_tmp.model_"+targetName + ",newdata = test_dmat)\r\n";
                         if (time_series_mode)
                         {
                             cmd3 += "y_lower_smooth2 <- inv_diff(test,\""+decomp_type+"\""+ ",use_log_diff, y_lower_smooth2 + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
@@ -1892,7 +2251,7 @@ namespace WindowsFormsApplication1
                         {
                             cmd3 += "y_lower_smooth2<-limit_cutoff(y_lower_smooth2, upper_limit, lower_limit)\r\n";
                         }
-                        cmd3 += "if (xgboost_tmp.model$best_iteration == 1  || y_lower_smooth2[length(y_lower_smooth2)] == Inf)\r\n";
+                        cmd3 += "if (xgboost_tmp.model_"+targetName + "$best_iteration == 1  || y_lower_smooth2[length(y_lower_smooth2)] == Inf)\r\n";
                         cmd3 += "{\r\n";
                         cmd3 += "   y_lower_smooth2 = y_lower_smooth\r\n";
                         cmd3 += "}\r\n";
@@ -1917,8 +2276,8 @@ namespace WindowsFormsApplication1
                         cmd3 += "lo2 = lo2 - q * sqrt(y_delta_sd * y_delta_sd / (length(test_org$target_) - 1)) * safety_factor* safety_factor\r\n";
 
                         cmd3 += "\r\n";
-                        cmd3 += "target_max = max(xgb_train$'" + targetName + "')\r\n";
-                        cmd3 += "target_min = min(xgb_train$'" + targetName + "')\r\n";
+                        cmd3 += "target_max = max(xgb_train_"+targetName+"$'" + targetName + "')\r\n";
+                        cmd3 += "target_min = min(xgb_train_"+targetName+"$'" + targetName + "')\r\n";
                         if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                         {
                             if (numericUpDown5.Value > 2)
@@ -1944,9 +2303,9 @@ namespace WindowsFormsApplication1
                                 cmd3 += "lo2 <- limit_cutoff(lo2, upper_limit, lower_limit)\r\n";
                             }
                             cmd3 += "\r\n";
-                            cmd3 += "interval_plt2<-ggplot()\r\n";
+                            cmd3 += "interval_plt2_"+targetName +"<-ggplot()\r\n";
                             cmd3 += "\r\n";
-                            cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
+                            cmd3 += "interval_plt2_"+targetName +" <- interval_plt2_"+targetName +" + \r\n";
 
                             cmd3 += "geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
                             if ( radioButton4.Checked )
@@ -1965,11 +2324,11 @@ namespace WindowsFormsApplication1
                                 cmd3 += "geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[1,1])))+\r\n";
                             }
                             cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n";
-                            cmd3 += "interval_plt2 <- interval_plt2 + labs(x=\"時間\")\r\n";
-                            cmd3 += "interval_plt2 <- interval_plt2 + labs(y=\""+ targetName +"\")\r\n";
+                            cmd3 += "interval_plt2_"+targetName +" <- interval_plt2_"+targetName +" + labs(x=\"時間\")\r\n";
+                            cmd3 += "interval_plt2_"+targetName +" <- interval_plt2_"+targetName +" + labs(y=\""+ targetName +"\")\r\n";
 
                             cmd3 += "\r\n";
-                            cmd3 += "interval_plt3 <- interval_plt + \r\n";
+                            cmd3 += "interval_plt3_"+targetName +" <- interval_plt_"+targetName +" + \r\n";
                             cmd3 += "geom_ribbon(aes(x=as.POSIXct(test[,1]),ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
                             cmd3 += "geom_line(aes(x=as.POSIXct(test[,1]), y=test$'" + targetName + "', colour=\"予測\"))+\r\n";
                             if (use_geom_point == 1) cmd3 += "geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "',colour = \"予測Point\"))+\r\n";
@@ -1981,8 +2340,8 @@ namespace WindowsFormsApplication1
                                 cmd3 += "geom_vline(data = test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[1,1])))+\r\n";
                             }
                             cmd3 += "scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n";
-                            cmd3 += "interval_plt3 <- interval_plt + labs(x=\"時間\")\r\n";
-                            cmd3 += "interval_plt3 <- interval_plt + labs(y=\""+ targetName +"\")\r\n";
+                            cmd3 += "interval_plt3_"+targetName +" <- interval_plt_"+targetName +" + labs(x=\"時間\")\r\n";
+                            cmd3 += "interval_plt3_"+targetName +" <- interval_plt_"+targetName +" + labs(y=\""+ targetName +"\")\r\n";
                        }
                         else
                         {
@@ -2013,9 +2372,9 @@ namespace WindowsFormsApplication1
                                 cmd3 += "test_st_ <- nrow(train)+1\r\n";
                                 cmd3 += "test_ed_ <- nrow(train)+nrow(test)\r\n";
                             }
-                            cmd3 += "interval_plt2<-ggplot()\r\n";
+                            cmd3 += "interval_plt2_"+targetName +"<-ggplot()\r\n";
                             cmd3 += "\r\n";
-                            cmd3 += "interval_plt2 <- interval_plt2 + \r\n";
+                            cmd3 += "interval_plt2_"+targetName +" <- interval_plt2_"+targetName +" + \r\n";
                             cmd3 += "geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
                             if ( radioButton4.Checked)
                             {
@@ -2032,11 +2391,11 @@ namespace WindowsFormsApplication1
                                 cmd3 += "+\r\ngeom_line(aes(x=1:nrow(train), y=train$'" + targetName + "', colour=\"train\"))+\r\n";
                                 cmd3 += "geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.numeric(nrow(train))))\r\n";
                             }
-                            cmd3 += "interval_plt2 <- interval_plt2 + labs(x=\"index\")\r\n";
-                            cmd3 += "interval_plt2 <- interval_plt2 + labs(y=\""+ targetName +"\")\r\n";
+                            cmd3 += "interval_plt2_"+targetName +" <- interval_plt2_"+targetName +" + labs(x=\"index\")\r\n";
+                            cmd3 += "interval_plt2_"+targetName +" <- interval_plt2_"+targetName +" + labs(y=\""+ targetName +"\")\r\n";
 
                             cmd3 += "\r\n";
-                            cmd3 += "interval_plt3 <- interval_plt + \r\n";
+                            cmd3 += "interval_plt3_"+targetName +" <- interval_plt_"+targetName +" + \r\n";
                             cmd3 += "geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)+\r\n";
                             cmd3 += "geom_line(aes(x=test_st_:test_ed_, y=test$'" + targetName + "', colour=\"予測値\"))+\r\n";
                             if (use_geom_point == 1) cmd3 += "geom_point(aes(x=test_st_:test_ed_,y=test$'" + targetName + "',colour = \"予測Point\"))+\r\n";
@@ -2047,20 +2406,189 @@ namespace WindowsFormsApplication1
                                 cmd3 += "+\r\ngeom_line(aes(x=1:norw(train), y=train$'" + targetName + "', colour=\"train\"))+\r\n";
                                 cmd3 += "geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.numeric(nrow(train))))\r\n";
                             }
-                            cmd3 += "interval_plt3 <- interval_plt3 + labs(x=\"index\")\r\n";
-                            cmd3 += "interval_plt3 <- interval_plt32 + labs(y=\""+ targetName +"\")\r\n";
+                            cmd3 += "interval_plt3_"+targetName +" <- interval_plt3_"+targetName +" + labs(x=\"index\")\r\n";
+                            cmd3 += "interval_plt3_"+targetName +" <- interval_plt3_"+targetName +" + labs(y=\""+ targetName +"\")\r\n";
                         }
                         cmd3 += "\r\n";
                     }
                 }
                 if (radioButton4.Checked )
                 {
-                    cmd += "xgb_train <- train\r\n";
-                    cmd += "saveRDS(xgb_train, file = \"xgb_train.robj\")\r\n";
+                    cmd += "xgb_train_"+targetName+" <- train\r\n";
+                    cmd += "saveRDS(xgb_train_"+targetName+", file = \"xgb_train_"+targetName+".robj\")\r\n";
                     if (radioButton4.Checked)
                     {
                         cmd += cmd2;
                         cmd += cmd3;
+                    }
+                    
+                    if ( checkBox23.Checked )
+                    {
+						cmd += "xgboost_gridSearch<- function(train, test, best_count_max=-1)\r\n";
+						cmd += "{\r\n";
+						cmd += "	previous_na_action <- options()$na.action\r\n";
+						cmd += "	options(na.action='na.pass')\r\n";
+						cmd += "\r\n";
+						cmd += "	tarin_min_size = min(nrow(train), max(200, as.integer(nrow(train)/5)))\r\n";
+						cmd += "	s1 = 1\r\n";
+						cmd += "	s2 = tarin_min_size\r\n";
+						cmd += "\r\n";
+						cmd += "	\r\n";
+						cmd += "	eta = c( 0.01, 0.05, 0.1, 0.2)\r\n";
+						cmd += "	gamma = c( 0.0 )\r\n";
+						cmd += "	alphaz = c( 0.0)\r\n";
+						cmd += "	lambda = c( 1.0 );\r\n";
+						cmd += "	colsample_bytree = c( 0.8, 0.9 )\r\n";
+						cmd += "	subsample = c(  0.9, 1.0 )\r\n";
+						cmd += "	min_child_weight = c( 1.0, 1.5, 2.0 )\r\n";
+						cmd += "	max_depth = c( 6, 8, 9, 10 )\r\n";
+						cmd += "	nrounds = c(400)\r\n";
+						cmd += "\r\n";
+						cmd += "	eval_count = 0\r\n";
+						cmd += "	best_count = 0\r\n";
+						cmd += "	best_score = 9999999\r\n";
+						cmd += "	best_params = NULL\r\n";
+						cmd += "	best_mode = NULL\r\n";
+						cmd += "	for ( eta_i in eta ){\r\n";
+						cmd += "	for ( gamma_i in gamma ){\r\n";
+						cmd += "	for ( alphaz_i in alphaz ){\r\n";
+						cmd += "	for ( lambda_i in lambda ){\r\n";
+						cmd += "	for ( colsample_bytree_i in colsample_bytree ){\r\n";
+						cmd += "	for ( subsample_i in subsample ){\r\n";
+						cmd += "	for ( min_child_weight_i in min_child_weight ){\r\n";
+						cmd += "	for ( max_depth_i in max_depth ){\r\n";
+						cmd += "	for ( nrounds_i in nrounds ){\r\n";
+						cmd += "\r\n";
+						cmd += "	for ( i in 1:10 )\r\n";
+						cmd += "	{\r\n";
+						cmd += "		s1 = as.integer(runif(1, 1, nrow(train)-tarin_min_size))\r\n";
+						cmd += "		s2 = s1 + tarin_min_size\r\n";
+						cmd += "		if ( s2 <= nrow(train)) break\r\n";
+						cmd += "		s2 = -1\r\n";
+						cmd += "	}\r\n";
+						cmd += "	if ( s2 > 1 ) {\r\n";
+						cmd += "		train_tmp = train[s1:s2,]\r\n";
+						cmd += "	}else\r\n";
+						cmd += "	{\r\n";
+						cmd += "		train_tmp = train[1:tarin_min_size,]\r\n";
+						cmd += "	}\r\n";
+						cmd += "	\r\n";
+						cmd += "	train_tmp_mx<-sparse.model.matrix("+formuler+ ", data = train_tmp)\r\n";
+						cmd += "	train_tmp_dmat <- xgb.DMatrix(train_tmp_mx, label = train_tmp$target_";
+						if (comboBox4.Text != "")
+						{
+						    cmd += ",weight = train$'" + comboBox4.Text + "'";
+						}
+						else
+						{
+						    if (add_enevt_data == 1)
+						    {
+						        cmd += ",weight = train$event";
+						    }
+						}
+						cmd += ")\r\n";
+						cmd += "\r\n";
+						cmd += "\r\n";
+                        cmd += "	l_params= list(booster=" + comboBox1.Text+"\r\n" ;
+						cmd += "	,objective=" + comboBox2.Text + "\r\n";
+                        if (comboBox3.Text != "default")
+                        {
+                            cmd += ",eval_metric=" + comboBox3.Text + "\r\n";
+                        }
+                        cmd += "	,eta=eta_i\r\n";
+						cmd += "	,gamma=gamma_i\r\n";
+						cmd += "	,min_child_weight=min_child_weight_i\r\n";
+						cmd += "	,subsample=subsample_i\r\n";
+						cmd += "	,max_depth=max_depth_i\r\n";
+						cmd += "	,alpha=alphaz_i\r\n";
+						cmd += "	,lambda=lambda_i\r\n";
+						cmd += "	,colsample_bytree=colsample_bytree_i\r\n";
+						cmd += "	,nthread=3\r\n";
+                        if (checkBox3.Checked)
+                        {
+                            cmd += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+                            cmd += "		,single_precision_histogram = T\r\n";
+                            cmd += "		,gpu_id = 0\r\n";
+                            cmd += "		,tree_method = 'gpu_hist'\r\n";
+                            cmd += "		,predictor='gpu_predictor'\r\n";
+                        }
+                        else
+                        {
+                            cmd += "		,tree_method = 'hist'\r\n";
+                            cmd += "		,predictor='cpu_predictor'\r\n";
+                        }
+
+                        if (radioButton2.Checked)
+                        {
+                            cmd += ",num_class=" + numericUpDown7.Text + "\r\n";
+                        }
+                        cmd += ")\r\n";
+                        cmd += "\r\n";
+						cmd += "	options(na.action=previous_na_action)\r\n";
+						cmd += "\r\n";
+						cmd += "	model <- xgb.train(data = train_tmp_dmat,nrounds = nrounds_i,verbose = 0, # 繰り返し過程を表示する\r\n";
+						cmd += "	,early_stopping_rounds = 100,params = l_params,watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat))\r\n";
+						cmd += "\r\n";
+						cmd += "	if (model$best_score < best_score)\r\n";
+						cmd += "	{\r\n";
+						cmd += "		best_count = best_count +1\r\n";
+						cmd += "		best_params = l_params\r\n";
+						cmd += "		best_score = model$best_score\r\n";
+						cmd += "		best_mode = model\r\n";
+						cmd += "		#print(best_params)\r\n";
+						cmd += "		#print(best_score)\r\n";
+						cmd += "		flush.console()\r\n";
+						cmd += "\r\n";
+						cmd += "	}\r\n";
+						cmd += "	if ( best_count_max >0 && best_count > best_count_max ) break\r\n";
+						cmd += "	eval_count = eval_count + 1\r\n";
+						cmd += "	cat(eval_count)\r\n";
+						cmd += "	cat(\" score:\")\r\n";
+						cmd += "	cat(model$best_score)\r\n";
+						cmd += "	cat(\" best_score:\")\r\n";
+						cmd += "	cat(best_score)\r\n";
+						cmd += "	cat(\"\n\")\r\n";
+						cmd += "\r\n";
+						cmd += "	flush.console()\r\n";
+						cmd += "	\r\n";
+						cmd += "	}}}}}}}}}\r\n";
+						cmd += "	return( list(best_params, best_mode))\r\n";
+						cmd += "}\r\n";
+						cmd += "#print(best_params)\r\n";
+						cmd += "\r\n";
+						cmd += "model_inf <- xgboost_gridSearch(train, test, best_count_max=-1)\r\n";
+						cmd += "l_params <- model_inf[[1]]\r\n";
+						cmd += "xgboost.model_"+targetName + " <- model_inf[[2]]\r\n";
+						cmd += "sink(file = \"xgboost_gridSearch.options\")\r\n";
+						
+						cmd += "cat(\"eta,\")\r\n";
+						cmd += "cat(l_params$eta)\r\n";
+						cmd += "cat(\"\\n\")\r\n";
+						
+						cmd += "cat(\"min_child_weight,\")\r\n";
+						cmd += "cat(l_params$min_child_weight)\r\n";
+						cmd += "cat(\"\\n\")\r\n";
+						
+						cmd += "cat(\"subsample,\")\r\n";
+						cmd += "cat(l_params$subsample)\r\n";
+						cmd += "cat(\"\\n\")\r\n";
+						
+						cmd += "cat(\"max_depth,\")\r\n";
+						cmd += "cat(l_params$max_depth)\r\n";
+						cmd += "cat(\"\\n\")\r\n";
+						
+						cmd += "cat(\"alpha,\")\r\n";
+						cmd += "cat(l_params$alpha)\r\n";
+						cmd += "cat(\"\\n\")\r\n";
+						
+						cmd += "cat(\"lambda,\")\r\n";
+						cmd += "cat(l_params$lambda)\r\n";
+						cmd += "cat(\"\\n\")\r\n";
+						
+						cmd += "cat(\"colsample_bytree,\")\r\n";
+						cmd += "cat(l_params$colsample_bytree)\r\n";
+						cmd += "cat(\"\\n\")\r\n";						
+						cmd += "sink()\r\n";
                     }
                     if (checkBox2.Checked && !time_series_mode)
                     {
@@ -2071,15 +2599,14 @@ namespace WindowsFormsApplication1
                         cmd += ",params = l_params";
                         cmd += ")\r\n";
 
-                        cmd += "xgboost.model <- xgb.train(\r\n";
+                        cmd += "xgboost.model_"+targetName + " <- xgb.train(\r\n";
                         cmd += "data = train_dmat,";
                         cmd += "nrounds = xgb_cv$best_iteration,";
                         cmd += "params = l_params)\r\n";
                     }
                     else
                     {
-
-                        cmd += "xgboost.model <- xgb.train(data = train_dmat";
+                        cmd += "xgboost.model_"+targetName + " <- xgb.train(data = train_dmat";
                         cmd += ",nrounds = " + numericUpDown1.Value.ToString();
                         cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
                         cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
@@ -2087,33 +2614,35 @@ namespace WindowsFormsApplication1
                         cmd += ",watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat)";
                         cmd += ")\r\n";
                     }
+                    cmd += "saveRDS(xgboost.model_"+targetName + ", file = \"xgboost.model_"+targetName+".robj\")\r\n";
+
                     if (radioButton2.Checked)
                     {
-                        //cmd += "imp_<-xgb.importance(names(df_),model=xgboost.model)\r\n";
-                        cmd += "#imp_<-xgb.importance(model=xgboost.model)\r\n";
+                        //cmd += "imp_<-xgb.importance(names(df_),model=xgboost.model_"+targetName + ")\r\n";
+                        cmd += "#imp_<-xgb.importance(model=xgboost.model_"+targetName + ")\r\n";
                     }
                     if (radioButton1.Checked)
                     {
-                        cmd += "#imp_<-xgb.importance(model=xgboost.model)\r\n";
+                        cmd += "#imp_<-xgb.importance(model=xgboost.model_"+targetName + ")\r\n";
                     }
                     if (radioButton2.Checked)
                     {
-                        cmd += "explainer <-explain_xgboost(xgboost.model, data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
+                        cmd += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
 	                    cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\")\r\n";
                     }
                     else
                     {
-                        cmd += "explainer <-explain_xgboost(xgboost.model, data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+                        cmd += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
 	                    cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square)\r\n";
                     }
                    
                     if ( radioButton1.Checked && force_plot != 0 )
                     {
-                        cmd += "shap_values <- shap.values(xgb_model = xgboost.model, X_train = train_dmat)\r\n";
+                        cmd += "shap_values <- shap.values(xgb_model = xgboost.model_"+targetName + ", X_train = train_dmat)\r\n";
 						cmd += "plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score,top_n = 6, n_groups = 1)\r\n";
 						cmd += "shap.plot.force_plot(plot_data, zoom_in_location=1)\r\n";
-						cmd += "train_force_plot_plt <- shap.plot.force_plot_bygroup(plot_data)\r\n";
-						cmd += "ggsave(\"xgboost_train_force_plot.png\", train_force_plot_plt, dpi = 100, width = 6.4*3*"+form1._setting.numericUpDown4.Value.ToString()+", height = 4.8*1*"+form1._setting.numericUpDown4.Value.ToString()+", limitsize = FALSE)\r\n";
+						cmd += "train_force_plot_plt_"+targetName + " <- shap.plot.force_plot_bygroup(plot_data)\r\n";
+						cmd += "ggsave(\"xgboost_train_force_plot_"+targetName + ".png\", train_force_plot_plt_"+targetName + ", dpi = 100, width = 6.4*3*"+form1._setting.numericUpDown4.Value.ToString()+", height = 4.8*1*"+form1._setting.numericUpDown4.Value.ToString()+", limitsize = FALSE)\r\n";
                     }
                     
                     if (dup_var)
@@ -2123,7 +2652,7 @@ namespace WindowsFormsApplication1
 
                     if (radioButton4.Checked)
                     {
-                        cmd += "xgb.dump(xgboost.model, \"xgboost.model.json\", with.stats = TRUE, dump_format =\"json\")\r\n";
+                        cmd += "xgb.dump(xgboost.model_"+targetName + ", \"xgboost.model_"+targetName + ".json\", with.stats = TRUE, dump_format =\"json\")\r\n";
                     }
 
                     anomaly_det = "";
@@ -2132,11 +2661,11 @@ namespace WindowsFormsApplication1
                     if ( eval == 1)
                     {
                         anomaly_det += "df_tmp <- rbind(train, test)\r\n";
-                        anomaly_det += "anomaly_det <- anomaly_DetectionTs(df_tmp, \"" + targetName + "\", df_tmp[,1][nrow(train)+1], df_tmp[,1][nrow(train)+nrow(test_org)])\r\n";
+                        anomaly_det += "anomaly_det_"+ targetName+" < - anomaly_DetectionTs(df_tmp, \"" + targetName + "\", df_tmp[,1][nrow(train)+1], df_tmp[,1][nrow(train)+nrow(test_org)])\r\n";
                     }
                     else
                     {
-                        anomaly_det += "anomaly_det <- anomaly_DetectionTs(train, \"" + targetName + "\", train[,1][nrow(train)+1], 0)\r\n";
+                        anomaly_det += "anomaly_det_" + targetName + " <- anomaly_DetectionTs(train, \"" + targetName + "\", train[,1][nrow(train)+1], 0)\r\n";
                     }
                     anomaly_det += "\r\n";
                     anomaly_det += "\r\n";
@@ -2161,6 +2690,10 @@ namespace WindowsFormsApplication1
                     {
                         form1.FileDelete("summary.txt");
                     }
+                    if (System.IO.File.Exists("xgboost_gridSearch.options"))
+                    {
+                        form1.FileDelete("xgboost_gridSearch.options");
+                    }
                     file = "tmp_xgboost.R";
 
                     try
@@ -2176,7 +2709,7 @@ namespace WindowsFormsApplication1
                             sw.Write("sink()\r\n");
 
                             {
-                                sw.Write("#png(\"tmp_xgboost.png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
+                                sw.Write("#png(\"tmp_xgboost_"+targetName + ".png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                                 sw.Write("#par(mfrow=c(1,1),lwd=2)\r\n");
 
                                 sw.Write("#xgb.plot.importance(imp_)\r\n");
@@ -2184,78 +2717,78 @@ namespace WindowsFormsApplication1
                                 sw.Write("#dev.off()\r\n\r\n");
 
                                 sw.Write("#plt_<-xgb.ggplot.importance(imp_, top_n = 6, measure = NULL, rel_to_first = F)\r\n");
-                                sw.Write("plt_<-plot(imp_)\r\n");
+                                sw.Write("plt__"+targetName +"<-plot(imp_)\r\n");
 
-                                sw.Write("ggsave(\"xgboost_importance.png\", plt_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + Math.Max(1, lag/10) + "*" + form1._setting.numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n");
+                                sw.Write("ggsave(\"xgboost_importance_"+targetName + ".png\", plt__"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + Math.Max(1, lag/10) + "*" + form1._setting.numericUpDown4.Value.ToString() + ", limitsize = FALSE)\r\n");
                             }
                             if (use_AnomalyDetectionTs == 1)
                             {
-                                sw.Write("ggsave(filename = \"anomaly_det.png\", plot = anomaly_det[[3]], dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                sw.Write("ggsave(filename = \"anomaly_det_"+targetName + ".png\", plot = anomaly_det_"+targetName +"[[3]], dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                             }
                             if ((checkBox6.Checked || checkBox7.Checked )&& radioButton1.Checked)
                             {
                                 if (checkBox6.Checked && !checkBox7.Checked)
                                 {
-                                    sw.Write("if (file.exists(\"tmp_xgboost2.png\")){\r\n");
-                                    sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
+                                    sw.Write("if (file.exists(\"tmp_xgboost2_"+targetName + ".png\")){\r\n");
+                                    sw.Write("  file.remove(\"tmp_xgboost2_"+targetName + ".png\")\r\n");
                                     sw.Write("}\r\n");
-                                    sw.Write("ggsave(filename = \"interval_plt.png\", plot = interval_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                    sw.Write("ggsave(filename = \"interval_plt_"+targetName + ".png\", plot = interval_plt_"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
 
 
                                     int nrow2 = 1;
                                     if (use_AnomalyDetectionTs == 1)
                                     {
                                         nrow2 = 2;
-                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, anomaly_det[[3]], nrow = 3)\r\n");
+                                        sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(plt__"+targetName +", interval_plt_"+targetName +", anomaly_det_"+targetName +"[[3]], nrow = 3)\r\n");
                                     }
                                     else
                                     {
                                         nrow2 = 3;
-                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, nrow = 2)\r\n");
+                                        sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(plt_"+targetName +", interval_plt"+targetName +", nrow = 2)\r\n");
                                     }
-                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2_"+targetName + ".png\", plot = p__"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                                 }
                                 if (!checkBox6.Checked && checkBox7.Checked)
                                 {
-                                    sw.Write("if (file.exists(\"tmp_xgboost2.png\")){\r\n");
-                                    sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
+                                    sw.Write("if (file.exists(\"tmp_xgboost2_"+targetName + ".png\")){\r\n");
+                                    sw.Write("  file.remove(\"tmp_xgboost2_"+targetName + ".png\")\r\n");
                                     sw.Write("}\r\n");
-                                    sw.Write("ggsave(filename = \"interval_plt2.png\", plot = interval_plt2, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                    sw.Write("ggsave(filename = \"interval_plt2_"+targetName + ".png\", plot = interval_plt2_"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
 
 
                                     int nrow2 = 1;
                                     if (use_AnomalyDetectionTs == 1)
                                     {
                                         nrow2 = 3;
-                                        sw.Write("if (!is.null(anomaly_det[[3]])) ");
-                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, anomaly_det[[3]], nrow = 3)\r\n");
+                                        sw.Write("if (!is.null(anomaly_det_"+targetName +"[[3]])) ");
+                                        sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(plt__"+targetName +", interval_plt2_"+targetName +", anomaly_det_"+targetName +"[[3]], nrow = 3)\r\n");
                                     }
                                     else
                                     {
                                         nrow2 = 2;
-                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt2, nrow = 2)\r\n");
+                                        sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(plt__"+targetName +", interval_plt2_"+targetName +", nrow = 2)\r\n");
                                     }
-                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2_"+targetName + ".png\", plot = p__"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                                 }
                                 if (checkBox6.Checked && checkBox7.Checked)
                                 {
-                                    sw.Write("if (file.exists(\"tmp_xgboost2.png\")){\r\n");
-                                    sw.Write("  file.remove(\"tmp_xgboost2.png\")\r\n");
+                                    sw.Write("if (file.exists(\"tmp_xgboost2_"+targetName + ".png\")){\r\n");
+                                    sw.Write("  file.remove(\"tmp_xgboost2_"+targetName + ".png\")\r\n");
                                     sw.Write("}\r\n");
-                                    sw.Write("ggsave(filename = \"interval_plt3.png\", plot = interval_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                    sw.Write("ggsave(filename = \"interval_plt3_"+targetName + ".png\", plot = interval_plt_"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                                     
                                     int nrow2 = 1;
                                     if (use_AnomalyDetectionTs == 1)
                                     {
                                         nrow2 = 4;
-                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, interval_plt2, anomaly_det[[3]], nrow = 4)\r\n");
+                                        sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(plt__"+targetName +", interval_plt_"+targetName +", interval_plt2_"+targetName +", anomaly_det_"+targetName +"[[3]], nrow = 4)\r\n");
                                     }
                                     else
                                     {
                                         nrow2 = 3;
-                                        sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt, interval_plt2, nrow = 3)\r\n");
+                                        sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(plt__"+targetName +", interval_plt_"+targetName +", interval_plt2_"+targetName +", nrow = 3)\r\n");
                                     }
-                                    sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                    sw.Write("ggsave(filename = \"tmp_xgboost2_"+targetName + ".png\", plot = p__"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                                 }
                             }
                             else
@@ -2266,46 +2799,46 @@ namespace WindowsFormsApplication1
                                 {
                                     view_data = "train";
                                 }
-                                cmd_tmp += "predict_tmp <- predict(xgboost.model,newdata = "+ view_data+"_dmat)\r\n";
+                                cmd_tmp += "predict_tmp <- predict(xgboost.model_"+targetName + ",newdata = "+ view_data+"_dmat)\r\n";
 
                                 if (time_series_mode)
                                 {
                                     cmd_tmp += "predict_tmp<- inv_diff(" + view_data + ",\""+decomp_type+"\""+",use_log_diff, predict_tmp + " + view_data + "$trend, " + view_data + "$" + targetName + "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
                                 }
-                                cmd_tmp += "interval_plt4<-ggplot()\r\n";
+                                cmd_tmp += "interval_plt4_"+targetName +"<-ggplot()\r\n";
 
                                 if (exist_time_axis == 1 && checkBox8.Checked)
                                 {
-                                    cmd_tmp += "interval_plt4 <- interval_plt4 + geom_line(aes(x=as.POSIXct(" + view_data + "[,1]), y =" + view_data + "$'" + targetName + "', colour = \"観測値\"))+\r\n";
+                                    cmd_tmp += "interval_plt4_"+targetName +" <- interval_plt4_"+targetName +" + geom_line(aes(x=as.POSIXct(" + view_data + "[,1]), y =" + view_data + "$'" + targetName + "', colour = \"観測値\"))+\r\n";
                                     if (use_geom_point == 1) cmd_tmp += "geom_point(aes(x=as.POSIXct("+ view_data+"[,1]),y=" + view_data + "$'" + targetName + "',colour = \"観測値Point\"))+\r\n";
                                     cmd_tmp += "geom_line(aes(x=as.POSIXct(" + view_data + "[,1]), y=predict_tmp,colour =\"予測値\"))";
                                     if (use_geom_point == 1) cmd_tmp += "+ geom_point(aes(x=as.POSIXct(" + view_data + "[,1]),y=predict_tmp,colour = \"予測値Point\"))\r\n";
-	                            	cmd_tmp += "\r\n interval_plt4 <- interval_plt4 + labs(x=\"時間\")\r\n";
-	                            	cmd_tmp += "interval_plt4 <- interval_plt4 + labs(y=\""+ targetName +"\")\r\n";
+	                            	cmd_tmp += "\r\n interval_plt4_"+targetName +" <- interval_plt4_"+targetName +" + labs(x=\"時間\")\r\n";
+	                            	cmd_tmp += "interval_plt4_"+targetName +" <- interval_plt4_"+targetName +" + labs(y=\""+ targetName +"\")\r\n";
                                 }else
                                 {
-                                    cmd_tmp += "interval_plt4 <- interval_plt4 + geom_line(aes(x=1:length(" + view_data + "$'" + targetName + "'), y =" + view_data + "$'" + targetName + "', colour = \"観測値\"))+\r\n";
+                                    cmd_tmp += "interval_plt4_"+targetName +" <- interval_plt4_"+targetName +" + geom_line(aes(x=1:length(" + view_data + "$'" + targetName + "'), y =" + view_data + "$'" + targetName + "', colour = \"観測値\"))+\r\n";
                                     if (use_geom_point == 1) cmd_tmp += "geom_point(aes(x=1:length(" + view_data + "$target_),y=" + view_data + "$'" + targetName + "',colour = \"観測値Point\"))";
                                     cmd_tmp += "geom_line(aes(x=1:length(" + view_data + "$target_), y=predict_tmp,colour =\"予測値\"))";
                                     if (use_geom_point == 1) cmd_tmp += "+ geom_point(aes(x=1:length(" + view_data + "$target_),y=predict_tmp,colour = \"予測値Point\"))\r\n";
-	                            	cmd_tmp += "\r\n interval_plt4 <- interval_plt4 + labs(x=\"index\")\r\n";
-	                            	cmd_tmp += "interval_plt4 <- interval_plt4 + labs(y=\""+ targetName +"\")\r\n";
+	                            	cmd_tmp += "\r\n interval_plt4_"+targetName +" <- interval_plt4_"+targetName +" + labs(x=\"index\")\r\n";
+	                            	cmd_tmp += "interval_plt4_"+targetName +" <- interval_plt4_"+targetName +" + labs(y=\""+ targetName +"\")\r\n";
                                 }
                                 sw.Write(cmd_tmp);
-                                sw.Write("\r\nggsave(filename = \"interval_plt4.png\", plot = interval_plt4, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                sw.Write("\r\nggsave(filename = \"interval_plt4_"+targetName + ".png\", plot = interval_plt4_"+targetName + ", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
 
                                 int nrow2 = 1;
                                 if (use_AnomalyDetectionTs == 1)
                                 {
                                     nrow2 = 2;
-                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt4, anomaly_det[[3]], nrow = 3)\r\n");
+                                    sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(plt__"+targetName +", interval_plt4_"+targetName +", anomaly_det_"+targetName +"[[3]], nrow = 3)\r\n");
                                 }
                                 else
                                 {
                                     nrow2 = 3;
-                                    sw.Write("p_<-gridExtra::grid.arrange(plt_, interval_plt4, nrow = 2)\r\n");
+                                    sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(plt__"+targetName +", interval_plt4_"+targetName +", nrow = 2)\r\n");
                                 }
-                                sw.Write("ggsave(filename = \"tmp_xgboost2.png\", plot = p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2+"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                sw.Write("ggsave(filename = \"tmp_xgboost2_"+targetName + ".png\", plot = p__"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2+"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
                             }
                             sw.Write("\r\n");
                         }
@@ -2325,11 +2858,11 @@ namespace WindowsFormsApplication1
                     explain += "#data <- as.matrix(createDummyFeatures(test[, -colidx]))\r\n";
                     if (radioButton2.Checked)
                     {
-                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
+                        explain += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
                     }
                     else
                     {
-                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+                        explain += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
                     }
 
                     label27.Text = string.Format("{0:D4}/{0:D4}", 1, explain_num);
@@ -2356,19 +2889,19 @@ namespace WindowsFormsApplication1
                         
 	                    if (radioButton2.Checked)
 	                    {
-	                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
+	                        explain += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
 	                    }
 	                    else
 	                    {
-	                        explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+	                        explain += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
 	                    }
-                        //explain += "explainer <-explain_xgboost(xgboost.model, data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+                        //explain += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = test_mx, test$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
                         explain += "\r\n";
                         explain += "foreach(x = seq(1, "+ explain_num+"), .export =c('ggplot', 'predict_parts', 'ggsave')) %dopar% {\r\n";
                         explain += "	predict_parts_plt = predict_parts(explainer, test_mx[x,, drop = FALSE])\r\n";
                         explain += "	plt_ <-   plot(predict_parts_plt)\r\n";
 
-                        string png_file = Form1.curDir + string.Format("\\explain_predict\\tmp_xgboost_predict_parts");
+                        string png_file = Form1.curDir + string.Format("\\explain_predict\\tmp_xgboost_predict_parts_"+targetName + "");
                         png_file = png_file.Replace("\\", "/").Replace("//", "/");
                         explain += "	pngfile = paste("+"\"" + png_file + "\",x, sep=\"\")\r\n";
                         explain += "	pngfile = paste( pngfile, \".png\", sep=\"\")\r\n";
@@ -2384,7 +2917,7 @@ namespace WindowsFormsApplication1
                         for (int ii = 0; ii < explain_num; ii++)
                         {
                             explain += string.Format("predict_parts_plt = predict_parts(explainer, test_mx[{1},, drop = FALSE])\r\n");
-                            string png_file = Form1.curDir + string.Format("\\explain_predict\\tmp_xgboost_predict_parts{0}.png", ii + 1);
+                            string png_file = Form1.curDir + string.Format("\\explain_predict\\tmp_xgboost_predict_parts_"+targetName + "{0}.png", ii + 1);
                             png_file = png_file.Replace("\\", "/").Replace("//", "/");
 
 
@@ -2403,7 +2936,7 @@ namespace WindowsFormsApplication1
                     else
                     {
                         //explain += "plt_<-plot(model_performance(explainer, label=\"誤差\"),geom = \"histogram\")\r\n";
-                        //explain += "ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = plt_)\r\n";
+                        //explain += "ggsave(filename = \"tmp_xgboost_model_performance_"+targetName + ".png\", plot = plt_)\r\n";
                     }
                     if (radioButton2.Checked)
                     {
@@ -2412,18 +2945,18 @@ namespace WindowsFormsApplication1
                     {
                     	explain += "plt_<-plot(feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square))\r\n";
                     }
-                    explain += "ggsave(filename = \"tmp_xgboost_feature_importance.png\", plot = plt_, limitsize = FALSE)\r\n";
+                    explain += "ggsave(filename = \"tmp_xgboost_feature_importance_"+targetName + ".png\", plot = plt_, limitsize = FALSE)\r\n";
 
 					
 					string predict_force_plot_cmd = "";
                     if ( radioButton1.Checked && force_plot != 0 )
                     {
                     	predict_force_plot_cmd += "\r\n\r\n";
-                        predict_force_plot_cmd += "shap_values <- shap.values(xgb_model = xgboost.model, X_train = test_dmat)\r\n";
+                        predict_force_plot_cmd += "shap_values <- shap.values(xgb_model = xgboost.model_"+targetName + ", X_train = test_dmat)\r\n";
 						predict_force_plot_cmd += "plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score,top_n = 6, n_groups = 1)\r\n";
 						predict_force_plot_cmd += "shap.plot.force_plot(plot_data, zoom_in_location=1)\r\n";
-						predict_force_plot_cmd += "predict_force_plot_plt <- shap.plot.force_plot_bygroup(plot_data)\r\n";
-						predict_force_plot_cmd += "ggsave(\"xgboost_predict_force_plot.png\", predict_force_plot_plt, dpi = 100, width = 6.4*3*"+form1._setting.numericUpDown4.Value.ToString()+", height = 4.8*1*"+form1._setting.numericUpDown4.Value.ToString()+", limitsize = FALSE)\r\n";
+						predict_force_plot_cmd += "predict_force_plot_plt_"+targetName +" <- shap.plot.force_plot_bygroup(plot_data)\r\n";
+						predict_force_plot_cmd += "ggsave(\"xgboost_predict_force_plot_"+targetName + ".png\", predict_force_plot_plt_"+targetName +", dpi = 100, width = 6.4*3*"+form1._setting.numericUpDown4.Value.ToString()+", height = 4.8*1*"+form1._setting.numericUpDown4.Value.ToString()+", limitsize = FALSE)\r\n";
                     	predict_force_plot_cmd += "\r\n\r\n";
                     }
 
@@ -2498,14 +3031,14 @@ namespace WindowsFormsApplication1
                             }
                         }
                         forecast_extension += ")\r\n";
-                        forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
 						forecast_extension += "predict_y_org <- predict_y\r\n";
                         forecast_extension += "predict_y<- inv_diff(test,\""+decomp_type+"\""+ ",use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=textBox10.Text)\r\n";
 
                     }
                     forecast_extension += "\r\n";
 
-                    forecast_extension += "predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                    forecast_extension += "predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
                     //if (use_diff == 1 || use_decompose == 1)
                     {
                         if (time_series_mode)
@@ -2523,7 +3056,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = zz_tmp, colour = \"org2\"))+\r\n";
                             forecast_extension += "geom_line(aes(x = (1:length(test$target_)), y = predict_y, colour = \"pred\"))\r\n";
                             forecast_extension += "debug_plt\r\n";
-                            forecast_extension += "ggsave(file = \"tmp_xgboost_debug1.png\", debug_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
+                            forecast_extension += "ggsave(file = \"tmp_xgboost_debug1_"+targetName + ".png\", debug_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                         }
 
                         forecast_extension += "\r\n";
@@ -2911,7 +3444,7 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        )\r\n";
                         forecast_extension += "\r\n";
 
-                        for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                        //for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                         {
                             for (int j = start_lag; j <= lag; j++)
                             {
@@ -3319,6 +3852,7 @@ namespace WindowsFormsApplication1
                             }
                         }
 
+
                         //forecast_extension += "		id = -1\r\n";
                         //forecast_extension += "		d_min = 9999999\r\n";
                         //forecast_extension += "		for ( kk in 1:nrow(train) ){\r\n";
@@ -3358,14 +3892,14 @@ namespace WindowsFormsApplication1
                         forecast_extension += "	    \r\n";
                         forecast_extension += "        #testデータ区間を予測\r\n";
                         forecast_extension += "        if ( fast_predict == 1){\r\n";
-                        forecast_extension += "              y<- predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "              y<- predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
                         forecast_extension += "              for ( i in 1:(length(y)-1)){\r\n";
                         forecast_extension += "                  predict_y[(nrow(test_sv)-"+lag +")-1+i] = y[i]\r\n";
                         forecast_extension += "              }\r\n";
                         forecast_extension += "              predict_y<-c(predict_y,y[length(y)])\r\n";
                         forecast_extension += "              test <- test_sv\r\n";
                         forecast_extension += "        } else {\r\n";
-                        forecast_extension += "             predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "             predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
                         forecast_extension += "        }\r\n";
                         forecast_extension += "        predict_y_org <- predict_y\r\n";
 
@@ -3439,7 +3973,7 @@ forecast_extension += "	            plts<-gridExtra::grid.arrange(plt1, plt4, nr
 forecast_extension += "	        }\r\n";
 forecast_extension += "         tryCatch({\r\n";
 forecast_extension += "	            plts\r\n";
-forecast_extension += "	            ggsave(file = paste(paste(\"ts_debug_plot/tmp\", t_step, sep=\"\"), \".png\", sep=\"\"), plts, dpi = 120, width = 6.4*4*1, height = 3*4.8*1, limitsize = FALSE)\r\n";
+forecast_extension += "	            ggsave(file = paste(paste(\"ts_debug_plot/tmp_"+targetName + "\", t_step, sep=\"\"), \".png\", sep=\"\"), plts, dpi = 120, width = 6.4*4*1, height = 3*4.8*1, limitsize = FALSE)\r\n";
 forecast_extension += "         },\r\n";
 forecast_extension += "         error = function(e) {\r\n";
 forecast_extension += "            sink()\r\n";
@@ -3451,7 +3985,7 @@ forecast_extension += "\r\n";
 
 forecast_extension += "	    if ( debug_plotting == 2 ){\r\n";
 forecast_extension += "         tryCatch({\r\n";
-forecast_extension += "             png(paste(paste(\"ts_debug_plot/tmp\", t_step, sep=\"\"), \".png\", sep=\"\"), width = 100*6.4*4*1, height = 100*3*4.8*1)\r\n";
+forecast_extension += "             png(paste(paste(\"ts_debug_plot/tmp_"+targetName + "\", t_step, sep=\"\"), \".png\", sep=\"\"), width = 100*6.4*4*1, height = 100*3*4.8*1)\r\n";
 forecast_extension += "	            plot_col = 1\r\n";
 forecast_extension += "	            if ( !is.null(test$seasonal) ) plot_col = plot_col + 1\r\n";
 forecast_extension += "	            if ( !is.null(test$deseasonal) ) plot_col = plot_col + 1\r\n";
@@ -3543,7 +4077,7 @@ forecast_extension += "	    }\r\n";
                             }
                         }
                         forecast_extension += "        )\r\n";
-                        forecast_extension += "    predict_y<-predict( object=xgboost.model, newdata=test_dmat)\r\n";
+                        forecast_extension += "    predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
                         forecast_extension += "    predict_y_org <- predict_y\r\n";
 
                         //if (use_diff == 1 || use_decompose == 1)
@@ -3560,10 +4094,10 @@ forecast_extension += "	    }\r\n";
                         forecast_extension += "    test$'" + targetName + "'[nrow(test_org):nrow(test)] <- predict_y[nrow(test_org):nrow(test)]\r\n\r\n";
                         forecast_extension += "}\r\n";
 
-                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"seasonal\", \"seasonal2.png\")\r\n";
-                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"deseasonal\", \"deseasonal2.png\")\r\n";
-                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"trend\", \"trend2.png\")\r\n";
-                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, predict.y, \"" + targetName +"\", \"forecast_plot.png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"seasonal\", \"seasonal2_"+targetName + ".png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"deseasonal\", \"deseasonal2_"+targetName + ".png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, NULL, \"trend\", \"trend2_"+targetName + ".png\")\r\n";
+                        forecast_extension += "forecast_debug_plot(obs_test_step, train, test, predict.y, \"" + targetName +"\", \"forecast_plot_"+targetName + ".png\")\r\n";
                         forecast_extension += "return(list(predict_y, predict.y, test, test_dmat, obs_test_step))\r\n";
                         forecast_extension += "#test<- test[-length(test$target_)]\r\n";
                     }else
@@ -3677,8 +4211,8 @@ forecast_extension += "	    }\r\n";
                     {
                     	cmd += "predict.y <- as.data.frame(ifelse(predict.y[,1] > as.numeric("+ textBox12.Text +"),as.numeric("+textBox12.Text+"),predict.y[,1]))\r\n"; 
                     	cmd += "predict.y <- as.data.frame(ifelse(predict.y[,1] < as.numeric("+ textBox13.Text +"),as.numeric("+textBox13.Text+"),predict.y[,1]))\r\n"; 
-                    	cmd += "colnames(predict.y)<- c(\"predict\")\r\n";
 					}
+                    cmd += "colnames(predict.y)<- c(\"predict\")\r\n";
 					
                     cmd += "output_tmp <- cbind(test, predict.y)\r\n";
                     if (checkBox6.Checked || checkBox7.Checked)
@@ -3690,7 +4224,7 @@ forecast_extension += "	    }\r\n";
                         cmd += "tmp2 <- cbind(lo2, up2)\r\n";
                         cmd += "colnames(tmp)<- c(\"lower2_interval\", \"upper2_interval\")\r\n";
                         cmd += "output_tmp <- cbind(output_tmp, tmp)\r\n";
-                        cmd += "write.csv(output_tmp, \"predict_interval.csv\", row.names =F)\r\n";
+                        cmd += "write.csv(output_tmp, \"predict_interval_"+targetName + ".csv\", row.names =F)\r\n";
                     }
 
 
@@ -3709,11 +4243,11 @@ forecast_extension += "	    }\r\n";
                     anomaly_det += "\r\n";
                     if (eval == 1) 
                     {
-                        anomaly_det += "anomaly_det <- anomaly_DetectionTs(df_tmp, \"" + targetName + "\", df_tmp[,1][nrow(train)+1], df_tmp[,1][nrow(train)+nrow(test_org)])\r\n";
+                        anomaly_det += "anomaly_det_"+targetName +" <- anomaly_DetectionTs(df_tmp, \"" + targetName + "\", df_tmp[,1][nrow(train)+1], df_tmp[,1][nrow(train)+nrow(test_org)])\r\n";
                     }
                     else 
                     {
-                        anomaly_det += "anomaly_det <- anomaly_DetectionTs(test, \"" + targetName + "\",test[,1][nrow(test_org)], 0)\r\n";
+                        anomaly_det += "anomaly_det_"+targetName +" <- anomaly_DetectionTs(test, \"" + targetName + "\",test[,1][nrow(test_org)], 0)\r\n";
                     }
                     anomaly_det += "\r\n";
                     anomaly_det += "\r\n";
@@ -3726,10 +4260,10 @@ forecast_extension += "	    }\r\n";
                     cmd += "\r\n";
 
                     cmd += "x_<- train[nrow(train),1]\r\n";
-                    cmd += "write.csv(df_tmp, file =\"予測input_tmp.csv\",row.names=F)\r\n";
+                    cmd += "write.csv(df_tmp, file =\"予測input_tmp_"+targetName + ".csv\",row.names=F)\r\n";
 
                     cmd += "predict.xgboost<-cbind(df_,predict.y)\r\n";
-                    cmd += "write.csv(predict.xgboost, file =\"予測.csv\",row.names=F)\r\n";
+                    cmd += "write.csv(predict.xgboost, file =\"予測_"+targetName + ".csv\",row.names=F)\r\n";
                     if (comboBox2.Text == "\"multi:softmax\"")
                     {
                         cmd += "names(predict.xgboost)[ncol(predict.xgboost)]<-\"Predict\"\r\n";
@@ -3856,7 +4390,7 @@ forecast_extension += "	    }\r\n";
                         }
                         else
                         {
-                            predict_probability += "	predictions[,i] <- predict(xgboost.model,newdata = test_dmat) \r\n";
+                            predict_probability += "	predictions[,i] <- predict(xgboost.model_"+targetName + ",newdata = test_dmat) \r\n";
                             if (time_series_mode)
                             {
                                 predict_probability += "	predictions[,i]<- inv_diff(test, \""+decomp_type+"\""+",use_log_diff, predictions[,i] + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
@@ -3915,7 +4449,7 @@ forecast_extension += "	    }\r\n";
                         predict_probability += "plot\r\n";
 	                	predict_probability += "plot <- plot + labs(x=\"時間\")\r\n";
 	                	predict_probability += "plot <- plot + labs(y=\""+ targetName +"\")\r\n";
-                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測結果.png\", plot = plot, limitsize = FALSE)\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測結果_"+targetName + ".png\", plot = plot, limitsize = FALSE)\r\n";
 
                         predict_probability += "\r\n";
                         predict_probability += "prob_value <- function(predictions, predict_y, i, bins=10, offset=1)\r\n";
@@ -4086,7 +4620,7 @@ forecast_extension += "	    }\r\n";
                             predict_probability += "	}\r\n";
                             predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin, offset/100.0)\r\n";
                             predict_probability += "	\r\n";
-                            predict_probability += "	file = paste(\"explain_predict/predict_probability\", i)\r\n";
+                            predict_probability += "	file = paste(\"explain_predict/predict_probability_"+targetName + "\", i)\r\n";
                             predict_probability += "	file = paste(file, \".png\")\r\n";
                             predict_probability += "    file = gsub(\" \", \"\", file, fixed = TRUE)\r\n";
                             predict_probability += "	ggsave(file = file, plot = p[[2]])\r\n";
@@ -4112,7 +4646,7 @@ forecast_extension += "	    }\r\n";
                             predict_probability += "#for ( i in 1:1 ){\r\n";
                             predict_probability += "	p = predict_probability(predictions, predict_y, i, nbin, offset/100.0)\r\n";
                             predict_probability += "	\r\n";
-                            predict_probability += "	file = paste(\"explain_predict/predict_probability\", i, sep=\"\")\r\n";
+                            predict_probability += "	file = paste(\"explain_predict/predict_probability_"+targetName + "\", i, sep=\"\")\r\n";
                             predict_probability += "	file = paste(file, \".png\", sep=\"\")\r\n";
                             predict_probability += "    #file = gsub(\" \", \"\", file, fixed = TRUE)\r\n";
                             predict_probability += "	ggsave(file = file, plot = p[[2]])\r\n";
@@ -4140,7 +4674,7 @@ forecast_extension += "	    }\r\n";
                         predict_probability += "\r\n";
                         predict_probability += "predict_probability_plt <- ggplot(data = predict_probability_df, aes(x=index, y = probability, col =probability)) + geom_point(size = 5)\r\n";
                         predict_probability += "predict_probability_plt\r\n";
-                        predict_probability += "write.csv(predict_probability_df, \"predict_probability.csv\", row.names=F)\r\n";
+                        predict_probability += "write.csv(predict_probability_df, \"predict_probability_"+targetName + ".csv\", row.names=F)\r\n";
 
                         predict_probability += "\r\n";
                         predict_probability += "prob <- as.integer((predict_probability_df[,2]*100)*10)/10\r\n";
@@ -4166,7 +4700,7 @@ forecast_extension += "	    }\r\n";
                         }
                         predict_probability += "}\r\n";
                         predict_probability += "predict_probability_plt\r\n";
-                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率.png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率_"+targetName + ".png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                         predict_probability += "\r\n";
                         predict_probability += "x <- predict_probability_df\r\n";
                         predict_probability += "#predict_probability_plt<-ggplot()\r\n";
@@ -4192,7 +4726,7 @@ forecast_extension += "	    }\r\n";
                         predict_probability += "predict_probability_plt <- predict_probability_plt + ggtitle(\"予測値の確率\")\r\n";
 	                	predict_probability += "predict_probability_plt <- predict_probability_plt + labs(x=\"時間\")\r\n";
 	                	predict_probability += "predict_probability_plt <- predict_probability_plt + labs(y=\""+ targetName +"\")\r\n";
-                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2.png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
+                        predict_probability += "ggsave(file = \"観測値のばらつきを考慮した予測値の確率2_"+targetName + ".png\", plot = predict_probability_plt, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                         predict_probability += "\r\n";
                         predict_probability += "predict_probability_plt\r\n";
                         predict_probability += "\r\n";
@@ -4233,7 +4767,7 @@ forecast_extension += "	    }\r\n";
 		                }
 		                position_maker += "	\r\n";
 		                position_maker += "	#plt\r\n";
-                        position_maker += "    file = paste(\"explain_predict/position_maker\", pos, sep=\"\")\r\n";
+                        position_maker += "    file = paste(\"explain_predict/position_maker_"+targetName + "\", pos, sep=\"\")\r\n";
                         position_maker += "    file = paste(file, \".png\", sep=\"\")\r\n";
 		                position_maker += "    ggsave(file = file, plot = plt, dpi = 100, width = 6.4*4, height = 3.4*1, limitsize = FALSE)\r\n";
 		                position_maker += "}\r\n";
@@ -4260,9 +4794,15 @@ forecast_extension += "	    }\r\n";
                         using (System.IO.StreamWriter sw = new System.IO.StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
                         {
                             sw.Write("options(width=" + form1._setting.numericUpDown2.Value.ToString() + ")\r\n");
+                            
+		                    if ( System.IO.File.Exists("xgb_train_" + targetName+ ".robj"))
+		                    {
+            					sw.Write("xgb_train_"+targetName+"<- readRDS(" + "\"" + "xgb_train_"+targetName+".robj" + "\"" + ")\r\n");
+                    			sw.Write("xgboost.model_"+targetName +"<- readRDS(xgboost.model_"+targetName + ", file = \"xgboost.model_"+targetName+".robj\")\r\n");
+		                    }
                             sw.Write(cmd);
                             sw.Write("sink(file = \"summary.txt\")\r\n");
-                            //sw.Write("print(str(xgboost.model))\r\n");
+                            //sw.Write("print(str(xgboost.model_"+targetName + "))\r\n");
                             //sw.Write("print(summary(predict.y))\r\n");
                             if (radioButton1.Checked)
                             {
@@ -4315,22 +4855,22 @@ forecast_extension += "	    }\r\n";
                             {
                                 sw.Write(predict_probability);
                                 sw.Write("output_tmp <- cbind(output_tmp, predict_probability_df)\r\n");
-                                sw.Write("write.csv(output_tmp, \"predict_probability.csv\", row.names =F)\r\n");
+                                sw.Write("write.csv(output_tmp, \"predict_probability_"+targetName + ".csv\", row.names =F)\r\n");
                             }
 
                             if (radioButton1.Checked)
                             {
                                 /*
-                                sw.Write("png(\"tmp_xgboost_predict.png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
+                                sw.Write("png(\"tmp_xgboost_predict_"+targetName + ".png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                                 sw.Write("par(mfrow=c(2,1),lwd=2)\r\n");
                                 sw.Write("par(mar=c(5, 4, 4, 2) + 3)\r\n");
                                 sw.Write("#plot(predict.y, col=\"#87CEFA\")\r\n");
-                                //sw.Write("diff_ <- predict.y[1] - df_$" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "\r\n");
+                                //sw.Write("diff_ <- predict.y[1] - df_$" + targetName + "\r\n");
                                 sw.Write("plot(residual.error[,1], type=\"o\", col=\"#87CEFA\"," +
-                                    "xlab=\"" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "\"" + ",ylab=\"誤差\"" + ", cex.lab = 3, cex.main=4)\r\n");
+                                    "xlab=\"" + targetName + "\"" + ",ylab=\"誤差\"" + ", cex.lab = 3, cex.main=4)\r\n");
                                 sw.Write(bg);
-                                sw.Write("plot(df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "',col=\"#87CEFA\", pch=20, cex.lab = 3, cex.main=4)\r\n");
-                                sw.Write("lines(df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "', col = \"#87CEFA\")\r\n");
+                                sw.Write("plot(df_$'" + targetName + "',col=\"#87CEFA\", pch=20, cex.lab = 3, cex.main=4)\r\n");
+                                sw.Write("lines(df_$'" + targetName + "', col = \"#87CEFA\")\r\n");
                                 sw.Write("points(predict.y, col=\"#FF8C00\", pch=20)\r\n");
                                 sw.Write("lines(predict.y, col=\"#FF8C00\")\r\n");
                                 sw.Write(bg);
@@ -4339,9 +4879,9 @@ forecast_extension += "	    }\r\n";
 
                                 sw.Write("residual.error2 <- predict.y[1:nrow(test_org),1] - as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)])\r\n");
 								sw.Write("reserr2 <- data.frame(reserr = residual.error2)\r\n");
-								sw.Write("error2_plt <- ggplot(reserr2, aes(x = reserr)) +\r\n");
+								sw.Write("error2_plt_"+targetName + " <- ggplot(reserr2, aes(x = reserr)) +\r\n");
 								sw.Write("geom_histogram(colour = \"gray10\", fill = \"dodgerblue4\")\r\n");
-								sw.Write("ggsave(filename = \"tmp_xgboost_model_performance.png\", plot = error2_plt, limitsize = FALSE)\r\n");
+								sw.Write("ggsave(filename = \"tmp_xgboost_model_performance_"+targetName + ".png\", plot = error2_plt_"+targetName + ", limitsize = FALSE)\r\n");
 								
                                 if (time_series_mode && exist_time_axis == 1 && checkBox8.Checked)
                                 {
@@ -4354,8 +4894,8 @@ forecast_extension += "	    }\r\n";
                                     }
 
 
-                                    sw.Write("residual_plt<-ggplot()\r\n");
-                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=as.POSIXct(test_org[,1]), y=residual.error2, colour=\"誤差\"))+\r\n");
+                                    sw.Write("residual_plt_"+targetName + "<-ggplot()\r\n");
+                                    sw.Write("residual_plt_"+targetName + "<-residual_plt_"+targetName + " + geom_line(aes(x=as.POSIXct(test_org[,1]), y=residual.error2, colour=\"誤差\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=residual.error2, colour = \"誤差Point\"))+\r\n");
                                     sw.Write("geom_vline(data=test_org, aes(xintercept=as.POSIXct(test_org[1,1])))+\r\n");
                                     sw.Write("geom_vline(data=test, aes(xintercept=as.POSIXct(test[obs_test_step,1])))+\r\n");
@@ -4370,11 +4910,11 @@ forecast_extension += "	    }\r\n";
                                         sw.Write("geom_vline(data=test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[nrow(test_org),1])))+\r\n");
                                     }
                                     sw.Write("scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n");
-									sw.Write("residual_plt <- residual_plt + labs(x=\"時間\")\r\n");
-									sw.Write("residual_plt <- residual_plt + labs(y=\"誤差\")\r\n");
+									sw.Write("residual_plt_"+targetName + " <- residual_plt_"+targetName + " + labs(x=\"時間\")\r\n");
+									sw.Write("residual_plt_"+targetName + " <- residual_plt_"+targetName + " + labs(y=\"誤差\")\r\n");
                                     
-                                    sw.Write("predict_plt<-ggplot()\r\n");
-                                    sw.Write("predict_plt<-predict_plt + geom_line(aes(x=as.POSIXct(test[,1]), y=predict.y[,1], colour=\"予測値\"))+\r\n");
+                                    sw.Write("predict_plt_"+targetName + "<-ggplot()\r\n");
+                                    sw.Write("predict_plt_"+targetName + "<-predict_plt_"+targetName + " + geom_line(aes(x=as.POSIXct(test[,1]), y=predict.y[,1], colour=\"予測値\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=as.POSIXct(test[,1]),y=predict.y[,1], colour = \"予測Point\"))+\r\n");
                                     sw.Write("geom_line(aes(x=as.POSIXct(test_org[,1]), y=test_org$'" + targetName +"', colour=\"観測値\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("+ geom_point(aes(x=as.POSIXct(test[,1]),y=test$'" + targetName + "', colour = \"観測Point\"))+\r\n");
@@ -4390,9 +4930,9 @@ forecast_extension += "	    }\r\n";
                                         sw.Write("geom_vline(data = test, linetype=\"dotdash\",aes(xintercept=as.POSIXct(test[nrow(test_org),1])))+\r\n");
                                     }
                                     sw.Write("scale_x_datetime(name= \"time\",date_labels = \"" + textBox14.Text + "\", date_breaks = \"" + numericUpDown18.Value.ToString() + " " + comboBox6.Text + "\"" + ")\r\n");
-									sw.Write("predict_plt <- predict_plt + labs(x=\"時間\")\r\n");
-									sw.Write("predict_plt <- predict_plt + labs(y=\"予測値\")\r\n");
-                                    sw.Write("saveRDS(predict_plt, \"predict_plt.rds\")\r\n");
+									sw.Write("predict_plt_"+targetName + " <- predict_plt_"+targetName + " + labs(x=\"時間\")\r\n");
+									sw.Write("predict_plt_"+targetName + " <- predict_plt_"+targetName + " + labs(y=\"予測値\")\r\n");
+                                    sw.Write("saveRDS(predict_plt_"+targetName + ", \"predict_plt_"+targetName+".rds\")\r\n");
 
                                     sw.Write("\r\n");
                                 }
@@ -4405,8 +4945,8 @@ forecast_extension += "	    }\r\n";
                                         sw.Write("test_st_ <- nrow(train)+1\r\n");
                                         sw.Write("test_ed_ <- nrow(train)+nrow(test_org)\r\n");
                                     }
-                                    sw.Write("residual_plt<-ggplot()\r\n");
-                                    sw.Write("residual_plt<-residual_plt + geom_line(aes(x=(test_st_:test_ed_), y=residual.error2, colour=\"誤差\"))+\r\n");
+                                    sw.Write("residual_plt_"+targetName + "<-ggplot()\r\n");
+                                    sw.Write("residual_plt_"+targetName + "<-residual_plt_"+targetName + " + geom_line(aes(x=(test_st_:test_ed_), y=residual.error2, colour=\"誤差\"))+\r\n");
                                     sw.Write("geom_point(aes(x=test_st_:test_ed_,y=residual.error2, colour = \"誤差Point\"))+\r\n");
                                     if ( numericUpDown5.Value > 0 )
                                     {
@@ -4423,12 +4963,12 @@ forecast_extension += "	    }\r\n";
                                     {
                                         sw.Write("+\r\ngeom_vline(data=test, linetype=\"dotdash\",aes(xintercept=test_st_+nrow(test_org)-1))\r\n");
                                     }
-									sw.Write("\r\nresidual_plt <- residual_plt + labs(x=\"index\")\r\n");
-									sw.Write("residual_plt <- residual_plt + labs(y=\"予測値\")\r\n");
+									sw.Write("\r\nresidual_plt_"+targetName + " <- residual_plt_"+targetName + " + labs(x=\"index\")\r\n");
+									sw.Write("residual_plt_"+targetName + " <- residual_plt_"+targetName + " + labs(y=\"予測値\")\r\n");
 
                                     sw.Write("\r\n");
-                                    sw.Write("predict_plt<-ggplot()\r\n");
-                                    sw.Write("predict_plt<-predict_plt + geom_line(aes(x=(test_st_:test_ed_), y=predict.y[,1], colour=\"予測値\"))+\r\n");
+                                    sw.Write("predict_plt_"+targetName + "<-ggplot()\r\n");
+                                    sw.Write("predict_plt_"+targetName + "<-predict_plt_"+targetName + " + geom_line(aes(x=(test_st_:test_ed_), y=predict.y[,1], colour=\"予測値\"))+\r\n");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=test_st_:test_ed_,y=predict.y[,1], colour = \"予測Point\"))+\r\n");
                                     sw.Write("geom_line(aes(x=test_st_:(test_st_+nrow(test_org)-1), y=test_org$'" + targetName +"', colour=\"観測値\"))+");
                                     if (use_geom_point == 1) sw.Write("geom_point(aes(x=test_st_:test_ed_,y=test$'" + targetName + "', colour = \"予測Point\"))+");
@@ -4444,34 +4984,34 @@ forecast_extension += "	    }\r\n";
                                         sw.Write("+\r\n");
                                         sw.Write("geom_ribbon(aes(x=test_st_:test_ed_,ymin=lo2,ymax=up2, fill='予測区間'),alpha=0.4)\r\n");
                                     }
-									sw.Write("\r\npredict_plt <- predict_plt + labs(x=\"index\")\r\n");
-									sw.Write("predict_plt <- predict_plt + labs(y=\"予測値\")\r\n");
+									sw.Write("\r\npredict_plt_"+targetName + " <- predict_plt_"+targetName + " + labs(x=\"index\")\r\n");
+									sw.Write("predict_plt_"+targetName + " <- predict_plt_"+targetName + " + labs(y=\"予測値\")\r\n");
                                     sw.Write("\r\n");
                                 }
-								sw.Write("reserr3<-ggplot()\r\n");
-								sw.Write("reserr3<-reserr3 + geom_point(aes(x=test_org$'"+ targetName+"'[1:nrow(test_org)], y=predict.y[1:nrow(test_org),1]), color=\"dodgerblue4\")\r\n");
-								sw.Write("reserr3 <- reserr3 + labs(x=\"観測値\")\r\n");
-								sw.Write("reserr3 <- reserr3 + labs(y=\"予測値\")\r\n");
+								sw.Write("reserr3_"+targetName + "<-ggplot()\r\n");
+								sw.Write("reserr3_"+targetName + "<-reserr3_"+targetName + " + geom_point(aes(x=test_org$'"+ targetName+"'[1:nrow(test_org)], y=predict.y[1:nrow(test_org),1]), color=\"dodgerblue4\")\r\n");
+								sw.Write("reserr3_"+targetName + " <- reserr3_"+targetName + " + labs(x=\"観測値\")\r\n");
+								sw.Write("reserr3_"+targetName + " <- reserr3_"+targetName + " + labs(y=\"予測値\")\r\n");
 
                                 int nrow2 = 1;
                                 if ( use_AnomalyDetectionTs == 1 )
                                 {
                                     nrow2 = 2;
-                                    //sw.Write("p_<-gridExtra::grid.arrange(error2_plt, residual_plt, predict_plt, anomaly_det[[3]], nrow = 4)\r\n");
-                                    sw.Write("p_<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt,reserr3, ncol=1, nrow=2), gridExtra::arrangeGrob(residual_plt, predict_plt, anomaly_det[[3]], ncol = 1, nrow = 3), heights=c(8,1), widths=c(1,4))\r\n");
+                                    //sw.Write("p__"+targetName +"<-gridExtra::grid.arrange(error2_plt_"+targetName + ", residual_plt_"+targetName + ", predict_plt_"+targetName + ", anomaly_det_"+targetName + "[[3]], nrow = 4)\r\n");
+                                    sw.Write("p__"+targetName + "<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt_"+targetName + ",reserr3_"+targetName + ", ncol=1, nrow=2), gridExtra::arrangeGrob(residual_plt_"+targetName + ", predict_plt_"+targetName + ", anomaly_det_"+targetName + "[[3]], ncol = 1, nrow = 3), heights=c(8,1), widths=c(1,4))\r\n");
                                 }
                                 else
                                 {
                                     nrow2 = 3;
-                                    //sw.Write("p_<-gridExtra::grid.arrange(error2_plt, residual_plt, predict_plt, nrow = 3)\r\n");
-                                    sw.Write("p_<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt,reserr3, ncol=1, nrow=2), gridExtra::arrangeGrob(residual_plt, predict_plt, ncol = 1, nrow = 2), heights=c(8,1), widths=c(1,4))\r\n");
+                                    //sw.Write("p_<-gridExtra::grid.arrange(error2_plt_"+targetName + ", residual_plt_"+targetName + ", predict_plt_"+targetName + ", nrow = 3)\r\n");
+                                    sw.Write("p__"+targetName + "<-gridExtra::grid.arrange(gridExtra::arrangeGrob(error2_plt_"+targetName + ",reserr3_"+targetName + ", ncol=1, nrow=2), gridExtra::arrangeGrob(residual_plt_"+targetName + ", predict_plt_"+targetName + ", ncol = 1, nrow = 2), heights=c(8,1), widths=c(1,4))\r\n");
                                 }
-                                sw.Write("ggsave(file = \"tmp_xgboost_predict.png\", p_, dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
+                                sw.Write("ggsave(file = \"tmp_xgboost_predict_"+targetName + ".png\", p__"+targetName +", dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = "+ nrow2 +"*4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n");
 
                             }
                             if (radioButton2.Checked)
                             {
-                                sw.Write("png(\"tmp_xgboost_predict.png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
+                                sw.Write("png(\"tmp_xgboost_predict_"+targetName + ".png\", height = 960*" + form1._setting.numericUpDown4.Value.ToString() + ", width = 960*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n");
                                 if (comboBox2.Text == "\"multi:softprob\"")
                                 {
                                     //sw.Write("heatmap(predict_y)\r\n");
@@ -4481,7 +5021,7 @@ forecast_extension += "	    }\r\n";
                                 if (comboBox2.Text == "\"multi:softmax\"")
                                 {
                                     sw.Write("par(mfrow=c(1,1),lwd=2)\r\n");
-                                    sw.Write("plot(df_$'" + form1.Names.Items[(listBox1.SelectedIndex)].ToString() + "',col=\"blue\", pch=20)\r\n");
+                                    sw.Write("plot(df_$'" + targetName + "',col=\"blue\", pch=20)\r\n");
                                     sw.Write("points(predict.y, col=\"#FF8C00\", pch=20)\r\n");
                                 }
                                 sw.Write("dev.off()\r\n");
@@ -4509,16 +5049,19 @@ forecast_extension += "	    }\r\n";
                 }
                 catch { }
 
-                try
+                if (multi_target_count == 0)
                 {
-                    System.IO.DirectoryInfo di = new System.IO.DirectoryInfo("explain_predict");
-                    System.IO.FileInfo[] files = di.GetFiles();
-                    foreach (System.IO.FileInfo pngfile in files)
+                    try
                     {
-                        pngfile.Delete();
+                        System.IO.DirectoryInfo di = new System.IO.DirectoryInfo("explain_predict");
+                        System.IO.FileInfo[] files = di.GetFiles();
+                        foreach (System.IO.FileInfo pngfile in files)
+                        {
+                            pngfile.Delete();
+                        }
                     }
+                    catch { }
                 }
-                catch { }
 
 
                 if ( radioButton3.Enabled && (checkBox4.Checked || checkBox13.Checked))
@@ -4560,7 +5103,7 @@ forecast_extension += "	    }\r\n";
                 label44.Text = "";
 
 
-                if ( System.IO.File.Exists("ts_transform.png"))
+                if ( System.IO.File.Exists("ts_transform_"+targetName + ".png"))
                 {
                     button20.Enabled = true;
                 }
@@ -4578,7 +5121,7 @@ forecast_extension += "	    }\r\n";
                         button18.Enabled = true;
                         button22.Enabled = true;
                     }
-                    if (System.IO.File.Exists("trend2.png"))
+                    if (System.IO.File.Exists("trend2_"+targetName + ".png"))
                     {
                         button23.Enabled = true;
                     }
@@ -4610,7 +5153,7 @@ forecast_extension += "	    }\r\n";
                     return;
                 }
 
-                form1.comboBox3.Text = "xgboost.model";
+                form1.comboBox3.Text = "xgboost.model_"+targetName + "";
 
                 if (radioButton2.Checked && radioButton3.Checked)
                 {
@@ -4624,7 +5167,7 @@ forecast_extension += "	    }\r\n";
                         form1.ComboBoxItemAdd(form1.comboBox2, "confusion_test");
                         form1.ComboBoxItemAdd(form1.comboBox3, "confusion_tbl");
                     }
-                    form1.ComboBoxItemAdd(form1.comboBox3, "xgboost.model");
+                    form1.ComboBoxItemAdd(form1.comboBox3, "xgboost.model_"+targetName + "");
                 }
                 if (radioButton2.Checked && radioButton4.Checked)
                 {
@@ -4637,11 +5180,17 @@ forecast_extension += "	    }\r\n";
                         form1.ComboBoxItemAdd(form1.comboBox2, "confusion_train");
                         form1.ComboBoxItemAdd(form1.comboBox3, "confusion_train");
                     }
-                    form1.ComboBoxItemAdd(form1.comboBox3, "xgboost.model");
+                    form1.ComboBoxItemAdd(form1.comboBox3, "xgboost.model_"+targetName + "");
                 }
 
                 if (radioButton4.Checked)
                 {
+                    if ( System.IO.File.Exists("xgboost_gridSearch.options"))
+                    {
+                        load_param("xgboost_gridSearch");
+                        form1.FileDelete("xgboost_gridSearch.options");
+                        //checkBox23.Checked = false;
+                    }
                     importance_var.Items.Clear();
 
                     var lines = stat.Split('\n');
@@ -4695,6 +5244,8 @@ forecast_extension += "	    }\r\n";
                     }
                     label6.Text = "RMSE=" + RMSE;
                 }
+                estimative[targetName+"_RMSE"] = RMSE;
+
                 if (radioButton2.Checked)
                 {
                     ACC = "";
@@ -4714,6 +5265,8 @@ forecast_extension += "	    }\r\n";
                     }
                     label5.Text = "Accuracy=" + ACC;
                 }
+                estimative[targetName + "_ACC"] = ACC;
+
                 adjR2 = "";
                 {
                     {
@@ -4732,6 +5285,7 @@ forecast_extension += "	    }\r\n";
                     }
                     label14.Text = "adjR2=" + adjR2;
                 }
+                estimative[targetName + "_adjR2"] = adjR2;
 
                 R2 = "";
                 {
@@ -4751,6 +5305,8 @@ forecast_extension += "	    }\r\n";
                     }
                     label15.Text = "R2=" + R2;
                 }
+                estimative[targetName+ "_R2"] = R2;
+
                 MER = "";
                 {
                     {
@@ -4769,6 +5325,7 @@ forecast_extension += "	    }\r\n";
                     }
                     label22.Text = "MER=" + MER;
                 }
+                estimative[targetName+"_MER"] = MER;
 
                 if (radioButton2.Checked && radioButton3.Checked)
                 {
@@ -4776,7 +5333,7 @@ forecast_extension += "	    }\r\n";
                     {
                         df2image tmp = new df2image();
                         tmp.form1 = form1;
-                        tmp.dftoImage("confusion_test", "tmp_xgboost_predict.png");
+                        tmp.dftoImage("confusion_test", "tmp_xgboost_predict_"+targetName + ".png");
                     }
                 }
 
@@ -4809,234 +5366,13 @@ forecast_extension += "	    }\r\n";
                     //テキスト最後までスクロール
                     form1.TextBoxEndposset(form1.textBox6);
                 }
-                try
-                {
-                    if (radioButton4.Checked)
-                    {
-                        //webBrowser1.Hide();
-                        //button2.Visible = true;
-                        //button3.Visible = true;
-                        //pictureBox1.Image = Form1.CreateImage("tmp_xgboost.png");
-                        pictureBox1.Image = Form1.CreateImage("tmp_xgboost2.png");
-                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                        pictureBox1.Dock = DockStyle.Fill;
-                        pictureBox1.Show();
-                    }
-                    if (radioButton3.Checked)
-                    {
-                        pictureBox1.Image = Form1.CreateImage("tmp_xgboost_predict.png");
-                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                        pictureBox1.Dock = DockStyle.Fill;
-                        pictureBox1.Show();
 
-                        if (xgboost_exp_ != null ) xgboost_exp_.pictureBox1.Image = Form1.CreateImage("explain_predict\\tmp_xgboost_predict.png");
-                        if (System.IO.File.Exists("explain_predict\\tmp_xgboost_predict_parts1.png"))
-                        {
-                            button18.Enabled = true;
-                            button22.Enabled = true;
-                            button23.Enabled = true;
-                        }
-                        if (xgboost_exp_ != null) xgboost_exp_.pictureBox4.Image = Form1.CreateImage("explain_predict\\tmp_xgboost_predict.png");
-                        if (System.IO.File.Exists("explain_predict\\predict_probability1.png"))
-                        {
-                            button18.Enabled = true;
-                            button22.Enabled = true;
-                            button23.Enabled = true;
-                        }
-                    }
-                }
-                catch { }
-
-                if (checkBox5.Checked )
-                {
-                    string x_axis = "";
-                    if (time_series_mode && checkBox8.Checked)
-                    {
-                        x_axis = ",x=as.POSIXct(test[,1])";
-                    }
-
-                    string mode = "lines";
-                    mode = "\"lines+markers\"";
-
-                    cmd = "";
-                    cmd += "library(plotly)\r\n";
-                    cmd += "library(htmlwidgets)\r\n";
-
-                    if (radioButton1.Checked && radioButton3.Checked)
-                    {
-                        cmd += "p1_<-ggplotly(residual_plt)\r\n";
-                        cmd += "p2_<-ggplotly(predict_plt)\r\n";
-                        if (use_AnomalyDetectionTs == 1)
-                        {
-                            cmd += "anom_p <- ggplotly(anomaly_det[[3]])\r\n";
-                        }
-
-                        if (checkBox7.Checked)
-                        {
-                            cmd += "p2<-ggplotly(interval_plt2)\r\n";
-                        }
-                        if (checkBox6.Checked)
-                        {
-                            cmd += "p3<-ggplotly(interval_plt)\r\n";
-                        }
-                        if (checkBox6.Checked && checkBox7.Checked)
-                        {
-                            if (use_AnomalyDetectionTs == 1)
-                            {
-                                cmd += "p_ <-subplot(p1_, p2_, p3, anom_p, nrows = 4)\r\n";
-                            }
-                            else
-                            {
-                                cmd += "p_ <- subplot(p1_, p2_, p3, nrows = 3)\r\n";
-                            }
-                        }
-                        if (checkBox6.Checked && !checkBox7.Checked)
-                        {
-                            if (use_AnomalyDetectionTs == 1)
-                            {
-                                cmd += "p_ <-subplot(p1_, p2_, p3, anom_p, nrows = 4)\r\n";
-                            }
-                            else
-                            {
-                                cmd += "p_ <- subplot(p1_, p2_, p3, nrows = 3)\r\n";
-                            }
-                        }
-                        if (!checkBox6.Checked && checkBox7.Checked)
-                        {
-                            if (use_AnomalyDetectionTs == 1)
-                            {
-                                cmd += "p_ <-subplot(p1_, p2_, anom_p, nrows = 3)\r\n";
-                            }
-                            else
-                            {
-                                cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
-                            }
-                        }
-                        if (!checkBox6.Checked && !checkBox7.Checked)
-                        {
-                            if (use_AnomalyDetectionTs == 1)
-                            {
-                                cmd += "p_ <-subplot(p1_, p2_, anom_p, nrows = 3)\r\n";
-                            }
-                            else
-                            {
-                                cmd += "p_ <- subplot(p1_, p2_, nrows = 2)\r\n";
-                            }
-                        }
-                    }
-                    if (radioButton2.Checked && radioButton3.Checked)
-                    {
-                        cmd += "p_<-plot_ly(test, alpha=0.6, type = \"histogram\"";
-                        cmd += x_axis+",y = predict_y)\r\n";
-                    }
-                    if (radioButton1.Checked && radioButton4.Checked)
-                    {
-                        cmd += "p1<-ggplotly(plt_)\r\n";
-                        cmd += "p_<-p1\r\n";
-                        if ( checkBox7.Checked)
-                        {
-                            cmd += "p2<-ggplotly(interval_plt2)\r\n";
-                        }
-                        if (checkBox6.Checked)
-                        {
-                            cmd += "p3<-ggplotly(interval_plt)\r\n";
-                        }
-                        if ( use_AnomalyDetectionTs == 1)
-                        {
-                            cmd += "anom_p <- ggplotly(anomaly_det[[3]])\r\n";
-                        }
-                        if (checkBox6.Checked && !checkBox7.Checked)
-                        {
-                            if (use_AnomalyDetectionTs == 1)
-                            {
-                                cmd += "p_ <-subplot(p1, p3, anom_p, nrows = 3)\r\n";
-                            }
-                            else
-                            {
-                                cmd += "p_ <-subplot(p1, p3, nrows = 2)\r\n";
-                            }
-                        }
-                        if (!checkBox6.Checked && checkBox7.Checked)
-                        {
-                            if (use_AnomalyDetectionTs == 1)
-                            {
-                                cmd += "p_ <-subplot(p1, p2, anom_p, nrows = 3)\r\n";
-                            }
-                            else
-                            {
-                                cmd += "p_ <-subplot(p1, p2, nrows = 2)\r\n";
-                            }
-                        }
-                        if (checkBox6.Checked && checkBox7.Checked)
-                        {
-                            if (use_AnomalyDetectionTs == 1)
-                            {
-                                cmd += "p_ <-subplot(p1, p2, p3, anom_p, nrows = 4)\r\n";
-                            }
-                            else
-                            {
-                                cmd += "p_ <-subplot(p1, p2, p3, nrows = 3)\r\n";
-                            }
-                        }
-                        if (!checkBox6.Checked && !checkBox7.Checked)
-                        {
-                            cmd += "p4<-ggplotly(interval_plt4)\r\n";
-                            if (use_AnomalyDetectionTs == 1)
-                            {
-                                cmd += "p_ <-subplot(p1, p4, anom_p, nrows = 3)\r\n";
-                            }
-                            else
-                            {
-                                cmd += "p_ <-subplot(p1, p4, nrows = 2)\r\n";
-                            }
-                        }
-                    }
-                    if (radioButton2.Checked && radioButton4.Checked)
-                    {
-                        cmd += "p_<-ggplotly(plt_)\r\n";
-                    }
-
-                    if (System.IO.File.Exists("xgboost_plot_temp.html")) form1.FileDelete("xgboost_plot_temp.html");
-                    cmd += "print(p_)\r\n";
-                    cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_plot_temp.html\", selfcontained = F)\r\n";
-                    form1.script_executestr(cmd);
-
-                    image_link2 = "";
-                    System.Threading.Thread.Sleep(50);
-                    if (System.IO.File.Exists("xgboost_plot_temp.html"))
-                    {
-                        string webpath = Form1.curDir + "/xgboost_plot_temp.html";
-                        webpath = webpath.Replace("\\", "/").Replace("//", "/");
-
-                        image_link2 = webpath;
-                        linkLabel2.Visible = true;
-                        linkLabel2.LinkVisited = true;
-                        if (form1._setting.checkBox1.Checked)
-                        {
-                            System.Diagnostics.Process.Start(webpath, null);
-                        }
-                        else
-                        {
-                            //interactivePlot.webView21.CoreWebView2.Navigate(webpath);
-                            interactivePlot.webView21.Source = new Uri(webpath);
-                            interactivePlot.webView21.Refresh();
-                            //interactivePlot.Show();
-                            //interactivePlot.TopMost = true;
-                            //interactivePlot.TopMost = false;
-
-                            //webView21.CoreWebView2.Navigate(webpath);
-                            //webView21.CoreWebView2.CallDevToolsProtocolMethodAsync("Network.clearBrowserCache", "{}");
-                            webView21.Source = new Uri(webpath);
-                            webView21.Refresh();
-                            webView21.Show();
-                            TopMost = true;
-                            TopMost = false;
-                        }
-                    }
-                }
+                draw_plot_images();
             }
             catch
-            { }
+            {
+                MessageBox.Show("計算エラーが発生しました");
+            }
             finally
             {
                 running = 0;
@@ -5118,11 +5454,11 @@ forecast_extension += "	    }\r\n";
                 return;
             }
             if (_ImageView == null) _ImageView = new ImageView();
-            //string file = "tmp_xgboost.png";
-            string file = "tmp_xgboost2.png";
+            //string file = "tmp_xgboost_"+targetName + ".png";
+            string file = "tmp_xgboost2_"+targetName + ".png";
             if ( radioButton3.Checked)
             {
-                file = "tmp_xgboost_predict.png";
+                file = "tmp_xgboost_predict_"+targetName + ".png";
             }
             _ImageView.form1 = this.form1;
             if (System.IO.File.Exists(file))
@@ -5268,7 +5604,12 @@ forecast_extension += "	    }\r\n";
             string file = "";
             if (radioButton1.Checked)
             {
-                file = "model/xgboost.model(adjR2=" + adjR2 + ")" + Form1.FnameToDataFrameName(textBox2.Text, true);
+                file = "model/xgboost.model_"+targetName + "(adjR2=" + adjR2 + ")" + Form1.FnameToDataFrameName(textBox2.Text, true);
+                
+                if ( time_series_mode)
+                {
+                    file = "model/tsxgboost.model_" + targetName + "(adjR2=" + adjR2 + ")" + Form1.FnameToDataFrameName(textBox2.Text, true);
+                }
                 if (System.IO.File.Exists(file))
                 {
                     if (MessageBox.Show("同じモデルが存在しています", "上書きしますか?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
@@ -5278,11 +5619,23 @@ forecast_extension += "	    }\r\n";
                 }
 
                 form1.SelectionVarWrite_(listBox1, listBox2, file + ".select_variables.dat");
-                cmd = "saveRDS(xgboost.model, file = \"" + file + "\")\r\n";
+                for ( int i = 0; i < listBox1.SelectedIndices.Count; i++ )
+                {
+                	string f = "model/xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    if (time_series_mode)
+                    {
+                        f = "model/tsxgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    }
+                    cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ", file = \"" + f + ".robj"+"\")\r\n";
+                }
             }
             if (radioButton2.Checked)
             {
-                file = "model/xgboost.model(ACC=" + ACC + ")" + Form1.FnameToDataFrameName(textBox2.Text, true);
+                file = "model/xgboost.model_"+targetName + "(ACC=" + ACC + ")" + Form1.FnameToDataFrameName(textBox2.Text, true);
+                if (time_series_mode)
+                {
+                    file = "model/tsxgboost.model_" + targetName + "(ACC=" + ACC + ")" + Form1.FnameToDataFrameName(textBox2.Text, true);
+                }
                 if (System.IO.File.Exists(file))
                 {
                     if (MessageBox.Show("同じモデルが存在しています", "上書きしますか?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
@@ -5292,16 +5645,43 @@ forecast_extension += "	    }\r\n";
                 }
 
                 form1.SelectionVarWrite_(listBox1, listBox2, file+".select_variables.dat");
-                cmd = "saveRDS(xgboost.model, file = \"" + file +"\")\r\n";
+                for ( int i = 0; i < listBox1.SelectedIndices.Count; i++ )
+                {
+                    string f = "model/xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    if (time_series_mode)
+                    {
+                        f = "model/tsxgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    }
+                    cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ", file = \"" + f + ".robj"+"\")\r\n";
+                }
             }
+            form1.script_executestr(cmd);
             save_param(file);
 
-            form1.comboBox1.Text = cmd;
-            form1.evalute_cmd(sender, e);
 
-            cmd = "saveRDS(xgb_train, file = \"" + file + ".xgb_train.robj" + "\")\r\n";
-            form1.comboBox1.Text = cmd;
-            form1.evalute_cmd(sender, e);
+			cmd = "";
+            for ( int i = 0; i < listBox1.SelectedIndices.Count; i++ )
+            {
+            	string f;
+	            if (radioButton1.Checked)
+	            {
+	                f = "model/xgb_train_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    if (time_series_mode)
+                    {
+                        f = "model/tsxgb_train_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    }
+                }
+                else
+	            {
+	                f = "model/xgb_train_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    if (time_series_mode)
+                    {
+                        f = "model/tsxgb_train_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    }
+                }
+                cmd += "saveRDS(xgb_train_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString()+", file = \"" + f + ".robj" + "\")\r\n";
+            }
+            form1.script_executestr(cmd);
 
             if (System.IO.File.Exists(file + ".dds2"))
             {
@@ -5309,10 +5689,13 @@ forecast_extension += "	    }\r\n";
             }
             using (System.IO.Compression.ZipArchive za = System.IO.Compression.ZipFile.Open(file + ".dds2", System.IO.Compression.ZipArchiveMode.Create))
             {
-                za.CreateEntryFromFile(file, file.Replace("model/", ""));
                 za.CreateEntryFromFile(file + ".options", (file + ".options").Replace("model/", ""));
                 za.CreateEntryFromFile(file + ".select_variables.dat", (file + ".select_variables.dat").Replace("model/", ""));
-                za.CreateEntryFromFile(file + ".xgb_train.robj", (file + ".xgb_train.robj").Replace("model/", ""));
+	            for ( int i = 0; i < listBox1.SelectedIndices.Count; i++ )
+	            {
+                	za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj").Replace("model/", ""));
+                	za.CreateEntryFromFile("xgb_train_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj", (file + ".xgb_train_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj").Replace("model/", ""));
+	            }
             }
             if (System.IO.File.Exists(file + ".dds2"))
             {
@@ -5768,13 +6151,23 @@ forecast_extension += "	    }\r\n";
             string file = modelfile.Replace("\\", "/");
 
             string obj = Form1.FnameToDataFrameName(file, true);
-            form1.comboBox1.Text = "xgboost.model<- readRDS(" + "\"" + file + "\"" + ")";
-            form1.evalute_cmd(sender, e);
 
-            form1.comboBox1.Text = "xgb_train<- readRDS(" + "\"" + file + ".xgb_train.robj" + "\"" + ")";
-            form1.evalute_cmd(sender, e);
-            form1.comboBox1.Text = "train<-xgb_train";
-            form1.evalute_cmd(sender, e);
+            for ( int i = 0; i < listBox1.SelectedIndices.Count; i++ )
+            {
+               	string f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+            	form1.comboBox1.Text = "xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "<- readRDS(\"" + f + ".robj"+"\")\r\n";
+ 				form1.evalute_cmd(sender, e);
+           	}
+
+            //form1.comboBox1.Text = "xgb_train_"+targetName+"<- readRDS(" + "\"" + file + ".xgb_train_"+targetName+".robj" + "\"" + ")";
+            //form1.evalute_cmd(sender, e);
+            
+            for ( int i = 0; i < listBox1.SelectedIndices.Count; i++ )
+            {
+               	string f = file + ".xgb_train_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+             	form1.comboBox1.Text = "xgb_train_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"<- readRDS(\"" + f + ".robj" + "\")\r\n";
+ 				form1.evalute_cmd(sender, e);
+           	}
 
             load_param(file);
 
@@ -5911,7 +6304,7 @@ forecast_extension += "	    }\r\n";
             linkLabel1.Visible = false;
             linkLabel1.LinkVisited = false;
 
-            string tree_png = "xgb_plot.multi_trees.png";
+            string tree_png = "xgb_plot.multi_trees_"+targetName + ".png";
 
             if (System.IO.File.Exists(tree_png))
             {
@@ -5919,9 +6312,9 @@ forecast_extension += "	    }\r\n";
             }
 
 #if true
-                string cmd = "gr_<-xgb.plot.tree(model = xgboost.model, trees =0:" + numericUpDown13.Value.ToString()+", render = T )\r\n";
+                string cmd = "gr_<-xgb.plot.tree(model = xgboost.model_"+targetName + ", trees =0:" + numericUpDown13.Value.ToString()+", render = T )\r\n";
 #else
-            string cmd = "gr_<-xgb.plot.multi.trees(model = xgboost.model";
+            string cmd = "gr_<-xgb.plot.multi.trees(model = xgboost.model_"+targetName + "";
             cmd += ", features_keep = 5";
             cmd += ", use.names=T, render = T )\r\n";
 #endif
@@ -5931,9 +6324,9 @@ forecast_extension += "	    }\r\n";
             cmd += "cat(url)\r\n";
             cmd += "cat(\"\\n\")\r\n";
             cmd += "sink()\r\n";
-            cmd += "webshot(url,file = \"xgb_plot.multi_trees.png\", delay = 0.2, zoom ="+ numericUpDown12.Value.ToString()+")\r\n";
+            cmd += "webshot(url,file = \"xgb_plot.multi_trees_"+targetName + ".png\", delay = 0.2, zoom ="+ numericUpDown12.Value.ToString()+")\r\n";
             cmd += "sink(file = \"xgb_tree_dump.txt\")\r\n";
-            cmd += "cat(xgb.dump(xgboost.model, with_stats = TRUE))\r\n";
+            cmd += "cat(xgb.dump(xgboost.model_"+targetName + ", with_stats = TRUE))\r\n";
             cmd += "cat(\"\\n\")\r\n";
             cmd += "sink()\r\n";
 
@@ -5964,6 +6357,9 @@ forecast_extension += "	    }\r\n";
 
             image_link = stat;
             linkLabel1.Visible = true;
+            var s = new Dictionary<string, string>();
+            s.Add("linkLabel1", stat);
+            image_links[targetName] =  s;
 
             form1.textBox6.Text += stat;
             //テキスト最後までスクロール
@@ -6001,6 +6397,7 @@ forecast_extension += "	    }\r\n";
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel1.LinkVisited = true;
+            image_link = image_links[targetName]["linkLabel1"];
             image_link = image_link.Split('\n')[0];
             image_link = image_link.Replace("\"", "");
 
@@ -6298,18 +6695,14 @@ forecast_extension += "	    }\r\n";
 
         private void button18_Click(object sender, EventArgs e)
         {
-            if ( System.IO.File.Exists("position_maker.png"))
-            {
-                form1.FileDelete("position_maker.png");
-            }
             if (xgboost_exp_ == null)
             {
                 xgboost_exp_ = new xgboost_exp();
 
                 xgboost_exp_.form1_ = this.form1;
                 xgboost_exp_.xgboost_ = this;
-                xgboost_exp_.targetName = targetName;
             }
+            xgboost_exp_.targetName = targetName;
             xgboost_exp_.explain_num = explain_num;
             xgboost_exp_.trackBar1.Minimum = 1;
             xgboost_exp_.trackBar1.Maximum = explain_num;
@@ -6326,13 +6719,13 @@ forecast_extension += "	    }\r\n";
             xgboost_exp_._ImageView2.form1 = this.form1;
             xgboost_exp_._ImageView3.form1 = this.form1;
             xgboost_exp_._ImageView4.form1 = this.form1;
-            if (System.IO.File.Exists("tmp_xgboost_feature_importance.png"))
+            if (System.IO.File.Exists("tmp_xgboost_feature_importance_"+targetName + ".png"))
             {
-                xgboost_exp_._ImageView2.pictureBox1.ImageLocation = "tmp_xgboost_feature_importance.png";
+                xgboost_exp_._ImageView2.pictureBox1.ImageLocation = "tmp_xgboost_feature_importance_"+targetName + ".png";
                 xgboost_exp_._ImageView2.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_._ImageView2.pictureBox1.Dock = DockStyle.Fill;
 
-                xgboost_exp_.pictureBox2.ImageLocation = "tmp_xgboost_feature_importance.png";
+                xgboost_exp_.pictureBox2.ImageLocation = "tmp_xgboost_feature_importance_"+targetName + ".png";
                 xgboost_exp_.pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_.pictureBox2.Dock = DockStyle.Fill;
             }
@@ -6340,13 +6733,13 @@ forecast_extension += "	    }\r\n";
             {
             }
 
-            if (System.IO.File.Exists("tmp_xgboost_model_performance.png"))
+            if (System.IO.File.Exists("tmp_xgboost_model_performance_"+targetName + ".png"))
             {
-                xgboost_exp_._ImageView3.pictureBox1.ImageLocation = "tmp_xgboost_model_performance.png";
+                xgboost_exp_._ImageView3.pictureBox1.ImageLocation = "tmp_xgboost_model_performance_"+targetName + ".png";
                 xgboost_exp_._ImageView3.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_._ImageView3.pictureBox1.Dock = DockStyle.Fill;
 
-                xgboost_exp_.pictureBox3.ImageLocation = "tmp_xgboost_model_performance.png";
+                xgboost_exp_.pictureBox3.ImageLocation = "tmp_xgboost_model_performance_"+targetName + ".png";
                 xgboost_exp_.pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_.pictureBox3.Dock = DockStyle.Fill;
 
@@ -6355,26 +6748,26 @@ forecast_extension += "	    }\r\n";
             {
             }
 
-            if (System.IO.File.Exists("explain_predict\\tmp_xgboost_predict_parts1.png"))
+            if (System.IO.File.Exists("explain_predict\\tmp_xgboost_predict_parts_"+targetName + "1.png"))
             {
-                xgboost_exp_._ImageView.pictureBox1.ImageLocation = "explain_predict\\tmp_xgboost_predict_parts1.png";
+                xgboost_exp_._ImageView.pictureBox1.ImageLocation = "explain_predict\\tmp_xgboost_predict_parts_"+targetName + "1.png";
                 xgboost_exp_._ImageView.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_._ImageView.pictureBox1.Dock = DockStyle.Fill;
 
-                xgboost_exp_.pictureBox1.ImageLocation = "explain_predict\\tmp_xgboost_predict_parts1.png";
+                xgboost_exp_.pictureBox1.ImageLocation = "explain_predict\\tmp_xgboost_predict_parts_"+targetName + "1.png";
                 xgboost_exp_.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_.pictureBox1.Dock = DockStyle.Fill;
             }
             else
             {
             }
-            if (System.IO.File.Exists("explain_predict\\predict_probability1.png"))
+            if (System.IO.File.Exists("explain_predict\\predict_probability_"+targetName + "1.png"))
             {
-                xgboost_exp_._ImageView4.pictureBox1.ImageLocation = "explain_predict\\predict_probability1.png";
+                xgboost_exp_._ImageView4.pictureBox1.ImageLocation = "explain_predict\\predict_probability_"+targetName + "1.png";
                 xgboost_exp_._ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_._ImageView4.pictureBox1.Dock = DockStyle.Fill;
 
-                xgboost_exp_.pictureBox4.ImageLocation = "explain_predict\\predict_probability1.png";
+                xgboost_exp_.pictureBox4.ImageLocation = "explain_predict\\predict_probability_"+targetName + "1.png";
                 xgboost_exp_.pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
                 xgboost_exp_.pictureBox4.Dock = DockStyle.Fill;
             }
@@ -6382,9 +6775,9 @@ forecast_extension += "	    }\r\n";
             {
             }
 
-            if (System.IO.File.Exists("explain_predict\\position_maker1.png"))
+            if (System.IO.File.Exists("explain_predict\\position_maker_"+targetName + "1.png"))
             {
-                xgboost_exp_.pictureBox5.Image = Form1.CreateImage("explain_predict\\position_maker1.png"); ;
+                xgboost_exp_.pictureBox5.Image = Form1.CreateImage("explain_predict\\position_maker_"+targetName + "1.png"); ;
                 xgboost_exp_.pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             else
@@ -6420,7 +6813,7 @@ forecast_extension += "	    }\r\n";
         {
             if (checkBox4.Checked && xgboost_predict_parts_count <= explain_num)
             {
-                string file = string.Format("explain_predict\\tmp_xgboost_predict_parts{0}.png", xgboost_predict_parts_count);
+                string file = string.Format("explain_predict\\tmp_xgboost_predict_parts_"+targetName + "{0}.png", xgboost_predict_parts_count);
                 if (System.IO.File.Exists(file))
                 {
                     label27.Text = string.Format("{0:D4}/{1:D4}", xgboost_predict_parts_count, explain_num);
@@ -6430,7 +6823,7 @@ forecast_extension += "	    }\r\n";
             }
             if (checkBox13.Checked && xgboost_predict_probability_count <= explain_num)
             {
-                string file = string.Format("explain_predict\\predict_probability{0}.png", xgboost_predict_probability_count);
+                string file = string.Format("explain_predict\\predict_probability_"+targetName + "{0}.png", xgboost_predict_probability_count);
                 if (System.IO.File.Exists(file))
                 {
                     label27.Text = string.Format("{0:D4}/{1:D4}", xgboost_predict_probability_count, explain_num);
@@ -6455,6 +6848,7 @@ forecast_extension += "	    }\r\n";
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel2.LinkVisited = true;
+            image_link2 = image_links[targetName]["linkLabel2"];
             image_link2 = image_link2.Split('\n')[0];
             image_link2 = image_link2.Replace("\"", "");
 
@@ -6592,11 +6986,11 @@ forecast_extension += "	    }\r\n";
 
         private void button20_Click(object sender, EventArgs e)
         {
-            if (System.IO.File.Exists("ts_transform.png"))
+            if (System.IO.File.Exists("ts_transform_"+targetName + ".png"))
             {
                 if (_ImageView3 == null) _ImageView3 = new ImageView();
                 _ImageView3.form1 = this.form1;
-                _ImageView3.pictureBox1.ImageLocation = "ts_transform.png";
+                _ImageView3.pictureBox1.ImageLocation = "ts_transform_"+targetName + ".png";
                 _ImageView3.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 _ImageView3.pictureBox1.Dock = DockStyle.Fill;
                 _ImageView3.Show();
@@ -6616,6 +7010,7 @@ forecast_extension += "	    }\r\n";
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel3.LinkVisited = true;
+            image_link3 = image_links[targetName]["linkLabel3"];
             image_link3 = image_link3.Split('\n')[0];
             image_link3 = image_link3.Replace("\"", "");
 
@@ -6664,11 +7059,11 @@ forecast_extension += "	    }\r\n";
 
         private void button21_Click(object sender, EventArgs e)
         {
-            if (System.IO.File.Exists("stldecomp.png"))
+            if (System.IO.File.Exists("stldecomp_"+targetName + ".png"))
             {
                 if (_ImageView4 == null) _ImageView4 = new ImageView();
                 _ImageView4.form1 = this.form1;
-                _ImageView4.pictureBox1.ImageLocation = "stldecomp.png";
+                _ImageView4.pictureBox1.ImageLocation = "stldecomp_"+targetName + ".png";
                 _ImageView4.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 _ImageView4.pictureBox1.Dock = DockStyle.Fill;
                 _ImageView4.Show();
@@ -6694,11 +7089,11 @@ forecast_extension += "	    }\r\n";
             //    return;
             //}
             if (_ImageView5 == null) _ImageView5 = new ImageView();
-            //string file = "tmp_xgboost.png";
-            string file = "観測値のばらつきを考慮した予測値の確率2.png";
+            //string file = "tmp_xgboost_"+targetName + ".png";
+            string file = "観測値のばらつきを考慮した予測値の確率2_"+targetName + ".png";
             if (radioButton3.Checked)
             {
-                file = "観測値のばらつきを考慮した予測値の確率2.png";
+                file = "観測値のばらつきを考慮した予測値の確率2_"+targetName + ".png";
             }else
             {
                 return;
@@ -6722,19 +7117,23 @@ forecast_extension += "	    }\r\n";
                 cmd += "predict_probability_<-ggplotly(predict_probability_plt)\r\n";
             }
 
-            if (System.IO.File.Exists("xgboost_predict_probability_temp.html")) form1.FileDelete("xgboost_predict_probability_temp.html");
+            if (System.IO.File.Exists("xgboost_predict_probability_temp_"+targetName + ".html")) form1.FileDelete("xgboost_predict_probability_temp_"+targetName + ".html");
             cmd += "print(predict_probability_)\r\n";
-            cmd += "htmlwidgets::saveWidget(as_widget(predict_probability_), \"xgboost_predict_probability_temp.html\", selfcontained = F)\r\n";
+            cmd += "htmlwidgets::saveWidget(as_widget(predict_probability_), \"xgboost_predict_probability_temp_"+targetName + ".html\", selfcontained = F)\r\n";
             form1.script_executestr(cmd);
 
             image_link4 = "";
             System.Threading.Thread.Sleep(50);
-            if (System.IO.File.Exists("xgboost_predict_probability_temp.html"))
+            if (System.IO.File.Exists("xgboost_predict_probability_temp_"+targetName + ".html"))
             {
-                string webpath = Form1.curDir + "/xgboost_predict_probability_temp.html";
+                string webpath = Form1.curDir + "/xgboost_predict_probability_temp_"+targetName + ".html";
                 webpath = webpath.Replace("\\", "/").Replace("//", "/");
 
                 image_link4 = webpath;
+	            var s = new Dictionary<string, string>();
+                s.Add("linkLabel4", webpath);
+	            image_links[targetName] =  s;
+	            
                 linkLabel4.Visible = true;
                 linkLabel4.LinkVisited = true;
                 if (form1._setting.checkBox1.Checked)
@@ -6768,6 +7167,7 @@ forecast_extension += "	    }\r\n";
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel4.LinkVisited = true;
+            image_link4 = image_links[targetName]["linkLabel4"];
             image_link4 = image_link4.Split('\n')[0];
             image_link4 = image_link4.Replace("\"", "");
 
@@ -6787,10 +7187,10 @@ forecast_extension += "	    }\r\n";
         private void button23_Click(object sender, EventArgs e)
         {
             if (_ImageView6 == null) _ImageView6 = new ImageView();
-            string file = "trend2.png";
+            string file = "trend2_"+targetName + ".png";
             if (radioButton3.Checked)
             {
-                file = "trend2.png";
+                file = "trend2_"+targetName + ".png";
             }
             else
             {
@@ -6806,7 +7206,7 @@ forecast_extension += "	    }\r\n";
             {
                 return;
             }
-            if (!System.IO.File.Exists("trend2.png .r")|| !checkBox5.Checked)
+            if (!System.IO.File.Exists("trend2_"+targetName + ".png .r")|| !checkBox5.Checked)
             {
                 _ImageView6.Show();
                 return;
@@ -6814,23 +7214,27 @@ forecast_extension += "	    }\r\n";
             string cmd = "";
             if (radioButton1.Checked && radioButton3.Checked)
             {
-                cmd += "source(\""+ "trend2.png .r" + "\")\r\n";
+                cmd += "source(\""+ "trend2_"+targetName + ".png .r" + "\")\r\n";
                 cmd += "trend_p <- p\r\n";
             }
 
-            if (System.IO.File.Exists("xgboost_predict_trend_temp.html")) form1.FileDelete("xgboost_predict_probability_temp.html");
+            if (System.IO.File.Exists("xgboost_predict_trend_temp_"+targetName + ".html")) form1.FileDelete("xgboost_predict_probability_temp_"+targetName + ".html");
             cmd += "print(trend_p)\r\n";
-            cmd += "htmlwidgets::saveWidget(as_widget(trend_p), \"xgboost_predict_trend_temp.html\", selfcontained = F)\r\n";
+            cmd += "htmlwidgets::saveWidget(as_widget(trend_p), \"xgboost_predict_trend_temp_"+targetName + ".html\", selfcontained = F)\r\n";
             form1.script_executestr(cmd);
 
             image_link5 = "";
             System.Threading.Thread.Sleep(50);
-            if (System.IO.File.Exists("xgboost_predict_trend_temp.html"))
+            if (System.IO.File.Exists("xgboost_predict_trend_temp_"+targetName + ".html"))
             {
-                string webpath = Form1.curDir + "/xgboost_predict_trend_temp.html";
+                string webpath = Form1.curDir + "/xgboost_predict_trend_temp_"+targetName + ".html";
                 webpath = webpath.Replace("\\", "/").Replace("//", "/");
 
                 image_link5 = webpath;
+	            var s = new Dictionary<string, string>();
+                s.Add("linkLabel5", webpath);
+	            image_links[targetName] =  s;
+	            
                 linkLabel5.Visible = true;
                 linkLabel5.LinkVisited = true;
                 if (form1._setting.checkBox1.Checked)
@@ -6864,6 +7268,8 @@ forecast_extension += "	    }\r\n";
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel5.LinkVisited = true;
+
+            image_link5 = image_links[targetName]["linkLabel5"];
             image_link5 = image_link5.Split('\n')[0];
             image_link5 = image_link5.Replace("\"", "");
 
@@ -7067,12 +7473,12 @@ forecast_extension += "	    }\r\n";
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            if (System.IO.File.Exists("split_train_test.png"))
+            if (System.IO.File.Exists("split_train_test_"+targetName + ".png"))
             {
                 if (_ImageView7 == null) _ImageView7 = new ImageView();
                 _ImageView7.form1 = this.form1;
                 _ImageView7.pictureBox1.Image = null;
-                _ImageView7.pictureBox1.Image = Form1.CreateImage("split_train_test.png");
+                _ImageView7.pictureBox1.Image = Form1.CreateImage("split_train_test_"+targetName + ".png");
                 _ImageView7.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                 _ImageView7.pictureBox1.Dock = DockStyle.Fill;
                 _ImageView7.Width = 640 * 4/2;
@@ -7124,12 +7530,12 @@ forecast_extension += "	    }\r\n";
 
         private void button28_Click(object sender, EventArgs e)
         {
-            if (System.IO.File.Exists("xgboost_importance.png"))
+            if (System.IO.File.Exists("xgboost_importance_"+targetName + ".png"))
             {
                 if (_ImageView8 == null) _ImageView8 = new ImageView();
                 _ImageView8.form1 = this.form1;
                 _ImageView8.pictureBox1.Image = null;
-                _ImageView8.pictureBox1.Image = Form1.CreateImage("xgboost_importance.png");
+                _ImageView8.pictureBox1.Image = Form1.CreateImage("xgboost_importance_"+targetName + ".png");
                 _ImageView8.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                 _ImageView8.pictureBox1.Dock = DockStyle.Fill;
                 _ImageView8.Width = 640;
@@ -7147,12 +7553,12 @@ forecast_extension += "	    }\r\n";
             if (!checkBox21.Checked) return;
             try
             {
-                string pngfile = string.Format("ts_debug_plot\\tmp{0}.png", xgboost_predict_debug_plot_count);
+                string pngfile = string.Format("ts_debug_plot\\tmp_"+targetName + "{0}.png", xgboost_predict_debug_plot_count);
                 if (!System.IO.File.Exists(pngfile))
                 {
                     for ( int i = xgboost_predict_debug_plot_count; i < 100000; i+= 10)
                     {
-                        pngfile = string.Format("ts_debug_plot\\tmp{0}.png", i);
+                        pngfile = string.Format("ts_debug_plot\\tmp_"+targetName + "{0}.png", i);
                         if (System.IO.File.Exists(pngfile))
                         {
                             xgboost_predict_debug_plot_count = i;
@@ -7221,51 +7627,51 @@ forecast_extension += "	    }\r\n";
                 bool force_plot_plt = false;
                 if (radioButton3.Checked)
                 {
-                    if (System.IO.File.Exists("xgboost_predict_force_plot_plt_tmp.html")) form1.FileDelete("xgboost_predict_force_plot_plt_tmp.html");
+                    if (System.IO.File.Exists("xgboost_predict_force_plot_plt_tmp_"+targetName + ".html")) form1.FileDelete("xgboost_predict_force_plot_plt_tmp_"+targetName + ".html");
 
-                    force_plot_plt = form1.ExistObj("predict_force_plot_plt");
+                    force_plot_plt = form1.ExistObj("predict_force_plot_plt_"+targetName);
                     if (force_plot_plt)
                     {
                         cmd += "library(plotly)\r\n";
-                        cmd += "print(predict_force_plot_plt)\r\n";
-                        cmd += "p_ <- ggplotly(predict_force_plot_plt)\r\n";
-                        cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_predict_force_plot_plt_tmp.html\", selfcontained = F)\r\n";
+                        cmd += "print(predict_force_plot_plt_"+targetName+")\r\n";
+                        cmd += "p_ <- ggplotly(predict_force_plot_plt_"+targetName+")\r\n";
+                        cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_predict_force_plot_plt_tmp_"+targetName + ".html\", selfcontained = F)\r\n";
                         form1.script_executestr(cmd);
 
                         System.Threading.Thread.Sleep(50);
-                        if (System.IO.File.Exists("xgboost_predict_force_plot_plt_tmp.html"))
+                        if (System.IO.File.Exists("xgboost_predict_force_plot_plt_tmp_"+targetName + ".html"))
                         {
-                            webpath = Form1.curDir + "/xgboost_predict_force_plot_plt_tmp.html";
+                            webpath = Form1.curDir + "/xgboost_predict_force_plot_plt_tmp_"+targetName + ".html";
                             webpath = webpath.Replace("\\", "/").Replace("//", "/");
                         }
                     }else
                     {
-                        MessageBox.Show("not found [predict_force_plot_plt]");
+                        MessageBox.Show("not found [predict_force_plot_plt_"+targetName+"]");
                         return;
                     }
                 }
                 if (radioButton4.Checked)
                 {
-                    if (System.IO.File.Exists("xgboost_train_force_plot_plt_tmp.html")) form1.FileDelete("xgboost_train_force_plot_plt_tmp.html");
+                    if (System.IO.File.Exists("xgboost_train_force_plot_plt_tmp_"+targetName + ".html")) form1.FileDelete("xgboost_train_force_plot_plt_tmp_"+targetName + ".html");
 
-                    force_plot_plt = form1.ExistObj("train_force_plot_plt");
+                    force_plot_plt = form1.ExistObj("train_force_plot_plt_"+targetName);
                     if (force_plot_plt)
                     {
                         cmd += "library(plotly)\r\n";
-                        cmd += "print(train_force_plot_plt)\r\n";
-                        cmd += "p_ <- ggplotly(train_force_plot_plt)\r\n";
-                        cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_train_force_plot_plt_tmp.html\", selfcontained = F)\r\n";
+                        cmd += "print(train_force_plot_plt_"+targetName + ")\r\n";
+                        cmd += "p_ <- ggplotly(train_force_plot_plt_"+targetName + ")\r\n";
+                        cmd += "htmlwidgets::saveWidget(as_widget(p_), \"xgboost_train_force_plot_plt_tmp_"+targetName + ".html\", selfcontained = F)\r\n";
                         form1.script_executestr(cmd);
 
                         System.Threading.Thread.Sleep(50);
-                        if (System.IO.File.Exists("xgboost_train_force_plot_plt_tmp.html"))
+                        if (System.IO.File.Exists("xgboost_train_force_plot_plt_tmp_"+targetName + ".html"))
                         {
-                            webpath = Form1.curDir + "/xgboost_train_force_plot_plt_tmp.html";
+                            webpath = Form1.curDir + "/xgboost_train_force_plot_plt_tmp_"+targetName + ".html";
                             webpath = webpath.Replace("\\", "/").Replace("//", "/");
                         }
                     }else
                     {
-                        MessageBox.Show("not found [train_force_plot_plt]");
+                        MessageBox.Show("not found [train_force_plot_plt_"+targetName+"]");
                         return;
                     }
                 }
@@ -7284,29 +7690,55 @@ forecast_extension += "	    }\r\n";
                 }
                 return;
             }
-            if (radioButton3.Checked && System.IO.File.Exists("xgboost_predict_force_plot.png"))
+            if (radioButton3.Checked && System.IO.File.Exists("xgboost_predict_force_plot_"+targetName + ".png"))
             {
                 if (_ImageView10 == null) _ImageView10 = new ImageView();
                 _ImageView10.form1 = this.form1;
                 _ImageView10.pictureBox1.Image = null;
-                _ImageView10.pictureBox1.Image = Form1.CreateImage("xgboost_predict_force_plot.png");
+                _ImageView10.pictureBox1.Image = Form1.CreateImage("xgboost_predict_force_plot_"+targetName + ".png");
                 _ImageView10.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                 _ImageView10.pictureBox1.Dock = DockStyle.Fill;
                 _ImageView10.Width = 640*2;
                 _ImageView10.Height = 480;
                 _ImageView10.Show();
             }
-            if (radioButton4.Checked && System.IO.File.Exists("xgboost_train_force_plot.png"))
+            if (radioButton4.Checked && System.IO.File.Exists("xgboost_train_force_plot_"+targetName + ".png"))
             {
                 if (_ImageView10 == null) _ImageView10 = new ImageView();
                 _ImageView10.form1 = this.form1;
                 _ImageView10.pictureBox1.Image = null;
-                _ImageView10.pictureBox1.Image = Form1.CreateImage("xgboost_train_force_plot.png");
+                _ImageView10.pictureBox1.Image = Form1.CreateImage("xgboost_train_force_plot_"+targetName + ".png");
                 _ImageView10.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                 _ImageView10.pictureBox1.Dock = DockStyle.Fill;
                 _ImageView10.Width = 640*2;
                 _ImageView10.Height = 480;
                 _ImageView10.Show();
+            }
+        }
+
+        private void comboBox8_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+        }
+
+        private void comboBox8_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void comboBox8_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (running == 1 || comboBox8_edit) return;
+            targetName = comboBox8.Text;
+            draw_plot_images();
+            if (_ImageView8 != null && _ImageView8.Visible) button28_Click(sender, e);
+
+            if (!checkBox5.Checked)
+            {
+                if (_ImageView10 != null && _ImageView10.Visible) button29_Click_1(sender, e);
+                if (_ImageView6 != null && _ImageView6.Visible) button23_Click(sender, e);
+            }else
+            {
+                if (interactivePlot7 != null && interactivePlot7.Visible) button29_Click_1(sender, e);
+                if (interactivePlot5 != null && interactivePlot5.Visible) button23_Click(sender, e);
             }
         }
     }
