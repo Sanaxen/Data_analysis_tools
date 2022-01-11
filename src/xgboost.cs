@@ -34,9 +34,12 @@ namespace WindowsFormsApplication1
         string targetName = "";
         string decomp_type = "additive";//"multiplicative"; //additive
 
-        Dictionary<string,Dictionary<string, string>> image_links = new Dictionary<string, Dictionary<string, string>>();
-        Dictionary<string, string> estimative = new Dictionary<string, string>()
-;
+        Dictionary<string, int> target_dic = null;
+
+        Dictionary<string, string>[] image_links = null;
+        Dictionary<string, string>[] parameters = null;
+        Dictionary<string, string> estimative = new Dictionary<string, string>();
+
         int grid_serch_stop = 0;
         ListBox importance_var = new ListBox();
 
@@ -443,9 +446,7 @@ namespace WindowsFormsApplication1
                     webpath = webpath.Replace("\\", "/").Replace("//", "/");
 
                     image_link2 = webpath;
-                    var s = new Dictionary<string, string>();
-                    s.Add("linkLabel2", webpath);
-                    image_links[targetName] =  s;
+                    image_links[target_dic[targetName]]["linkLabel2"] = webpath;
 
                     linkLabel2.Visible = true;
                     linkLabel2.LinkVisited = true;
@@ -490,17 +491,108 @@ namespace WindowsFormsApplication1
             catch { }
         }
 
+		private void save_target_parameter(string pname, string value)
+		{
+            parameters[target_dic[targetName]][pname] = value;
+		}
+		private void save_target_parameters()
+		{
+			save_target_parameter("eta", textBox3.Text);
+			save_target_parameter("gamma", textBox4.Text);
+			save_target_parameter("min_child_weight", textBox9.Text);
+			save_target_parameter("subsample", textBox8.Text);
+			save_target_parameter("max_depth", numericUpDown6.Text);
+			save_target_parameter("alpha", textBox5.Text);
+			save_target_parameter("lambda", textBox6.Text);
+			save_target_parameter("colsample_bytree", textBox7.Text);
+			save_target_parameter("nthread", numericUpDown10.Value.ToString());
+			if ( checkBox3.Checked )
+			{
+				save_target_parameter("tree_method", "'gpu_hist'");
+				save_target_parameter("predictor", "'gpu_predictor'");
+			}else
+			{
+				save_target_parameter("tree_method", "'hist'");
+				save_target_parameter("predictor", "'cpu_predictor'");
+			}
+			if (radioButton2.Checked)
+			{
+				save_target_parameter("num_class", numericUpDown7.Text);
+			}else
+			{
+				save_target_parameter("num_class", "0");
+			}
+		}
+
+		private void load_parameters()
+		{
+			textBox3.Text = parameters[target_dic[targetName]]["eta"];
+			textBox4.Text = parameters[target_dic[targetName]]["gamma"];
+			textBox9.Text = parameters[target_dic[targetName]]["min_child_weight"];
+			textBox8.Text = parameters[target_dic[targetName]]["subsample"];
+			numericUpDown6.Text = parameters[target_dic[targetName]]["max_depth"];
+			textBox5.Text = parameters[target_dic[targetName]]["alpha"];
+			textBox6.Text = parameters[target_dic[targetName]]["lambda"];
+			textBox7.Text = parameters[target_dic[targetName]]["colsample_bytree"];
+			numericUpDown10.Text = parameters[target_dic[targetName]]["nthread"];
+			if ( parameters[target_dic[targetName]]["tree_method"] == "'gpu_hist'" )
+			{
+				checkBox3.Checked = true;
+			}else
+			{
+				checkBox3.Checked = false;
+			}
+			if ( parameters[target_dic[targetName]]["num_class"] == "0" )
+			{
+				radioButton2.Checked = false;
+			}else
+			{
+				numericUpDown7.Text = parameters[target_dic[targetName]]["num_class"];
+			}
+		}
+
+
+
         public void button1_Click(object sender, EventArgs e)
         {
             var backup = listBox1.SelectedIndices;
 
             comboBox8_edit = true;
-            comboBox8.Items.Clear();
+            progressBar4.Value = 0;
+
             try
             {
-                for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                if (radioButton4.Checked)
                 {
-                    comboBox8.Items.Add(listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                    comboBox8.Items.Clear();
+                    if (System.IO.File.Exists("xgboost_gridsearch.stop"))
+                    {
+                        form1.FileDelete("xgboost_gridsearch.stop");
+                    }
+
+                    if (image_links != null) image_links = null;
+                    if (parameters != null) parameters = null;
+                    if (target_dic != null) target_dic = null;
+
+                    if (image_links == null || parameters == null)
+                    {
+                        image_links = new Dictionary<string, string>[listBox1.SelectedIndices.Count];
+                        parameters = new Dictionary<string, string>[listBox1.SelectedIndices.Count];
+                        target_dic = new Dictionary<string, int>();
+                    }
+                    for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                    {
+                        comboBox8.Items.Add(listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                        target_dic[listBox1.Items[listBox1.SelectedIndices[i]].ToString()] = i;
+                        parameters[i] = new Dictionary<string, string>();
+                        image_links[i] = new Dictionary<string, string>();
+                    }
+                }
+
+                if (radioButton4.Checked && checkBox23.Checked)
+                {
+                    timer4.Enabled = true;
+                    timer4.Start();
                 }
 
                 multi_target_count = 0;
@@ -509,10 +601,18 @@ namespace WindowsFormsApplication1
                 {
                     if ( checkBox22.Checked)
                     {
+                        timer4.Enabled = false;
+                        timer4.Stop();
                         break;
                     }
                     targetName = listBox1.Items[listBox1.SelectedIndices[i]].ToString();
                     button1_Click_target(sender, e);
+
+                    if (radioButton4.Checked)
+                    {
+                        save_target_parameters();
+                        save_param("xgboost_param_" + targetName);
+                    }
                     multi_target_count++;
                     label47.Text = multi_target_count + "/" + (listBox1.SelectedIndices.Count);
                 }
@@ -523,6 +623,8 @@ namespace WindowsFormsApplication1
             finally
             {
                 comboBox8_edit = false;
+                timer4.Enabled = false;
+                timer4.Stop();
             }
         }
 
@@ -557,6 +659,11 @@ namespace WindowsFormsApplication1
             linkLabel4.LinkVisited = false;
             linkLabel5.Visible = false;
             linkLabel5.LinkVisited = false;
+
+            progressBar1.Value = 0;
+            progressBar2.Value = 0;
+            progressBar3.Value = 0;
+            progressBar4.Value = 0;
 
             button18.Enabled = false;
             button22.Enabled = false;
@@ -600,6 +707,8 @@ namespace WindowsFormsApplication1
             {
                 form1.FileDelete("curvplot_temp_"+targetName + ".html");
                 form1.FileDelete("xgboost_plot_temp_"+targetName + ".html");
+                form1.FileDelete("xgboost_gridSearch_progress.txt");
+                //
 
                 pictureBox1.ImageLocation = "";
                 //webBrowser1.Navigate("");
@@ -1337,10 +1446,8 @@ namespace WindowsFormsApplication1
                                 webpath = webpath.Replace("\\", "/").Replace("//", "/");
 
                                 image_link3 = webpath;
-                                var s = new Dictionary<string, string>();
-                                s.Add("linkLabel3", webpath);
-                                image_links[targetName] =  s;
-                                
+                                image_links[target_dic[targetName]]["linkLabel3"] = webpath;
+
                                 linkLabel3.Visible = true;
                                 linkLabel3.LinkVisited = true;
                                 if (form1._setting.checkBox1.Checked)
@@ -1881,6 +1988,7 @@ namespace WindowsFormsApplication1
                 string cmd2 = "";
                 string cmd3 = "";
                 string explain = "";
+                string xgboost_gridsearch = "";
                 string file = "";
                 {
                     if ((checkBox6.Checked || checkBox7.Checked) && radioButton1.Checked)
@@ -2424,172 +2532,212 @@ namespace WindowsFormsApplication1
                     
                     if ( checkBox23.Checked )
                     {
-						cmd += "xgboost_gridSearch<- function(train, test, best_count_max=-1)\r\n";
-						cmd += "{\r\n";
-						cmd += "	previous_na_action <- options()$na.action\r\n";
-						cmd += "	options(na.action='na.pass')\r\n";
-						cmd += "\r\n";
-						cmd += "	tarin_min_size = min(nrow(train), max(200, as.integer(nrow(train)/5)))\r\n";
-						cmd += "	s1 = 1\r\n";
-						cmd += "	s2 = tarin_min_size\r\n";
-						cmd += "\r\n";
-						cmd += "	\r\n";
-						cmd += "	eta = c( 0.01, 0.05, 0.1, 0.2)\r\n";
-						cmd += "	gamma = c( 0.0 )\r\n";
-						cmd += "	alphaz = c( 0.0)\r\n";
-						cmd += "	lambda = c( 1.0 );\r\n";
-						cmd += "	colsample_bytree = c( 0.8, 0.9 )\r\n";
-						cmd += "	subsample = c(  0.9, 1.0 )\r\n";
-						cmd += "	min_child_weight = c( 1.0, 1.5, 2.0 )\r\n";
-						cmd += "	max_depth = c( 6, 8, 9, 10 )\r\n";
-						cmd += "	nrounds = c(400)\r\n";
-						cmd += "\r\n";
-						cmd += "	eval_count = 0\r\n";
-						cmd += "	best_count = 0\r\n";
-						cmd += "	best_score = 9999999\r\n";
-						cmd += "	best_params = NULL\r\n";
-						cmd += "	best_mode = NULL\r\n";
-						cmd += "	for ( eta_i in eta ){\r\n";
-						cmd += "	for ( gamma_i in gamma ){\r\n";
-						cmd += "	for ( alphaz_i in alphaz ){\r\n";
-						cmd += "	for ( lambda_i in lambda ){\r\n";
-						cmd += "	for ( colsample_bytree_i in colsample_bytree ){\r\n";
-						cmd += "	for ( subsample_i in subsample ){\r\n";
-						cmd += "	for ( min_child_weight_i in min_child_weight ){\r\n";
-						cmd += "	for ( max_depth_i in max_depth ){\r\n";
-						cmd += "	for ( nrounds_i in nrounds ){\r\n";
-						cmd += "\r\n";
-						cmd += "	for ( i in 1:10 )\r\n";
-						cmd += "	{\r\n";
-						cmd += "		s1 = as.integer(runif(1, 1, nrow(train)-tarin_min_size))\r\n";
-						cmd += "		s2 = s1 + tarin_min_size\r\n";
-						cmd += "		if ( s2 <= nrow(train)) break\r\n";
-						cmd += "		s2 = -1\r\n";
-						cmd += "	}\r\n";
-						cmd += "	if ( s2 > 1 ) {\r\n";
-						cmd += "		train_tmp = train[s1:s2,]\r\n";
-						cmd += "	}else\r\n";
-						cmd += "	{\r\n";
-						cmd += "		train_tmp = train[1:tarin_min_size,]\r\n";
-						cmd += "	}\r\n";
-						cmd += "	\r\n";
-						cmd += "	train_tmp_mx<-sparse.model.matrix("+formuler+ ", data = train_tmp)\r\n";
-						cmd += "	train_tmp_dmat <- xgb.DMatrix(train_tmp_mx, label = train_tmp$target_";
+						xgboost_gridsearch += "xgboost_gridSearch<- function(train, test, best_count_max=-1)\r\n";
+						xgboost_gridsearch += "{\r\n";
+						xgboost_gridsearch += "	previous_na_action <- options()$na.action\r\n";
+						xgboost_gridsearch += "	options(na.action='na.pass')\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	tarin_min_size = min(nrow(train), max(200, as.integer(nrow(train)/5)))\r\n";
+						xgboost_gridsearch += "	s1 = 1\r\n";
+						xgboost_gridsearch += "	s2 = tarin_min_size\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	\r\n";
+						xgboost_gridsearch += "	eta = c( 0.01, 0.05, 0.1, 0.2)\r\n";
+						xgboost_gridsearch += "	gamma = c( 0.0 )\r\n";
+						xgboost_gridsearch += "	alphaz = c( 0.0)\r\n";
+						xgboost_gridsearch += "	lambda = c( 1.0 );\r\n";
+						xgboost_gridsearch += "	colsample_bytree = c( 0.8, 0.9 )\r\n";
+						xgboost_gridsearch += "	subsample = c(  0.9, 1.0 )\r\n";
+						xgboost_gridsearch += "	min_child_weight = c( 1.0, 1.5, 2.0 )\r\n";
+						xgboost_gridsearch += "	max_depth = c( 6, 8, 9, 10 )\r\n";
+						xgboost_gridsearch += "	nrounds = c(400)\r\n";
+						xgboost_gridsearch += "	pattern_length = length(eta)*length(gamma)*length(alphaz)*length(lambda)\r\n";
+						xgboost_gridsearch += "	pattern_length = pattern_length * length(colsample_bytree)*length(subsample)*length(min_child_weight)\r\n";
+						xgboost_gridsearch += "	pattern_length = pattern_length * length(max_depth)*length(nrounds)\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	eval_count = 0\r\n";
+						xgboost_gridsearch += "	best_count = 0\r\n";
+						xgboost_gridsearch += "	best_score = 9999999\r\n";
+						xgboost_gridsearch += "	best_params = NULL\r\n";
+						xgboost_gridsearch += "	best_mode = NULL\r\n";
+						xgboost_gridsearch += "	for ( eta_i in eta ){\r\n";
+						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( gamma_i in gamma ){\r\n";
+						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( alphaz_i in alphaz ){\r\n";
+						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( lambda_i in lambda ){\r\n";
+						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( colsample_bytree_i in colsample_bytree ){\r\n";
+						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( subsample_i in subsample ){\r\n";
+						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( min_child_weight_i in min_child_weight ){\r\n";
+						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( max_depth_i in max_depth ){\r\n";
+						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( nrounds_i in nrounds ){\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
+						xgboost_gridsearch += "	for ( i in 1:10 )\r\n";
+						xgboost_gridsearch += "	{\r\n";
+						xgboost_gridsearch += "		s1 = as.integer(runif(1, 1, nrow(train)-tarin_min_size))\r\n";
+						xgboost_gridsearch += "		s2 = s1 + tarin_min_size\r\n";
+						xgboost_gridsearch += "		if ( s2 <= nrow(train)) break\r\n";
+						xgboost_gridsearch += "		s2 = -1\r\n";
+						xgboost_gridsearch += "	}\r\n";
+						xgboost_gridsearch += "	if ( s2 > 1 ) {\r\n";
+						xgboost_gridsearch += "		train_tmp = train[s1:s2,]\r\n";
+						xgboost_gridsearch += "	}else\r\n";
+						xgboost_gridsearch += "	{\r\n";
+						xgboost_gridsearch += "		train_tmp = train[1:tarin_min_size,]\r\n";
+						xgboost_gridsearch += "	}\r\n";
+						xgboost_gridsearch += "	\r\n";
+						xgboost_gridsearch += "	train_tmp_mx<-sparse.model.matrix("+formuler+ ", data = train_tmp)\r\n";
+						xgboost_gridsearch += "	train_tmp_dmat <- xgb.DMatrix(train_tmp_mx, label = train_tmp$target_";
 						if (comboBox4.Text != "")
 						{
-						    cmd += ",weight = train$'" + comboBox4.Text + "'";
+						    xgboost_gridsearch += ",weight = train$'" + comboBox4.Text + "'";
 						}
 						else
 						{
 						    if (add_enevt_data == 1)
 						    {
-						        cmd += ",weight = train$event";
+						        xgboost_gridsearch += ",weight = train$event";
 						    }
 						}
-						cmd += ")\r\n";
-						cmd += "\r\n";
-						cmd += "\r\n";
-                        cmd += "	l_params= list(booster=" + comboBox1.Text+"\r\n" ;
-						cmd += "	,objective=" + comboBox2.Text + "\r\n";
+						xgboost_gridsearch += ")\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "\r\n";
+                        xgboost_gridsearch += "	l_params= list(booster=" + comboBox1.Text+"\r\n" ;
+						xgboost_gridsearch += "	,objective=" + comboBox2.Text + "\r\n";
                         if (comboBox3.Text != "default")
                         {
-                            cmd += ",eval_metric=" + comboBox3.Text + "\r\n";
+                            xgboost_gridsearch += ",eval_metric=" + comboBox3.Text + "\r\n";
                         }
-                        cmd += "	,eta=eta_i\r\n";
-						cmd += "	,gamma=gamma_i\r\n";
-						cmd += "	,min_child_weight=min_child_weight_i\r\n";
-						cmd += "	,subsample=subsample_i\r\n";
-						cmd += "	,max_depth=max_depth_i\r\n";
-						cmd += "	,alpha=alphaz_i\r\n";
-						cmd += "	,lambda=lambda_i\r\n";
-						cmd += "	,colsample_bytree=colsample_bytree_i\r\n";
-						cmd += "	,nthread=3\r\n";
+                        xgboost_gridsearch += "	,eta=eta_i\r\n";
+						xgboost_gridsearch += "	,gamma=gamma_i\r\n";
+						xgboost_gridsearch += "	,min_child_weight=min_child_weight_i\r\n";
+						xgboost_gridsearch += "	,subsample=subsample_i\r\n";
+						xgboost_gridsearch += "	,max_depth=max_depth_i\r\n";
+						xgboost_gridsearch += "	,alpha=alphaz_i\r\n";
+						xgboost_gridsearch += "	,lambda=lambda_i\r\n";
+						xgboost_gridsearch += "	,colsample_bytree=colsample_bytree_i\r\n";
+						xgboost_gridsearch += "	,nthread=3\r\n";
                         if (checkBox3.Checked)
                         {
-                            cmd += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-                            cmd += "		,single_precision_histogram = T\r\n";
-                            cmd += "		,gpu_id = 0\r\n";
-                            cmd += "		,tree_method = 'gpu_hist'\r\n";
-                            cmd += "		,predictor='gpu_predictor'\r\n";
+                            xgboost_gridsearch += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+                            xgboost_gridsearch += "		,single_precision_histogram = T\r\n";
+                            xgboost_gridsearch += "		,gpu_id = 0\r\n";
+                            xgboost_gridsearch += "		,tree_method = 'gpu_hist'\r\n";
+                            xgboost_gridsearch += "		,predictor='gpu_predictor'\r\n";
                         }
                         else
                         {
-                            cmd += "		,tree_method = 'hist'\r\n";
-                            cmd += "		,predictor='cpu_predictor'\r\n";
+                            xgboost_gridsearch += "		,tree_method = 'hist'\r\n";
+                            xgboost_gridsearch += "		,predictor='cpu_predictor'\r\n";
                         }
 
                         if (radioButton2.Checked)
                         {
-                            cmd += ",num_class=" + numericUpDown7.Text + "\r\n";
+                            xgboost_gridsearch += ",num_class=" + numericUpDown7.Text + "\r\n";
                         }
-                        cmd += ")\r\n";
-                        cmd += "\r\n";
-						cmd += "	options(na.action=previous_na_action)\r\n";
-						cmd += "\r\n";
-						cmd += "	model <- xgb.train(data = train_tmp_dmat,nrounds = nrounds_i,verbose = 0, # 繰り返し過程を表示する\r\n";
-						cmd += "	,early_stopping_rounds = 100,params = l_params,watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat))\r\n";
-						cmd += "\r\n";
-						cmd += "	if (model$best_score < best_score)\r\n";
-						cmd += "	{\r\n";
-						cmd += "		best_count = best_count +1\r\n";
-						cmd += "		best_params = l_params\r\n";
-						cmd += "		best_score = model$best_score\r\n";
-						cmd += "		best_mode = model\r\n";
-						cmd += "		#print(best_params)\r\n";
-						cmd += "		#print(best_score)\r\n";
-						cmd += "		flush.console()\r\n";
-						cmd += "\r\n";
-						cmd += "	}\r\n";
-						cmd += "	if ( best_count_max >0 && best_count > best_count_max ) break\r\n";
-						cmd += "	eval_count = eval_count + 1\r\n";
-						cmd += "	cat(eval_count)\r\n";
-						cmd += "	cat(\" score:\")\r\n";
-						cmd += "	cat(model$best_score)\r\n";
-						cmd += "	cat(\" best_score:\")\r\n";
-						cmd += "	cat(best_score)\r\n";
-						cmd += "	cat(\"\n\")\r\n";
-						cmd += "\r\n";
-						cmd += "	flush.console()\r\n";
-						cmd += "	\r\n";
-						cmd += "	}}}}}}}}}\r\n";
-						cmd += "	return( list(best_params, best_mode))\r\n";
-						cmd += "}\r\n";
-						cmd += "#print(best_params)\r\n";
-						cmd += "\r\n";
-						cmd += "model_inf <- xgboost_gridSearch(train, test, best_count_max=-1)\r\n";
-						cmd += "l_params <- model_inf[[1]]\r\n";
-						cmd += "xgboost.model_"+targetName + " <- model_inf[[2]]\r\n";
-						cmd += "sink(file = \"xgboost_gridSearch.options\")\r\n";
+                        xgboost_gridsearch += ")\r\n";
+                        xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	options(na.action=previous_na_action)\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	model <- xgb.train(data = train_tmp_dmat,nrounds = nrounds_i,verbose = 0, # 繰り返し過程を表示する\r\n";
+						xgboost_gridsearch += "	,early_stopping_rounds = 100,params = l_params,watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat))\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	if (model$best_score < best_score)\r\n";
+						xgboost_gridsearch += "	{\r\n";
+						xgboost_gridsearch += "		best_count = best_count +1\r\n";
+						xgboost_gridsearch += "		best_params = l_params\r\n";
+						xgboost_gridsearch += "		best_score = model$best_score\r\n";
+						xgboost_gridsearch += "		best_mode = model\r\n";
+						xgboost_gridsearch += "		#print(best_params)\r\n";
+						xgboost_gridsearch += "		#print(best_score)\r\n";
+						xgboost_gridsearch += "		flush.console()\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	}\r\n";
+						xgboost_gridsearch += "	if ( best_count_max >0 && best_count > best_count_max ) break\r\n";
+						xgboost_gridsearch += "	eval_count = eval_count + 1\r\n";
+						xgboost_gridsearch += "	cat(eval_count)\r\n";
+						xgboost_gridsearch += "	cat(\" score:\")\r\n";
+						xgboost_gridsearch += "	cat(model$best_score)\r\n";
+						xgboost_gridsearch += "	cat(\" best_score:\")\r\n";
+						xgboost_gridsearch += "	cat(best_score)\r\n";
+						xgboost_gridsearch += "	cat(\"\n\")\r\n";
+                        xgboost_gridsearch += "\r\n";
+                        xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "        tryCatch({\r\n";
+						xgboost_gridsearch += "            sink(\"xgboost_gridSearch_progress.txt\")\r\n";
+						xgboost_gridsearch += "            cat(eval_count)\r\n";
+						xgboost_gridsearch += "            cat (\"/\")\r\n";
+						xgboost_gridsearch += "            cat(pattern_length)\r\n";
+						xgboost_gridsearch += "            cat(\"\\r\\n\")\r\n";
+						xgboost_gridsearch += "            flush.console()\r\n";
+						xgboost_gridsearch += "            sink()\r\n";
+						xgboost_gridsearch += "        },\r\n";
+						xgboost_gridsearch += "        error = function(e) {\r\n";
+						xgboost_gridsearch += "            sink()\r\n";
+						xgboost_gridsearch += "        },\r\n";
+						xgboost_gridsearch += "        finally   = {\r\n";
+						xgboost_gridsearch += "        },silent = TRUE )\r\n";
+                        xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	flush.console()\r\n";
+						xgboost_gridsearch += "	\r\n";
+						xgboost_gridsearch += "	}}}}}}}}}\r\n";
+						xgboost_gridsearch += "	return( list(best_params, best_mode))\r\n";
+						xgboost_gridsearch += "}\r\n";
+						xgboost_gridsearch += "#print(best_params)\r\n";
+						xgboost_gridsearch += "\r\n";
+						xgboost_gridsearch += "	if (  file.exists(\"xgboost_gridsearch.stop\") ){\r\n";
+						xgboost_gridsearch += "		file.remove(\"xgboost_gridsearch.stop\")\r\n";
+						xgboost_gridsearch += "	}\r\n";
+						xgboost_gridsearch += "model_inf <- xgboost_gridSearch(train, test, best_count_max=-1)\r\n";
+						xgboost_gridsearch += "l_params <- model_inf[[1]]\r\n";
+						xgboost_gridsearch += "xgboost.model_"+targetName + " <- model_inf[[2]]\r\n";
+						xgboost_gridsearch += "sink(file = \"xgboost_gridSearch.options\")\r\n";
 						
-						cmd += "cat(\"eta,\")\r\n";
-						cmd += "cat(l_params$eta)\r\n";
-						cmd += "cat(\"\\n\")\r\n";
+						xgboost_gridsearch += "cat(\"eta,\")\r\n";
+						xgboost_gridsearch += "cat(l_params$eta)\r\n";
+						xgboost_gridsearch += "cat(\"\\n\")\r\n";
 						
-						cmd += "cat(\"min_child_weight,\")\r\n";
-						cmd += "cat(l_params$min_child_weight)\r\n";
-						cmd += "cat(\"\\n\")\r\n";
+						xgboost_gridsearch += "cat(\"min_child_weight,\")\r\n";
+						xgboost_gridsearch += "cat(l_params$min_child_weight)\r\n";
+						xgboost_gridsearch += "cat(\"\\n\")\r\n";
 						
-						cmd += "cat(\"subsample,\")\r\n";
-						cmd += "cat(l_params$subsample)\r\n";
-						cmd += "cat(\"\\n\")\r\n";
+						xgboost_gridsearch += "cat(\"subsample,\")\r\n";
+						xgboost_gridsearch += "cat(l_params$subsample)\r\n";
+						xgboost_gridsearch += "cat(\"\\n\")\r\n";
 						
-						cmd += "cat(\"max_depth,\")\r\n";
-						cmd += "cat(l_params$max_depth)\r\n";
-						cmd += "cat(\"\\n\")\r\n";
+						xgboost_gridsearch += "cat(\"max_depth,\")\r\n";
+						xgboost_gridsearch += "cat(l_params$max_depth)\r\n";
+						xgboost_gridsearch += "cat(\"\\n\")\r\n";
 						
-						cmd += "cat(\"alpha,\")\r\n";
-						cmd += "cat(l_params$alpha)\r\n";
-						cmd += "cat(\"\\n\")\r\n";
+						xgboost_gridsearch += "cat(\"alpha,\")\r\n";
+						xgboost_gridsearch += "cat(l_params$alpha)\r\n";
+						xgboost_gridsearch += "cat(\"\\n\")\r\n";
 						
-						cmd += "cat(\"lambda,\")\r\n";
-						cmd += "cat(l_params$lambda)\r\n";
-						cmd += "cat(\"\\n\")\r\n";
+						xgboost_gridsearch += "cat(\"lambda,\")\r\n";
+						xgboost_gridsearch += "cat(l_params$lambda)\r\n";
+						xgboost_gridsearch += "cat(\"\\n\")\r\n";
 						
-						cmd += "cat(\"colsample_bytree,\")\r\n";
-						cmd += "cat(l_params$colsample_bytree)\r\n";
-						cmd += "cat(\"\\n\")\r\n";						
-						cmd += "sink()\r\n";
+						xgboost_gridsearch += "cat(\"colsample_bytree,\")\r\n";
+						xgboost_gridsearch += "cat(l_params$colsample_bytree)\r\n";
+						xgboost_gridsearch += "cat(\"\\n\")\r\n";						
+						xgboost_gridsearch += "sink()\r\n";
+	                    using (System.IO.StreamWriter sw = new System.IO.StreamWriter("xgboost_gridsearch.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
+	                    {
+	                        sw.Write(xgboost_gridsearch);
+	                    }
+	                    
+						cmd += "source(\"xgboost_gridsearch.r\")\r\n";
+
                     }
+                    
                     if (checkBox2.Checked && !time_series_mode)
                     {
                         cmd += "xgb_cv <- xgb.cv(data = train_dmat";
@@ -2704,6 +2852,9 @@ namespace WindowsFormsApplication1
                             sw.Write("options(width=" + form1._setting.numericUpDown2.Value.ToString() + ")\r\n");
                             sw.Write("sink(file = \"summary.txt\")\r\n");
                             sw.Write(cmd);
+                            sw.Write("sink()\r\n");
+                            sw.Write("\r\n");
+                            sw.Write("sink(file = \"xgboost_importance"+targetName+".txt\")\r\n");
                             sw.Write("print(imp_)\r\n");
                             sw.Write("\r\n");
                             sw.Write("sink()\r\n");
@@ -5191,38 +5342,6 @@ forecast_extension += "	    }\r\n";
                         form1.FileDelete("xgboost_gridSearch.options");
                         //checkBox23.Checked = false;
                     }
-                    importance_var.Items.Clear();
-
-                    var lines = stat.Split('\n');
-                    int s = -1;
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        var index = lines[i].IndexOf("Feature");
-                        var index2 = lines[i].IndexOf("Gain");
-                        var index3 = lines[i].IndexOf("Cover");
-                        if (!(index >= 0 && index2 >=0 && index3 >= 0))
-                        {
-                            continue;
-                        }
-                        s = i + 1;
-                        break;
-                    }
-                    if ( s >= 0)
-                    {
-                        for (int i = s; i < lines.Length; i++)
-                        {
-                            string x = lines[i].TrimStart();
-                            var name = x.Split(' ');
-                            if (name.Length <= 1) break;
-
-                            int k = 1;
-                            for ( k = 1; k < name.Length; k++)
-                            {
-                                if (name[k] != "") break;
-                            }
-                            importance_var.Items.Add(name[k]);
-                        }
-                    }
                 }
 
                 RMSE = "";
@@ -5587,6 +5706,15 @@ forecast_extension += "	    }\r\n";
                 sw.Write("train_step_num,"); sw.Write(numericUpDown22.Value.ToString() + "\r\n");
                 sw.Write("timeunit,"); sw.Write(comboBox6.Text + "\r\n");
                 sw.Write("decomp_type,"); sw.Write(comboBox7.Text + "\r\n");
+                
+                sw.Write("use_GPU,");
+                if (checkBox3.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                
+                sw.Write("グリッドサーチ,");
+                if (checkBox23.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                
                 sw.Close();
             }
         }
@@ -5695,7 +5823,7 @@ forecast_extension += "	    }\r\n";
 	            {
                 	za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj").Replace("model/", ""));
                 	za.CreateEntryFromFile("xgb_train_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj", (file + ".xgb_train_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj").Replace("model/", ""));
-	            }
+                    za.CreateEntryFromFile("xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options", (file + ".xgboost_param_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".options").Replace("model/", ""));                }
             }
             if (System.IO.File.Exists(file + ".dds2"))
             {
@@ -6141,6 +6269,31 @@ forecast_extension += "	    }\r\n";
                         comboBox7.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
+                    
+                    if (ss[0].IndexOf("use_GPU") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox3.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox3.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("グリッドサーチ") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox23.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox23.Checked = false;
+                        }
+                        continue;
+                    }
                 }
                 sr.Close();
             }
@@ -6157,6 +6310,9 @@ forecast_extension += "	    }\r\n";
                	string f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
             	form1.comboBox1.Text = "xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "<- readRDS(\"" + f + ".robj"+"\")\r\n";
  				form1.evalute_cmd(sender, e);
+
+                f = file + ".xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options";
+                System.IO.File.Copy(f, "xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options", true);
            	}
 
             //form1.comboBox1.Text = "xgb_train_"+targetName+"<- readRDS(" + "\"" + file + ".xgb_train_"+targetName+".robj" + "\"" + ")";
@@ -6167,7 +6323,9 @@ forecast_extension += "	    }\r\n";
                	string f = file + ".xgb_train_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
              	form1.comboBox1.Text = "xgb_train_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"<- readRDS(\"" + f + ".robj" + "\")\r\n";
  				form1.evalute_cmd(sender, e);
-           	}
+
+                System.IO.File.Copy(f + ".robj", "xgb_train_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".robj", true);
+            }
 
             load_param(file);
 
@@ -6276,16 +6434,54 @@ forecast_extension += "	    }\r\n";
 
         private void button14_Click(object sender, EventArgs e)
         {
-            if ( importance_var.Items.Count == 0)
+            //if ( importance_var.Items.Count == 0)
+            //{
+            //    return;
+            //}
+
+            importance_var.Items.Clear();
+            System.IO.StreamReader sr = null;
+            try
             {
-                return;
+                string line = "";
+                if (System.IO.File.Exists("xgboost_importance" + targetName + ".txt"))
+                {
+                    sr = new System.IO.StreamReader("xgboost_importance" + targetName + ".txt", Encoding.GetEncoding("SHIFT_JIS"));
+                    if (sr != null)
+                    {
+                        while (sr.EndOfStream == false)
+                        {
+                            line = sr.ReadLine().Replace("\n", "").Replace("\r", "");
+
+                            var ss = line.Split(' ');
+                            if ( ss[0] == "")
+                            {
+                                continue;
+                            }
+                            int k = 2;
+                            while (ss[k] == "") k++;
+                            if (ss[k] == "_baseline_") continue;
+                            if (ss[k] == "_full_model_") continue;
+                            if (ss[k] == "(Intercept)") continue;
+                            importance_var.Items.Add(ss[k]);
+                        }
+                    }
+                }
+            }
+            catch { }
+            finally
+            {
+                if (sr != null)
+                {
+                    sr.Close();
+                }
             }
 
             for (int i = 0; i < listBox2.Items.Count; i++)
             {
                 listBox2.SetSelected(i, false);
             }
-            for ( int i = 0; i < importance_var.Items.Count; i++)
+            for ( int i = importance_var.Items.Count-1; i >=0 ; i--)
             {
                 for (int j = 0; j < listBox2.Items.Count; j++)
                 {
@@ -6294,7 +6490,7 @@ forecast_extension += "	    }\r\n";
                         listBox2.SetSelected(j, true);
                     }
                 }
-                if (i + 1== numericUpDown9.Value) break;
+                if (listBox2.SelectedIndices.Count == numericUpDown9.Value) break;
             }
             form1.SelectionVarWrite_(listBox1, listBox2, "select_variables.dat");
         }
@@ -6357,9 +6553,7 @@ forecast_extension += "	    }\r\n";
 
             image_link = stat;
             linkLabel1.Visible = true;
-            var s = new Dictionary<string, string>();
-            s.Add("linkLabel1", stat);
-            image_links[targetName] =  s;
+            image_links[target_dic[targetName]]["linkLabel1"] = stat;
 
             form1.textBox6.Text += stat;
             //テキスト最後までスクロール
@@ -6397,7 +6591,7 @@ forecast_extension += "	    }\r\n";
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel1.LinkVisited = true;
-            image_link = image_links[targetName]["linkLabel1"];
+            image_link = image_links[target_dic[targetName]]["linkLabel1"];
             image_link = image_link.Split('\n')[0];
             image_link = image_link.Replace("\"", "");
 
@@ -6848,7 +7042,7 @@ forecast_extension += "	    }\r\n";
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel2.LinkVisited = true;
-            image_link2 = image_links[targetName]["linkLabel2"];
+            image_link2 = image_links[target_dic[targetName]]["linkLabel2"];
             image_link2 = image_link2.Split('\n')[0];
             image_link2 = image_link2.Replace("\"", "");
 
@@ -7010,7 +7204,7 @@ forecast_extension += "	    }\r\n";
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel3.LinkVisited = true;
-            image_link3 = image_links[targetName]["linkLabel3"];
+            image_link3 = image_links[target_dic[targetName]]["linkLabel3"];
             image_link3 = image_link3.Split('\n')[0];
             image_link3 = image_link3.Replace("\"", "");
 
@@ -7130,10 +7324,8 @@ forecast_extension += "	    }\r\n";
                 webpath = webpath.Replace("\\", "/").Replace("//", "/");
 
                 image_link4 = webpath;
-	            var s = new Dictionary<string, string>();
-                s.Add("linkLabel4", webpath);
-	            image_links[targetName] =  s;
-	            
+                image_links[target_dic[targetName]]["linkLabel4"] = webpath;
+
                 linkLabel4.Visible = true;
                 linkLabel4.LinkVisited = true;
                 if (form1._setting.checkBox1.Checked)
@@ -7167,7 +7359,7 @@ forecast_extension += "	    }\r\n";
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel4.LinkVisited = true;
-            image_link4 = image_links[targetName]["linkLabel4"];
+            image_link4 = image_links[target_dic[targetName]]["linkLabel4"];
             image_link4 = image_link4.Split('\n')[0];
             image_link4 = image_link4.Replace("\"", "");
 
@@ -7231,10 +7423,8 @@ forecast_extension += "	    }\r\n";
                 webpath = webpath.Replace("\\", "/").Replace("//", "/");
 
                 image_link5 = webpath;
-	            var s = new Dictionary<string, string>();
-                s.Add("linkLabel5", webpath);
-	            image_links[targetName] =  s;
-	            
+                image_links[target_dic[targetName]]["linkLabel5"] = webpath;
+
                 linkLabel5.Visible = true;
                 linkLabel5.LinkVisited = true;
                 if (form1._setting.checkBox1.Checked)
@@ -7269,7 +7459,7 @@ forecast_extension += "	    }\r\n";
         {
             linkLabel5.LinkVisited = true;
 
-            image_link5 = image_links[targetName]["linkLabel5"];
+            image_link5 = image_links[target_dic[targetName]]["linkLabel5"];
             image_link5 = image_link5.Split('\n')[0];
             image_link5 = image_link5.Replace("\"", "");
 
@@ -7520,12 +7710,20 @@ forecast_extension += "	    }\r\n";
 
         private void button26_Click_1(object sender, EventArgs e)
         {
-            save_param("xgboost_tmp");
+            save_param("xgboost_param_");
+            if (System.IO.File.Exists("xgboost_param_" + targetName+"options"))
+            {
+                save_param("xgboost_param_" + targetName);
+            }
         }
 
         private void button27_Click(object sender, EventArgs e)
         {
-            load_param("xgboost_tmp");
+            load_param("xgboost_param_");
+            if (System.IO.File.Exists("xgboost_param_" + targetName + "options"))
+            {
+                load_param("xgboost_param_" + targetName);
+            }
         }
 
         private void button28_Click(object sender, EventArgs e)
@@ -7728,6 +7926,12 @@ forecast_extension += "	    }\r\n";
         {
             if (running == 1 || comboBox8_edit) return;
             targetName = comboBox8.Text;
+
+            bool test = radioButton3.Checked;
+            load_parameters();
+            if ( test ) radioButton3.Checked = true;
+            else radioButton4.Checked = false; 
+
             draw_plot_images();
             if (_ImageView8 != null && _ImageView8.Visible) button28_Click(sender, e);
 
@@ -7739,6 +7943,52 @@ forecast_extension += "	    }\r\n";
             {
                 if (interactivePlot7 != null && interactivePlot7.Visible) button29_Click_1(sender, e);
                 if (interactivePlot5 != null && interactivePlot5.Visible) button23_Click(sender, e);
+            }
+        }
+
+        private void timer4_Tick(object sender, EventArgs e)
+        {
+            string line = "";
+            System.IO.StreamReader sr = null;
+            try
+            {
+                if (System.IO.File.Exists("xgboost_gridSearch_progress.txt"))
+                {
+                    sr = new System.IO.StreamReader("xgboost_gridSearch_progress.txt");
+                    line = sr.ReadLine();
+                }
+            }
+            catch { }
+            finally
+            {
+                if (sr != null)
+                {
+                    sr.Close();
+                }
+            }
+
+            if (line != "")
+            {
+                line = line.Replace("\r\n", "");
+                var count = line.Split('/')[0].TrimStart('0');
+                var tot = line.Split('/')[1].TrimStart('0');
+                progressBar4.Maximum = int.Parse(tot);
+                progressBar4.Value = int.Parse(count);
+            }
+        }
+
+        private void checkBox22_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox22.Checked)
+            {
+                if (System.IO.File.Exists("xgboost_gridsearch.stop"))
+                {
+                    return;
+                }
+                using (System.IO.FileStream fs = System.IO.File.Create("xgboost_gridsearch.stop"))
+                {
+                }
+
             }
         }
     }
