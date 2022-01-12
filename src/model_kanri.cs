@@ -34,6 +34,11 @@ namespace WindowsFormsApplication1
 
             for ( int i = 0; i < files.Length; i++)
             {
+                if (files[i].IndexOf(".dds2") < 0)
+                {
+                    System.IO.File.Delete(files[i]);
+                    continue;
+                }
                 if ( files[i].IndexOf(".options") >= 0)
                 {
                     continue;

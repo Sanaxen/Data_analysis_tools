@@ -491,36 +491,44 @@ namespace WindowsFormsApplication1
             catch { }
         }
 
-		private void save_target_parameter(string pname, string value)
+		private void save_target_parameter(string pname, string value, string target = "")
 		{
-            parameters[target_dic[targetName]][pname] = value;
-		}
-		private void save_target_parameters()
+            if (target != "")
+            {
+                parameters[target_dic[target]][pname] = value;
+            }
+            else
+            {
+                parameters[target_dic[targetName]][pname] = value;
+            }
+        }
+
+		private void save_target_parameters(string target="")
 		{
-			save_target_parameter("eta", textBox3.Text);
-			save_target_parameter("gamma", textBox4.Text);
-			save_target_parameter("min_child_weight", textBox9.Text);
-			save_target_parameter("subsample", textBox8.Text);
-			save_target_parameter("max_depth", numericUpDown6.Text);
-			save_target_parameter("alpha", textBox5.Text);
-			save_target_parameter("lambda", textBox6.Text);
-			save_target_parameter("colsample_bytree", textBox7.Text);
-			save_target_parameter("nthread", numericUpDown10.Value.ToString());
+			save_target_parameter("eta", textBox3.Text, target);
+			save_target_parameter("gamma", textBox4.Text, target);
+			save_target_parameter("min_child_weight", textBox9.Text, target);
+			save_target_parameter("subsample", textBox8.Text, target);
+			save_target_parameter("max_depth", numericUpDown6.Text, target);
+			save_target_parameter("alpha", textBox5.Text, target);
+			save_target_parameter("lambda", textBox6.Text, target);
+			save_target_parameter("colsample_bytree", textBox7.Text, target);
+			save_target_parameter("nthread", numericUpDown10.Value.ToString(), target);
 			if ( checkBox3.Checked )
 			{
-				save_target_parameter("tree_method", "'gpu_hist'");
-				save_target_parameter("predictor", "'gpu_predictor'");
+				save_target_parameter("tree_method", "'gpu_hist'", target);
+				save_target_parameter("predictor", "'gpu_predictor'", target);
 			}else
 			{
-				save_target_parameter("tree_method", "'hist'");
-				save_target_parameter("predictor", "'cpu_predictor'");
+				save_target_parameter("tree_method", "'hist'", target);
+				save_target_parameter("predictor", "'cpu_predictor'", target);
 			}
 			if (radioButton2.Checked)
 			{
-				save_target_parameter("num_class", numericUpDown7.Text);
+				save_target_parameter("num_class", numericUpDown7.Text, target);
 			}else
 			{
-				save_target_parameter("num_class", "0");
+				save_target_parameter("num_class", "0", target);
 			}
 		}
 
@@ -2852,6 +2860,7 @@ namespace WindowsFormsApplication1
                             sw.Write("options(width=" + form1._setting.numericUpDown2.Value.ToString() + ")\r\n");
                             sw.Write("sink(file = \"summary.txt\")\r\n");
                             sw.Write(cmd);
+                            sw.Write("print(imp_)\r\n");
                             sw.Write("sink()\r\n");
                             sw.Write("\r\n");
                             sw.Write("sink(file = \"xgboost_importance"+targetName+".txt\")\r\n");
@@ -6305,9 +6314,24 @@ forecast_extension += "	    }\r\n";
 
             string obj = Form1.FnameToDataFrameName(file, true);
 
+            Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
+
+            comboBox8.Items.Clear();
+            //if (parameters == null || parameters == null)
+            {
+                image_links = new Dictionary<string, string>[listBox1.SelectedIndices.Count];
+                parameters = new Dictionary<string, string>[listBox1.SelectedIndices.Count];
+                target_dic = new Dictionary<string, int>();
+            }
             for ( int i = 0; i < listBox1.SelectedIndices.Count; i++ )
             {
-               	string f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                comboBox8.Items.Add(listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                target_dic[listBox1.Items[listBox1.SelectedIndices[i]].ToString()] = i;
+
+                parameters[i] = new Dictionary<string, string>();
+                image_links[i] = new Dictionary<string, string>();
+
+                string f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
             	form1.comboBox1.Text = "xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "<- readRDS(\"" + f + ".robj"+"\")\r\n";
  				form1.evalute_cmd(sender, e);
 
@@ -6328,8 +6352,17 @@ forecast_extension += "	    }\r\n";
             }
 
             load_param(file);
+            for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+            {
+                if (System.IO.File.Exists(file + ".xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options"))
+                {
+                    load_param(file + ".xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                    save_target_parameters(listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                    System.IO.File.Copy(file + ".xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options", "xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options", true);
 
-            Form1.VarAutoSelection_(listBox1, listBox2, modelfile + ".select_variables.dat");
+                }
+            }
+
             radioButton4.Checked = false;
             radioButton3.Checked = true;
             this.TopMost = true;
@@ -7711,7 +7744,7 @@ forecast_extension += "	    }\r\n";
         private void button26_Click_1(object sender, EventArgs e)
         {
             save_param("xgboost_param_");
-            if (System.IO.File.Exists("xgboost_param_" + targetName+"options"))
+            if (System.IO.File.Exists("xgboost_param_" + targetName+".options"))
             {
                 save_param("xgboost_param_" + targetName);
             }
@@ -7720,7 +7753,7 @@ forecast_extension += "	    }\r\n";
         private void button27_Click(object sender, EventArgs e)
         {
             load_param("xgboost_param_");
-            if (System.IO.File.Exists("xgboost_param_" + targetName + "options"))
+            if (System.IO.File.Exists("xgboost_param_" + targetName + ".options"))
             {
                 load_param("xgboost_param_" + targetName);
             }
@@ -7929,8 +7962,8 @@ forecast_extension += "	    }\r\n";
 
             bool test = radioButton3.Checked;
             load_parameters();
-            if ( test ) radioButton3.Checked = true;
-            else radioButton4.Checked = false; 
+            //Prevent mode from automatically changing to train as parameters are changed.
+            radioButton3.Checked = test;
 
             draw_plot_images();
             if (_ImageView8 != null && _ImageView8.Visible) button28_Click(sender, e);
