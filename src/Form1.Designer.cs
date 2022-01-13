@@ -40,22 +40,34 @@
             this.button69 = new System.Windows.Forms.Button();
             this.panel15 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.roundButton17 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton4 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton8 = new WindowsFormsApplication1.RoundButton();
             this.panel9 = new System.Windows.Forms.Panel();
             this.button54 = new System.Windows.Forms.Button();
             this.button53 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.Report = new System.Windows.Forms.Button();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.roundButton1 = new WindowsFormsApplication1.RoundButton();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.splitter5 = new System.Windows.Forms.Splitter();
             this.button30 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.roundButton2 = new WindowsFormsApplication1.RoundButton();
             this.label6 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
+            this.roundButton3 = new WindowsFormsApplication1.RoundButton();
             this.button14 = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.roundButton16 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton15 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton14 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton13 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton12 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton11 = new WindowsFormsApplication1.RoundButton();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -165,6 +177,11 @@
             this.textBox1 = new ScintillaNET.Scintilla();
             this.splitter3 = new System.Windows.Forms.Splitter();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.roundButton10 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton6 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton9 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton7 = new WindowsFormsApplication1.RoundButton();
+            this.roundButton5 = new WindowsFormsApplication1.RoundButton();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -189,23 +206,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
-            this.roundButton10 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton6 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton9 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton7 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton5 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton17 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton4 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton8 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton1 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton2 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton3 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton16 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton15 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton14 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton13 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton12 = new WindowsFormsApplication1.RoundButton();
-            this.roundButton11 = new WindowsFormsApplication1.RoundButton();
+            this.button77 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel15.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -363,6 +364,67 @@
             this.label1.TabIndex = 62;
             this.label1.Text = "時系列データ";
             // 
+            // roundButton17
+            // 
+            this.roundButton17.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton17.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton17.ButtonText = "モデル探索";
+            this.roundButton17.CornerR = 3;
+            this.roundButton17.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton17.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton17.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton17.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton17.Location = new System.Drawing.Point(8, 20);
+            this.roundButton17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton17.Name = "roundButton17";
+            this.roundButton17.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton17.ShadowSize = 6;
+            this.roundButton17.Size = new System.Drawing.Size(144, 52);
+            this.roundButton17.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton17.TabIndex = 61;
+            this.toolTip1.SetToolTip(this.roundButton17, "時系列データを解析してモデルを探索します。\r\n統計解析や機械学習の知識が無くても簡単にモデルを探せます");
+            this.roundButton17.Click += new System.EventHandler(this.roundButton17_Click);
+            // 
+            // roundButton4
+            // 
+            this.roundButton4.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton4.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton4.ButtonText = "設定";
+            this.roundButton4.CornerR = 5;
+            this.roundButton4.FocusColor = System.Drawing.Color.Navy;
+            this.roundButton4.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.roundButton4.HighLightColor = System.Drawing.Color.White;
+            this.roundButton4.Location = new System.Drawing.Point(373, -1);
+            this.roundButton4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton4.Name = "roundButton4";
+            this.roundButton4.Padding = new System.Windows.Forms.Padding(8);
+            this.roundButton4.ShadowSize = 6;
+            this.roundButton4.Size = new System.Drawing.Size(99, 38);
+            this.roundButton4.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton4.TabIndex = 60;
+            this.roundButton4.Click += new System.EventHandler(this.roundButton4_Click_1);
+            // 
+            // roundButton8
+            // 
+            this.roundButton8.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton8.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton8.ButtonText = "history";
+            this.roundButton8.CornerR = 5;
+            this.roundButton8.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton8.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton8.ForeColor = System.Drawing.Color.Yellow;
+            this.roundButton8.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton8.Location = new System.Drawing.Point(1429, 126);
+            this.roundButton8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton8.Name = "roundButton8";
+            this.roundButton8.Padding = new System.Windows.Forms.Padding(8);
+            this.roundButton8.ShadowSize = 6;
+            this.roundButton8.Size = new System.Drawing.Size(109, 62);
+            this.roundButton8.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton8.TabIndex = 59;
+            this.toolTip1.SetToolTip(this.roundButton8, "作業履歴から指定した作業までの状態に巻き戻すスクリプトを読み込みます");
+            this.roundButton8.Click += new System.EventHandler(this.roundButton8_Click);
+            // 
             // panel9
             // 
             this.panel9.Controls.Add(this.button54);
@@ -449,6 +511,27 @@
             this.panel10.Size = new System.Drawing.Size(117, 82);
             this.panel10.TabIndex = 49;
             // 
+            // roundButton1
+            // 
+            this.roundButton1.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton1.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton1.ButtonText = "整形";
+            this.roundButton1.CornerR = 3;
+            this.roundButton1.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton1.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton1.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton1.Location = new System.Drawing.Point(3, 22);
+            this.roundButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton1.Name = "roundButton1";
+            this.roundButton1.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton1.ShadowSize = 6;
+            this.roundButton1.Size = new System.Drawing.Size(104, 55);
+            this.roundButton1.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton1.TabIndex = 38;
+            this.toolTip1.SetToolTip(this.roundButton1, "データを整形処理します");
+            this.roundButton1.Click += new System.EventHandler(this.roundButton1_Click);
+            // 
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
@@ -511,6 +594,27 @@
             this.panel8.TabIndex = 37;
             this.toolTip1.SetToolTip(this.panel8, "データの可視化");
             // 
+            // roundButton2
+            // 
+            this.roundButton2.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton2.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton2.ButtonText = "可視化";
+            this.roundButton2.CornerR = 3;
+            this.roundButton2.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton2.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton2.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton2.Location = new System.Drawing.Point(1, 22);
+            this.roundButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton2.Name = "roundButton2";
+            this.roundButton2.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton2.ShadowSize = 6;
+            this.roundButton2.Size = new System.Drawing.Size(103, 51);
+            this.roundButton2.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton2.TabIndex = 55;
+            this.toolTip1.SetToolTip(this.roundButton2, "データをグラフなどで可視化できます。");
+            this.roundButton2.Click += new System.EventHandler(this.roundButton2_Click);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -544,6 +648,27 @@
             this.label15.TabIndex = 63;
             this.label15.Text = "一般データ";
             // 
+            // roundButton3
+            // 
+            this.roundButton3.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton3.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton3.ButtonText = "モデル探索";
+            this.roundButton3.CornerR = 3;
+            this.roundButton3.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton3.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton3.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton3.Location = new System.Drawing.Point(7, 22);
+            this.roundButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton3.Name = "roundButton3";
+            this.roundButton3.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton3.ShadowSize = 6;
+            this.roundButton3.Size = new System.Drawing.Size(144, 52);
+            this.roundButton3.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton3.TabIndex = 56;
+            this.toolTip1.SetToolTip(this.roundButton3, "データを解析してモデルを探索します。\r\n統計解析や機械学習の知識が無くても簡単にモデルを探せます");
+            this.roundButton3.Click += new System.EventHandler(this.roundButton3_Click);
+            // 
             // button14
             // 
             this.button14.BackColor = System.Drawing.Color.DarkOrange;
@@ -575,6 +700,132 @@
             this.panel6.Size = new System.Drawing.Size(869, 82);
             this.panel6.TabIndex = 25;
             this.toolTip1.SetToolTip(this.panel6, "オブジェクトのサマリー等簡単な情報を見る事が出来ます");
+            // 
+            // roundButton16
+            // 
+            this.roundButton16.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton16.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton16.ButtonText = "str";
+            this.roundButton16.CornerR = 12;
+            this.roundButton16.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton16.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton16.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton16.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton16.Location = new System.Drawing.Point(743, 18);
+            this.roundButton16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton16.Name = "roundButton16";
+            this.roundButton16.Padding = new System.Windows.Forms.Padding(10);
+            this.roundButton16.ShadowSize = 6;
+            this.roundButton16.Size = new System.Drawing.Size(120, 59);
+            this.roundButton16.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton16.TabIndex = 67;
+            this.toolTip1.SetToolTip(this.roundButton16, "オブジェクトの内容を情報付きで簡潔に表示");
+            this.roundButton16.Click += new System.EventHandler(this.roundButton16_Click);
+            // 
+            // roundButton15
+            // 
+            this.roundButton15.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton15.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton15.ButtonText = "head 10";
+            this.roundButton15.CornerR = 12;
+            this.roundButton15.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton15.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton15.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton15.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton15.Location = new System.Drawing.Point(624, 18);
+            this.roundButton15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton15.Name = "roundButton15";
+            this.roundButton15.Padding = new System.Windows.Forms.Padding(10);
+            this.roundButton15.ShadowSize = 6;
+            this.roundButton15.Size = new System.Drawing.Size(128, 59);
+            this.roundButton15.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton15.TabIndex = 66;
+            this.toolTip1.SetToolTip(this.roundButton15, "最初の10行を表示");
+            this.roundButton15.Click += new System.EventHandler(this.roundButton15_Click);
+            // 
+            // roundButton14
+            // 
+            this.roundButton14.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton14.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton14.ButtonText = "Class";
+            this.roundButton14.CornerR = 12;
+            this.roundButton14.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton14.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton14.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton14.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton14.Location = new System.Drawing.Point(395, 18);
+            this.roundButton14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton14.Name = "roundButton14";
+            this.roundButton14.Padding = new System.Windows.Forms.Padding(10);
+            this.roundButton14.ShadowSize = 6;
+            this.roundButton14.Size = new System.Drawing.Size(120, 59);
+            this.roundButton14.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton14.TabIndex = 65;
+            this.toolTip1.SetToolTip(this.roundButton14, "どの列がどの型になっているかを確認できます。");
+            this.roundButton14.Click += new System.EventHandler(this.roundButton14_Click);
+            // 
+            // roundButton13
+            // 
+            this.roundButton13.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton13.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton13.ButtonText = "print";
+            this.roundButton13.CornerR = 12;
+            this.roundButton13.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton13.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton13.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton13.Location = new System.Drawing.Point(507, 18);
+            this.roundButton13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton13.Name = "roundButton13";
+            this.roundButton13.Padding = new System.Windows.Forms.Padding(10);
+            this.roundButton13.ShadowSize = 6;
+            this.roundButton13.Size = new System.Drawing.Size(120, 59);
+            this.roundButton13.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton13.TabIndex = 64;
+            this.toolTip1.SetToolTip(this.roundButton13, "変数の内容を表示");
+            this.roundButton13.Click += new System.EventHandler(this.roundButton13_Click);
+            // 
+            // roundButton12
+            // 
+            this.roundButton12.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton12.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton12.ButtonText = "Summary";
+            this.roundButton12.CornerR = 12;
+            this.roundButton12.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton12.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton12.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton12.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton12.Location = new System.Drawing.Point(269, 18);
+            this.roundButton12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton12.Name = "roundButton12";
+            this.roundButton12.Padding = new System.Windows.Forms.Padding(10);
+            this.roundButton12.ShadowSize = 6;
+            this.roundButton12.Size = new System.Drawing.Size(132, 58);
+            this.roundButton12.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton12.TabIndex = 63;
+            this.toolTip1.SetToolTip(this.roundButton12, "サマリーを表示");
+            this.roundButton12.Click += new System.EventHandler(this.roundButton12_Click);
+            // 
+            // roundButton11
+            // 
+            this.roundButton11.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton11.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton11.ButtonText = "欠損値";
+            this.roundButton11.CornerR = 12;
+            this.roundButton11.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton11.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton11.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roundButton11.HighLightColor = System.Drawing.Color.DimGray;
+            this.roundButton11.Location = new System.Drawing.Point(153, 18);
+            this.roundButton11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton11.Name = "roundButton11";
+            this.roundButton11.Padding = new System.Windows.Forms.Padding(10);
+            this.roundButton11.ShadowSize = 6;
+            this.roundButton11.Size = new System.Drawing.Size(120, 59);
+            this.roundButton11.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.roundButton11.TabIndex = 62;
+            this.toolTip1.SetToolTip(this.roundButton11, "欠損値があるか確認できます");
+            this.roundButton11.Click += new System.EventHandler(this.roundButton11_Click);
             // 
             // comboBox3
             // 
@@ -2263,6 +2514,7 @@
             // tabPage9
             // 
             this.tabPage9.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.tabPage9.Controls.Add(this.button77);
             this.tabPage9.Controls.Add(this.button74);
             this.tabPage9.Location = new System.Drawing.Point(4, 27);
             this.tabPage9.Name = "tabPage9";
@@ -2335,6 +2587,111 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1527, 52);
             this.panel4.TabIndex = 6;
+            // 
+            // roundButton10
+            // 
+            this.roundButton10.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton10.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton10.ButtonText = "Clear";
+            this.roundButton10.CornerR = 2;
+            this.roundButton10.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton10.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton10.ForeColor = System.Drawing.Color.AntiqueWhite;
+            this.roundButton10.HighLightColor = System.Drawing.Color.White;
+            this.roundButton10.Location = new System.Drawing.Point(557, 2);
+            this.roundButton10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton10.Name = "roundButton10";
+            this.roundButton10.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton10.ShadowSize = 6;
+            this.roundButton10.Size = new System.Drawing.Size(103, 38);
+            this.roundButton10.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.roundButton10.TabIndex = 61;
+            this.toolTip1.SetToolTip(this.roundButton10, "出力内容を消去します");
+            this.roundButton10.Click += new System.EventHandler(this.roundButton10_Click);
+            // 
+            // roundButton6
+            // 
+            this.roundButton6.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton6.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton6.ButtonText = "Run";
+            this.roundButton6.CornerR = 2;
+            this.roundButton6.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton6.ForeColor = System.Drawing.Color.AntiqueWhite;
+            this.roundButton6.HighLightColor = System.Drawing.Color.White;
+            this.roundButton6.Location = new System.Drawing.Point(4, 2);
+            this.roundButton6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton6.Name = "roundButton6";
+            this.roundButton6.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton6.ShadowSize = 6;
+            this.roundButton6.Size = new System.Drawing.Size(103, 38);
+            this.roundButton6.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.roundButton6.TabIndex = 57;
+            this.toolTip1.SetToolTip(this.roundButton6, "下のエディタに書かれているコードを実行します。");
+            this.roundButton6.Click += new System.EventHandler(this.roundButton6_Click);
+            // 
+            // roundButton9
+            // 
+            this.roundButton9.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton9.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton9.ButtonText = "load script";
+            this.roundButton9.CornerR = 2;
+            this.roundButton9.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton9.ForeColor = System.Drawing.Color.AntiqueWhite;
+            this.roundButton9.HighLightColor = System.Drawing.Color.White;
+            this.roundButton9.Location = new System.Drawing.Point(309, 2);
+            this.roundButton9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton9.Name = "roundButton9";
+            this.roundButton9.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton9.ShadowSize = 6;
+            this.roundButton9.Size = new System.Drawing.Size(103, 38);
+            this.roundButton9.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.roundButton9.TabIndex = 60;
+            this.toolTip1.SetToolTip(this.roundButton9, "Rのスクリプトを読み込みます");
+            this.roundButton9.Click += new System.EventHandler(this.roundButton9_Click);
+            // 
+            // roundButton7
+            // 
+            this.roundButton7.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton7.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton7.ButtonText = "保存";
+            this.roundButton7.CornerR = 2;
+            this.roundButton7.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton7.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton7.ForeColor = System.Drawing.Color.AntiqueWhite;
+            this.roundButton7.HighLightColor = System.Drawing.Color.White;
+            this.roundButton7.Location = new System.Drawing.Point(107, 2);
+            this.roundButton7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton7.Name = "roundButton7";
+            this.roundButton7.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton7.ShadowSize = 6;
+            this.roundButton7.Size = new System.Drawing.Size(103, 38);
+            this.roundButton7.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.roundButton7.TabIndex = 58;
+            this.toolTip1.SetToolTip(this.roundButton7, "エディタに書かれているいる内容をファイルに保存します。");
+            this.roundButton7.Click += new System.EventHandler(this.roundButton7_Click);
+            // 
+            // roundButton5
+            // 
+            this.roundButton5.BackColor = System.Drawing.Color.Transparent;
+            this.roundButton5.BorderColor = System.Drawing.Color.Orange;
+            this.roundButton5.ButtonText = "変更";
+            this.roundButton5.CornerR = 2;
+            this.roundButton5.FocusColor = System.Drawing.Color.Blue;
+            this.roundButton5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.roundButton5.ForeColor = System.Drawing.Color.AntiqueWhite;
+            this.roundButton5.HighLightColor = System.Drawing.Color.White;
+            this.roundButton5.Location = new System.Drawing.Point(205, 2);
+            this.roundButton5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.roundButton5.Name = "roundButton5";
+            this.roundButton5.Padding = new System.Windows.Forms.Padding(7);
+            this.roundButton5.ShadowSize = 6;
+            this.roundButton5.Size = new System.Drawing.Size(103, 38);
+            this.roundButton5.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.roundButton5.TabIndex = 56;
+            this.toolTip1.SetToolTip(this.roundButton5, "スクリプトの内容の一部を自動的に変更します");
+            this.roundButton5.Click += new System.EventHandler(this.roundButton5_Click);
             // 
             // tabPage6
             // 
@@ -2546,360 +2903,16 @@
             this.timer3.Interval = 10;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
-            // roundButton10
+            // button77
             // 
-            this.roundButton10.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton10.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton10.ButtonText = "Clear";
-            this.roundButton10.CornerR = 2;
-            this.roundButton10.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton10.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton10.ForeColor = System.Drawing.Color.AntiqueWhite;
-            this.roundButton10.HighLightColor = System.Drawing.Color.White;
-            this.roundButton10.Location = new System.Drawing.Point(557, 2);
-            this.roundButton10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton10.Name = "roundButton10";
-            this.roundButton10.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton10.ShadowSize = 6;
-            this.roundButton10.Size = new System.Drawing.Size(103, 38);
-            this.roundButton10.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.roundButton10.TabIndex = 61;
-            this.toolTip1.SetToolTip(this.roundButton10, "出力内容を消去します");
-            this.roundButton10.Click += new System.EventHandler(this.roundButton10_Click);
-            // 
-            // roundButton6
-            // 
-            this.roundButton6.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton6.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton6.ButtonText = "Run";
-            this.roundButton6.CornerR = 2;
-            this.roundButton6.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton6.ForeColor = System.Drawing.Color.AntiqueWhite;
-            this.roundButton6.HighLightColor = System.Drawing.Color.White;
-            this.roundButton6.Location = new System.Drawing.Point(4, 2);
-            this.roundButton6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton6.Name = "roundButton6";
-            this.roundButton6.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton6.ShadowSize = 6;
-            this.roundButton6.Size = new System.Drawing.Size(103, 38);
-            this.roundButton6.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.roundButton6.TabIndex = 57;
-            this.toolTip1.SetToolTip(this.roundButton6, "下のエディタに書かれているコードを実行します。");
-            this.roundButton6.Click += new System.EventHandler(this.roundButton6_Click);
-            // 
-            // roundButton9
-            // 
-            this.roundButton9.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton9.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton9.ButtonText = "load script";
-            this.roundButton9.CornerR = 2;
-            this.roundButton9.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton9.ForeColor = System.Drawing.Color.AntiqueWhite;
-            this.roundButton9.HighLightColor = System.Drawing.Color.White;
-            this.roundButton9.Location = new System.Drawing.Point(309, 2);
-            this.roundButton9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton9.Name = "roundButton9";
-            this.roundButton9.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton9.ShadowSize = 6;
-            this.roundButton9.Size = new System.Drawing.Size(103, 38);
-            this.roundButton9.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.roundButton9.TabIndex = 60;
-            this.toolTip1.SetToolTip(this.roundButton9, "Rのスクリプトを読み込みます");
-            this.roundButton9.Click += new System.EventHandler(this.roundButton9_Click);
-            // 
-            // roundButton7
-            // 
-            this.roundButton7.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton7.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton7.ButtonText = "保存";
-            this.roundButton7.CornerR = 2;
-            this.roundButton7.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton7.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton7.ForeColor = System.Drawing.Color.AntiqueWhite;
-            this.roundButton7.HighLightColor = System.Drawing.Color.White;
-            this.roundButton7.Location = new System.Drawing.Point(107, 2);
-            this.roundButton7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton7.Name = "roundButton7";
-            this.roundButton7.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton7.ShadowSize = 6;
-            this.roundButton7.Size = new System.Drawing.Size(103, 38);
-            this.roundButton7.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.roundButton7.TabIndex = 58;
-            this.toolTip1.SetToolTip(this.roundButton7, "エディタに書かれているいる内容をファイルに保存します。");
-            this.roundButton7.Click += new System.EventHandler(this.roundButton7_Click);
-            // 
-            // roundButton5
-            // 
-            this.roundButton5.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton5.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton5.ButtonText = "変更";
-            this.roundButton5.CornerR = 2;
-            this.roundButton5.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton5.ForeColor = System.Drawing.Color.AntiqueWhite;
-            this.roundButton5.HighLightColor = System.Drawing.Color.White;
-            this.roundButton5.Location = new System.Drawing.Point(205, 2);
-            this.roundButton5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton5.Name = "roundButton5";
-            this.roundButton5.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton5.ShadowSize = 6;
-            this.roundButton5.Size = new System.Drawing.Size(103, 38);
-            this.roundButton5.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.roundButton5.TabIndex = 56;
-            this.toolTip1.SetToolTip(this.roundButton5, "スクリプトの内容の一部を自動的に変更します");
-            this.roundButton5.Click += new System.EventHandler(this.roundButton5_Click);
-            // 
-            // roundButton17
-            // 
-            this.roundButton17.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton17.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton17.ButtonText = "モデル探索";
-            this.roundButton17.CornerR = 3;
-            this.roundButton17.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton17.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton17.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton17.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton17.Location = new System.Drawing.Point(8, 20);
-            this.roundButton17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton17.Name = "roundButton17";
-            this.roundButton17.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton17.ShadowSize = 6;
-            this.roundButton17.Size = new System.Drawing.Size(144, 52);
-            this.roundButton17.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton17.TabIndex = 61;
-            this.toolTip1.SetToolTip(this.roundButton17, "時系列データを解析してモデルを探索します。\r\n統計解析や機械学習の知識が無くても簡単にモデルを探せます");
-            this.roundButton17.Click += new System.EventHandler(this.roundButton17_Click);
-            // 
-            // roundButton4
-            // 
-            this.roundButton4.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton4.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton4.ButtonText = "設定";
-            this.roundButton4.CornerR = 5;
-            this.roundButton4.FocusColor = System.Drawing.Color.Navy;
-            this.roundButton4.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.roundButton4.HighLightColor = System.Drawing.Color.White;
-            this.roundButton4.Location = new System.Drawing.Point(373, -1);
-            this.roundButton4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton4.Name = "roundButton4";
-            this.roundButton4.Padding = new System.Windows.Forms.Padding(8);
-            this.roundButton4.ShadowSize = 6;
-            this.roundButton4.Size = new System.Drawing.Size(99, 38);
-            this.roundButton4.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton4.TabIndex = 60;
-            this.roundButton4.Click += new System.EventHandler(this.roundButton4_Click_1);
-            // 
-            // roundButton8
-            // 
-            this.roundButton8.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton8.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton8.ButtonText = "history";
-            this.roundButton8.CornerR = 5;
-            this.roundButton8.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton8.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton8.ForeColor = System.Drawing.Color.Yellow;
-            this.roundButton8.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton8.Location = new System.Drawing.Point(1429, 126);
-            this.roundButton8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton8.Name = "roundButton8";
-            this.roundButton8.Padding = new System.Windows.Forms.Padding(8);
-            this.roundButton8.ShadowSize = 6;
-            this.roundButton8.Size = new System.Drawing.Size(109, 62);
-            this.roundButton8.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton8.TabIndex = 59;
-            this.toolTip1.SetToolTip(this.roundButton8, "作業履歴から指定した作業までの状態に巻き戻すスクリプトを読み込みます");
-            this.roundButton8.Click += new System.EventHandler(this.roundButton8_Click);
-            // 
-            // roundButton1
-            // 
-            this.roundButton1.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton1.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton1.ButtonText = "整形";
-            this.roundButton1.CornerR = 3;
-            this.roundButton1.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton1.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton1.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton1.Location = new System.Drawing.Point(3, 22);
-            this.roundButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton1.Name = "roundButton1";
-            this.roundButton1.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton1.ShadowSize = 6;
-            this.roundButton1.Size = new System.Drawing.Size(104, 55);
-            this.roundButton1.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton1.TabIndex = 38;
-            this.toolTip1.SetToolTip(this.roundButton1, "データを整形処理します");
-            this.roundButton1.Click += new System.EventHandler(this.roundButton1_Click);
-            // 
-            // roundButton2
-            // 
-            this.roundButton2.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton2.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton2.ButtonText = "可視化";
-            this.roundButton2.CornerR = 3;
-            this.roundButton2.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton2.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton2.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton2.Location = new System.Drawing.Point(1, 22);
-            this.roundButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton2.Name = "roundButton2";
-            this.roundButton2.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton2.ShadowSize = 6;
-            this.roundButton2.Size = new System.Drawing.Size(103, 51);
-            this.roundButton2.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton2.TabIndex = 55;
-            this.toolTip1.SetToolTip(this.roundButton2, "データをグラフなどで可視化できます。");
-            this.roundButton2.Click += new System.EventHandler(this.roundButton2_Click);
-            // 
-            // roundButton3
-            // 
-            this.roundButton3.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton3.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton3.ButtonText = "モデル探索";
-            this.roundButton3.CornerR = 3;
-            this.roundButton3.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton3.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton3.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton3.Location = new System.Drawing.Point(7, 22);
-            this.roundButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton3.Name = "roundButton3";
-            this.roundButton3.Padding = new System.Windows.Forms.Padding(7);
-            this.roundButton3.ShadowSize = 6;
-            this.roundButton3.Size = new System.Drawing.Size(144, 52);
-            this.roundButton3.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton3.TabIndex = 56;
-            this.toolTip1.SetToolTip(this.roundButton3, "データを解析してモデルを探索します。\r\n統計解析や機械学習の知識が無くても簡単にモデルを探せます");
-            this.roundButton3.Click += new System.EventHandler(this.roundButton3_Click);
-            // 
-            // roundButton16
-            // 
-            this.roundButton16.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton16.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton16.ButtonText = "str";
-            this.roundButton16.CornerR = 12;
-            this.roundButton16.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton16.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton16.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton16.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton16.Location = new System.Drawing.Point(743, 18);
-            this.roundButton16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton16.Name = "roundButton16";
-            this.roundButton16.Padding = new System.Windows.Forms.Padding(10);
-            this.roundButton16.ShadowSize = 6;
-            this.roundButton16.Size = new System.Drawing.Size(120, 59);
-            this.roundButton16.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton16.TabIndex = 67;
-            this.toolTip1.SetToolTip(this.roundButton16, "オブジェクトの内容を情報付きで簡潔に表示");
-            this.roundButton16.Click += new System.EventHandler(this.roundButton16_Click);
-            // 
-            // roundButton15
-            // 
-            this.roundButton15.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton15.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton15.ButtonText = "head 10";
-            this.roundButton15.CornerR = 12;
-            this.roundButton15.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton15.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton15.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton15.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton15.Location = new System.Drawing.Point(624, 18);
-            this.roundButton15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton15.Name = "roundButton15";
-            this.roundButton15.Padding = new System.Windows.Forms.Padding(10);
-            this.roundButton15.ShadowSize = 6;
-            this.roundButton15.Size = new System.Drawing.Size(128, 59);
-            this.roundButton15.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton15.TabIndex = 66;
-            this.toolTip1.SetToolTip(this.roundButton15, "最初の10行を表示");
-            this.roundButton15.Click += new System.EventHandler(this.roundButton15_Click);
-            // 
-            // roundButton14
-            // 
-            this.roundButton14.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton14.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton14.ButtonText = "Class";
-            this.roundButton14.CornerR = 12;
-            this.roundButton14.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton14.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton14.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton14.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton14.Location = new System.Drawing.Point(395, 18);
-            this.roundButton14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton14.Name = "roundButton14";
-            this.roundButton14.Padding = new System.Windows.Forms.Padding(10);
-            this.roundButton14.ShadowSize = 6;
-            this.roundButton14.Size = new System.Drawing.Size(120, 59);
-            this.roundButton14.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton14.TabIndex = 65;
-            this.toolTip1.SetToolTip(this.roundButton14, "どの列がどの型になっているかを確認できます。");
-            this.roundButton14.Click += new System.EventHandler(this.roundButton14_Click);
-            // 
-            // roundButton13
-            // 
-            this.roundButton13.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton13.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton13.ButtonText = "print";
-            this.roundButton13.CornerR = 12;
-            this.roundButton13.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton13.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton13.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton13.Location = new System.Drawing.Point(507, 18);
-            this.roundButton13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton13.Name = "roundButton13";
-            this.roundButton13.Padding = new System.Windows.Forms.Padding(10);
-            this.roundButton13.ShadowSize = 6;
-            this.roundButton13.Size = new System.Drawing.Size(120, 59);
-            this.roundButton13.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton13.TabIndex = 64;
-            this.toolTip1.SetToolTip(this.roundButton13, "変数の内容を表示");
-            this.roundButton13.Click += new System.EventHandler(this.roundButton13_Click);
-            // 
-            // roundButton12
-            // 
-            this.roundButton12.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton12.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton12.ButtonText = "Summary";
-            this.roundButton12.CornerR = 12;
-            this.roundButton12.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton12.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton12.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton12.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton12.Location = new System.Drawing.Point(269, 18);
-            this.roundButton12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton12.Name = "roundButton12";
-            this.roundButton12.Padding = new System.Windows.Forms.Padding(10);
-            this.roundButton12.ShadowSize = 6;
-            this.roundButton12.Size = new System.Drawing.Size(132, 58);
-            this.roundButton12.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton12.TabIndex = 63;
-            this.toolTip1.SetToolTip(this.roundButton12, "サマリーを表示");
-            this.roundButton12.Click += new System.EventHandler(this.roundButton12_Click);
-            // 
-            // roundButton11
-            // 
-            this.roundButton11.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton11.BorderColor = System.Drawing.Color.Orange;
-            this.roundButton11.ButtonText = "欠損値";
-            this.roundButton11.CornerR = 12;
-            this.roundButton11.FocusColor = System.Drawing.Color.Blue;
-            this.roundButton11.Font = new System.Drawing.Font("MS UI Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.roundButton11.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roundButton11.HighLightColor = System.Drawing.Color.DimGray;
-            this.roundButton11.Location = new System.Drawing.Point(153, 18);
-            this.roundButton11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.roundButton11.Name = "roundButton11";
-            this.roundButton11.Padding = new System.Windows.Forms.Padding(10);
-            this.roundButton11.ShadowSize = 6;
-            this.roundButton11.Size = new System.Drawing.Size(120, 59);
-            this.roundButton11.SurfaceColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.roundButton11.TabIndex = 62;
-            this.toolTip1.SetToolTip(this.roundButton11, "欠損値があるか確認できます");
-            this.roundButton11.Click += new System.EventHandler(this.roundButton11_Click);
+            this.button77.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
+            this.button77.Location = new System.Drawing.Point(237, 23);
+            this.button77.Name = "button77";
+            this.button77.Size = new System.Drawing.Size(173, 42);
+            this.button77.TabIndex = 1;
+            this.button77.Text = "異常検出";
+            this.button77.UseVisualStyleBackColor = true;
+            this.button77.Click += new System.EventHandler(this.button77_Click);
             // 
             // Form1
             // 
@@ -3143,6 +3156,7 @@
         private System.Windows.Forms.Button button75;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
         private System.Windows.Forms.Button button76;
+        private System.Windows.Forms.Button button77;
     }
 }
 

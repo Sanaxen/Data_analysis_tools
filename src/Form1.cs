@@ -386,6 +386,7 @@ namespace WindowsFormsApplication1
 
         public clustering _clustering = null;
         public wordcloud _wordcloud = null;
+        public anomaly_detection _anomaly_detection = null;
 
         public model_kanri _model_kanri = null;
 
@@ -1366,6 +1367,13 @@ namespace WindowsFormsApplication1
                 _clustering.listBox1.Items.Clear();
                 _clustering.listBox2.Items.Clear();
                 _clustering.pictureBox1.Image = null;
+            }
+            if (_anomaly_detection != null)
+            {
+                _anomaly_detection.Hide();
+                _anomaly_detection.listBox1.Items.Clear();
+                _anomaly_detection.listBox2.Items.Clear();
+                _anomaly_detection.pictureBox1.Image = null;
             }
 
             dataSplitConditionChk();
@@ -9551,6 +9559,59 @@ upper_window、 lower_windowにはそのイベントの効果が前後何日に�
             evalute_cmdstr("source(\"" + cmd + "\")\r\n");
             cmd = "df <- thinning_out_resample(df, " + numericUpDown4.Value.ToString() + ")";
             evalute_cmdstr(cmd);
+        }
+
+        private void button77_Click(object sender, EventArgs e)
+        {
+            if (RProcess.HasExited)
+            {
+                Restart();
+                SendCommand("\r\n");
+            }
+
+            if (!ExistObj("df"))
+            {
+                MessageBox.Show("データフレーム(df)が未定義です", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+
+            if (_anomaly_detection == null) _anomaly_detection = new anomaly_detection();
+            _anomaly_detection.form1 = this;
+            _anomaly_detection.BackColor = BackColor;
+
+            string file = targetCSV + ".csv";
+            DateTime t = DateTime.Now;
+
+            if (targetCSV != "" && System.IO.File.Exists(file))
+            {
+                t = System.IO.File.GetLastAccessTime(file);
+            }
+
+            if (t > anomaly_detection.fileTime || _anomaly_detection.listBox1.Items.Count == 0)
+            {
+                _anomaly_detection.listBox1.Items.Clear();
+                _anomaly_detection.listBox2.Items.Clear();
+                anomaly_detection.fileTime = t;
+            }
+            else
+            {
+                _anomaly_detection.Activate();
+                _anomaly_detection.Show();
+                return;
+            }
+
+            Names = GetNames("df");
+            for (int i = 0; i < Names.Items.Count; i++)
+            {
+                _anomaly_detection.listBox1.Items.Add(Names.Items[i]);
+                _anomaly_detection.listBox2.Items.Add(Names.Items[i]);
+            }
+
+            _anomaly_detection.Show();
+            _anomaly_detection.TopMost = true;
+            _anomaly_detection.TopMost = false;
         }
     }
 }

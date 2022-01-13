@@ -108,6 +108,12 @@
     <Compile Include="add_lag.designer.cs">
       <DependentUpon>add_lag.cs</DependentUpon>
     </Compile>
+    <Compile Include="anomaly_detection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="anomaly_detection.Designer.cs">
+      <DependentUpon>anomaly_detection.cs</DependentUpon>
+    </Compile>
     <Compile Include="AutoTrain_Test.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -567,6 +573,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="add_lag.resx">
       <DependentUpon>add_lag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="anomaly_detection.resx">
+      <DependentUpon>anomaly_detection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AutoTrain_Test.resx">
       <DependentUpon>AutoTrain_Test.cs</DependentUpon>
