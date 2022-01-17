@@ -172,6 +172,7 @@
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.button50 = new System.Windows.Forms.Button();
             this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.button77 = new System.Windows.Forms.Button();
             this.button74 = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.textBox1 = new ScintillaNET.Scintilla();
@@ -206,7 +207,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
-            this.button77 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel15.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -2523,6 +2523,17 @@
             this.tabPage9.TabIndex = 8;
             this.tabPage9.Text = "その他";
             // 
+            // button77
+            // 
+            this.button77.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
+            this.button77.Location = new System.Drawing.Point(265, 23);
+            this.button77.Name = "button77";
+            this.button77.Size = new System.Drawing.Size(173, 42);
+            this.button77.TabIndex = 1;
+            this.button77.Text = "異常検出";
+            this.button77.UseVisualStyleBackColor = true;
+            this.button77.Click += new System.EventHandler(this.button77_Click);
+            // 
             // button74
             // 
             this.button74.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
@@ -2902,17 +2913,6 @@
             // 
             this.timer3.Interval = 10;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
-            // 
-            // button77
-            // 
-            this.button77.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Bold);
-            this.button77.Location = new System.Drawing.Point(237, 23);
-            this.button77.Name = "button77";
-            this.button77.Size = new System.Drawing.Size(173, 42);
-            this.button77.TabIndex = 1;
-            this.button77.Text = "異常検出";
-            this.button77.UseVisualStyleBackColor = true;
-            this.button77.Click += new System.EventHandler(this.button77_Click);
             // 
             // Form1
             // 

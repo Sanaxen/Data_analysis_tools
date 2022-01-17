@@ -169,35 +169,43 @@ namespace WindowsFormsApplication1
                 }
 
                 form1.SelectionVarWrite_(listBox1, listBox2, "select_variables.dat");
-                string arg2 = "";
+
+                cmd = "";
+                if ( comboBox2.Text == "")
+                {
+                    cmd += "df_ <- df\r\n";
+                }else
+                {
+                    cmd += "df_ <- " + comboBox2.Text + "\r\n";
+                }
                 if (listBox2.SelectedIndices.Count > 0)
                 {
                     string names = "'" + form1.Names.Items[listBox2.SelectedIndices[0]].ToString() + "'";
-                    arg2 = "df_tmp_ = " + "df$'" + form1.Names.Items[listBox2.SelectedIndices[0]].ToString() + "'" + "\r\n";
+                    cmd += "df_tmp_ = " + "df_$'" + form1.Names.Items[listBox2.SelectedIndices[0]].ToString() + "'" + "\r\n";
                     ;
                     for (int i = 1; i < listBox2.SelectedIndices.Count; i++)
                     {
-                        arg2 += "df_tmp_ <- cbind(df_tmp_, ";
-                        arg2 += "df$'" + form1.Names.Items[listBox2.SelectedIndices[i]].ToString() + "'";
-                        arg2 += ")\r\n";
+                        cmd += "df_tmp_ <- cbind(df_tmp_, ";
+                        cmd += "df_$'" + form1.Names.Items[listBox2.SelectedIndices[i]].ToString() + "'";
+                        cmd += ")\r\n";
 
                         names += ",";
                         names += "'" + form1.Names.Items[listBox2.SelectedIndices[i]].ToString() + "'";
                     }
                     if (listBox2.SelectedIndices.Count > 1)
                     {
-                        arg2 += "colnames(df_tmp_)<-c(" + names + ")\r\n";
+                        cmd += "colnames(df_tmp_)<-c(" + names + ")\r\n";
                     }else
                     {
-                        arg2 += "df_tmp_ <- data.frame(" + names + "=df_tmp_)\r\n";
+                        cmd += "df_tmp_ <- data.frame(" + names + "=df_tmp_)\r\n";
                     }
                 }
                 else
                 {
-                    arg2 = "df_tmp_ <- df\r\n";
+                    cmd = "df_tmp_ <- df\r\n";
                 }
 
-                cmd = arg2 + "\r\n";
+                cmd = cmd + "\r\n";
                 if (radioButton1.Checked)
                 {
                     cmd += "anomaly_detection.model <- anomaly_detection_train(df_tmp_)\r\n";
@@ -234,7 +242,7 @@ namespace WindowsFormsApplication1
 				{
                 	cmd += "ggsave(file = \"anomaly_detection_test.png\", ano_plt , dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                     cmd += "df_tmp2 <- ifelse(anomaly_detect[[2]] > anomaly_detect[[3]], 1, 0)\r\n";
-                    cmd += "df_tmp2 <- cbind(df, df_tmp2)\r\n";
+                    cmd += "df_tmp2 <- cbind(df_, df_tmp2)\r\n";
                     cmd += "colnames(df_tmp2)[ncol(df_tmp2)]<-c(\"anomaly\")\r\n";
                     cmd += "write.csv(df_tmp2, \"異常検出.csv\",row.names =F)\r\n";
                 }
@@ -336,9 +344,12 @@ namespace WindowsFormsApplication1
                     cmd += "library(htmlwidgets)\r\n";
 
                     if (System.IO.File.Exists("anomaly_detection_temp.html")) form1.FileDelete("anomaly_detection_temp.html");
-                    cmd += "p_<-ggplotly(ano_plt)\r\n";
-                    cmd += "print(p_)\r\n";
-                    cmd += "htmlwidgets::saveWidget(as_widget(p_), \"anomaly_detection_temp.html\", selfcontained = F)\r\n";
+
+                    cmd += "if ( !is.null(ano_plt)){\r\n";
+                    cmd += "    p_<-ggplotly(ano_plt)\r\n";
+                    cmd += "    print(p_)\r\n";
+                    cmd += "    htmlwidgets::saveWidget(as_widget(p_), \"anomaly_detection_temp.html\", selfcontained = F)\r\n";
+                    cmd += "}\r\n";
                     form1.script_executestr(cmd);
 
                     System.Threading.Thread.Sleep(50);
@@ -575,9 +586,12 @@ namespace WindowsFormsApplication1
             System.IO.StreamWriter sw = new System.IO.StreamWriter(fname + ".options", false, Encoding.GetEncoding("SHIFT_JIS"));
             if (sw != null)
             {
-                sw.Write("正規化,");
-                //if (checkBox1.Checked) sw.Write("true\r\n");
-                //else sw.Write("false\r\n");
+                sw.Write("閾値指定,");
+                if (checkBox1.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("閾値,"+ textBox1.Text +"\r\n");
+                sw.Write("method," + comboBox1.Text + "\r\n");
                 sw.Close();
             }
 
@@ -612,16 +626,33 @@ namespace WindowsFormsApplication1
             System.IO.StreamReader sr = new System.IO.StreamReader(file + ".options", Encoding.GetEncoding("SHIFT_JIS"));
             if (sr != null)
             {
-                string s = sr.ReadLine();
-                //var ss = s.Split(',');
-                //if (ss[1].Replace("\r\n", "") == "true")
-                //{
-                //    checkBox1.Checked = true;
-                //}
-                //else
-                //{
-                //    checkBox1.Checked = false;
-                //}
+                while (sr.EndOfStream == false)
+                {
+                    string s = sr.ReadLine();
+                    var ss = s.Split(',');
+                    if (ss[0].IndexOf("閾値設定") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox1.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox1.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("閾値") >= 0)
+                    {
+                        textBox1.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("method") >= 0)
+                    {
+                        comboBox1.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                }
                 sr.Close();
             }
             radioButton1.Checked = false;
@@ -719,6 +750,33 @@ namespace WindowsFormsApplication1
 
         private void button8_Click_1(object sender, EventArgs e)
         {
+            Form1.VarAutoSelection(listBox1, listBox2);
+        }
+
+        public void button11_Click_1(object sender, EventArgs e)
+        {
+            comboBox2.Items.Clear();
+            comboBox2.Items.Add("df");
+            for ( int i = 0; i < form1.comboBox2.Items.Count; i++)
+            {
+                if ( form1.comboBox2.Items[i].ToString().IndexOf("i.") == 0 )
+                {
+                    comboBox2.Items.Add(form1.comboBox2.Items[i].ToString());
+                }
+            }
+            comboBox2.Text = "df";
+        }
+
+        private void comboBox2_TextChanged(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+            listBox2.Items.Clear();
+            ListBox Names = form1.GetNames(comboBox2.Text);
+            for (int i = 0; i < Names.Items.Count; i++)
+            {
+                listBox1.Items.Add(Names.Items[i]);
+                listBox2.Items.Add(Names.Items[i]);
+            }
             Form1.VarAutoSelection(listBox1, listBox2);
         }
     }

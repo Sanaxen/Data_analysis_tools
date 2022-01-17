@@ -5,11 +5,28 @@ anomaly_detection_train <- function( df )
 {
 	X <- as.matrix(df)
 	X <- scale(X)
-	mx <- colMeans(X)
+	mu <- colMeans(X)
 	
 	X[is.na(X)] <- 0
-	mx[is.na(mx)] <- 0
-	return (list(X, mx))
+	mu[is.na(mu)] <- 0
+	
+	Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu
+	Sigma <- t(Xc) %*% Xc / nrow(X)
+	
+	tryCatch({
+		invSigma <- solve(Sigma)
+	},
+	error = function(e) {
+	    #message(e)
+	    print(e)
+	    print("特異行列のため一般逆行列で代行")
+	},	
+	finally   = {
+		invSigma <- ginv(Sigma)
+	},
+	silent = TRUE
+	)
+	return (list(X, mu, Sigma, invSigma))
 }
 
 anomaly_detection_test <- function( model, df, method="mahalanobis", threshold=0)
@@ -18,40 +35,37 @@ anomaly_detection_test <- function( model, df, method="mahalanobis", threshold=0
 	X <- scale(X)
 	X[is.na(X)] <- 0
 	
+	invSigma = model[[4]]
+	mu = model[[2]]
+	
 	am <- NULL
 	if (method == "hotelling")
 	{
-		Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% model[[2]]
-		Sx <- t(Xc) %*% Xc / nrow(X)
+		Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu
 		tryCatch({
-			am <- rowSums((Xc %*% solve(Sx) * Xc))
+			am <- rowSums((Xc %*% invSigma * Xc))
 		},
 		error = function(e) {
 		    #message(e)
 		    print(e)
-		    print("特異行列のため一般逆行列で代行")
 		},	
 		finally   = {
-			if ( is.null(am)) am <- rowSums((Xc %*% ginv(Sx) * Xc))
 		},
 		silent = TRUE
 		)
 		if ( threshold == 0 ) threshold <- qchisq(0.99, 3)
 	}else
 	{
-		Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% model[[2]]
-		Sx <- t(Xc) %*% Xc / nrow(X)
+		Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu
 		if ( threshold == 0 ) threshold <- 1
 		tryCatch({
-			am <- rowSums((Xc %*% solve(Sx) * Xc)) / ncol(Xc)
+			am <- rowSums((Xc %*% invSigma * Xc)) / ncol(Xc)
 		},
 		error = function(e) {
 		    #message(e)
 		    print(e)
-		    print("特異行列のため一般逆行列で代行")
 		},	
 		finally   = {
-			if ( is.null(am)) am <- rowSums((Xc %*% ginv(Sx) * Xc)) / ncol(Xc)
 		},
 		silent = TRUE
 		)
@@ -68,6 +82,8 @@ anomaly_detection_test <- function( model, df, method="mahalanobis", threshold=0
 
 anomaly_detection_plot <- function( anomaly_detection)
 {
+	if ( is.null(anomaly_detect[[2]]) ) return(NULL)
+	
 	error = sum(ifelse(anomaly_detect[[2]] > anomaly_detect[[3]],1, 0))/length(anomaly_detect[[2]])
 	print(as.integer(error*1000)/1000)
 	
@@ -80,6 +96,21 @@ anomaly_detection_plot <- function( anomaly_detection)
 	ano_plt <- ano_plt + annotate("text",x=-Inf,y=Inf,label=paste(as.integer(100*error*1000)/1000, "%", sep=""),hjust=-.2,vjust=2, ,size=10)
 
 	return(ano_plt)
+}
+
+variance__ <- function(x) { var(x) * (length(x)-1) / length(x) }
+anomaly_detection_SN <- function( model, anomaly_detection )
+{
+	X <- anomaly_detection[[1]]
+	
+	sn = as.matrix(df)
+	mu = model[[2]]
+	vr <- diag(model[[3]])
+	for ( i in 1:ncol(X) )
+	{
+		x = ((X[,i] - mu[i])^2)/vr[i]
+		sn[,i] = 10*log10(x)
+	}
 }
 
 
