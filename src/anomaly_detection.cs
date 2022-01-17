@@ -178,6 +178,70 @@ namespace WindowsFormsApplication1
                 {
                     cmd += "df_ <- " + comboBox2.Text + "\r\n";
                 }
+
+                ListBox var = new ListBox();
+
+                ListBox typename = form1.GetTypeNameList(listBox2);
+                ListBox uniques = null;
+                ListBox corsList = null;
+
+                ListBox select_cancel = null;
+                int cors_num = 0;
+                string cors = "";
+                bool typeNG = false;
+                if (checkBox3.Checked && radioButton1.Checked)
+                {
+                    select_cancel = new ListBox();
+                    uniques = form1.GetUniquesList(listBox1);
+
+                    for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
+                    {
+                        if (int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
+                        {
+                            for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
+                            {
+                                cors += "cat(cor(" +
+                                "df$" + listBox2.Items[listBox2.SelectedIndices[i]].ToString() + ",df$" + listBox2.Items[listBox2.SelectedIndices[j]].ToString() + ")";
+                                cors += ")\r\n";
+                                cors += "cat(\"\\n\")\r\n";
+                                cors_num++;
+                            }
+                        }
+                    }
+                    corsList = form1.GetSelectVarCorsList(cors, cors_num);
+
+                    cors_num = 0;
+                    for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
+                    {
+                        if (int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
+                        {
+                            for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
+                            {
+                                if (corsList.Items.Count > 0 && Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.98)
+                                {
+                                    typeNG = true;
+                                    select_cancel.Items.Add(listBox2.SelectedIndices[j]);
+                                }
+                                cors_num++;
+                            }
+                        }
+                        else
+                        {
+                            typeNG = true;
+                            select_cancel.Items.Add(listBox2.SelectedIndices[i]);
+                        }
+                    }
+                    for (int i = 0; i < select_cancel.Items.Count; i++)
+                    {
+                        listBox2.SetSelected(int.Parse(select_cancel.Items[i].ToString()), false);
+                    }
+                    if ( typeNG)
+                    {
+                        MessageBox.Show("非数値またはマルチコになる変数の選択を解除しました");
+                    }
+                }
+                form1.SelectionVarWrite_(listBox1, listBox2, "select_variables.dat");
+
                 if (listBox2.SelectedIndices.Count > 0)
                 {
                     string names = "'" + form1.Names.Items[listBox2.SelectedIndices[0]].ToString() + "'";
@@ -592,6 +656,10 @@ namespace WindowsFormsApplication1
 
                 sw.Write("閾値,"+ textBox1.Text +"\r\n");
                 sw.Write("method," + comboBox1.Text + "\r\n");
+
+                sw.Write("マルチコ対策,");
+                if (checkBox3.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
                 sw.Close();
             }
 
@@ -650,6 +718,18 @@ namespace WindowsFormsApplication1
                     if (ss[0].IndexOf("method") >= 0)
                     {
                         comboBox1.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("マルチコ対策") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox3.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox3.Checked = false;
+                        }
                         continue;
                     }
                 }

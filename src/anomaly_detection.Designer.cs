@@ -62,6 +62,7 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -74,6 +75,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.checkBox3);
             this.panel2.Controls.Add(this.button11);
             this.panel2.Controls.Add(this.comboBox2);
             this.panel2.Controls.Add(this.button8);
@@ -92,7 +94,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(631, 673);
+            this.panel2.Size = new System.Drawing.Size(631, 713);
             this.panel2.TabIndex = 3;
             // 
             // button11
@@ -253,7 +255,7 @@
             // 
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 15;
-            this.listBox2.Location = new System.Drawing.Point(253, 40);
+            this.listBox2.Location = new System.Drawing.Point(263, 82);
             this.listBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox2.Name = "listBox2";
             this.listBox2.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
@@ -266,7 +268,7 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(3, 40);
+            this.listBox1.Location = new System.Drawing.Point(13, 82);
             this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(229, 619);
@@ -284,7 +286,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 69);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(776, 604);
+            this.panel5.Size = new System.Drawing.Size(776, 644);
             this.panel5.TabIndex = 38;
             // 
             // webView21
@@ -294,7 +296,7 @@
             this.webView21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webView21.Location = new System.Drawing.Point(0, 0);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(774, 602);
+            this.webView21.Size = new System.Drawing.Size(774, 642);
             this.webView21.TabIndex = 31;
             this.webView21.ZoomFactor = 1D;
             // 
@@ -304,7 +306,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(774, 602);
+            this.pictureBox1.Size = new System.Drawing.Size(774, 642);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 30;
             this.pictureBox1.TabStop = false;
@@ -424,7 +426,7 @@
             this.panel3.Location = new System.Drawing.Point(631, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(776, 673);
+            this.panel3.Size = new System.Drawing.Size(776, 713);
             this.panel3.TabIndex = 39;
             // 
             // splitter1
@@ -432,7 +434,7 @@
             this.splitter1.Location = new System.Drawing.Point(631, 0);
             this.splitter1.Margin = new System.Windows.Forms.Padding(4);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(4, 673);
+            this.splitter1.Size = new System.Drawing.Size(4, 713);
             this.splitter1.TabIndex = 40;
             this.splitter1.TabStop = false;
             // 
@@ -440,11 +442,21 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(397, 35);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(104, 19);
+            this.checkBox3.TabIndex = 60;
+            this.checkBox3.Text = "マルチコ対策";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
             // anomaly_detection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1407, 673);
+            this.ClientSize = new System.Drawing.Size(1407, 713);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -502,5 +514,6 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }

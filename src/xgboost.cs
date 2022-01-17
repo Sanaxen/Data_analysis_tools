@@ -1623,20 +1623,77 @@ namespace WindowsFormsApplication1
                 formuler += " ~";
                 ListBox var = new ListBox();
                 
-                ListBox uniques = form1.GetUniquesList(listBox1);
+                ListBox uniques = null;
+                ListBox corsList = null;
+
+                ListBox select_cancel = null;
+                int cors_num = 0;
+                string cors = "";
+                if (checkBox24.Checked && radioButton4.Checked)
+                {
+                    select_cancel = new ListBox();
+                    uniques = form1.GetUniquesList(listBox1);
+
+                    for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
+                    {
+                        if (int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
+                        {
+                            for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
+                            {
+                                cors += "cat(cor(" +
+                                "df$" + listBox2.Items[listBox2.SelectedIndices[i]].ToString() + ",df$" + listBox2.Items[listBox2.SelectedIndices[j]].ToString() + ")";
+                                cors += ")\r\n";
+                                cors += "cat(\"\\n\")\r\n";
+                                cors_num++;
+                                cors += "cat(cor(" +
+                                "df$" + listBox2.Items[listBox2.SelectedIndices[j]].ToString() + ",df$" + targetName + ")";
+                                cors += ")\r\n";
+                                cors += "cat(\"\\n\")\r\n";
+                                cors_num++;
+                            }
+                        }
+                    }
+                    corsList = form1.GetSelectVarCorsList(cors, cors_num);
+
+                    cors_num = 0;
+                    for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
+                    {
+                        if (int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
+                        {
+                            for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
+                            {
+                                if (corsList.Items.Count > 0 && Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.97)
+                                {
+                                    typeNG = true;
+                                    select_cancel.Items.Add(listBox2.SelectedIndices[j]);
+                                }
+                                cors_num++;
+                                if (Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.97)
+                                {
+                                    typeNG = true;
+                                    select_cancel.Items.Add(listBox2.SelectedIndices[j]);
+                                }
+                                cors_num++;
+                            }
+                        }
+                        else
+                        {
+                            typeNG = true;
+                            select_cancel.Items.Add(listBox2.SelectedIndices[i]);
+                        }
+                    }
+                    for (int i = 0; i < select_cancel.Items.Count; i++)
+                    {
+                        listBox2.SetSelected(int.Parse(select_cancel.Items[i].ToString()), false);
+                    }
+                }
+                form1.SelectionVarWrite_(listBox1, listBox2, "select_variables.dat");
 
                 for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
                 {
-                    if ( int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
-                    {
-                        var.Items.Add(listBox2.Items[listBox2.SelectedIndices[i]].ToString());
-                    }
-                    else
-                    {
-                        typeNG = true;
-                        listBox2.SetSelected(listBox2.SelectedIndices[i], false);
-                    }
+                    var.Items.Add(listBox2.Items[listBox2.SelectedIndices[i]].ToString());
                 }
+
                 for (int i = 0; i < var.Items.Count; i++)
                 {
                     formuler += var.Items[i].ToString();
@@ -1645,6 +1702,8 @@ namespace WindowsFormsApplication1
                         formuler += "+";
                     }
                 }
+                
+                
                 if (time_series_mode)
                 {
                     //lag1(1時点前)を入れると次点真値に近いため常に１時点遅れの結果が最も精度が高くなってしまう。
@@ -5353,7 +5412,10 @@ forecast_extension += "	    }\r\n";
                     }
                 }
 
+                ACC = "";
                 RMSE = "";
+                label5.Text = "Accuracy=" + ACC;
+
                 if (radioButton1.Checked)
                 {
                     {
@@ -5723,7 +5785,11 @@ forecast_extension += "	    }\r\n";
                 sw.Write("グリッドサーチ,");
                 if (checkBox23.Checked) sw.Write("true\r\n");
                 else sw.Write("false\r\n");
-                
+
+                sw.Write("マルチコ対策,");
+                if (checkBox24.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
                 sw.Close();
             }
         }
@@ -6300,6 +6366,18 @@ forecast_extension += "	    }\r\n";
                         else
                         {
                             checkBox23.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("マルチコ対策") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox24.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox24.Checked = false;
                         }
                         continue;
                     }
