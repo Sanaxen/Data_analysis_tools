@@ -201,6 +201,7 @@ namespace WindowsFormsApplication1
                     {
                         if (int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
                         {
+                            //dhsic.test(x, y)$p.valueでP値を求める。帰無仮説は「2変数には(非)線形関係は無い」なので、小さければそれが棄却されるので、非線形関係も含めて相関があると言える。
                             if (checkBox4.Checked && listBox1.SelectedIndices.Count == 1)
                             {
                                 hsics += "cat(dhsic.test(" +

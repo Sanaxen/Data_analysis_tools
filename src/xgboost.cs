@@ -1643,6 +1643,7 @@ namespace WindowsFormsApplication1
                         {
                             if (checkBox25.Checked)
                             {
+                                //dhsic.test(x, y)$p.valueでP値を求める。帰無仮説は「2変数には(非)線形関係は無い」なので、小さければそれが棄却されるので、非線形関係も含めて相関があると言える。
                                 hsics += "cat(dhsic.test(" +
                                 "df_smp$" + listBox2.Items[listBox2.SelectedIndices[i]].ToString() + ",df_smp$" + targetName + ",alpha = 0.05)$p.value";
                                 hsics += ")\r\n";
