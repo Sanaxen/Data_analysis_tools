@@ -8,7 +8,8 @@ targetPackages <- c('forecast', 'ellipse', 'magrittr','randomForest','car','dply
 ,'rpart', 'rpart.plot', 'partykit','ggpmisc', 'pls', 'e1071', 'plotly', 'xgboost'
 ,'wordcloud', 'magrittr', 'tagcloud', 'mice' , 'KFAS'
 , 'Ckmeans.1d.dp', 'DiagrammeR', 'ggfortify', 'proxy', 'lubridate', 'wordcloud2'
-, 'ggplotify', 'DALEX', 'DALEXtra', 'mlr', 'doParallel', 'ggsci', 'DT')
+, 'ggplotify', 'DALEX', 'DALEXtra', 'mlr', 'doParallel', 'ggsci', 'DT'
+, 'dHSIC')
 
 newPackages <- targetPackages[!(targetPackages %in% installed.packages()[,"Package"])]
 if(length(newPackages)) install.packages(newPackages, repos = "http://cran.us.r-project.org", lib=install_libpath)
@@ -42,3 +43,4 @@ devtools::install_github("fisproject/lineNotify", lib=install_libpath)
 #install.packages("VIM", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
 #install.packages("glmnet", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
 
+#install.packages('dHSIC', repos = "http://cran.us.r-project.org", lib=install_libpath)

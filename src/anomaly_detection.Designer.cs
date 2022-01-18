@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.button11 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.button8 = new System.Windows.Forms.Button();
@@ -62,7 +63,7 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -75,6 +76,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.checkBox4);
             this.panel2.Controls.Add(this.checkBox3);
             this.panel2.Controls.Add(this.button11);
             this.panel2.Controls.Add(this.comboBox2);
@@ -96,6 +98,16 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(631, 713);
             this.panel2.TabIndex = 3;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(263, 32);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(104, 19);
+            this.checkBox3.TabIndex = 60;
+            this.checkBox3.Text = "マルチコ対策";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // button11
             // 
@@ -119,7 +131,7 @@
             // button8
             // 
             this.button8.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button8.Location = new System.Drawing.Point(392, 7);
+            this.button8.Location = new System.Drawing.Point(158, 32);
             this.button8.Margin = new System.Windows.Forms.Padding(4);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(105, 22);
@@ -442,15 +454,18 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // checkBox3
+            // checkBox4
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(397, 35);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(104, 19);
-            this.checkBox3.TabIndex = 60;
-            this.checkBox3.Text = "マルチコ対策";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(373, 32);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(104, 19);
+            this.checkBox4.TabIndex = 61;
+            this.checkBox4.Text = "無相関除外";
+            this.toolTip1.SetToolTip(this.checkBox4, "Hilbert Schmidt independence criterionを使って\r\n変数間の依存関係の統計的に有意な証拠を見つけるための仮説検定を行います。\r" +
+        "\nもし、独立していて無関係であれば説明変数から除外します。\r\n\r\nこの検査を入れると計算に時間がかかる場合があります。");
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
             // anomaly_detection
             // 
@@ -515,5 +530,6 @@
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox4;
     }
 }

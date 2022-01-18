@@ -1625,11 +1625,14 @@ namespace WindowsFormsApplication1
                 
                 ListBox uniques = null;
                 ListBox corsList = null;
+                ListBox hsicList = null;
 
                 ListBox select_cancel = null;
                 int cors_num = 0;
+                int hsics_num = 0;
                 string cors = "";
-                if (checkBox24.Checked && radioButton4.Checked)
+                string hsics = "";
+                if ((checkBox24.Checked|| checkBox25.Checked) && radioButton4.Checked)
                 {
                     select_cancel = new ListBox();
                     uniques = form1.GetUniquesList(listBox1);
@@ -1638,42 +1641,89 @@ namespace WindowsFormsApplication1
                     {
                         if (int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
                         {
-                            for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
+                            if (checkBox25.Checked)
                             {
-                                cors += "cat(cor(" +
-                                "df$" + listBox2.Items[listBox2.SelectedIndices[i]].ToString() + ",df$" + listBox2.Items[listBox2.SelectedIndices[j]].ToString() + ")";
-                                cors += ")\r\n";
-                                cors += "cat(\"\\n\")\r\n";
-                                cors_num++;
-                                cors += "cat(cor(" +
-                                "df$" + listBox2.Items[listBox2.SelectedIndices[j]].ToString() + ",df$" + targetName + ")";
-                                cors += ")\r\n";
-                                cors += "cat(\"\\n\")\r\n";
-                                cors_num++;
+                                hsics += "cat(dhsic.test(" +
+                                "df_smp$" + listBox2.Items[listBox2.SelectedIndices[i]].ToString() + ",df_smp$" + targetName + ",alpha = 0.05)$p.value";
+                                hsics += ")\r\n";
+                                hsics += "cat(\"\\n\")\r\n";
+                                hsics_num++;
+                            }
+                            if (checkBox24.Checked)
+                            {
+                                for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
+                                {
+                                    cors += "cat(cor(" +
+                                    "df_smp$" + listBox2.Items[listBox2.SelectedIndices[i]].ToString() + ",df_smp$" + listBox2.Items[listBox2.SelectedIndices[j]].ToString() + ")";
+                                    cors += ")\r\n";
+                                    cors += "cat(\"\\n\")\r\n";
+                                    cors_num++;
+                                    cors += "cat(cor(" +
+                                    "df_smp$" + listBox2.Items[listBox2.SelectedIndices[j]].ToString() + ",df_smp$" + targetName + ")";
+                                    cors += ")\r\n";
+                                    cors += "cat(\"\\n\")\r\n";
+                                    cors_num++;
+                                }
                             }
                         }
                     }
+                    string resize_cmd = "if ( nrow(df) > 500 ){\r\n";
+                    resize_cmd += "    row.sampled <- sample(nrow(df), 500)\r\n";
+                    resize_cmd += "    df_smp <- df[row.sampled, , drop=F]\r\n";
+                    resize_cmd += "}else{\r\n";
+                    resize_cmd += "    df_smp <- df\r\n";
+                    resize_cmd += "}\r\n";
+                    form1.evalute_cmdstr(resize_cmd);
+
                     corsList = form1.GetSelectVarCorsList(cors, cors_num);
+                    hsicList = form1.GetHSICList(hsics, hsics_num);
 
                     cors_num = 0;
+                    hsics_num = 0;
                     for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
                     {
                         if (int.Parse(uniques.Items[listBox2.SelectedIndices[i]].ToString()) > 1 && (typename.Items[listBox2.SelectedIndices[i]].ToString() == "numeric" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "integer" || typename.Items[listBox2.SelectedIndices[i]].ToString() == "factor"))
                         {
-                            for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
+                            if (checkBox25.Checked)
                             {
-                                if (corsList.Items.Count > 0 && Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.97)
+                                if (hsicList.Items.Count > 0)
                                 {
-                                    typeNG = true;
-                                    select_cancel.Items.Add(listBox2.SelectedIndices[j]);
+                                    float p_value = Math.Abs(float.Parse(hsicList.Items[cors_num].ToString()));
+                                    if (radioButton2.Checked)
+                                    {
+                                        if (p_value > 0.05 && p_value < 1.0)
+                                        {
+                                            typeNG = true;
+                                            select_cancel.Items.Add(listBox2.SelectedIndices[i]);
+                                        }
+                                    }else
+                                    {
+                                        if (p_value > 0.05)
+                                        {
+                                            typeNG = true;
+                                            select_cancel.Items.Add(listBox2.SelectedIndices[i]);
+                                        }
+                                    }
+                                    hsics_num++;
                                 }
-                                cors_num++;
-                                if (Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.97)
+                            }
+                            if (checkBox24.Checked)
+                            {
+                                for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
                                 {
-                                    typeNG = true;
-                                    select_cancel.Items.Add(listBox2.SelectedIndices[j]);
+                                    if (corsList.Items.Count > 0 && Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.97)
+                                    {
+                                        typeNG = true;
+                                        select_cancel.Items.Add(listBox2.SelectedIndices[j]);
+                                    }
+                                    cors_num++;
+                                    if (Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.97)
+                                    {
+                                        typeNG = true;
+                                        select_cancel.Items.Add(listBox2.SelectedIndices[j]);
+                                    }
+                                    cors_num++;
                                 }
-                                cors_num++;
                             }
                         }
                         else
@@ -1812,7 +1862,7 @@ namespace WindowsFormsApplication1
                 {
                     if (typeNG)
                     {
-                        MessageBox.Show("数値/因子型以外/全て同一値のデータ列の選択を未選択扱いにしました");
+                        MessageBox.Show("数値/因子型以外/全て同一値のデータ列またはマルチコ、または無関係な変数の選択を未選択扱いにしました");
                     }
                 }
 
@@ -5790,6 +5840,10 @@ forecast_extension += "	    }\r\n";
                 if (checkBox24.Checked) sw.Write("true\r\n");
                 else sw.Write("false\r\n");
 
+                sw.Write("無相関除外,");
+                if (checkBox25.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
                 sw.Close();
             }
         }
@@ -6378,6 +6432,18 @@ forecast_extension += "	    }\r\n";
                         else
                         {
                             checkBox24.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("無相関除外") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox25.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox25.Checked = false;
                         }
                         continue;
                     }

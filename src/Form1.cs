@@ -756,6 +756,48 @@ namespace WindowsFormsApplication1
             }
             return output;
         }
+        public ListBox GetHSICList(string cmd, int hsic_num)
+        {
+            ListBox output = new ListBox();
+            if (cmd == "" || hsic_num == 0) return output;
+
+            string s = textBox1.Text;
+            string ss = textBox6.Text;
+            textBox1.Text = "library(dHSIC)\r\n" + cmd;
+
+            if (System.IO.File.Exists("summary.txt")) form1.FileDelete("summary.txt");
+            script_execute(null, null);
+
+            textBox1.Text = s;
+            textBox6.Text = ss;
+            string lines = "";
+            if (System.IO.File.Exists("summary.txt"))
+            {
+                System.IO.StreamReader sr = new System.IO.StreamReader("summary.txt", System.Text.Encoding.GetEncoding("shift_jis"));
+                if (sr != null)
+                {
+                    lines = sr.ReadToEnd();
+                    sr.Close();
+                }
+
+                System.IO.File.Copy("summary.txt", "HSIC_summary.txt", true);
+            }
+            var lines2 = lines.Split('\n');
+            for (int i = 0; i < hsic_num; i++)
+            {
+                string sss = lines2[i].Replace("\r", "");
+                if (sss == "NA") sss = "0";
+                try
+                {
+                    float x = float.Parse(sss);
+                }catch
+                {
+                    sss = "0";
+                }
+                output.Items.Add(sss);
+            }
+            return output;
+        }
 
         public ListBox GetSelectVarCorsList(string cmd, int cors_num)
         {
@@ -780,11 +822,22 @@ namespace WindowsFormsApplication1
                     lines = sr.ReadToEnd();
                     sr.Close();
                 }
+                System.IO.File.Copy("summary.txt", "cor_summary.txt", true);
             }
             var lines2 = lines.Split('\n');
             for (int i = 0; i < cors_num; i++)
             {
-                output.Items.Add(lines2[i].Replace("\r", ""));
+                string sss = lines2[i].Replace("\r", "");
+                if (sss == "NA") sss = "0";
+                try
+                {
+                    float x = float.Parse(sss);
+                }
+                catch
+                {
+                    sss = "0";
+                }
+                output.Items.Add(sss);
             }
             return output;
         }
