@@ -371,6 +371,7 @@ namespace WindowsFormsApplication1
                         }
                         catch { }
                     }
+                    form1.SelectionVarWrite_(listBox1, listBox2, "select_variables.dat");
                 }
 
                 cmd = cmd + "\r\n";
