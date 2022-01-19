@@ -308,6 +308,71 @@ namespace WindowsFormsApplication1
                     cmd = "df_tmp_ <- df\r\n";
                 }
 
+                if ( radioButton1.Checked)
+                {
+                    form1.script_executestr(cmd);
+
+                    cmd = "selvar <- auto_varselect(df_tmp_, cut=4, fast=T, target = 0.05)\r\n";
+                    cmd += "df_tmp_ <- selvar[[2]]\r\n";
+                    cmd += "col.sampled <- selvar[[3]]\r\n";
+                    cmd += "anomaly_detection.model <- selvar[[4]]\r\n";
+
+                    cmd += "col <- colnames(df_tmp_)\r\n";
+                    cmd += "sink(\"auto_varselect.txt\")\r\n";
+                    cmd += "for ( i in 1:ncol(df_tmp_))\r\n";
+                    cmd += "{\r\n";
+                    cmd += "	cat(col[i])\r\n";
+                    cmd += "	cat(\"\\n\")\r\n";
+                    cmd += "}\r\n";
+                    cmd += "sink()\r\n";
+
+                    timer1.Enabled = true;
+                    timer1.Start();
+                    form1.script_executestr(cmd);
+                    timer1.Stop();
+                    timer1.Enabled = false;
+
+
+                    cmd = "";
+                    ListBox list = new ListBox();
+
+                    if (System.IO.File.Exists("auto_varselect.txt"))
+                    {
+                        try
+                        {
+                            string lines = "";
+                            System.IO.StreamReader sr = new System.IO.StreamReader("auto_varselect.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                            while (sr.EndOfStream == false)
+                            {
+                                lines = sr.ReadToEnd();
+                            }
+                            sr.Close();
+                            var lines2 = lines.Split('\n');
+                            for (int i = 0; i < lines2.Length; i++)
+                            {
+                                list.Items.Add(lines2[i].Replace("\r", ""));
+                            }
+
+                            for (int j = 0; j < listBox2.SelectedIndices.Count; j++)
+                            {
+                               listBox2.SetSelected(listBox2.SelectedIndices[j], false);
+                            }
+                            for ( int i = 0; i < list.Items.Count; i++)
+                            {
+                                for (int j = 0; j < listBox2.SelectedIndices.Count; j++)
+                                {
+                                    if (listBox2.Items[listBox2.SelectedIndices[j]].ToString() == list.Items[i].ToString())
+                                    {
+                                        listBox2.SetSelected(listBox2.SelectedIndices[j], true);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
                 cmd = cmd + "\r\n";
                 if (radioButton1.Checked)
                 {
@@ -920,6 +985,38 @@ namespace WindowsFormsApplication1
             if ( listBox1.SelectedIndex < 0)
             {
                 MessageBox.Show("ターゲットがあれば選択して下さい\nターゲットが無い場合はこの機能は利用できません");
+            }
+        }
+
+        private void button12_Click_1(object sender, EventArgs e)
+        {
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                string pngfile = "anomaly_detection_loss.png";
+
+                if (System.IO.File.Exists(pngfile))
+                {
+                    pictureBox1.Image = null;
+                    pictureBox1.Image = Form1.CreateImage(pngfile);
+                }
+            }
+            catch { }
+        }
+
+        private void checkBox5_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (!checkBox5.Checked)
+            {
+                if (!System.IO.File.Exists("auto_varselect.stop"))
+                {
+                    using (System.IO.FileStream fs = System.IO.File.Create("auto_varselect.stop"))
+                    {
+                    }
+                }
             }
         }
     }

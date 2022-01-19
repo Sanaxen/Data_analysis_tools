@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.button11 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
@@ -63,7 +64,8 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -76,6 +78,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.checkBox5);
             this.panel2.Controls.Add(this.checkBox4);
             this.panel2.Controls.Add(this.checkBox3);
             this.panel2.Controls.Add(this.button11);
@@ -98,6 +101,19 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(631, 713);
             this.panel2.TabIndex = 3;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(373, 32);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(104, 19);
+            this.checkBox4.TabIndex = 61;
+            this.checkBox4.Text = "無相関除外";
+            this.toolTip1.SetToolTip(this.checkBox4, "Hilbert Schmidt independence criterionを使って\r\n変数間の依存関係の統計的に有意な証拠を見つけるための仮説検定を行います。\r" +
+        "\nもし、独立していて無関係であれば説明変数から除外します。\r\n\r\nこの検査を入れると計算に時間がかかる場合があります。");
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
             // checkBox3
             // 
@@ -220,7 +236,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(505, 282);
+            this.button6.Location = new System.Drawing.Point(510, 284);
             this.button6.Margin = new System.Windows.Forms.Padding(4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(100, 29);
@@ -231,7 +247,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(505, 229);
+            this.button5.Location = new System.Drawing.Point(510, 229);
             this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(100, 29);
@@ -242,7 +258,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(505, 193);
+            this.button1.Location = new System.Drawing.Point(510, 192);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 29);
@@ -454,18 +470,21 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // checkBox4
+            // timer1
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(373, 32);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(104, 19);
-            this.checkBox4.TabIndex = 61;
-            this.checkBox4.Text = "無相関除外";
-            this.toolTip1.SetToolTip(this.checkBox4, "Hilbert Schmidt independence criterionを使って\r\n変数間の依存関係の統計的に有意な証拠を見つけるための仮説検定を行います。\r" +
-        "\nもし、独立していて無関係であれば説明変数から除外します。\r\n\r\nこの検査を入れると計算に時間がかかる場合があります。");
-            this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            this.timer1.Interval = 5000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(158, 58);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(119, 19);
+            this.checkBox5.TabIndex = 62;
+            this.checkBox5.Text = "最適変数選択";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.CheckStateChanged += new System.EventHandler(this.checkBox5_CheckStateChanged);
             // 
             // anomaly_detection
             // 
@@ -531,5 +550,7 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox checkBox5;
     }
 }
