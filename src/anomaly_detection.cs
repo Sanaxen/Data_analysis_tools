@@ -353,17 +353,17 @@ namespace WindowsFormsApplication1
                                 list.Items.Add(lines2[i].Replace("\r", ""));
                             }
 
-                            for (int j = 0; j < listBox2.SelectedIndices.Count; j++)
+                            for (int j = 0; j < listBox2.Items.Count; j++)
                             {
-                               listBox2.SetSelected(listBox2.SelectedIndices[j], false);
+                               listBox2.SetSelected(j, false);
                             }
                             for ( int i = 0; i < list.Items.Count; i++)
                             {
-                                for (int j = 0; j < listBox2.SelectedIndices.Count; j++)
+                                for (int j = 0; j < listBox2.Items.Count; j++)
                                 {
-                                    if (listBox2.Items[listBox2.SelectedIndices[j]].ToString() == list.Items[i].ToString())
+                                    if (listBox2.Items[j].ToString() == list.Items[i].ToString())
                                     {
-                                        listBox2.SetSelected(listBox2.SelectedIndices[j], true);
+                                        listBox2.SetSelected(j, true);
                                         break;
                                     }
                                 }
