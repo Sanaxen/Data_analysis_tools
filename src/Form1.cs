@@ -842,7 +842,7 @@ namespace WindowsFormsApplication1
             return output;
         }
 
-        public ListBox GetUniquesList(ListBox list, bool listupNA = false)
+        public ListBox GetUniquesList(ListBox list, string df = "df", bool listupNA = false)
         {
             ListBox output = new ListBox(); ;
             string s = textBox1.Text;
@@ -850,7 +850,7 @@ namespace WindowsFormsApplication1
             string cmd = "";
             for (int i = 0; i < list.Items.Count; i++)
             {
-                cmd += "unq_ <- length( unique(" + "df$'" + list.Items[i].ToString() + "'))\r\n";
+                cmd += "unq_ <- length( unique(" + df+"$'" + list.Items[i].ToString() + "'))\r\n";
                 cmd += "cat(unq_)\r\n";
                 cmd += "cat(\"\\n\")\r\n";
             }
@@ -1487,10 +1487,26 @@ namespace WindowsFormsApplication1
                 if (delete_ok) System.IO.File.Delete(path);
                 else
                 {
+                    if (direct_send_cmd("sink()\r\n"))
+                    {
+                        System.IO.File.Delete(path);
+                        if (!System.IO.File.Exists(path))
+                        {
+                            return;
+                        }
+                    }
                     MessageBox.Show(path + " を削除出来ませんでした\n一度作業フォルダをクリア（作業ファイルを全て削除)して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             } catch
             {
+                if (direct_send_cmd("sink()\r\n"))
+                {
+                    System.IO.File.Delete(path);
+                    if (!System.IO.File.Exists(path))
+                    {
+                        return;
+                    }
+                }
                 MessageBox.Show(path + " を削除出来ませんでした\n一度作業フォルダをクリア（作業ファイルを全て削除)して下さい", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
@@ -1950,6 +1966,24 @@ namespace WindowsFormsApplication1
             {
                 FileDelete("_exit_");
             }
+        }
+
+        public bool direct_send_cmd( string cmd)
+        {
+            while (!RProcess.HasExited)
+            {
+                try
+                {
+                    RProcess.StandardInput.Write(cmd);
+                    RProcess.StandardInput.Flush();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return false;
         }
 
         public static string FnameToDataFrameName(string fname, bool is_filename)

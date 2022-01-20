@@ -178,6 +178,8 @@ namespace WindowsFormsApplication1
                 {
                     cmd += "df_ <- " + comboBox2.Text + "\r\n";
                 }
+                form1.script_executestr(cmd);
+                cmd = "";
 
                 ListBox var = new ListBox();
 
@@ -195,7 +197,7 @@ namespace WindowsFormsApplication1
                 if ((checkBox3.Checked || checkBox4.Checked) && radioButton1.Checked)
                 {
                     select_cancel = new ListBox();
-                    uniques = form1.GetUniquesList(listBox1);
+                    uniques = form1.GetUniquesList(listBox1, "df_");
 
                     for (int i = 0; i < listBox2.SelectedIndices.Count; i++)
                     {
@@ -223,13 +225,13 @@ namespace WindowsFormsApplication1
                             }
                         }
                     }
-                    string resize_cmd = "if ( nrow(df) > 500 ){\r\n";
-                    resize_cmd += "    row.sampled <- sample(nrow(df), 500)\r\n";
-                    resize_cmd += "    df_smp <- df[row.sampled, , drop=F]\r\n";
+                    string resize_cmd = "if ( nrow(df_) > 500 ){\r\n";
+                    resize_cmd += "    row.sampled <- sample(nrow(df_), 500)\r\n";
+                    resize_cmd += "    df_smp <- df_[row.sampled, , drop=F]\r\n";
                     resize_cmd += "}else{\r\n";
-                    resize_cmd += "    df_smp <- df\r\n";
+                    resize_cmd += "    df_smp <- df_\r\n";
                     resize_cmd += "}\r\n";
-                    form1.evalute_cmdstr(resize_cmd);
+                    form1.script_executestr(resize_cmd);
 
                     corsList = form1.GetSelectVarCorsList(cors, cors_num);
                     hsicList = form1.GetHSICList(hsics, hsics_num);
@@ -255,7 +257,7 @@ namespace WindowsFormsApplication1
                             {
                                 for (int j = i + 1; j < listBox2.SelectedIndices.Count; j++)
                                 {
-                                    if (corsList.Items.Count > 0 && Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.98)
+                                    if (corsList.Items.Count > 0 && Math.Abs(float.Parse(corsList.Items[cors_num].ToString())) > 0.99)
                                     {
                                         typeNG = true;
                                         select_cancel.Items.Add(listBox2.SelectedIndices[j]);
@@ -302,17 +304,49 @@ namespace WindowsFormsApplication1
                     {
                         cmd += "df_tmp_ <- data.frame(" + names + "=df_tmp_)\r\n";
                     }
+
+                    if ( checkBox5.Checked && comboBox3.Text != "")
+                    {
+                        cmd += "ngdf_ <- " + comboBox3.Text + "\r\n";
+                        names = "'" + form1.Names.Items[listBox2.SelectedIndices[0]].ToString() + "'";
+                        cmd += "ngdf_tmp_ = " + "ngdf_$'" + form1.Names.Items[listBox2.SelectedIndices[0]].ToString() + "'" + "\r\n";
+                        ;
+                        for (int i = 1; i < listBox2.SelectedIndices.Count; i++)
+                        {
+                            cmd += "ngdf_tmp_ <- cbind(ngdf_tmp_, ";
+                            cmd += "ngdf_$'" + form1.Names.Items[listBox2.SelectedIndices[i]].ToString() + "'";
+                            cmd += ")\r\n";
+
+                            names += ",";
+                            names += "'" + form1.Names.Items[listBox2.SelectedIndices[i]].ToString() + "'";
+                        }
+                        if (listBox2.SelectedIndices.Count > 1)
+                        {
+                            cmd += "colnames(ngdf_tmp_)<-c(" + names + ")\r\n";
+                        }
+                        else
+                        {
+                            cmd += "ngdf_tmp_ <- data.frame(" + names + "=ngdf_)\r\n";
+                        }
+                    }
                 }
                 else
                 {
-                    cmd = "df_tmp_ <- df\r\n";
+                    cmd = "df_tmp_ <- df_\r\n";
                 }
 
-                if ( radioButton1.Checked)
+                form1.script_executestr(cmd);
+                if ( radioButton1.Checked && checkBox5.Checked)
                 {
-                    form1.script_executestr(cmd);
-
-                    cmd = "selvar <- auto_varselect(df_tmp_, cut=4, fast=T, target = 0.05)\r\n";
+                    if ( comboBox3.Text != "")
+                    {
+                        cmd = "ng_df <- ngdf_tmp_\r\n";
+                    }
+                    else
+                    {
+                        cmd = "ng_df <- NULL\r\n";
+                    }
+                    cmd += "selvar <- auto_varselect(df_tmp_, ng_df = ng_df, cut=1, fast=T, target = 0.05)\r\n";
                     cmd += "df_tmp_ <- selvar[[2]]\r\n";
                     cmd += "col.sampled <- selvar[[3]]\r\n";
                     cmd += "anomaly_detection.model <- selvar[[4]]\r\n";
@@ -372,6 +406,8 @@ namespace WindowsFormsApplication1
                         catch { }
                     }
                     form1.SelectionVarWrite_(listBox1, listBox2, "select_variables.dat");
+                    checkBox5.Checked = false;
+                    return;
                 }
 
                 cmd = cmd + "\r\n";
@@ -958,14 +994,20 @@ namespace WindowsFormsApplication1
         {
             comboBox2.Items.Clear();
             comboBox2.Items.Add("df");
+            comboBox3.Items.Clear();
+            comboBox3.Items.Add("df");
             for ( int i = 0; i < form1.comboBox2.Items.Count; i++)
             {
                 if ( form1.comboBox2.Items[i].ToString().IndexOf("i.") == 0 )
                 {
                     comboBox2.Items.Add(form1.comboBox2.Items[i].ToString());
+                    comboBox3.Items.Add(form1.comboBox3.Items[i].ToString());
                 }
             }
+            comboBox3.Items.Add("");
+
             comboBox2.Text = "df";
+            comboBox3.Text = "";
         }
 
         private void comboBox2_TextChanged(object sender, EventArgs e)
@@ -1019,6 +1061,27 @@ namespace WindowsFormsApplication1
                     }
                 }
             }
+        }
+
+        private void button12_Click_2(object sender, EventArgs e)
+        {
+            if (!radioButton1.Checked)
+            {
+                return;
+            }
+
+            if ( comboBox3.Text == "")
+            {
+                MessageBox.Show("自動変数選択を行うには異常データも指定して下さい");
+            }
+
+            checkBox5.Checked = true;
+            checkBox5.Enabled = true;
+            button1_Click(sender, e);
+            checkBox5.Checked = false;
+            checkBox5.Enabled = false;
+
+            button1_Click(sender, e);
         }
     }
 }
