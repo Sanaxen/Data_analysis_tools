@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(xgboost));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBox25 = new System.Windows.Forms.CheckBox();
             this.checkBox24 = new System.Windows.Forms.CheckBox();
             this.progressBar4 = new System.Windows.Forms.ProgressBar();
             this.checkBox23 = new System.Windows.Forms.CheckBox();
@@ -216,7 +217,6 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.timer4 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox25 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -345,6 +345,18 @@
             this.panel2.Size = new System.Drawing.Size(1011, 955);
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            // 
+            // checkBox25
+            // 
+            this.checkBox25.AutoSize = true;
+            this.checkBox25.Location = new System.Drawing.Point(404, 35);
+            this.checkBox25.Name = "checkBox25";
+            this.checkBox25.Size = new System.Drawing.Size(104, 19);
+            this.checkBox25.TabIndex = 157;
+            this.checkBox25.Text = "無相関除外";
+            this.toolTip1.SetToolTip(this.checkBox25, "Hilbert Schmidt independence criterionを使って\r\n変数間の依存関係の統計的に有意な証拠を見つけるための仮説検定を行います。\r" +
+        "\nもし、独立していて無関係であれば説明変数から除外します。\r\n\r\nこの検査を入れると計算に時間がかかる場合があります。");
+            this.checkBox25.UseVisualStyleBackColor = true;
             // 
             // checkBox24
             // 
@@ -505,8 +517,7 @@
             this.label46.Size = new System.Drawing.Size(79, 15);
             this.label46.TabIndex = 180;
             this.label46.Text = "訓練step数";
-            this.toolTip1.SetToolTip(this.label46, "何時点過去からのデータを参照するかをしてします。\r\n１時点過去を参照する場合は１時点過去のデータは真の予測値に近い事が多いため\r\n１時点過去を予測値する方がMSE" +
-        "が小さくなることが良くあります。");
+            this.toolTip1.SetToolTip(this.label46, "数値を指定することで強制的に\r\nデータフレームの先頭から何行分を訓練データにするか指定する事が出来ます。");
             // 
             // numericUpDown22
             // 
@@ -1288,7 +1299,7 @@
             this.label33.Size = new System.Drawing.Size(67, 15);
             this.label33.TabIndex = 143;
             this.label33.Text = "参照過去";
-            this.toolTip1.SetToolTip(this.label33, "何時点過去からのデータを参照するかをしてします。\r\n１時点過去を参照する場合は１時点過去のデータは真の予測値に近い事が多いため\r\n１時点過去を予測値する方がMSE" +
+            this.toolTip1.SetToolTip(this.label33, "何時点過去からのデータを参照するかを指定します。\r\n１時点過去を参照する場合は１時点過去のデータは真の予測値に近い事が多いため\r\n１時点過去を予測値する方がMSE" +
         "が小さくなることが良くあります。");
             // 
             // comboBox5
@@ -2797,18 +2808,6 @@
             // 
             this.timer4.Interval = 5000;
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
-            // 
-            // checkBox25
-            // 
-            this.checkBox25.AutoSize = true;
-            this.checkBox25.Location = new System.Drawing.Point(404, 35);
-            this.checkBox25.Name = "checkBox25";
-            this.checkBox25.Size = new System.Drawing.Size(104, 19);
-            this.checkBox25.TabIndex = 157;
-            this.checkBox25.Text = "無相関除外";
-            this.toolTip1.SetToolTip(this.checkBox25, "Hilbert Schmidt independence criterionを使って\r\n変数間の依存関係の統計的に有意な証拠を見つけるための仮説検定を行います。\r" +
-        "\nもし、独立していて無関係であれば説明変数から除外します。\r\n\r\nこの検査を入れると計算に時間がかかる場合があります。");
-            this.checkBox25.UseVisualStyleBackColor = true;
             // 
             // xgboost
             // 
