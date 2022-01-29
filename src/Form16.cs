@@ -53,14 +53,34 @@ namespace WindowsFormsApplication1
             form1.evalute_cmdstr("source(\"" + cmd + "\")");
 
             cmd = "";
-            if (checkBox1.Checked) cmd += "df$sunday<-add_sunday(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox2.Checked) cmd += "df$monday<-add_monday(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox3.Checked) cmd += "df$tuesday<-add_tuesday(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox4.Checked) cmd += "df$wednesday<-add_wednesday(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox5.Checked) cmd += "df$thursday<-add_thursday(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox6.Checked) cmd += "df$friday<-add_friday(df$'" + comboBox2.Text + "')\r\n";
-            if (checkBox7.Checked) cmd += "df$saturday<-add_saturday(df$'" + comboBox2.Text + "')\r\n";
-
+            if (checkBox13.Checked &&(checkBox1.Checked|| checkBox2.Checked|| checkBox3.Checked|| checkBox4.Checked|| checkBox5.Checked|| checkBox6.Checked|| checkBox7.Checked))
+            {
+                cmd += "df$weekdays_S<-sin(2*pi*6/6)*add_sunday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*5/6)*add_monday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*4/6)*add_tuesday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*3/6)*add_wednesday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*2/6)*add_thursday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*1/6)*add_friday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*0/6)*add_saturday(df$'" + comboBox2.Text + "')\r\n";
+                
+                cmd += "df$weekdays_C<-sin(2*pi*6/6)*add_sunday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*5/6)*add_monday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*4/6)*add_tuesday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*3/6)*add_wednesday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*2/6)*add_thursday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*1/6)*add_friday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*0/6)*add_saturday(df$'" + comboBox2.Text + "')\r\n";
+            }
+            else
+            {
+                if (checkBox1.Checked) cmd += "df$sunday<-add_sunday(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox2.Checked) cmd += "df$monday<-add_monday(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox3.Checked) cmd += "df$tuesday<-add_tuesday(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox4.Checked) cmd += "df$wednesday<-add_wednesday(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox5.Checked) cmd += "df$thursday<-add_thursday(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox6.Checked) cmd += "df$friday<-add_friday(df$'" + comboBox2.Text + "')\r\n";
+                if (checkBox7.Checked) cmd += "df$saturday<-add_saturday(df$'" + comboBox2.Text + "')\r\n";
+            }
 
             if (checkBox13.Checked)
             {
@@ -88,6 +108,23 @@ namespace WindowsFormsApplication1
                 if (checkBox10.Checked) cmd += "df$hour<-add_HourNumber(df$'" + comboBox2.Text + "')\r\n";
                 if (checkBox11.Checked) cmd += "df$minute<-add_MinuteNumber(df$'" + comboBox2.Text + "')\r\n";
                 if (checkBox12.Checked) cmd += "df$second<-add_SecondNumber(df$'" + comboBox2.Text + "')\r\n";
+            }
+
+            if ( checkBox14.Checked)
+            {
+                cmd += "df$spring <- add_spring(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$summer <- add_summer(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$autumn <- add_autumn(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$winter <- add_winter(df$'" + comboBox2.Text + "')\r\n";
+            }
+            if ( checkBox15.Checked)
+            {
+                cmd += "df$morning_hours <- add_morning_hours(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$afternoon_hours <- add_afternoon_hours(df$'" + comboBox2.Text + "')\r\n";
+            }
+            if ( checkBox16.Checked)
+            {
+                cmd += "df$working_hour <- add_working_hours(df$'" + comboBox2.Text + "')\r\n";
             }
 
             if (cmd == "") return;

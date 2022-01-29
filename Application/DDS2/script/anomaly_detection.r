@@ -4,11 +4,18 @@ library(MASS)
 anomaly_detection_train <- function( df )
 {
 	X <- as.matrix(df)
-	X <- scale(X)
-	mu <- colMeans(X)
-	
+
 	X[is.na(X)] <- 0
-	mu[is.na(mu)] <- 0
+	mu <- apply(X,2,mean)
+	sd <- apply(X,2,sd)
+
+	
+	
+	X <- (X-mu)/sd
+	X[is.na(X)] <- 0
+	X[is.nan(X)] <- 0
+	X[is.infinite(X)] <- 0.00000001
+	#print(X)
 	
 	Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu
 	Sigma <- t(Xc) %*% Xc / nrow(X)
@@ -26,17 +33,22 @@ anomaly_detection_train <- function( df )
 	},
 	silent = TRUE
 	)
-	return (list(X, mu, Sigma, invSigma))
+	return (list(X, mu, sd, Sigma, invSigma))
 }
 
 anomaly_detection_test <- function( model, df, method="mahalanobis", threshold=0)
 {
 	X <- as.matrix(df)
-	X <- scale(X)
 	X[is.na(X)] <- 0
 	
-	invSigma = model[[4]]
+	invSigma = model[[5]]
 	mu = model[[2]]
+	sd = model[[3]]
+	X <- (X-mu)/sd
+	
+	X[is.na(X)] <- 0
+	X[is.nan(X)] <- 0
+	X[is.infinite(X)] <- 0.00000001
 	
 	am <- NULL
 	if (method == "hotelling")
@@ -105,7 +117,7 @@ anomaly_detection_SN <- function( model, anomaly_detection )
 	
 	sn = as.matrix(df)
 	mu = model[[2]]
-	vr <- diag(model[[3]])
+	vr <- diag(model[[4]])
 	for ( i in 1:ncol(X) )
 	{
 		x = ((X[,i] - mu[i])^2)/vr[i]
@@ -121,10 +133,11 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 	}
 	df_tmp_<- df
 	error_min = 1
+	ng_error_max <- 0
 	loss = NULL
 	ng_loss = NULL
 	col.sampled = c(1:ncol(df_tmp_))
-	nmax = ncol(df_tmp_)/10
+	nmax = ncol(df_tmp_)*5
 	n = cut*3
 	ntry = 20
 	
@@ -137,7 +150,10 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 	{
 		return( ret )
 	}
-	ng_error_max <- 0
+	w1 = 0.5
+	w2 = 0.5
+	ep = 0.000001
+	loss_min = 10000000
 	
 	df_tmp_3 <- NULL
 	iter = 1
@@ -159,11 +175,11 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 		
 		df_tmp_2 <- df_tmp_
 
-		ntry = ncol(df_tmp_)/10
-		if ( fast && cut > 2)
-		{
-			ntry = min(10, ncol(df_tmp_)/10)
-		}
+		ntry = ncol(df_tmp_)/2
+		#if ( fast && cut > 2)
+		#{
+		#	ntry = min(30, ncol(df_tmp_)/5)
+		#}
 		
 		skipp_col = NULL
 		for ( i in 1:ncol(df_tmp_2) )
@@ -198,10 +214,18 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 				ng_error = sum(ifelse(anomaly_ng_detect[[2]] > anomaly_ng_detect[[3]],1, 0))/length(anomaly_ng_detect[[2]])
 			}
 			
+			#拡大Tchebyshev・スカラー化関数
+			loss_value = max( w1*error, w2*(1 - ng_error))+ ep*(w1*error + w2*(1 - ng_error))
+			
 			accept = FALSE
 			if ( error <= error_min && ng_error_max < ng_error)
 			{
 				accept = TRUE
+			}
+			if ( loss_value < loss_min )
+			{
+				accept = TRUE
+				loss_min = loss_value
 			}
 			
 			if ( accept )
@@ -223,6 +247,10 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 				col.sampled = sampled
 				anomaly_detection.model = anomaly_detection.model_
 				anomaly_detect = anomaly_detect_
+				
+				w = sqrt(error_min + (1 - ng_error_max))
+				w1 = error_min/w1
+				w2 = (1 - ng_error_max)/w2
 			}
 			iter = iter + 1
 			if ( !is.null(loss)) loss <- c(loss, error)
@@ -256,6 +284,7 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 			ng_loss_plt <- ng_loss_plt + annotate("text",x=-Inf,y=-Inf,label=paste(as.integer(100*ng_error_max*1000)/1000, "%", sep=""),hjust=-.2,vjust=-2, ,size=10)
 
 			loss_plt <- gridExtra::grid.arrange(loss_plt, ng_loss_plt, nrow = 2)
+			write.table(ng_loss_df, "loss.csv", sep=",", row.names =F, quote=F)
 		}
 		
 		print(loss_plt)

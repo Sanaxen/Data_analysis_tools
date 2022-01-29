@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(xgboost));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBox26 = new System.Windows.Forms.CheckBox();
             this.checkBox25 = new System.Windows.Forms.CheckBox();
             this.checkBox24 = new System.Windows.Forms.CheckBox();
             this.progressBar4 = new System.Windows.Forms.ProgressBar();
@@ -41,6 +42,7 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.checkBox27 = new System.Windows.Forms.CheckBox();
             this.checkBox21 = new System.Windows.Forms.CheckBox();
             this.label46 = new System.Windows.Forms.Label();
             this.numericUpDown22 = new System.Windows.Forms.NumericUpDown();
@@ -217,6 +219,8 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.timer4 = new System.Windows.Forms.Timer(this.components);
+            this.numericUpDown23 = new System.Windows.Forms.NumericUpDown();
+            this.label48 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -254,11 +258,13 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown23)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.checkBox26);
             this.panel2.Controls.Add(this.checkBox25);
             this.panel2.Controls.Add(this.checkBox24);
             this.panel2.Controls.Add(this.progressBar4);
@@ -346,10 +352,23 @@
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
+            // checkBox26
+            // 
+            this.checkBox26.AutoSize = true;
+            this.checkBox26.Location = new System.Drawing.Point(851, 29);
+            this.checkBox26.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox26.Name = "checkBox26";
+            this.checkBox26.Size = new System.Drawing.Size(132, 19);
+            this.checkBox26.TabIndex = 158;
+            this.checkBox26.Text = "アンサンブルモデル";
+            this.checkBox26.UseVisualStyleBackColor = true;
+            this.checkBox26.CheckedChanged += new System.EventHandler(this.checkBox26_CheckedChanged);
+            // 
             // checkBox25
             // 
             this.checkBox25.AutoSize = true;
             this.checkBox25.Location = new System.Drawing.Point(404, 35);
+            this.checkBox25.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox25.Name = "checkBox25";
             this.checkBox25.Size = new System.Drawing.Size(104, 19);
             this.checkBox25.TabIndex = 157;
@@ -362,6 +381,7 @@
             // 
             this.checkBox24.AutoSize = true;
             this.checkBox24.Location = new System.Drawing.Point(295, 35);
+            this.checkBox24.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox24.Name = "checkBox24";
             this.checkBox24.Size = new System.Drawing.Size(104, 19);
             this.checkBox24.TabIndex = 156;
@@ -370,7 +390,7 @@
             // 
             // progressBar4
             // 
-            this.progressBar4.Location = new System.Drawing.Point(881, 29);
+            this.progressBar4.Location = new System.Drawing.Point(852, 26);
             this.progressBar4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.progressBar4.Name = "progressBar4";
             this.progressBar4.Size = new System.Drawing.Size(107, 2);
@@ -379,7 +399,7 @@
             // checkBox23
             // 
             this.checkBox23.AutoSize = true;
-            this.checkBox23.Location = new System.Drawing.Point(880, 8);
+            this.checkBox23.Location = new System.Drawing.Point(851, 5);
             this.checkBox23.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox23.Name = "checkBox23";
             this.checkBox23.Size = new System.Drawing.Size(96, 19);
@@ -459,6 +479,7 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.panel7.Controls.Add(this.checkBox27);
             this.panel7.Controls.Add(this.checkBox21);
             this.panel7.Controls.Add(this.label46);
             this.panel7.Controls.Add(this.numericUpDown22);
@@ -495,6 +516,18 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(329, 800);
             this.panel7.TabIndex = 147;
+            // 
+            // checkBox27
+            // 
+            this.checkBox27.AutoSize = true;
+            this.checkBox27.Checked = true;
+            this.checkBox27.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox27.Location = new System.Drawing.Point(233, 485);
+            this.checkBox27.Name = "checkBox27";
+            this.checkBox27.Size = new System.Drawing.Size(86, 19);
+            this.checkBox27.TabIndex = 182;
+            this.checkBox27.Text = "ラグを使う";
+            this.checkBox27.UseVisualStyleBackColor = true;
             // 
             // checkBox21
             // 
@@ -567,6 +600,8 @@
             // panel8
             // 
             this.panel8.BackColor = System.Drawing.Color.Moccasin;
+            this.panel8.Controls.Add(this.numericUpDown23);
+            this.panel8.Controls.Add(this.label48);
             this.panel8.Controls.Add(this.checkBox20);
             this.panel8.Controls.Add(this.label43);
             this.panel8.Controls.Add(this.numericUpDown20);
@@ -608,7 +643,7 @@
             0,
             0});
             this.numericUpDown20.Name = "numericUpDown20";
-            this.numericUpDown20.Size = new System.Drawing.Size(60, 22);
+            this.numericUpDown20.Size = new System.Drawing.Size(74, 22);
             this.numericUpDown20.TabIndex = 173;
             this.toolTip1.SetToolTip(this.numericUpDown20, "testデータのどの部分までは説明変数が設定されているかをパーセントで指定します。\r\n100を超えるかデータ終端からのステップ数で指定するチェックをONにすると、" +
         "\r\nデータ終端から指定した値のステップまでさかのぼった位置までに制限出来ます。");
@@ -1447,7 +1482,7 @@
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(787, 29);
+            this.button17.Location = new System.Drawing.Point(757, 26);
             this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(87, 26);
@@ -1473,7 +1508,7 @@
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(787, 4);
+            this.button16.Location = new System.Drawing.Point(757, 1);
             this.button16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(87, 22);
@@ -2147,7 +2182,7 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button5.Location = new System.Drawing.Point(183, 33);
+            this.button5.Location = new System.Drawing.Point(183, 32);
             this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(105, 22);
@@ -2809,6 +2844,35 @@
             this.timer4.Interval = 5000;
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
+            // numericUpDown23
+            // 
+            this.numericUpDown23.Location = new System.Drawing.Point(261, 31);
+            this.numericUpDown23.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown23.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown23.Name = "numericUpDown23";
+            this.numericUpDown23.Size = new System.Drawing.Size(60, 22);
+            this.numericUpDown23.TabIndex = 183;
+            this.toolTip1.SetToolTip(this.numericUpDown23, "testデータの終端から過去で何時点分を出力するかを指定できます。\r\n100を超えるかデータ終端からのステップ数で指定するチェックをONにすると、\r\nデータ終端か" +
+        "ら指定した値のステップまでさかのぼった位置までに制限出来ます。\r\n");
+            this.numericUpDown23.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(203, 35);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(52, 15);
+            this.label48.TabIndex = 184;
+            this.label48.Text = "出力長";
+            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -2871,6 +2935,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown23)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3064,5 +3129,9 @@
         private System.Windows.Forms.Timer timer4;
         private System.Windows.Forms.CheckBox checkBox24;
         private System.Windows.Forms.CheckBox checkBox25;
+        private System.Windows.Forms.CheckBox checkBox26;
+        private System.Windows.Forms.CheckBox checkBox27;
+        public System.Windows.Forms.NumericUpDown numericUpDown23;
+        private System.Windows.Forms.Label label48;
     }
 }

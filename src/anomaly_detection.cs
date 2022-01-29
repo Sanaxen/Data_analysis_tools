@@ -366,6 +366,20 @@ namespace WindowsFormsApplication1
                     timer1.Stop();
                     timer1.Enabled = false;
 
+                    if (radioButton1.Checked && checkBox5.Checked)
+                    {
+                        try
+                        {
+                            string pngfile = "anomaly_detection_loss.png";
+
+                            if (System.IO.File.Exists(pngfile))
+                            {
+                                pictureBox1.Image = null;
+                                pictureBox1.Image = Form1.CreateImage(pngfile);
+                            }
+                        }
+                        catch { }
+                    }
 
                     cmd = "";
                     ListBox list = new ListBox();

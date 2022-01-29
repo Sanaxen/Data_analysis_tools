@@ -615,6 +615,7 @@ namespace WindowsFormsApplication1
                     }
                     targetName = listBox1.Items[listBox1.SelectedIndices[i]].ToString();
                     button1_Click_target(sender, e);
+                    if (error_status != 0) break;
 
                     if (radioButton4.Checked)
                     {
@@ -624,12 +625,57 @@ namespace WindowsFormsApplication1
                     multi_target_count++;
                     label47.Text = multi_target_count + "/" + (listBox1.SelectedIndices.Count);
                 }
+                if (error_status != 0) return;
+
+                if (radioButton3.Checked)
+                {
+                    string cmd = "predict_cols <- NULL\r\n";
+                    for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                    {
+                        cmd += "pred_csv <- read.csv( file =\"予測_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".csv\", header=T)\r\n";
+                        cmd += "if ( is.null(predict_cols)){\r\n";
+                        if (time_series_mode)
+                        {
+                            cmd += "    predict_cols <- data.frame(date_time=pred_csv[,'" + listBox1.Items[0].ToString() + "'])\r\n";
+                            cmd += "    predict_cols <- cbind(predict_cols,pred_csv[,'predict'])\r\n";
+                        }
+                        else
+                        {
+                            cmd += "    predict_cols <- pred_csv[,'predict']\r\n";
+                        }
+                        cmd += "}else {\r\n";
+                        cmd += "    predict_cols <- cbind(predict_cols,pred_csv[,'predict'])\r\n";
+                        cmd += "}\r\n";
+                        cmd += "colnames(predict_cols)[ncol(predict_cols)] <- c(\"" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "\")\r\n";
+                    }
+
+
+                    string date = DateTime.Now.ToLongDateString() + DateTime.Now.ToShortTimeString().Replace(":", "_");
+                    string predict_file_name = Form1.FnameToDataFrameName(date, true);
+
+
+                    if (checkBox20.Checked || numericUpDown23.Value > 100)
+                    {
+                        cmd += "if (nrow(predict_cols)- " + numericUpDown23.Value.ToString() + "+1 >=1 )";
+                        cmd += "predict_cols <- predict_cols[(nrow(predict_cols)- " + numericUpDown23.Value.ToString() + "+1):nrow(predict_cols),]\r\n";
+                    }
+                    else
+                    {
+                        cmd += "if (nrow(predict_cols)- as.integer(nrow(predict_cols)*" + ((double)numericUpDown23.Value / 100.0).ToString() + ")+1>=1 )";
+                        cmd += "predict_cols <- predict_cols[(nrow(predict_cols)- as.integer(nrow(predict_cols)*" + ((double)numericUpDown23.Value / 100.0).ToString() + ")+1):nrow(predict_cols),]\r\n";
+                    }
+                    cmd += "write.csv(predict_cols, file =\"予測結果(" + predict_file_name + ").csv\", row.names=F, quote=F)\r\n";
+                    form1.script_executestr(cmd);
+                }
+
                 comboBox8_edit = false;
                 checkBox22.Checked = false;
             }
             catch { }
             finally
             {
+                error_status = 0;
+                running = 0;
                 comboBox8_edit = false;
                 timer4.Enabled = false;
                 timer4.Stop();
@@ -711,6 +757,14 @@ namespace WindowsFormsApplication1
 
             //MessageBox.Show(targetName);
 
+			//Ensemble Learning
+			double[] EnsembleW = {0.7, 0.0, 0.0, 0.0, 0.0, 0.3};
+			double EnsembleWsum = EnsembleW[0]+EnsembleW[1]+EnsembleW[2]+EnsembleW[3]+EnsembleW[4]+EnsembleW[5];
+			for ( int i = 0; i < 6; i++)
+			{
+				EnsembleW[i] /= EnsembleWsum;
+			}
+			
             try
             {
                 form1.FileDelete("curvplot_temp_"+targetName + ".html");
@@ -1622,6 +1676,7 @@ namespace WindowsFormsApplication1
                 formuler += "target_";
                 formuler += " ~";
                 ListBox var = new ListBox();
+                ListBox var_ts = new ListBox();
                 
                 ListBox uniques = null;
                 ListBox corsList = null;
@@ -1762,12 +1817,20 @@ namespace WindowsFormsApplication1
                     {
                         start_lag = 0;
                     }
-                    for (int i = start_lag; i <= lag; i++)
+                    if ( checkBox27.Checked )
                     {
-                        formuler += "+ lag" + i.ToString() + "_" + targetName;
+	                    for (int i = start_lag; i <= lag; i++)
+	                    {
+	                        formuler += "+ lag" + i.ToString() + "_" + targetName;
+	                        var_ts.Items.Add("lag" + i.ToString() + "_" + targetName);
+	                    }
+	                    
+	                    formuler += "+ day1_diff_" + targetName;
+	                    formuler += "+ day1diff_diff_" + targetName;
+
+	                    var_ts.Items.Add("day1_diff_" + targetName);
+	                    var_ts.Items.Add("day1diff_diff_" + targetName);
                     }
-                    formuler += "+ day1_diff_" + targetName;
-                    formuler += "+ day1diff_diff_" + targetName;
 
                     if (lag >= means_3n)
                     {
@@ -1776,6 +1839,12 @@ namespace WindowsFormsApplication1
                     	formuler += "+ median3_" + targetName;
                         formuler += "+ max3_" + targetName;
                         formuler += "+ min3_" + targetName;
+                        
+	                    var_ts.Items.Add("mean3_" + targetName);
+	                    var_ts.Items.Add("sd3_" + targetName);
+	                    var_ts.Items.Add("median3_" + targetName);
+	                    var_ts.Items.Add("max3_" + targetName);
+	                    var_ts.Items.Add("min3_" + targetName);
                     }
                     if (lag >= means_6n)
                     {
@@ -1784,6 +1853,12 @@ namespace WindowsFormsApplication1
                     	formuler += "+ median6_" + targetName;
                         formuler += "+ max6_" + targetName;
                         formuler += "+ min6_" + targetName;
+
+                        var_ts.Items.Add("mean6_" + targetName);
+                        var_ts.Items.Add("sd6_" + targetName);
+                        var_ts.Items.Add("median6_" + targetName);
+                        var_ts.Items.Add("max6_" + targetName);
+                        var_ts.Items.Add("min6_" + targetName);
                     }
                     if (lag >= means_12n)
                     {
@@ -1792,6 +1867,12 @@ namespace WindowsFormsApplication1
                     	formuler += "+ median12_" + targetName;
                         formuler += "+ max12_" + targetName;
                         formuler += "+ min12_" + targetName;
+                        
+	                    var_ts.Items.Add("mean12_" + targetName);
+	                    var_ts.Items.Add("sd12_" + targetName);
+	                    var_ts.Items.Add("median12_" + targetName);
+	                    var_ts.Items.Add("max12_" + targetName);
+	                    var_ts.Items.Add("min12_" + targetName);
                     }
                     if (lag >= means_24n)
                     {
@@ -1800,6 +1881,12 @@ namespace WindowsFormsApplication1
                         formuler += "+ median24_" + targetName;
                         formuler += "+ max24_" + targetName;
                         formuler += "+ min24_" + targetName;
+                        
+	                    var_ts.Items.Add("mean24_" + targetName);
+	                    var_ts.Items.Add("sd24_" + targetName);
+	                    var_ts.Items.Add("median24_" + targetName);
+	                    var_ts.Items.Add("max24_" + targetName);
+	                    var_ts.Items.Add("min24_" + targetName);
                     }
                     if (lag >= means_30n)
                     {
@@ -1808,6 +1895,12 @@ namespace WindowsFormsApplication1
                         formuler += "+ median30_" + targetName;
                         formuler += "+ max30_" + targetName;
                         formuler += "+ min30_" + targetName;
+                        
+	                    var_ts.Items.Add("mean30_" + targetName);
+	                    var_ts.Items.Add("sd30_" + targetName);
+	                    var_ts.Items.Add("median30_" + targetName);
+	                    var_ts.Items.Add("max30_" + targetName);
+	                    var_ts.Items.Add("min30_" + targetName);
                     }
                     if (lag >= means_60n)
                     {
@@ -1816,6 +1909,12 @@ namespace WindowsFormsApplication1
                         formuler += "+ median60_" + targetName;
                         formuler += "+ max60_" + targetName;
                         formuler += "+ min60_" + targetName;
+                        
+	                    var_ts.Items.Add("mean60_" + targetName);
+	                    var_ts.Items.Add("sd60_" + targetName);
+	                    var_ts.Items.Add("median60_" + targetName);
+	                    var_ts.Items.Add("max60_" + targetName);
+	                    var_ts.Items.Add("min60_" + targetName);
                     }
                     if (lag >= means_90n)
                     {
@@ -1824,28 +1923,42 @@ namespace WindowsFormsApplication1
                         formuler += "+ median90_" + targetName;
                         formuler += "+ max90_" + targetName;
                         formuler += "+ min90_" + targetName;
+                        
+	                    var_ts.Items.Add("mean90_" + targetName);
+	                    var_ts.Items.Add("sd90_" + targetName);
+	                    var_ts.Items.Add("median90_" + targetName);
+	                    var_ts.Items.Add("max90_" + targetName);
+	                    var_ts.Items.Add("min90_" + targetName);
                     }
                     if (lag >= befor_3day)
                     {
                         formuler += "+ day3_diff_" + targetName;
+	                    var_ts.Items.Add("day3_diff_" + targetName);
                     }
                     if (lag >= befor_5day)
                     {
-                        formuler += "+ day3_diff_" + targetName;
+                        formuler += "+ day5_diff_" + targetName;
                         formuler += "+ second_derivative_" + targetName;
                         formuler += "+ curvature_" + targetName;
+                        
+	                    var_ts.Items.Add("day5_diff_" + targetName);
+	                    var_ts.Items.Add("second_derivative_" + targetName);
+	                    var_ts.Items.Add("curvature_" + targetName);
                     }
                     if (lag >= befor_7day)
                     {
                         formuler += "+ day7_diff_" + targetName;
+	                    var_ts.Items.Add("day7_diff_" + targetName);
                     }
                     if (lag >= befor_12day)
                     {
                         formuler += "+ day12_diff_" + targetName;
+	                    var_ts.Items.Add("day12_diff_" + targetName);
                     }
                     if (lag >= befor_30day)
                     {
                         formuler += "+ day30_diff_" + targetName;
+	                    var_ts.Items.Add("day30_diff_" + targetName);
                     }
 
                     if (checkBox14.Checked)
@@ -1855,7 +1968,8 @@ namespace WindowsFormsApplication1
                             for (int i = 1; i <= Math.Min(max_seasonal, n_seasons - 1); i++)
                             {
                                 formuler += "+ season" + i.ToString();
-                            }
+ 	                    		var_ts.Items.Add("season"+ i.ToString());
+                           }
                         }
                     }
                 }
@@ -2662,14 +2776,14 @@ namespace WindowsFormsApplication1
 						xgboost_gridsearch += "	s2 = tarin_min_size\r\n";
 						xgboost_gridsearch += "\r\n";
 						xgboost_gridsearch += "	\r\n";
-						xgboost_gridsearch += "	eta = c( 0.01, 0.05, 0.1, 0.2)\r\n";
+						xgboost_gridsearch += "	eta = c( 0.1, 0.2)\r\n";
 						xgboost_gridsearch += "	gamma = c( 0.0 )\r\n";
 						xgboost_gridsearch += "	alphaz = c( 0.0)\r\n";
 						xgboost_gridsearch += "	lambda = c( 1.0 );\r\n";
-						xgboost_gridsearch += "	colsample_bytree = c( 0.8, 0.9 )\r\n";
-						xgboost_gridsearch += "	subsample = c(  0.9, 1.0 )\r\n";
-						xgboost_gridsearch += "	min_child_weight = c( 1.0, 1.5, 2.0 )\r\n";
-						xgboost_gridsearch += "	max_depth = c( 6, 8, 9, 10 )\r\n";
+						xgboost_gridsearch += "	colsample_bytree = c( 0.7, 0.9 )\r\n";
+						xgboost_gridsearch += "	subsample = c(  0.8, 1.0 )\r\n";
+						xgboost_gridsearch += "	min_child_weight = c( 1.0, 2.0, 5.0 )\r\n";
+						xgboost_gridsearch += "	max_depth = c( 6, 10, 30, 40 )\r\n";
 						xgboost_gridsearch += "	nrounds = c(400)\r\n";
 						xgboost_gridsearch += "	pattern_length = length(eta)*length(gamma)*length(alphaz)*length(lambda)\r\n";
 						xgboost_gridsearch += "	pattern_length = pattern_length * length(colsample_bytree)*length(subsample)*length(min_child_weight)\r\n";
@@ -2871,43 +2985,55 @@ namespace WindowsFormsApplication1
                         cmd += ",params = l_params";
                         cmd += ")\r\n";
                         
-						cmd += "#tarin_min_size = max(200, as.integer(nrow(train)/10))\r\n";
-						cmd += "#if ( tarin_min_size > nrow(train) ) tarin_min_size = nrow(train)\r\n";
-						cmd += "tarin_min_size = nrow(train)-1\r\n";
-                    	cmd += "set.seed(1) \r\n";
-                        cmd += ensemble_learning_train;
-                        cmd += "xgboost.model_"+targetName + " <- xgb.train(\r\n";
-                        cmd += "data = train_tmp_dmat,";
-                        cmd += "nrounds = xgb_cv$best_iteration,";
-                        cmd += "params = l_params)\r\n";
-                        
-                    	cmd += "set.seed(2) \r\n";
-                        cmd += ensemble_learning_train;
-						cmd += "xgboost.model_"+targetName + "1 <- xgb.train(\r\n";
-                        cmd += "data = train_tmp_dmat,";
-                        cmd += "nrounds = xgb_cv$best_iteration,";
-                        cmd += "params = l_params)\r\n";
-                        
-                    	cmd += "set.seed(3) \r\n";
-                        cmd += ensemble_learning_train;
-                        cmd += "xgboost.model_"+targetName + "2 <- xgb.train(\r\n";
-                        cmd += "data = train_tmp_dmat,";
-                        cmd += "nrounds = xgb_cv$best_iteration,";
-                        cmd += "params = l_params)\r\n";
-                        
-                    	cmd += "set.seed(4) \r\n";
-                        cmd += ensemble_learning_train;
-                        cmd += "xgboost.model_"+targetName + "3 <- xgb.train(\r\n";
-                        cmd += "data = train_tmp_dmat,";
-                        cmd += "nrounds = xgb_cv$best_iteration,";
-                        cmd += "params = l_params)\r\n";
-                        
-                    	cmd += "set.seed(5) \r\n";
-                        cmd += ensemble_learning_train;
-                        cmd += "xgboost.model_"+targetName + "4 <- xgb.train(\r\n";
-                        cmd += "data = train_tmp_dmat,";
-                        cmd += "nrounds = xgb_cv$best_iteration,";
-                        cmd += "params = l_params)\r\n";
+                        if ( checkBox26.Checked )
+                        {
+							cmd += "tarin_min_size = max(200, as.integer(nrow(train)/5))\r\n";
+							cmd += "if ( tarin_min_size > nrow(train) ) tarin_min_size = nrow(train)\r\n";
+							cmd += "#tarin_min_size = nrow(train)-1\r\n";
+
+	                    	//cmd += "set.seed(2) \r\n";
+	                        //cmd += ensemble_learning_train;
+							//cmd += "xgboost.model_"+targetName + "1 <- xgb.train(\r\n";
+	                        //cmd += "data = train_tmp_dmat,";
+	                        //cmd += "nrounds = xgb_cv$best_iteration,";
+	                        //cmd += "params = l_params)\r\n";
+	                        
+	                    	//cmd += "set.seed(3) \r\n";
+	                        //cmd += ensemble_learning_train;
+	                        //cmd += "xgboost.model_"+targetName + "2 <- xgb.train(\r\n";
+	                        //cmd += "data = train_tmp_dmat,";
+	                        //cmd += "nrounds = xgb_cv$best_iteration,";
+	                        //cmd += "params = l_params)\r\n";
+	                        
+	                    	//cmd += "set.seed(4) \r\n";
+	                        //cmd += ensemble_learning_train;
+	                        //cmd += "xgboost.model_"+targetName + "3 <- xgb.train(\r\n";
+	                        //cmd += "data = train_tmp_dmat,";
+	                        //cmd += "nrounds = xgb_cv$best_iteration,";
+	                        //cmd += "params = l_params)\r\n";
+	                        
+	                    	//cmd += "set.seed(5) \r\n";
+	                        //cmd += ensemble_learning_train;
+	                        //cmd += "xgboost.model_"+targetName + "4 <- xgb.train(\r\n";
+	                        //cmd += "data = train_tmp_dmat,";
+	                        //cmd += "nrounds = xgb_cv$best_iteration,";
+	                        //cmd += "params = l_params)\r\n";
+
+	                    	cmd += "set.seed(6) \r\n";
+	                        cmd += ensemble_learning_train;
+	                        cmd += "valist<- c('"+ var.Items[0].ToString()+"'";
+	                        for ( int ii = 1; ii < var.Items.Count; ii++)
+	                        {
+	                        	cmd += ",'"+var.Items[ii].ToString()+"'";
+	                        }
+	                        for ( int ii = 1; ii < var_ts.Items.Count; ii++)
+	                        {
+	                        	cmd += ",'"+var_ts.Items[ii].ToString()+"'";
+	                        }
+	                        cmd += ")\r\n";
+	                        cmd += "df_rf<- train[, valist]\r\n";
+	                        cmd += "randomForest.model_"+targetName + " <- tuneRF(df_rf, train$target_, doBest=T)\r\n";
+                        }
                     }
                     else
                     {
@@ -2920,55 +3046,79 @@ namespace WindowsFormsApplication1
                         cmd += ",watchlist = list(train = train_dmat, eval = obs_test_step_df_dmat)";
                         cmd += ")\r\n";
                         
-						cmd += "#tarin_min_size = max(200, as.integer(nrow(train)/10))\r\n";
-						cmd += "#if ( tarin_min_size > nrow(train) ) tarin_min_size = nrow(train)\r\n";
-						cmd += "tarin_min_size = nrow(train)-1\r\n";
-                     	cmd += "set.seed(2) \r\n";
-                        cmd += ensemble_learning_train;
-                        cmd += "xgboost.model_"+targetName + "1 <- xgb.train(data = train_tmp_dmat";
-                        cmd += ",nrounds = " + numericUpDown1.Value.ToString();
-                        cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
-                        cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
-                        cmd += ",params = l_params";
-                        cmd += ",watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat)";
-                        cmd += ")\r\n";
-                        
-                    	cmd += "set.seed(3) \r\n";
-                        cmd += ensemble_learning_train;
-                        cmd += "xgboost.model_"+targetName + "2 <- xgb.train(data = train_tmp_dmat";
-                        cmd += ",nrounds = " + numericUpDown1.Value.ToString();
-                        cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
-                        cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
-                        cmd += ",params = l_params";
-                        cmd += ",watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat)";
-                        cmd += ")\r\n";
-                        
-                    	cmd += "set.seed(4) \r\n";
-                        cmd += ensemble_learning_train;
-                        cmd += "xgboost.model_"+targetName + "3 <- xgb.train(data = train_tmp_dmat";
-                        cmd += ",nrounds = " + numericUpDown1.Value.ToString();
-                        cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
-                        cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
-                        cmd += ",params = l_params";
-                        cmd += ",watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat)";
-                        cmd += ")\r\n";
-                        
-                    	cmd += "set.seed(5) \r\n";
-                        cmd += ensemble_learning_train;
-                        cmd += "xgboost.model_"+targetName + "4 <- xgb.train(data = train_tmp_dmat";
-                        cmd += ",nrounds = " + numericUpDown1.Value.ToString();
-                        cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
-                        cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
-                        cmd += ",params = l_params";
-                        cmd += ",watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat)";
-                        cmd += ")\r\n";
+                        if ( checkBox26.Checked )
+                        {
+							cmd += "tarin_min_size = max(200, as.integer(nrow(train)/5))\r\n";
+							cmd += "if ( tarin_min_size > nrow(train) ) tarin_min_size = nrow(train)\r\n";
+							cmd += "#tarin_min_size = nrow(train)-1\r\n";
+							
+	                     	//cmd += "set.seed(2) \r\n";
+	                        //cmd += ensemble_learning_train;
+	                        //cmd += "xgboost.model_"+targetName + "1 <- xgb.train(data = train_tmp_dmat";
+	                        //cmd += ",nrounds = " + numericUpDown1.Value.ToString();
+	                        //cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
+	                        //cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
+	                        //cmd += ",params = l_params";
+	                        //cmd += ",watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat)";
+	                        //cmd += ")\r\n";
+	                        
+	                    	//cmd += "set.seed(3) \r\n";
+	                        //cmd += ensemble_learning_train;
+	                        //cmd += "xgboost.model_"+targetName + "2 <- xgb.train(data = train_tmp_dmat";
+	                        //cmd += ",nrounds = " + numericUpDown1.Value.ToString();
+	                        //cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
+	                        //cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
+	                        //cmd += ",params = l_params";
+	                        //cmd += ",watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat)";
+	                        //cmd += ")\r\n";
+	                        
+	                    	//cmd += "set.seed(4) \r\n";
+	                        //cmd += ensemble_learning_train;
+	                        //cmd += "xgboost.model_"+targetName + "3 <- xgb.train(data = train_tmp_dmat";
+	                        //cmd += ",nrounds = " + numericUpDown1.Value.ToString();
+	                        //cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
+	                        //cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
+	                        //cmd += ",params = l_params";
+	                        //cmd += ",watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat)";
+	                        //cmd += ")\r\n";
+	                        
+	                    	//cmd += "set.seed(5) \r\n";
+	                        //cmd += ensemble_learning_train;
+	                        //cmd += "xgboost.model_"+targetName + "4 <- xgb.train(data = train_tmp_dmat";
+	                        //cmd += ",nrounds = " + numericUpDown1.Value.ToString();
+	                        //cmd += ",verbose = 2, # 繰り返し過程を表示する\r\n";
+	                        //cmd += ",early_stopping_rounds = " + numericUpDown3.Value.ToString();
+	                        //cmd += ",params = l_params";
+	                        //cmd += ",watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat)";
+	                        //cmd += ")\r\n";
+
+	                    	cmd += "set.seed(5) \r\n";
+	                        cmd += ensemble_learning_train;
+	                        cmd += "valist<- c('"+ var.Items[0].ToString()+"'";
+	                        for ( int ii = 1; ii < var.Items.Count; ii++)
+	                        {
+	                        	cmd += ",'"+var.Items[ii].ToString()+"'";
+	                        }
+	                        for ( int ii = 1; ii < var_ts.Items.Count; ii++)
+	                        {
+	                        	cmd += ",'"+var_ts.Items[ii].ToString()+"'";
+	                        }
+	                        cmd += ")\r\n";
+	                        cmd += "df_rf<- train[, valist]\r\n";
+	                        cmd += "param_reference <- tuneRF(df_rf, train$target_, doBest=T)\r\n";
+	                        cmd += "randomForest.model_"+targetName + " <- randomForest( " + formuler+ ", ntree = param_reference$ntree, mtry = param_reference$mtry,proximity=T,, data = train_tmp)\r\n";
+                        }
                     }
                     cmd += "saveRDS(xgboost.model_"+targetName + ", file = \"xgboost.model_"+targetName+".robj\")\r\n";
-                    cmd += "saveRDS(xgboost.model_"+targetName + "1, file = \"xgboost.model_"+targetName+"1.robj\")\r\n";
-                    cmd += "saveRDS(xgboost.model_"+targetName + "2, file = \"xgboost.model_"+targetName+"2.robj\")\r\n";
-                    cmd += "saveRDS(xgboost.model_"+targetName + "3, file = \"xgboost.model_"+targetName+"3.robj\")\r\n";
-                    cmd += "saveRDS(xgboost.model_"+targetName + "4, file = \"xgboost.model_"+targetName+"4.robj\")\r\n";
-
+                    if ( checkBox26.Checked )
+                    {
+	                    //cmd += "saveRDS(xgboost.model_"+targetName + "1, file = \"xgboost.model_"+targetName+"1.robj\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_"+targetName + "2, file = \"xgboost.model_"+targetName+"2.robj\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_"+targetName + "3, file = \"xgboost.model_"+targetName+"3.robj\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_"+targetName + "4, file = \"xgboost.model_"+targetName+"4.robj\")\r\n";
+	                    cmd += "saveRDS(randomForest.model_"+targetName + ", file = \"randomForest.model_"+targetName+".robj\")\r\n";
+					}
+					
                     if (radioButton2.Checked)
                     {
                         //cmd += "imp_<-xgb.importance(names(df_),model=xgboost.model_"+targetName + ")\r\n";
@@ -3388,12 +3538,17 @@ namespace WindowsFormsApplication1
                             }
                         }
                         forecast_extension += ")\r\n";
-                        forecast_extension += "predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
-                        forecast_extension += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)\r\n";
-                        forecast_extension += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)\r\n";
-                        forecast_extension += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)\r\n";
-                        forecast_extension += "predict_y4<-predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)\r\n";
-                        forecast_extension += "predict_y <- (predict_y + predict_y1 +predict_y2 +predict_y3 +predict_y4)/5\r\n";
+                        forecast_extension += "predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)*"+ EnsembleW[0].ToString()+"\r\n";
+						
+						if ( checkBox26.Checked )
+						{
+	                        //forecast_extension += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
+	                        //forecast_extension += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
+	                        //forecast_extension += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
+	                        //forecast_extension += "predict_y4<-predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)*"+ EnsembleW[4].ToString()+"\r\n";
+	                        forecast_extension += "predict_y5<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
+	                        forecast_extension += "predict_y <- (predict_y + predict_y5)\r\n";
+                        }
                         
 						forecast_extension += "predict_y_org <- predict_y\r\n";
                         forecast_extension += "predict_y<- inv_diff(test,\""+decomp_type+"\""+ ",use_log_diff, predict_y + test$trend, test_pre$" + targetName + ", log_diff[[2]],lambda=textBox10.Text)\r\n";
@@ -3401,12 +3556,17 @@ namespace WindowsFormsApplication1
                     }
                     forecast_extension += "\r\n";
 
-                    forecast_extension += "predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
-                    forecast_extension += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)\r\n";
-                    forecast_extension += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)\r\n";
-                    forecast_extension += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)\r\n";
-                    forecast_extension += "predict_y4<-predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)\r\n";
-                    forecast_extension += "predict_y <- (predict_y + predict_y1 +predict_y2 +predict_y3 +predict_y4)/5\r\n";                    //if (use_diff == 1 || use_decompose == 1)
+                    forecast_extension += "predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)*"+ EnsembleW[0].ToString()+"\r\n";
+                    if ( checkBox26.Checked )
+                    {
+	                    //forecast_extension += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
+	                    //forecast_extension += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
+	                    //forecast_extension += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
+	                    //forecast_extension += "predict_y4<-predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)*"+ EnsembleW[4].ToString()+"\r\n";
+	                    forecast_extension += "predict_y5<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
+	                    forecast_extension += "predict_y <- (predict_y + predict_y5)\r\n"; 
+	                    //if (use_diff == 1 || use_decompose == 1)
+                    }
                     {
                         if (time_series_mode)
                         {
@@ -3694,6 +3854,9 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        colidx_5 = grep(\"^thursday$\", coln )\r\n";
                         forecast_extension += "        colidx_6 = grep(\"^friday$\", coln )\r\n";
                         forecast_extension += "        colidx_7 = grep(\"^saturday$\", coln )\r\n";
+                        forecast_extension += "        colidx_7s = grep(\"^weekdays_S$\", coln )\r\n";
+                        forecast_extension += "        colidx_7c = grep(\"^weekdays_C$\", coln )\r\n";
+                        
 
                         if (checkBox18.Checked)
                         {
@@ -3734,6 +3897,25 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        if ( length(colidx_6) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_6] <- 1\r\n";
                         forecast_extension += "        if ( length(colidx_7) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7] <- 1\r\n";
                         forecast_extension += "\r\n";
+                        if (checkBox18.Checked)
+                        {
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*6/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*5/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*4/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*3/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*2/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*1/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*0/6)\r\n";
+                        	
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*6/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*5/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*4/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*3/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*2/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*1/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*0/6)\r\n";
+                        }
+                        
                         forecast_extension += "        tryCatch({\r\n";
                         if (checkBox18.Checked)
                         {
@@ -3810,6 +3992,25 @@ namespace WindowsFormsApplication1
                         forecast_extension += "            silent = FALSE\r\n";
                         forecast_extension += "        )\r\n";
                         forecast_extension += "\r\n";
+                        
+                        forecast_extension += "        m = as.integer(format(as.POSIXct(test[nrow(test),1]),\"%m\"))\r\n";
+                        forecast_extension += "        colidx_20 = grep(\"^winter$\", coln )\r\n";
+	                    forecast_extension += "        if ( length(colidx_20) == 1 ) test[nrow(test),colidx_20] <- ifelse(m == 1 || m == 2 || m == 12, 1, 0)\r\n";
+                        forecast_extension += "        colidx_20 = grep(\"^spring$\", coln )\r\n";
+	                    forecast_extension += "        if ( length(colidx_20) == 1)  test[nrow(test),colidx_20] <- ifelse(m == 3 || m == 4 || m == 5, 1, 0)\r\n";
+                        forecast_extension += "        colidx_20 = grep(\"^summer$\", coln )\r\n";
+	                    forecast_extension += "        if ( length(colidx_20) == 1)  test[nrow(test),colidx_20] <- ifelse(m == 6 || m == 7 || m == 8, 1, 0)\r\n";
+                        forecast_extension += "        colidx_20 = grep(\"^autumn$\", coln )\r\n";
+	                    forecast_extension += "        if ( length(colidx_20) == 1)  test[nrow(test),colidx_20] <- ifelse(m == 9 || m == 10 || m == 11, 1, 0)\r\n";
+                        
+                        forecast_extension += "        hm = as.numeric(format(as.POSIXlt(test[nrow(test),1]),\"%H\"))+as.numeric(format(as.POSIXlt(test[nrow(test),1]),\"%M\"))/60.0\r\n";
+                        forecast_extension += "        colidx_21 = grep(\"^morning_hours$\", coln )\r\n";
+	                    forecast_extension += "        if ( length(colidx_21) == 1)  test[nrow(test),colidx_21] <- ifelse(hm <= 12, 1, 0)\r\n";
+                        forecast_extension += "        colidx_21 = grep(\"^afternoon_hours$\", coln )\r\n";
+	                    forecast_extension += "        if ( length(colidx_21) == 1)  test[nrow(test),colidx_21] <- ifelse(hm > 12, 1, 0)\r\n";
+                        forecast_extension += "        colidx_21 = grep(\"^working_hours$\", coln )\r\n";
+	                    forecast_extension += "        if ( length(colidx_21) == 1)  test[nrow(test),colidx_21] <- ifelse(h >= 8 & h <= 21, 1, 0)\r\n";
+
 
                         //for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                         {
@@ -4259,24 +4460,34 @@ namespace WindowsFormsApplication1
                         forecast_extension += "	    \r\n";
                         forecast_extension += "        #testデータ区間を予測\r\n";
                         forecast_extension += "        if ( fast_predict == 1){\r\n";
-                        forecast_extension += "              y<- predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
-                        forecast_extension += "              y1<- predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)\r\n";
-                        forecast_extension += "              y2<- predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)\r\n";
-                        forecast_extension += "              y3<- predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)\r\n";
-                        forecast_extension += "              y4<- predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)\r\n";
-                    	forecast_extension += "              y <- (y + y1 +y2 +y3 +y4)/5\r\n";                    //if (use_diff == 1 || use_decompose == 1)
+                        forecast_extension += "              y<- predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)*"+ EnsembleW[0].ToString()+"\r\n";
+                        if ( checkBox26.Checked )
+                        {
+	                        //forecast_extension += "              y1<- predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
+	                        //forecast_extension += "              y2<- predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
+	                        //forecast_extension += "              y3<- predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
+	                        //forecast_extension += "              y4<- predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)*"+ EnsembleW[4].ToString()+"\r\n";
+	                        forecast_extension += "              y5<- predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
+	                    	forecast_extension += "              y <- (y + y5)\r\n";                    //if (use_diff == 1 || use_decompose == 1)
+                        }
+                        
                         forecast_extension += "              for ( i in 1:(length(y)-1)){\r\n";
                         forecast_extension += "                  predict_y[(nrow(test_sv)-"+lag +")-1+i] = y[i]\r\n";
                         forecast_extension += "              }\r\n";
                         forecast_extension += "              predict_y<-c(predict_y,y[length(y)])\r\n";
                         forecast_extension += "              test <- test_sv\r\n";
                         forecast_extension += "        } else {\r\n";
-                        forecast_extension += "             predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
-                        forecast_extension += "             predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)\r\n";
-                        forecast_extension += "             predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)\r\n";
-                        forecast_extension += "             predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)\r\n";
-                        forecast_extension += "             predict_y4<-predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)\r\n";
-                    	forecast_extension += "             predict_y <- (predict_y + predict_y1 +predict_y2 +predict_y3 +predict_y4)/5\r\n";                    //if (use_diff == 1 || use_decompose == 1)
+                        forecast_extension += "             predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)*"+ EnsembleW[0].ToString()+"\r\n";
+                        if ( checkBox26.Checked )
+                        {
+	                        //forecast_extension += "             predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
+	                        //forecast_extension += "             predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
+	                        //forecast_extension += "             predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
+	                        //forecast_extension += "             predict_y4<-predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)*"+ EnsembleW[4].ToString()+"\r\n";
+	                        forecast_extension += "             predict_y5<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
+	                    	forecast_extension += "             predict_y <- (predict_y + predict_y5)\r\n";
+                    	}
+                    	//if (use_diff == 1 || use_decompose == 1)
                         forecast_extension += "        }\r\n";
                         forecast_extension += "        predict_y_org <- predict_y\r\n";
 
@@ -4454,12 +4665,17 @@ forecast_extension += "	    }\r\n";
                             }
                         }
                         forecast_extension += "        )\r\n";
-                        forecast_extension += "    predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)\r\n";
-                        forecast_extension += "    predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)\r\n";
-                        forecast_extension += "    predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)\r\n";
-                        forecast_extension += "    predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)\r\n";
-                        forecast_extension += "    predict_y4<-predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)\r\n";
-                    	forecast_extension += "    predict_y <- (predict_y + predict_y1 +predict_y2 +predict_y3 +predict_y4)/5\r\n";                    //if (use_diff == 1 || use_decompose == 1)
+                        forecast_extension += "    predict_y<-predict( object=xgboost.model_"+targetName + ", newdata=test_dmat)*"+ EnsembleW[0].ToString()+"\r\n";
+                        if ( checkBox26.Checked )
+                        {
+	                        //forecast_extension += "    predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
+	                        //forecast_extension += "    predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
+	                        //forecast_extension += "    predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
+	                        //forecast_extension += "    predict_y4<-predict( object=xgboost.model_"+targetName + "4, newdata=test_dmat)*"+ EnsembleW[4].ToString()+"\r\n";
+	                        forecast_extension += "    predict_y5<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
+	                    	forecast_extension += "    predict_y <- (predict_y + predict_y5)\r\n";
+                    	}
+                    	//if (use_diff == 1 || use_decompose == 1)
                         forecast_extension += "    predict_y_org <- predict_y\r\n";
 
                         //if (use_diff == 1 || use_decompose == 1)
@@ -5181,10 +5397,15 @@ forecast_extension += "	    }\r\n";
 		                    {
             					sw.Write("xgb_train_"+targetName+"<- readRDS(" + "\"" + "xgb_train_"+targetName+".robj" + "\"" + ")\r\n");
                     			sw.Write("xgboost.model_"+targetName +"<- readRDS(xgboost.model_"+targetName + ", file = \"xgboost.model_"+targetName+".robj\")\r\n");
-                    			sw.Write("xgboost.model_"+targetName +"1<- readRDS(xgboost.model_"+targetName + "1, file = \"xgboost.model_"+targetName+"1.robj\")\r\n");
-                    			sw.Write("xgboost.model_"+targetName +"2<- readRDS(xgboost.model_"+targetName + "2, file = \"xgboost.model_"+targetName+"2.robj\")\r\n");
-                    			sw.Write("xgboost.model_"+targetName +"3<- readRDS(xgboost.model_"+targetName + "3, file = \"xgboost.model_"+targetName+"3.robj\")\r\n");
-                    			sw.Write("xgboost.model_"+targetName +"4<- readRDS(xgboost.model_"+targetName + "4, file = \"xgboost.model_"+targetName+"4.robj\")\r\n");
+                    			
+                    			if ( checkBox26.Checked)
+                    			{
+	                    			//sw.Write("xgboost.model_"+targetName +"1<- readRDS(xgboost.model_"+targetName + "1, file = \"xgboost.model_"+targetName+"1.robj\")\r\n");
+	                    			//sw.Write("xgboost.model_"+targetName +"2<- readRDS(xgboost.model_"+targetName + "2, file = \"xgboost.model_"+targetName+"2.robj\")\r\n");
+	                    			//sw.Write("xgboost.model_"+targetName +"3<- readRDS(xgboost.model_"+targetName + "3, file = \"xgboost.model_"+targetName+"3.robj\")\r\n");
+	                    			//sw.Write("xgboost.model_"+targetName +"4<- readRDS(xgboost.model_"+targetName + "4, file = \"xgboost.model_"+targetName+"4.robj\")\r\n");
+	                    			sw.Write("randomForest.model_"+targetName +"<- readRDS(randomForest.model_"+targetName + ", file = \"randomForest.model_"+targetName+".robj\")\r\n");
+                    			}
                     		}
                             sw.Write(cmd);
                             sw.Write("sink(file = \"summary.txt\")\r\n");
@@ -5961,6 +6182,16 @@ forecast_extension += "	    }\r\n";
                 if (checkBox25.Checked) sw.Write("true\r\n");
                 else sw.Write("false\r\n");
 
+                sw.Write("アンサンブルモデル,");
+                if (checkBox26.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("ラグ変数使用,");
+                if (checkBox27.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+
+                sw.Write("出力長,"); sw.Write(numericUpDown23.Value.ToString() + "\r\n");
+
                 sw.Close();
             }
         }
@@ -6001,10 +6232,15 @@ forecast_extension += "	    }\r\n";
                         f = "model/tsxgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
                     }
                     cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ", file = \"" + f + ".robj"+"\")\r\n";
-                    cmd += "saveRDS(xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "1, file = \"" + f + "1.robj" + "\")\r\n";
-                    cmd += "saveRDS(xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "2, file = \"" + f + "2.robj" + "\")\r\n";
-                    cmd += "saveRDS(xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "3, file = \"" + f + "3.robj" + "\")\r\n";
-                    cmd += "saveRDS(xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "4, file = \"" + f + "4.robj" + "\")\r\n";
+                    
+                    if ( checkBox26.Checked )
+                    {
+	                    //cmd += "saveRDS(xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "1, file = \"" + f + "1.robj" + "\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "2, file = \"" + f + "2.robj" + "\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "3, file = \"" + f + "3.robj" + "\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "4, file = \"" + f + "4.robj" + "\")\r\n";
+	                    cmd += "saveRDS(randomForest.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ", file = \"" + f + ".robj" + "\")\r\n";
+                	}
                 }
             }
             if (radioButton2.Checked)
@@ -6031,10 +6267,14 @@ forecast_extension += "	    }\r\n";
                         f = "model/tsxgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
                     }
                     cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ", file = \"" + f + ".robj"+"\")\r\n";
-                    cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "1, file = \"" + f + "1.robj"+"\")\r\n";
-                    cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "2, file = \"" + f + "2.robj"+"\")\r\n";
-                    cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "3, file = \"" + f + "3.robj"+"\")\r\n";
-                    cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "4, file = \"" + f + "4.robj"+"\")\r\n";
+                    if ( checkBox26.Checked )
+                    {
+	                    //cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "1, file = \"" + f + "1.robj"+"\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "2, file = \"" + f + "2.robj"+"\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "3, file = \"" + f + "3.robj"+"\")\r\n";
+	                    //cmd += "saveRDS(xgboost.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "4, file = \"" + f + "4.robj"+"\")\r\n";
+	                    cmd += "saveRDS(randomForest.model_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ", file = \"" + f + ".robj"+"\")\r\n";
+                	}
                 }
             }
             form1.script_executestr(cmd);
@@ -6076,10 +6316,15 @@ forecast_extension += "	    }\r\n";
 	            for ( int i = 0; i < listBox1.SelectedIndices.Count; i++ )
 	            {
                 	za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj").Replace("model/", ""));
-                	za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"1.robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"1.robj").Replace("model/", ""));
-                	za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"2.robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"2.robj").Replace("model/", ""));
-                	za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"3.robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"3.robj").Replace("model/", ""));
-                	za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"4.robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"4.robj").Replace("model/", ""));
+                	
+                	if ( checkBox26.Checked )
+                	{
+	                	//za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"1.robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"1.robj").Replace("model/", ""));
+	                	//za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"2.robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"2.robj").Replace("model/", ""));
+	                	//za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"3.robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"3.robj").Replace("model/", ""));
+	                	//za.CreateEntryFromFile("xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"4.robj", (file + ".xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"4.robj").Replace("model/", ""));
+	                	za.CreateEntryFromFile("randomForest.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj", (file + ".randomForest.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj").Replace("model/", ""));
+                	}
                 	za.CreateEntryFromFile("xgb_train_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj", (file + ".xgb_train_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".robj").Replace("model/", ""));
                     za.CreateEntryFromFile("xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options", (file + ".xgboost_param_"+ listBox1.Items[listBox1.SelectedIndices[i]].ToString()+".options").Replace("model/", ""));                }
             }
@@ -6576,6 +6821,35 @@ forecast_extension += "	    }\r\n";
                         }
                         continue;
                     }
+                    if (ss[0].IndexOf("アンサンブルモデル") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox26.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox26.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("ラグ変数使用") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox27.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox27.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("出力長") >= 0)
+                    {
+                        numericUpDown23.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
                 }
                 sr.Close();
             }
@@ -6608,21 +6882,28 @@ forecast_extension += "	    }\r\n";
             	form1.comboBox1.Text = "xgboost.model_"+listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "<- readRDS(\"" + f + ".robj"+"\")\r\n";
  				form1.evalute_cmd(sender, e);
 
-                f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
-                form1.comboBox1.Text = "xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "1<- readRDS(\"" + f + "1.robj" + "\")\r\n";
-                form1.evalute_cmd(sender, e);
+				if ( checkBox26.Checked )
+				{
+	                //f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+	                //form1.comboBox1.Text = "xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "1<- readRDS(\"" + f + "1.robj" + "\")\r\n";
+	                //form1.evalute_cmd(sender, e);
 
-                f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
-                form1.comboBox1.Text = "xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "2<- readRDS(\"" + f + "2.robj" + "\")\r\n";
-                form1.evalute_cmd(sender, e);
+	                //f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+	                //form1.comboBox1.Text = "xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "2<- readRDS(\"" + f + "2.robj" + "\")\r\n";
+	                //form1.evalute_cmd(sender, e);
 
-                f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
-                form1.comboBox1.Text = "xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "3<- readRDS(\"" + f + "3.robj" + "\")\r\n";
-                form1.evalute_cmd(sender, e);
+	                //f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+	                //form1.comboBox1.Text = "xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "3<- readRDS(\"" + f + "3.robj" + "\")\r\n";
+	                //form1.evalute_cmd(sender, e);
 
-                f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
-                form1.comboBox1.Text = "xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "4<- readRDS(\"" + f + "4.robj" + "\")\r\n";
-                form1.evalute_cmd(sender, e);
+	                //f = file + ".xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+	                //form1.comboBox1.Text = "xgboost.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "4<- readRDS(\"" + f + "4.robj" + "\")\r\n";
+	                //form1.evalute_cmd(sender, e);
+
+	                f = file + ".randomForest.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+	                form1.comboBox1.Text = "randomForest.model_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + "<- readRDS(\"" + f + ".robj" + "\")\r\n";
+	                form1.evalute_cmd(sender, e);
+                }
 
                 f = file + ".xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options";
                 System.IO.File.Copy(f, "xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString() + ".options", true);
@@ -8312,6 +8593,11 @@ forecast_extension += "	    }\r\n";
                 }
 
             }
+        }
+
+        private void checkBox26_CheckedChanged(object sender, EventArgs e)
+        {
+            if (running == 1 || radioButton3.Checked) return;
         }
     }
 
