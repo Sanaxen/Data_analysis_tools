@@ -2780,10 +2780,10 @@ namespace WindowsFormsApplication1
 						xgboost_gridsearch += "	gamma = c( 0.0 )\r\n";
 						xgboost_gridsearch += "	alphaz = c( 0.0)\r\n";
 						xgboost_gridsearch += "	lambda = c( 1.0 );\r\n";
-						xgboost_gridsearch += "	colsample_bytree = c( 0.7, 0.9 )\r\n";
-						xgboost_gridsearch += "	subsample = c(  0.8, 1.0 )\r\n";
+						xgboost_gridsearch += "	colsample_bytree = c( 0.7, 0.8, 0.9 )\r\n";
+						xgboost_gridsearch += "	subsample = c(  0.8, 0.9, 1.0 )\r\n";
 						xgboost_gridsearch += "	min_child_weight = c( 1.0, 2.0, 5.0 )\r\n";
-						xgboost_gridsearch += "	max_depth = c( 6, 10, 30, 40 )\r\n";
+						xgboost_gridsearch += "	max_depth = c( 6, 10, 30, 50 )\r\n";
 						xgboost_gridsearch += "	nrounds = c(400)\r\n";
 						xgboost_gridsearch += "	pattern_length = length(eta)*length(gamma)*length(alphaz)*length(lambda)\r\n";
 						xgboost_gridsearch += "	pattern_length = pattern_length * length(colsample_bytree)*length(subsample)*length(min_child_weight)\r\n";

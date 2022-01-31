@@ -338,6 +338,9 @@ namespace WindowsFormsApplication1
                 form1.script_executestr(cmd);
                 if ( radioButton1.Checked && checkBox5.Checked)
                 {
+                    if (System.IO.File.Exists("auto_varselect.txt")) form1.FileDelete("auto_varselect.txt");
+                    if (System.IO.File.Exists("threshold.txt")) form1.FileDelete("threshold.txt");
+
                     if ( comboBox3.Text != "")
                     {
                         cmd = "ng_df <- ngdf_tmp_\r\n";
@@ -353,12 +356,17 @@ namespace WindowsFormsApplication1
 
                     cmd += "col <- colnames(df_tmp_)\r\n";
                     cmd += "sink(\"auto_varselect.txt\")\r\n";
-                    cmd += "for ( i in 1:ncol(df_tmp_))\r\n";
+                    cmd += "for ( i in 1:length(col))\r\n";
                     cmd += "{\r\n";
                     cmd += "	cat(col[i])\r\n";
                     cmd += "	cat(\"\\n\")\r\n";
                     cmd += "}\r\n";
                     cmd += "sink()\r\n";
+                    cmd += "sink(\"threshold.txt\")\r\n";
+                    cmd += "cat(selvar[[5]])\r\n";
+                    cmd += "cat(\"\\n\")\r\n";
+                    cmd += "sink()\r\n";
+
 
                     timer1.Enabled = true;
                     timer1.Start();
@@ -381,6 +389,26 @@ namespace WindowsFormsApplication1
                         catch { }
                     }
 
+                    if (System.IO.File.Exists("threshold.txt"))
+                    {
+                        try
+                        {
+                            string line = "";
+                            System.IO.StreamReader sr = new System.IO.StreamReader("threshold.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                            while (sr.EndOfStream == false)
+                            {
+                                line = sr.ReadLine();
+                                break;
+                            }
+                            sr.Close();
+
+                            
+                            textBox1.Text = line.Replace("\r\n", "");
+                            checkBox1.Checked = true;
+                        }
+                        catch { }
+                    }
+                        
                     cmd = "";
                     ListBox list = new ListBox();
 
@@ -405,15 +433,23 @@ namespace WindowsFormsApplication1
                             {
                                listBox2.SetSelected(j, false);
                             }
+                            
                             for ( int i = 0; i < list.Items.Count; i++)
                             {
+                                if (list.Items[i].ToString() == "") continue;
+                                bool lookup = false;
                                 for (int j = 0; j < listBox2.Items.Count; j++)
                                 {
                                     if (listBox2.Items[j].ToString() == list.Items[i].ToString())
                                     {
                                         listBox2.SetSelected(j, true);
+                                        lookup = true;
                                         break;
                                     }
+                                }
+                                if (!lookup )
+                                {
+                                    MessageBox.Show("["+ list.Items[i].ToString()+"]指定された正常データと異常データで異なる変数があります");
                                 }
                             }
                         }
@@ -1087,8 +1123,13 @@ namespace WindowsFormsApplication1
             if ( comboBox3.Text == "")
             {
                 MessageBox.Show("自動変数選択を行うには異常データも指定して下さい");
+                return;
             }
-
+            if (comboBox2.Text == comboBox3.Text)
+            {
+                MessageBox.Show("正常データと異常データを指定して下さい");
+                return;
+            }
             checkBox5.Checked = true;
             checkBox5.Enabled = true;
             button1_Click(sender, e);

@@ -125,19 +125,25 @@ anomaly_detection_SN <- function( model, anomaly_detection )
 	}
 }
 
-auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
+
+auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.01)
 {
 	if ( file.exists("auto_varselect.stop") )
 	{
 		file.remove("auto_varselect.stop")
 	}
+
+	thres_value = 1.0
 	df_tmp_<- df
+	if ( !is.null(ng_df) ){
+		ng_df_tmp_ <- ng_df
+	}
 	error_min = 1
 	ng_error_max <- 0
 	loss = NULL
 	ng_loss = NULL
 	col.sampled = c(1:ncol(df_tmp_))
-	nmax = ncol(df_tmp_)*5
+	nmax = ncol(df_tmp_)/2
 	n = cut*3
 	ntry = 20
 	
@@ -145,7 +151,7 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 	anomaly_detect_ <- anomaly_detection_test(anomaly_detection.model_,df_tmp_, method="mahalanobis",threshold = 0)
 	error = sum(ifelse(anomaly_detect_[[2]] > anomaly_detect_[[3]],1, 0))/length(anomaly_detect_[[2]])
 
-	ret <- list(error, df_tmp_, col.sampled, anomaly_detection.model_)
+	ret <- list(error, df_tmp_, col.sampled, anomaly_detection.model_, thres_value)
 	if ( ncol(df) < 10 )
 	{
 		return( ret )
@@ -156,6 +162,7 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 	loss_min = 10000000
 	
 	df_tmp_3 <- NULL
+	ng_df_tmp_3 <- NULL
 	iter = 1
 	for ( k in 1:nmax )
 	{
@@ -172,10 +179,18 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 		cat(k)
 		cat(" / ")
 		print(nmax)
+		cat(" ")
+		cat(ncol(df))
+		cat(" -> ")
+		print(ncol(df_tmp_))
 		
 		df_tmp_2 <- df_tmp_
+		if ( !is.null(ng_df) ){
+			ng_df_tmp_2 <- ng_df_tmp_
+		}
 
-		ntry = ncol(df_tmp_)/2
+
+		ntry = min(30, ncol(df_tmp_)/3)
 		#if ( fast && cut > 2)
 		#{
 		#	ntry = min(30, ncol(df_tmp_)/5)
@@ -209,13 +224,32 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 			
 			if ( !is.null(ng_df) )
 			{
-				ng_df_tmp_ <- ng_df[, sampled, drop=F]
+				ng_df_tmp_ <- ng_df_tmp_2[, sampled, drop=F]
 				anomaly_ng_detect <- anomaly_detection_test(anomaly_detection.model_,ng_df_tmp_, method="mahalanobis",threshold = 0)
 				ng_error = sum(ifelse(anomaly_ng_detect[[2]] > anomaly_ng_detect[[3]],1, 0))/length(anomaly_ng_detect[[2]])
 			}
 			
 			#拡大Tchebyshev・スカラー化関数
 			loss_value = max( w1*error, w2*(1 - ng_error))+ ep*(w1*error + w2*(1 - ng_error))
+			
+#				cat("iter:")
+#				cat(iter)
+#				cat(" ")
+#				cat("error:")
+#				cat(error)
+#				cat(" ")
+#				cat("ng_error:")
+#				cat(ng_error)
+#				cat(" ")
+#				cat("num:")
+#				cat(ncol(df_tmp_2))
+#				cat(" -> ")
+#				cat(ncol(df_tmp_3))
+#				cat(" loss_value:")
+#				cat(loss_value)
+#				cat(" ")
+#				cat("loss_min:")
+#				print(loss_min)
 			
 			accept = FALSE
 			if ( error <= error_min && ng_error_max < ng_error)
@@ -225,17 +259,21 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 			if ( loss_value < loss_min )
 			{
 				accept = TRUE
-				loss_min = loss_value
 			}
 			
 			if ( accept )
 			{
+				loss_min = loss_value
 				df_tmp_3 <- df_tmp_
+				ng_df_tmp_3 <- ng_df_tmp_
 				cat("iter:")
 				cat(iter)
 				cat(" ")
 				cat("error:")
 				cat(error)
+				cat(" ")
+				cat("ng_error:")
+				cat(ng_error)
 				cat(" ")
 				cat("num:")
 				cat(ncol(df_tmp_2))
@@ -248,9 +286,29 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 				anomaly_detection.model = anomaly_detection.model_
 				anomaly_detect = anomaly_detect_
 				
-				w = sqrt(error_min + (1 - ng_error_max))
-				w1 = error_min/w1
-				w2 = (1 - ng_error_max)/w2
+				#w = sqrt(error_min + (1 - ng_error_max))
+				#w1 = error_min/w
+				#w2 = (1 - ng_error_max)/w
+				
+				w = nrow(df_tmp_) + nrow(ng_df_tmp_)
+				w1 = nrow(df_tmp_)/w
+				w2 = nrow(ng_df_tmp_)/w
+				if ( w < 1.0e-10 )
+				{
+					w1 = 0.5
+					w2 = 0.5
+				}
+				
+				cat("w:")
+				cat(w)
+				cat(" ")
+				cat("w1:")
+				cat(" ")
+				cat(w1)
+				cat("w2:")
+				cat(" ")
+				print(w2)
+
 			}
 			iter = iter + 1
 			if ( !is.null(loss)) loss <- c(loss, error)
@@ -263,12 +321,38 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 			}
 
 			flush.console()
+			
+			if ( iter %% 5 == 0 )
+			{
+				loss_df <- data.frame( iter=c(1:length(loss)), normal=loss)
+				loss_plt <- ggplot(loss_df)
+				loss_plt <- loss_plt + geom_line(aes(x=iter, y=normal), size=1.2, color="blue")
+				loss_plt <- loss_plt + geom_hline(yintercept= target, col= "red")
+				loss_plt <- loss_plt + annotate("text",x=-Inf,y=-Inf,label=paste(as.integer(100*error_min*1000)/1000, "%", sep=""),hjust=-.2,vjust=-2, ,size=10)
+
+				if ( !is.null(ng_df) )
+				{
+					ng_loss_df <- data.frame( iter=c(1:length(ng_loss)), normal=loss, anomaly=ng_loss)
+					ng_loss_plt <- ggplot(ng_loss_df)
+					ng_loss_plt <- ng_loss_plt + geom_line(aes(x=iter, y=anomaly), size=1.2, color="orange")
+					ng_loss_plt <- ng_loss_plt + annotate("text",x=-Inf,y=-Inf,label=paste(as.integer(100*ng_error_max*1000)/1000, "%", sep=""),hjust=-.2,vjust=-2, ,size=10)
+
+					loss_plt <- gridExtra::grid.arrange(loss_plt, ng_loss_plt, nrow = 2)
+				}
+				print(loss_plt)
+		        ggsave(file="anomaly_detection_loss.png", loss_plt, dpi = 100, width = 6.4, height = 4.8, limitsize = FALSE)
+			}
 		}
 		cut <- max(1, as.integer(cut/2))
 
 		if ( !is.null(df_tmp_3)) df_tmp_ <- df_tmp_3
 		else df_tmp_ <- df_tmp_2
 		
+		if ( !is.null(ng_df) )
+		{
+			if ( !is.null(ng_df_tmp_3)) ng_df_tmp_ <- ng_df_tmp_3
+			else ng_df_tmp_ <- ng_df_tmp_2
+		}
 		
 		loss_df <- data.frame( iter=c(1:length(loss)), normal=loss)
 		loss_plt <- ggplot(loss_df)
@@ -302,7 +386,36 @@ auto_varselect <- function(df, ng_df = NULL, fast = TRUE, cut=4, target = 0.1)
 		return (ret )
 	}
 	
-	return( list(error_min, df_tmp_3, col.sampled, anomaly_detection.model))
+	
+	loss_value_min = 10000
+	nstep = 10
+	dt= 5/nstep
+	w1 = 0.5
+	w2 = 0.5
+
+	for ( t in 0:nstep )
+	{
+		thre = 0.1+t*dt
+		anomaly_detect_ <- anomaly_detection_test(anomaly_detection.model,df_tmp_3, method="mahalanobis",threshold = thre)
+		error = sum(ifelse(anomaly_detect_[[2]] > anomaly_detect_[[3]],1, 0))/length(anomaly_detect_[[2]])
+		
+		if ( !is.null(ng_df) )
+		{
+			anomaly_ng_detect <- anomaly_detection_test(anomaly_detection.model,ng_df_tmp_3, method="mahalanobis",threshold = thre)
+			ng_error = sum(ifelse(anomaly_ng_detect[[2]] > anomaly_ng_detect[[3]],1, 0))/length(anomaly_ng_detect[[2]])
+		}
+		loss_value = w1*error + w2*(1 - ng_error)
+		
+		if ( loss_value < loss_value_min )
+		{
+			loss_value_min = loss_value
+			thres_value = thre
+		}
+	}
+	cat("threshold:")
+	print(thres_value)
+	
+	return( list(error_min, df_tmp_3, col.sampled, anomaly_detection.model, thres_value))
 }
 
 #x <- rnorm(n = 500, mean = 1, sd = 2)
