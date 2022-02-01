@@ -498,7 +498,9 @@ namespace WindowsFormsApplication1
                 	cmd += "ggsave(file = \"anomaly_detection_test.png\", ano_plt , dpi = 100, width = 6.4*3*" + form1._setting.numericUpDown4.Value.ToString() + ", height = 4.8*" + form1._setting.numericUpDown4.Value.ToString()+ ", limitsize = FALSE)\r\n";
                     cmd += "df_tmp2 <- ifelse(anomaly_detect[[2]] > anomaly_detect[[3]], 1, 0)\r\n";
                     cmd += "df_tmp2 <- cbind(df_, df_tmp2)\r\n";
-                    cmd += "colnames(df_tmp2)[ncol(df_tmp2)]<-c(\"anomaly\")\r\n";
+                    cmd += "df_tmp2 <- cbind(df_tmp2, anomaly_detect[[2]])\r\n";
+                    cmd += "colnames(df_tmp2)[ncol(df_tmp2)-1]<-c(\"anomaly\")\r\n";
+                    cmd += "colnames(df_tmp2)[ncol(df_tmp2)]<-c(\"異常度\")\r\n";
                     cmd += "write.csv(df_tmp2, \"異常検出.csv\",row.names =F)\r\n";
                 }
 

@@ -50,6 +50,8 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button24 = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.numericUpDown23 = new System.Windows.Forms.NumericUpDown();
+            this.label48 = new System.Windows.Forms.Label();
             this.checkBox20 = new System.Windows.Forms.CheckBox();
             this.label43 = new System.Windows.Forms.Label();
             this.numericUpDown20 = new System.Windows.Forms.NumericUpDown();
@@ -219,14 +221,13 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.timer4 = new System.Windows.Forms.Timer(this.components);
-            this.numericUpDown23 = new System.Windows.Forms.NumericUpDown();
-            this.label48 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -258,7 +259,6 @@
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown23)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -613,6 +613,35 @@
             this.toolTip1.SetToolTip(this.panel8, "既に観測されているデータの一部を検証用としてtestデータとしますが、このtestデータに\r\n設定されている説明変数は実際の予測ではまだ未観測のデータになります。" +
         "\r\n予測性能の確認をしたい場合はそのtestデータの後半部分の説明変数を未観測として予測させる事が出来ます");
             // 
+            // numericUpDown23
+            // 
+            this.numericUpDown23.Location = new System.Drawing.Point(261, 31);
+            this.numericUpDown23.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown23.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown23.Name = "numericUpDown23";
+            this.numericUpDown23.Size = new System.Drawing.Size(60, 22);
+            this.numericUpDown23.TabIndex = 183;
+            this.toolTip1.SetToolTip(this.numericUpDown23, "testデータの終端から過去で何時点分を出力するかを指定できます。\r\n100を超えるかデータ終端からのステップ数で指定するチェックをONにすると、\r\nデータ終端か" +
+        "ら指定した値のステップまでさかのぼった位置までに制限出来ます。\r\n");
+            this.numericUpDown23.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(203, 35);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(52, 15);
+            this.label48.TabIndex = 184;
+            this.label48.Text = "出力長";
+            // 
             // checkBox20
             // 
             this.checkBox20.AutoSize = true;
@@ -646,7 +675,8 @@
             this.numericUpDown20.Size = new System.Drawing.Size(74, 22);
             this.numericUpDown20.TabIndex = 173;
             this.toolTip1.SetToolTip(this.numericUpDown20, "testデータのどの部分までは説明変数が設定されているかをパーセントで指定します。\r\n100を超えるかデータ終端からのステップ数で指定するチェックをONにすると、" +
-        "\r\nデータ終端から指定した値のステップまでさかのぼった位置までに制限出来ます。");
+        "\r\nデータ終端から指定した値のステップまでさかのぼった位置までに制限出来ます。\r\n\r\n目的変数または説明変数が設定されていない部分は予測延長処理を行います。\r\n" +
+        "");
             this.numericUpDown20.Value = new decimal(new int[] {
             100,
             0,
@@ -834,7 +864,7 @@
             this.comboBox7.Name = "comboBox7";
             this.comboBox7.Size = new System.Drawing.Size(116, 23);
             this.comboBox7.TabIndex = 177;
-            this.comboBox7.Text = "additive";
+            this.comboBox7.Text = "multiplicative";
             this.toolTip1.SetToolTip(this.comboBox7, "Additive:  = Trend + Seasonal + Random\r\nMultiplicative:  = Trend * Seasonal * Ran" +
         "dom\r\n");
             // 
@@ -2844,35 +2874,6 @@
             this.timer4.Interval = 5000;
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
-            // numericUpDown23
-            // 
-            this.numericUpDown23.Location = new System.Drawing.Point(261, 31);
-            this.numericUpDown23.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numericUpDown23.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown23.Name = "numericUpDown23";
-            this.numericUpDown23.Size = new System.Drawing.Size(60, 22);
-            this.numericUpDown23.TabIndex = 183;
-            this.toolTip1.SetToolTip(this.numericUpDown23, "testデータの終端から過去で何時点分を出力するかを指定できます。\r\n100を超えるかデータ終端からのステップ数で指定するチェックをONにすると、\r\nデータ終端か" +
-        "ら指定した値のステップまでさかのぼった位置までに制限出来ます。\r\n");
-            this.numericUpDown23.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
-            // label48
-            // 
-            this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(203, 35);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(52, 15);
-            this.label48.TabIndex = 184;
-            this.label48.Text = "出力長";
-            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -2897,6 +2898,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).EndInit();
             this.groupBox2.ResumeLayout(false);
@@ -2935,7 +2937,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown23)).EndInit();
             this.ResumeLayout(false);
 
         }
