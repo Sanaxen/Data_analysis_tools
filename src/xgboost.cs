@@ -758,9 +758,9 @@ namespace WindowsFormsApplication1
             //MessageBox.Show(targetName);
 
 			//Ensemble Learning
-			double[] EnsembleW = {0.7, 0.0, 0.0, 0.0, 0.0, 0.3};
-			double EnsembleWsum = EnsembleW[0]+EnsembleW[1]+EnsembleW[2]+EnsembleW[3]+EnsembleW[4]+EnsembleW[5];
-			for ( int i = 0; i < 6; i++)
+			double[] EnsembleW = {0.8, 0.8, 0.8, 0.8, 0.2};
+			double EnsembleWsum = EnsembleW[0]+EnsembleW[1]+EnsembleW[2]+EnsembleW[3]+EnsembleW[4];
+			for ( int i = 0; i < 5; i++)
 			{
 				EnsembleW[i] /= EnsembleWsum;
 			}
@@ -3028,7 +3028,7 @@ namespace WindowsFormsApplication1
 	                        }
 	                        cmd += ")\r\n";
 	                        cmd += "df_rf<- train[, valist]\r\n";
-	                        cmd += "randomForest.model_"+targetName + " <- tuneRF(df_rf, train$target_, doBest=T)\r\n";
+	                        cmd += "randomForest.model_"+targetName + " <- tuneRF(df_rf, train$target_, ntreeTry=500, doBest=T)\r\n";
                         }
                     }
                     else
@@ -3092,8 +3092,10 @@ namespace WindowsFormsApplication1
 	                        }
 	                        cmd += ")\r\n";
 	                        cmd += "df_rf<- train[, valist]\r\n";
-	                        cmd += "param_reference <- tuneRF(df_rf, train$target_, doBest=T)\r\n";
-	                        cmd += "randomForest.model_"+targetName + " <- randomForest( " + formuler+ ", ntree = param_reference$ntree, mtry = param_reference$mtry,proximity=T,, data = train_tmp)\r\n";
+	                        cmd += "randomForest.model_"+targetName + " <- tuneRF(df_rf, train$target_, ntreeTry=500, doBest=T)\r\n";
+
+	                        //cmd += "param_reference <- tuneRF(df_rf, train$target_, ntreeTry=500, doBest=T)\r\n";
+	                        //cmd += "randomForest.model_"+targetName + " <- randomForest( " + formuler+ ", ntree = param_reference$ntree, mtry = param_reference$mtry,proximity=T,, data = train_tmp)\r\n";
                         }
                     }
                     cmd += "saveRDS(xgboost.model_"+targetName + ", file = \"xgboost.model_"+targetName+".robj\")\r\n";
@@ -3531,8 +3533,8 @@ namespace WindowsFormsApplication1
 	                        forecast_extension += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
 	                        forecast_extension += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
 	                        forecast_extension += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
-	                        forecast_extension += "predict_y5<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
-	                        forecast_extension += "predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y5)\r\n";
+	                        forecast_extension += "predict_y4<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[4].ToString()+"\r\n";
+	                        forecast_extension += "predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y4)\r\n";
                         }
                         
 						forecast_extension += "predict_y_org <- predict_y\r\n";
@@ -3547,8 +3549,8 @@ namespace WindowsFormsApplication1
 	                    forecast_extension += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
 	                    forecast_extension += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
 	                    forecast_extension += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
-	                    forecast_extension += "predict_y5<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
-	                    forecast_extension += "predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y5)\r\n"; 
+	                    forecast_extension += "predict_y4<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[4].ToString()+"\r\n";
+	                    forecast_extension += "predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y4)\r\n"; 
 	                    //if (use_diff == 1 || use_decompose == 1)
                     }
                     {
@@ -4450,8 +4452,8 @@ namespace WindowsFormsApplication1
 	                        forecast_extension += "              y1<- predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
 	                        forecast_extension += "              y2<- predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
 	                        forecast_extension += "              y3<- predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
-	                        forecast_extension += "              y5<- predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
-	                    	forecast_extension += "              y <- (y + y1 + y2 + y3 + y5)\r\n";                    //if (use_diff == 1 || use_decompose == 1)
+	                        forecast_extension += "              y4<- predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[4].ToString()+"\r\n";
+	                    	forecast_extension += "              y <- (y + y1 + y2 + y3 + y4)\r\n";                    //if (use_diff == 1 || use_decompose == 1)
                         }
                         
                         forecast_extension += "              for ( i in 1:(length(y)-1)){\r\n";
@@ -4466,8 +4468,8 @@ namespace WindowsFormsApplication1
 	                        forecast_extension += "             predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
 	                        forecast_extension += "             predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
 	                        forecast_extension += "             predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
-	                        forecast_extension += "             predict_y5<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
-	                    	forecast_extension += "             predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y5)\r\n";
+	                        forecast_extension += "             predict_y4<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[4].ToString()+"\r\n";
+	                    	forecast_extension += "             predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y4)\r\n";
                     	}
                     	//if (use_diff == 1 || use_decompose == 1)
                         forecast_extension += "        }\r\n";
@@ -4653,8 +4655,8 @@ forecast_extension += "	    }\r\n";
 	                        forecast_extension += "    predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*"+ EnsembleW[1].ToString()+"\r\n";
 	                        forecast_extension += "    predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*"+ EnsembleW[2].ToString()+"\r\n";
 	                        forecast_extension += "    predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*"+ EnsembleW[3].ToString()+"\r\n";
-	                        forecast_extension += "    predict_y5<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[5].ToString()+"\r\n";
-	                    	forecast_extension += "    predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y5)\r\n";
+	                        forecast_extension += "    predict_y4<-predict( object=randomForest.model_"+targetName + ", newdata=test)*"+ EnsembleW[4].ToString()+"\r\n";
+	                    	forecast_extension += "    predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y4)\r\n";
                     	}
                     	//if (use_diff == 1 || use_decompose == 1)
                         forecast_extension += "    predict_y_org <- predict_y\r\n";
