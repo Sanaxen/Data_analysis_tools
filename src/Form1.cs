@@ -2254,6 +2254,7 @@ namespace WindowsFormsApplication1
 
         public bool ExistObj(string name)
         {
+        	
             if (File.Exists("exist_obj.txt"))
             {
                 File.Delete("exist_obj.txt");
@@ -2261,90 +2262,94 @@ namespace WindowsFormsApplication1
 
             string cmd = "";
 
-#if false
-            cmd += "cat(exists(\"" + name + "\"))\r\n";
-            cmd += "cat(\"\\n\")\r\n";
-#else
-            cmd += "cat(ls(pos = .GlobalEnv))\r\n";
-            cmd += "cat(\"\\n\")\r\n";
-#endif
-            System.IO.Directory.SetCurrentDirectory(curDir);
-            Clear_file();
-            string file = "tmp_exist_obj.R";
-
-            try
-            {
-                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
-                {
-                    sw.Write("options(width=1000)\r\n");
-                    sw.Write("sink(file = \"exist_obj.txt\")\r\n");
-                    sw.Write(cmd);
-                    sw.Write("sink()\r\n");
-                }
-            }
-            catch
-            {
-                if (MessageBox.Show("tmp_exist_obj.Rが書き込み出来ません", "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
-                    return false;
-            }
-
-            string stat = Execute_script(file);
-            if (stat == "$ERROR")
-            {
-                return false;
-            }
-
-            ListBox list = new ListBox();
-
-            if (File.Exists("exist_obj.txt"))
-            {
-                StreamReader sr = null;
-#if false
-                try
-                {
-                    sr = new StreamReader("exist_obj.txt", Encoding.GetEncoding("SHIFT_JIS"));
-                    while (sr.EndOfStream == false)
-                    {
-                        string line = sr.ReadLine();
-                        sr.Close();
-                        sr = null;
-                        if (line.IndexOf("FALSE")>=0)
-                        {
-                            return false;
-                        }
-                        return true;
-                    }
-                    if (sr != null) sr.Close();
-                    sr = null;
-                }
-#else
-                try
-                {
-                    sr = new StreamReader("exist_obj.txt", Encoding.GetEncoding("SHIFT_JIS"));
-                    while (sr.EndOfStream == false)
-                    {
-                        string line = sr.ReadLine();
-                        var names = line.Split(' ');
-
-                        for (int i = 0; i < names.Length; i++)
-                        {
-                            names[i] = names[i].Replace("\n", "");
-                            names[i] = names[i].Replace("\r", "");
-                            names[i] = names[i].Replace("\"", "");
-                            if (name == names[i])
-                            {
-                                sr.Close();
-                                return true;
-                            }
-                        }
-                        break;
-                    }
-                    sr.Close();
-                    sr = null;
-                }
-#endif
-                catch { if (sr != null) sr.Close(); }
-            }
+			int s =  Int_func("length", "grep(\"^" + name + "$\",ls(pos = .GlobalEnv))");
+			if ( s == 0 ) return false;
+			return true;
+//			
+//#if false
+//            cmd += "cat(exists(\"" + name + "\"))\r\n";
+//            cmd += "cat(\"\\n\")\r\n";
+//#else
+//            cmd += "cat(ls(pos = .GlobalEnv))\r\n";
+//            cmd += "cat(\"\\n\")\r\n";
+//#endif
+//            System.IO.Directory.SetCurrentDirectory(curDir);
+//            Clear_file();
+//            string file = "tmp_exist_obj.R";
+//
+//            try
+//            {
+//                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+//                {
+//                    sw.Write("options(width=1000)\r\n");
+//                    sw.Write("sink(file = \"exist_obj.txt\")\r\n");
+//                    sw.Write(cmd);
+//                    sw.Write("sink()\r\n");
+//                }
+//            }
+//            catch
+//            {
+//                if (MessageBox.Show("tmp_exist_obj.Rが書き込み出来ません", "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+//                    return false;
+//            }
+//
+//            string stat = Execute_script(file);
+//            if (stat == "$ERROR")
+//            {
+//                return false;
+//            }
+//
+//            ListBox list = new ListBox();
+//
+//            if (File.Exists("exist_obj.txt"))
+//            {
+//                StreamReader sr = null;
+//#if false
+//                try
+//                {
+//                    sr = new StreamReader("exist_obj.txt", Encoding.GetEncoding("SHIFT_JIS"));
+//                    while (sr.EndOfStream == false)
+//                    {
+//                        string line = sr.ReadLine();
+//                        sr.Close();
+//                        sr = null;
+//                        if (line.IndexOf("FALSE")>=0)
+//                        {
+//                            return false;
+//                        }
+//                        return true;
+//                    }
+//                    if (sr != null) sr.Close();
+//                    sr = null;
+//                }
+//#else
+//                try
+//                {
+//                    sr = new StreamReader("exist_obj.txt", Encoding.GetEncoding("SHIFT_JIS"));
+//                    while (sr.EndOfStream == false)
+//                    {
+//                        string line = sr.ReadLine();
+//                        var names = line.Split(' ');
+//
+//                        for (int i = 0; i < names.Length; i++)
+//                        {
+//                            names[i] = names[i].Replace("\n", "");
+//                            names[i] = names[i].Replace("\r", "");
+//                            names[i] = names[i].Replace("\"", "");
+//                            if (name == names[i])
+//                            {
+//                                sr.Close();
+//                                return true;
+//                            }
+//                        }
+//                        break;
+//                    }
+//                    sr.Close();
+//                    sr = null;
+//                }
+//#endif
+//                catch { if (sr != null) sr.Close(); }
+//            }
             return false;
         }
 
