@@ -1930,35 +1930,38 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("max90_" + targetName);
 	                    var_ts.Items.Add("min90_" + targetName);
                     }
-                    if (lag >= befor_3day)
+                    if ( checkBox27.Checked )
                     {
-                        formuler += "+ day3_diff_" + targetName;
-	                    var_ts.Items.Add("day3_diff_" + targetName);
-                    }
-                    if (lag >= befor_5day)
-                    {
-                        formuler += "+ day5_diff_" + targetName;
-                        formuler += "+ second_derivative_" + targetName;
-                        formuler += "+ curvature_" + targetName;
-                        
-	                    var_ts.Items.Add("day5_diff_" + targetName);
-	                    var_ts.Items.Add("second_derivative_" + targetName);
-	                    var_ts.Items.Add("curvature_" + targetName);
-                    }
-                    if (lag >= befor_7day)
-                    {
-                        formuler += "+ day7_diff_" + targetName;
-	                    var_ts.Items.Add("day7_diff_" + targetName);
-                    }
-                    if (lag >= befor_12day)
-                    {
-                        formuler += "+ day12_diff_" + targetName;
-	                    var_ts.Items.Add("day12_diff_" + targetName);
-                    }
-                    if (lag >= befor_30day)
-                    {
-                        formuler += "+ day30_diff_" + targetName;
-	                    var_ts.Items.Add("day30_diff_" + targetName);
+	                    if (lag >= befor_3day)
+	                    {
+	                        formuler += "+ day3_diff_" + targetName;
+		                    var_ts.Items.Add("day3_diff_" + targetName);
+	                    }
+	                    if (lag >= befor_5day)
+	                    {
+	                        formuler += "+ day5_diff_" + targetName;
+	                        formuler += "+ second_derivative_" + targetName;
+	                        formuler += "+ curvature_" + targetName;
+	                        
+		                    var_ts.Items.Add("day5_diff_" + targetName);
+		                    var_ts.Items.Add("second_derivative_" + targetName);
+		                    var_ts.Items.Add("curvature_" + targetName);
+	                    }
+	                    if (lag >= befor_7day)
+	                    {
+	                        formuler += "+ day7_diff_" + targetName;
+		                    var_ts.Items.Add("day7_diff_" + targetName);
+	                    }
+	                    if (lag >= befor_12day)
+	                    {
+	                        formuler += "+ day12_diff_" + targetName;
+		                    var_ts.Items.Add("day12_diff_" + targetName);
+	                    }
+	                    if (lag >= befor_30day)
+	                    {
+	                        formuler += "+ day30_diff_" + targetName;
+		                    var_ts.Items.Add("day30_diff_" + targetName);
+	                    }
                     }
 
                     if (checkBox14.Checked)
@@ -4213,7 +4216,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "        overall <- test\r\n";
                             forecast_extension += "        if ( overall_flg == 1) overall <- rbind(train, test)\r\n";
                             forecast_extension += "\r\n";
-                            if (use_decompose == 1)
+                            if (use_decompose == 1 && n_seasons >= 1)
                             {
                                 forecast_extension += "        #The value of the variable 'test$seasonal' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
                                 forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
@@ -4233,7 +4236,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "\r\n";
                             }
 
-                            if (use_arima == 1)
+                            if (use_arima == 1 && n_seasons >= 1)
                             {
                                 forecast_extension += "        \r\n";
                                 forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
