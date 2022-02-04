@@ -764,6 +764,10 @@ namespace WindowsFormsApplication1
 			{
 				EnsembleW[i] /= EnsembleWsum;
 			}
+			if ( !checkBox26.Checked )
+			{
+				EnsembleW[0] = 1.0;
+			}
 			
             try
             {
@@ -2835,13 +2839,13 @@ namespace WindowsFormsApplication1
 						ensemble_learning_train += "	train_tmp_dmat <- xgb.DMatrix(train_tmp_mx, label = train_tmp$target_";
 						if (comboBox4.Text != "")
 						{
-						    ensemble_learning_train += ",weight = train$'" + comboBox4.Text + "'";
+						    ensemble_learning_train += ",weight = train_tmp$'" + comboBox4.Text + "'";
 						}
 						else
 						{
 						    if (add_enevt_data == 1)
 						    {
-						        ensemble_learning_train += ",weight = train$event";
+						        ensemble_learning_train += ",weight = train_tmp$event";
 						    }
 						}
 						ensemble_learning_train += ")\r\n";
@@ -4258,8 +4262,9 @@ namespace WindowsFormsApplication1
 								forecast_extension += "                     }\r\n";
 								forecast_extension += "                     cat(\"findfrequency=\")\r\n";
 								forecast_extension += "                     print(trend_freq)\r\n";
-								
-								forecast_extension += "                     if ( k > 0 && trend_freq > 2 ) {\r\n";
+
+                                forecast_extension += "                     seasonal_prm = T\r\n";
+                                forecast_extension += "                     if ( k > 0 && trend_freq > 2 ) {\r\n";
 								forecast_extension += "                         xreg = fourier(ts(overall$trend,frequency=trend_freq) , K = min(4, max(2, trend_freq/2)))\r\n";
 								forecast_extension += "                         xreg = xreg[1:nrow(tmp),]\r\n";
 								forecast_extension += "                         print(head(xreg))\r\n";
@@ -4267,8 +4272,10 @@ namespace WindowsFormsApplication1
 								forecast_extension += "                         {\r\n";
 								forecast_extension += "                             xreg = NULL\r\n";
 								forecast_extension += "                             print(\"xreg=NULL\")\r\n";
-								forecast_extension += "                         }\r\n";
-								forecast_extension += "                     }\r\n";
+								forecast_extension += "                         }else {\r\n";
+                                forecast_extension += "                             seasonal_prm = F\r\n";
+                                forecast_extension += "                         }\r\n";
+                                forecast_extension += "                     }\r\n";
 
                                 forecast_extension += "                     if ( fast_arima == 0 ){\r\n";
                                 forecast_extension += "                         trendFit <- auto.arima(df_tt, ic=\"aic\",\r\n";
@@ -4282,7 +4289,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                             max.Q = 5,\r\n";
                                 forecast_extension += "                             nmodels = 100,\r\n";
                                 forecast_extension += "                             approximation=F,\r\n";
-                                forecast_extension += "                             seasonal = T, stepwise=F, trace=T, xreg = xreg)\r\n";
+                                forecast_extension += "                             seasonal = seasonal_prm, stepwise=F, trace=T, xreg = xreg)\r\n";
                                 forecast_extension += "                     }else{\r\n";
                                 forecast_extension += "                         if ( "+(radioButton7.Checked ? "TRUE" : "FALSE")+"){\r\n";
                                 forecast_extension += "                             trendFit <- t_decomp\r\n";
@@ -4297,7 +4304,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                                 max.P = 5,\r\n";
                                 forecast_extension += "                                 max.Q = 5,\r\n";
                                 forecast_extension += "                                 #approximation=F,\r\n";
-                                forecast_extension += "                                 seasonal = T, stepwise=T, trace=T, xreg = xreg)\r\n";
+                                forecast_extension += "                                 seasonal = seasonal_prm, stepwise=T, trace=T, xreg = xreg)\r\n";
                                 forecast_extension += "                         }\r\n";
                                 forecast_extension += "                     }\r\n";
                                 forecast_extension += "                     print(trendFit)\r\n";
@@ -4495,7 +4502,12 @@ namespace WindowsFormsApplication1
 
                         if ( checkBox21.Checked)
                         {
-                            forecast_extension += "     if ( !file.exists(\"no_debug_plotting\") ) debug_plotting = 1\r\n";
+                            forecast_extension += "        if ( !file.exists(\"no_debug_plotting\") ) debug_plotting = 1\r\n";
+                        }else
+                        {
+                            forecast_extension += "        if ( file.exists(\"on_debug_plotting\") ){\r\n";
+                            forecast_extension += "            debug_plotting = 1\r\n";
+                            forecast_extension += "        }\r\n";
                         }
                         forecast_extension += "	    if ( debug_plotting == 1 ){\r\n";
                         
@@ -5664,6 +5676,7 @@ forecast_extension += "	    }\r\n";
                 pictureBox1.Refresh();
 
                 form1.FileDelete("no_debug_plotting");
+                form1.FileDelete("on_debug_plotting");
                 form1.FileDelete("progress.txt");
                 form1.FileDelete("predict_sampling.txt");
                 label44.Text = "";
@@ -8373,18 +8386,36 @@ forecast_extension += "	    }\r\n";
             if ( !checkBox21.Checked)
             {
                 if (_ImageView9 != null) _ImageView9.Hide();
+                if (System.IO.File.Exists("on_debug_plotting"))
+                {
+                    System.IO.File.Delete("on_debug_plotting");
+                }
                 if ( !System.IO.File.Exists("no_debug_plotting"))
                 {
                     using (System.IO.FileStream fs = System.IO.File.Create("no_debug_plotting"))
                     {
                     }
                 }
-            }else
+                timer3.Enabled = false;
+                timer3.Stop();
+            }
+            else
             {
                 if (_ImageView9 != null) _ImageView9.Show();
                 if (System.IO.File.Exists("no_debug_plotting"))
                 {
                     System.IO.File.Delete("no_debug_plotting");
+                }
+                if (!System.IO.File.Exists("on_debug_plotting"))
+                {
+                    using (System.IO.FileStream fs = System.IO.File.Create("on_debug_plotting"))
+                    {
+                    }
+                }
+                if (radioButton3.Checked)
+                {
+                    timer3.Enabled = true;
+                    timer3.Start();
                 }
             }
         }
