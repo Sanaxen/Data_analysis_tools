@@ -99,6 +99,7 @@ namespace WindowsFormsApplication1
         bool comboBox8_edit = false;
         int multi_target_count = 0;
 
+		bool use_day_diff = true;
 
 
         public xgboost()
@@ -908,7 +909,10 @@ namespace WindowsFormsApplication1
 
                     cmd1 += "n_diffs <- 0\r\n";
                     cmd1 += "df_ts_tmp <- df\r\n";
-                    cmd1 += "df_ts_tmp[is.na(df_ts_tmp)] <- 0\r\n";
+                    cmd1 += "#df_ts_tmp[is.na(df_ts_tmp)] <- 0\r\n";
+                    cmd1 += "for (i in 2:ncol(df_ts_tmp)){ \r\n";
+                    cmd1 += "	df_ts_tmp[is.na(df_ts_tmp[,i]),i] = mean(df_ts_tmp[,i],na.rm=TRUE)\r\n";
+                    cmd1 += "} \r\n";
                     for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                     {
                         for (int j = 1; j <= lag; j++)
@@ -1829,11 +1833,14 @@ namespace WindowsFormsApplication1
 	                        var_ts.Items.Add("lag" + i.ToString() + "_" + targetName);
 	                    }
 	                    
-	                    formuler += "+ day1_diff_" + targetName;
-	                    formuler += "+ day1diff_diff_" + targetName;
+	                    if ( use_day_diff )
+	                    {
+		                    formuler += "+ day1_diff_" + targetName;
+		                    formuler += "+ day1diff_diff_" + targetName;
 
-	                    var_ts.Items.Add("day1_diff_" + targetName);
-	                    var_ts.Items.Add("day1diff_diff_" + targetName);
+		                    var_ts.Items.Add("day1_diff_" + targetName);
+		                    var_ts.Items.Add("day1diff_diff_" + targetName);
+	                    }
                     }
 
                     if (lag >= means_3n)
@@ -1934,7 +1941,7 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("max90_" + targetName);
 	                    var_ts.Items.Add("min90_" + targetName);
                     }
-                    if ( checkBox27.Checked )
+                    if ( checkBox27.Checked && use_day_diff )
                     {
 	                    if (lag >= befor_3day)
 	                    {
@@ -4207,15 +4214,15 @@ namespace WindowsFormsApplication1
                             {
                                 forecast_extension += "        #The value of the variable 'test$seasonal' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
                                 forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
-                                forecast_extension += "	            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency=frequency_value), type =\"" + decomp_type + "\")\r\n";
-                                forecast_extension += "	            decompose_df <<- tmp\r\n";
-                                forecast_extension += "	            #if ( t_step > 2 ) overall$seasonal[length(overall$target_)-1] = decompose_df$seasonal[length(overall$target_)-1]   #update\r\n";
-                                forecast_extension += "	            overall$seasonal[length(overall$target_)] = decompose_df$seasonal[length(overall$target_)]\r\n";
+                                forecast_extension += "            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency=frequency_value), type =\"" + decomp_type + "\")\r\n";
+                                forecast_extension += "            decompose_df <<- tmp\r\n";
+                                forecast_extension += "            #if ( t_step > 2 ) overall$seasonal[length(overall$target_)-1] = decompose_df$seasonal[length(overall$target_)-1]   #update\r\n";
+                                forecast_extension += "            overall$seasonal[length(overall$target_)] = decompose_df$seasonal[length(overall$target_)]\r\n";
                                 forecast_extension += "\r\n";
-                                forecast_extension += "	            tmp<- seasadj(tmp)\r\n";
-                                forecast_extension += "	            tmp <- as.data.frame(as.matrix(tmp))\r\n";
-                                forecast_extension += "	            #if ( t_step > 2 ) overall$deseasonal[length(overall$target_) - 1] = tmp[length(overall$target_) - 1, 1]\r\n";
-                                forecast_extension += "	            overall$deseasonal[length(overall$target_)] = tmp[length(overall$target_), 1]\r\n";
+                                forecast_extension += "            tmp<- seasadj(tmp)\r\n";
+                                forecast_extension += "            tmp <- as.data.frame(as.matrix(tmp))\r\n";
+                                forecast_extension += "            #if ( t_step > 2 ) overall$deseasonal[length(overall$target_) - 1] = tmp[length(overall$target_) - 1, 1]\r\n";
+                                forecast_extension += "            overall$deseasonal[length(overall$target_)] = tmp[length(overall$target_), 1]\r\n";
                                 forecast_extension += "\r\n";
 		            			forecast_extension += "            test$deseasonal <- overall$deseasonal[(length(train$target_)+1):length(overall$target_)]\r\n";
 		            			forecast_extension += "            test$seasonal <- overall$seasonal[(length(train$target_)+1):length(overall$target_)]\r\n";
@@ -4509,7 +4516,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "            debug_plotting = 1\r\n";
                             forecast_extension += "        }\r\n";
                         }
-                        forecast_extension += "	    if ( debug_plotting == 1 ){\r\n";
+                        forecast_extension += "	    if ( debug_plotting == 1 && as.integer(t_step %% 20) == 0){\r\n";
                         
 forecast_extension += "	        plt1 <- NULL\r\n";
 forecast_extension += "	        plt2 <- NULL\r\n";
