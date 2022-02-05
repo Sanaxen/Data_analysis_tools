@@ -99,7 +99,7 @@ namespace WindowsFormsApplication1
         bool comboBox8_edit = false;
         int multi_target_count = 0;
 
-		bool use_day_diff = true;
+		bool use_day_diff = false;
 
 
         public xgboost()
@@ -738,7 +738,10 @@ namespace WindowsFormsApplication1
             else cutoff = 0;
             if (time_series_mode) checkBox2.Enabled = false;
             else checkBox2.Enabled = true;
-            
+
+            if (checkBox28.Checked) use_day_diff = true;
+            else use_day_diff = false;
+
             if (!time_series_mode)
             {
                 use_decompose = 0;
@@ -6193,6 +6196,10 @@ forecast_extension += "	    }\r\n";
                 else sw.Write("false\r\n");
 
                 sw.Write("出力長,"); sw.Write(numericUpDown23.Value.ToString() + "\r\n");
+                
+                sw.Write("差分変数使用,");
+                if (checkBox28.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
 
                 sw.Close();
             }
@@ -6847,6 +6854,18 @@ forecast_extension += "	    }\r\n";
                     if (ss[0].IndexOf("出力長") >= 0)
                     {
                         numericUpDown23.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("差分変数使用") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            checkBox28.Checked = true;
+                        }
+                        else
+                        {
+                            checkBox28.Checked = false;
+                        }
                         continue;
                     }
                 }

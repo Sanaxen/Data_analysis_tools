@@ -221,6 +221,7 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.timer4 = new System.Windows.Forms.Timer(this.components);
+            this.checkBox28 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -479,6 +480,7 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.panel7.Controls.Add(this.checkBox28);
             this.panel7.Controls.Add(this.checkBox27);
             this.panel7.Controls.Add(this.checkBox21);
             this.panel7.Controls.Add(this.label46);
@@ -2869,6 +2871,16 @@
             this.timer4.Interval = 5000;
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
+            // checkBox28
+            // 
+            this.checkBox28.AutoSize = true;
+            this.checkBox28.Location = new System.Drawing.Point(11, 483);
+            this.checkBox28.Name = "checkBox28";
+            this.checkBox28.Size = new System.Drawing.Size(104, 19);
+            this.checkBox28.TabIndex = 183;
+            this.checkBox28.Text = "差分特徴量";
+            this.checkBox28.UseVisualStyleBackColor = true;
+            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -3129,5 +3141,6 @@
         private System.Windows.Forms.CheckBox checkBox27;
         public System.Windows.Forms.NumericUpDown numericUpDown23;
         private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.CheckBox checkBox28;
     }
 }
