@@ -42,6 +42,7 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.checkBox28 = new System.Windows.Forms.CheckBox();
             this.checkBox27 = new System.Windows.Forms.CheckBox();
             this.checkBox21 = new System.Windows.Forms.CheckBox();
             this.label46 = new System.Windows.Forms.Label();
@@ -67,6 +68,7 @@
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.checkBox16 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBox29 = new System.Windows.Forms.CheckBox();
             this.comboBox7 = new System.Windows.Forms.ComboBox();
             this.numericUpDown21 = new System.Windows.Forms.NumericUpDown();
             this.label45 = new System.Windows.Forms.Label();
@@ -221,7 +223,6 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.timer4 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox28 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.panel7.SuspendLayout();
@@ -518,6 +519,16 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(329, 800);
             this.panel7.TabIndex = 147;
+            // 
+            // checkBox28
+            // 
+            this.checkBox28.AutoSize = true;
+            this.checkBox28.Location = new System.Drawing.Point(9, 480);
+            this.checkBox28.Name = "checkBox28";
+            this.checkBox28.Size = new System.Drawing.Size(104, 19);
+            this.checkBox28.TabIndex = 183;
+            this.checkBox28.Text = "差分特徴量";
+            this.checkBox28.UseVisualStyleBackColor = true;
             // 
             // checkBox27
             // 
@@ -826,6 +837,7 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Moccasin;
+            this.groupBox2.Controls.Add(this.checkBox29);
             this.groupBox2.Controls.Add(this.comboBox7);
             this.groupBox2.Controls.Add(this.numericUpDown21);
             this.groupBox2.Controls.Add(this.label45);
@@ -854,6 +866,17 @@
             this.groupBox2.TabIndex = 160;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "トレンドと周期と分離";
+            // 
+            // checkBox29
+            // 
+            this.checkBox29.AutoSize = true;
+            this.checkBox29.Location = new System.Drawing.Point(218, 232);
+            this.checkBox29.Name = "checkBox29";
+            this.checkBox29.Size = new System.Drawing.Size(99, 19);
+            this.checkBox29.TabIndex = 184;
+            this.checkBox29.Text = "Regression";
+            this.toolTip1.SetToolTip(this.checkBox29, "ONにした場合Dynamic harmonic regressionがONの時に有効になります");
+            this.checkBox29.UseVisualStyleBackColor = true;
             // 
             // comboBox7
             // 
@@ -1159,9 +1182,10 @@
             this.checkBox14.Location = new System.Drawing.Point(1, 232);
             this.checkBox14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox14.Name = "checkBox14";
-            this.checkBox14.Size = new System.Drawing.Size(210, 19);
+            this.checkBox14.Size = new System.Drawing.Size(217, 19);
             this.checkBox14.TabIndex = 152;
-            this.checkBox14.Text = "重複混合周期（周波数分離）";
+            this.checkBox14.Text = "Dynamic harmonic regression";
+            this.toolTip1.SetToolTip(this.checkBox14, "季節的な期間が長い場合、フーリエ項を使用した動的回帰は、この本で検討した他のモデルよりも優れていることがよくあります");
             this.checkBox14.UseVisualStyleBackColor = true;
             this.checkBox14.CheckStateChanged += new System.EventHandler(this.checkBox14_CheckStateChanged);
             // 
@@ -2871,16 +2895,6 @@
             this.timer4.Interval = 5000;
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
-            // checkBox28
-            // 
-            this.checkBox28.AutoSize = true;
-            this.checkBox28.Location = new System.Drawing.Point(11, 483);
-            this.checkBox28.Name = "checkBox28";
-            this.checkBox28.Size = new System.Drawing.Size(104, 19);
-            this.checkBox28.TabIndex = 183;
-            this.checkBox28.Text = "差分特徴量";
-            this.checkBox28.UseVisualStyleBackColor = true;
-            // 
             // xgboost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -3142,5 +3156,6 @@
         public System.Windows.Forms.NumericUpDown numericUpDown23;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.CheckBox checkBox28;
+        private System.Windows.Forms.CheckBox checkBox29;
     }
 }
