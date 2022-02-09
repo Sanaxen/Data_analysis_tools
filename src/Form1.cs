@@ -8778,7 +8778,7 @@ namespace WindowsFormsApplication1
             _xgboost.form1 = this;
             _xgboost.BackColor = BackColor;
             _xgboost.add_enevt_data = 0;
-            _xgboost.checkBox8.Checked = true;
+            _xgboost.xgb_ts_prm_.checkBox8.Checked = true;
 
 
             string cmd = "";
@@ -8836,29 +8836,35 @@ namespace WindowsFormsApplication1
             {
                 _xgboost.Text = "Gradient Boosting";
                 _xgboost.time_series_mode = true;
-                _xgboost.lag = (int)_xgboost.numericUpDown8.Value;
+                _xgboost.lag = (int)_xgboost.xgb_ts_prm_.numericUpDown8.Value;
                 _xgboost.radioButton1.Checked = true;
                 _xgboost.radioButton2.Checked = false;
 
-                _xgboost.label23.Visible = true;
-                _xgboost.numericUpDown8.Visible = true;
+                _xgboost.xgb_ts_prm_.label23.Visible = true;
+                _xgboost.xgb_ts_prm_.numericUpDown8.Visible = true;
                 _xgboost.panel4.Visible = false;
                 _xgboost.label21.Visible = false;
                 _xgboost.numericUpDown7.Visible = false;
+                _xgboost.groupBox1.Visible = false;
 
                 _xgboost.panel7.Visible = true;
-                _xgboost.label30.Visible = true;
-                _xgboost.label31.Visible = true;
-                _xgboost.label32.Visible = true;
-                _xgboost.comboBox5.Visible = true;
-                _xgboost.numericUpDown5.Visible = true;
-                _xgboost.numericUpDown14.Visible = true;
-                _xgboost.numericUpDown15.Visible = true;
+                _xgboost.xgb_ts_prm_.label30.Visible = true;
+                _xgboost.xgb_ts_prm_.label31.Visible = true;
+                _xgboost.xgb_ts_prm_.label32.Visible = true;
+                _xgboost.xgb_ts_prm_.comboBox5.Visible = true;
+                _xgboost.xgb_ts_prm_.numericUpDown5.Visible = true;
+                _xgboost.xgb_ts_prm_.numericUpDown14.Visible = true;
+                _xgboost.xgb_ts_prm_.numericUpDown15.Visible = true;
                 _xgboost.checkBox5.Visible = true;
-                _xgboost.checkBox8.Visible = true;
+                _xgboost.xgb_ts_prm_.checkBox8.Visible = true;
                 _xgboost.numericUpDown16.Visible = true;
-                _xgboost.label33.Visible = true;
+                _xgboost.xgb_ts_prm_.label33.Visible = true;
                 _xgboost.checkBox2.Enabled = false;
+                _xgboost.xgb_ts_prm_.groupBox2.Enabled = true;
+                _xgboost.xgb_ts_prm_.groupBox6.Enabled = true;
+                _xgboost.xgb_ts_prm_.groupBox4.Enabled = true;
+                _xgboost.xgb_ts_prm_.groupBox1.Enabled = true;
+                _xgboost.xgb_ts_prm_.groupBox5.Enabled = true;
             }
             else
             {
@@ -8866,22 +8872,28 @@ namespace WindowsFormsApplication1
                 _xgboost.time_series_mode = false;
                 _xgboost.lag = 0;
 
-                _xgboost.label23.Visible = false;
-                _xgboost.numericUpDown8.Visible = false;
+                _xgboost.xgb_ts_prm_.label23.Visible = false;
+                _xgboost.xgb_ts_prm_.numericUpDown8.Visible = false;
                 _xgboost.panel4.Visible = true;
 
-                _xgboost.panel7.Visible = false;
-                _xgboost.label30.Visible = false;
-                _xgboost.label31.Visible = false;
-                _xgboost.label32.Visible = false;
-                _xgboost.comboBox5.Visible = false;
-                _xgboost.numericUpDown5.Visible = false;
-                _xgboost.numericUpDown14.Visible = false;
-                _xgboost.numericUpDown15.Visible = false;
+                _xgboost.panel7.Visible = true;
+                _xgboost.xgb_ts_prm_.label30.Visible = false;
+                _xgboost.xgb_ts_prm_.label31.Visible = false;
+                _xgboost.xgb_ts_prm_.label32.Visible = false;
+                _xgboost.xgb_ts_prm_.comboBox5.Visible = false;
+                _xgboost.xgb_ts_prm_.numericUpDown5.Visible = false;
+                _xgboost.xgb_ts_prm_.numericUpDown14.Visible = false;
+                _xgboost.xgb_ts_prm_.numericUpDown15.Visible = false;
                 _xgboost.checkBox5.Visible = true;
-                _xgboost.checkBox8.Visible = false;
+                _xgboost.xgb_ts_prm_.checkBox8.Visible = false;
                 _xgboost.numericUpDown16.Visible = false;
-                _xgboost.label33.Visible = false;
+                _xgboost.xgb_ts_prm_.label33.Visible = false;
+                _xgboost.groupBox1.Visible = true;
+                _xgboost.xgb_ts_prm_.groupBox2.Enabled = false;
+                _xgboost.xgb_ts_prm_.groupBox6.Enabled = false;
+                _xgboost.xgb_ts_prm_.groupBox4.Enabled = false;
+                _xgboost.xgb_ts_prm_.groupBox1.Enabled = false;
+                _xgboost.xgb_ts_prm_.groupBox5.Enabled = false;
             }
 
             string file = targetCSV + ".csv";

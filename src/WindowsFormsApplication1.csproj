@@ -560,6 +560,12 @@
     <Compile Include="xgboost_exp.Designer.cs">
       <DependentUpon>xgboost_exp.cs</DependentUpon>
     </Compile>
+    <Compile Include="xgb_ts_prm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="xgb_ts_prm.Designer.cs">
+      <DependentUpon>xgb_ts_prm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="add_col.resx">
       <DependentUpon>add_col.cs</DependentUpon>
     </EmbeddedResource>
@@ -797,6 +803,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="xgboost_exp.resx">
       <DependentUpon>xgboost_exp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="xgb_ts_prm.resx">
+      <DependentUpon>xgb_ts_prm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />
