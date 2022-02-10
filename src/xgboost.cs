@@ -106,6 +106,9 @@ namespace WindowsFormsApplication1
         public xgb_ts_prm xgb_ts_prm_ = null;
         public double[] EnsembleW = { 0.8, 0.2, 0.2, 0.2, 0.4, 0.5 };
 
+		double measurement_of_time = 0.0;
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+
         public xgboost()
         {
             InitializeComponent();
@@ -628,6 +631,10 @@ namespace WindowsFormsApplication1
                     {
                         form1.FileDelete("xgboost_gridsearch.stop");
                     }
+                    if (System.IO.File.Exists("prophet_gridsearch.stop"))
+                    {
+                        form1.FileDelete("prophet_gridsearch.stop");
+                    }
 
                     if (image_links != null) image_links = null;
                     if (parameters != null) parameters = null;
@@ -650,22 +657,34 @@ namespace WindowsFormsApplication1
 
                 if (radioButton4.Checked && checkBox23.Checked)
                 {
+                	measurement_of_time = 0;
                     timer4.Enabled = true;
                     timer4.Start();
+                }
+                if (radioButton4.Checked && xgb_ts_prm_.checkBox1.Checked)
+                {
+                	measurement_of_time = 0;
+                    timer5.Enabled = true;
+                    timer5.Start();
                 }
 
                 multi_target_count = 0;
                 label47.Text = multi_target_count + "/" + (listBox1.SelectedIndices.Count);
                 for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                 {
+                    progressBar4.Value = 0;
                     if ( checkBox22.Checked)
                     {
                         timer4.Enabled = false;
                         timer4.Stop();
+                        measurement_of_time = 0;
+
                         break;
                     }
                     targetName = listBox1.Items[listBox1.SelectedIndices[i]].ToString();
+                    
                     button1_Click_target(sender, e);
+                    
                     if (error_status != 0) break;
 
                     if (radioButton4.Checked)
@@ -732,6 +751,10 @@ namespace WindowsFormsApplication1
                 comboBox8_edit = false;
                 timer4.Enabled = false;
                 timer4.Stop();
+                timer5.Enabled = false;
+                timer5.Stop();
+                measurement_of_time = 0;
+
             }
         }
 
@@ -2882,7 +2905,9 @@ namespace WindowsFormsApplication1
 						xgboost_gridsearch += "	best_score = 9999999\r\n";
 						xgboost_gridsearch += "	best_params = NULL\r\n";
 						xgboost_gridsearch += "	best_model = NULL\r\n";
-						xgboost_gridsearch += "	for ( eta_i in eta ){\r\n";
+                        xgboost_gridsearch += "	best_mer = 100000\r\n";
+                        xgboost_gridsearch += "	if (  file.exists(\"ts_debug_plot/best_fit.png\") ) file.remove(\"ts_debug_plot/best_fit.png\")\r\n";
+                        xgboost_gridsearch += "	for ( eta_i in eta ){\r\n";
 						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
 						xgboost_gridsearch += "	for ( gamma_i in gamma ){\r\n";
 						xgboost_gridsearch += "		if (  file.exists(\"xgboost_gridsearch.stop\") ) break\r\n";
@@ -2978,41 +3003,71 @@ namespace WindowsFormsApplication1
 						xgboost_gridsearch += "	model <- xgb.train(data = train_tmp_dmat,nrounds = nrounds_i,verbose = 0, # 繰り返し過程を表示する\r\n";
 						xgboost_gridsearch += "	,early_stopping_rounds = 100,params = l_params,watchlist = list(train = train_tmp_dmat, eval = obs_test_step_df_dmat))\r\n";
 						xgboost_gridsearch += "\r\n";
-						xgboost_gridsearch += "	if (model$best_score < best_score)\r\n";
-						xgboost_gridsearch += "	{\r\n";
+                        xgboost_gridsearch += " y <- predict(model,newdata = test_dmat)\r\n";
+                        xgboost_gridsearch += " mer = median((y-test$target_)*(y-test$target_))\r\n";
+                        xgboost_gridsearch += "\r\n";
+                        xgboost_gridsearch += "	#if (model$best_score < best_score)\r\n";
+                        xgboost_gridsearch += "	if (mer < best_mer)\r\n";
+                        xgboost_gridsearch += "	{\r\n";
 						xgboost_gridsearch += "		best_count = best_count +1\r\n";
 						xgboost_gridsearch += "		best_params = l_params\r\n";
 						xgboost_gridsearch += "		best_score = model$best_score\r\n";
 						xgboost_gridsearch += "		best_model = model\r\n";
-						xgboost_gridsearch += "		#print(best_params)\r\n";
+                        xgboost_gridsearch += "		best_mer = mer\r\n";
+                        xgboost_gridsearch += "		#print(best_params)\r\n";
 						xgboost_gridsearch += "		#print(best_score)\r\n";
-						xgboost_gridsearch += "		flush.console()\r\n";
+                        xgboost_gridsearch += "	    #plot(y, type=\"l\", col=\"#ff7f00\")\r\n";
+                        xgboost_gridsearch += "	    #par(new=T)\r\n";
+                        xgboost_gridsearch += "	    #plot(test$target_, type=\"l\", col = \"#377eb8\")\r\n";
+                        if ( time_series_mode )
+                        {
+	                        xgboost_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=y, color=\"#ff7f00\",size = 1))\r\n";
+	                        xgboost_gridsearch += "	    plt<- plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test$target_, color=\"#377eb8\",size = 1))\r\n";
+						}else
+						{
+	                        xgboost_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=c(1:nrow(test)), y=y, color=\"#ff7f00\",size = 1))\r\n";
+	                        xgboost_gridsearch += "	    plt<- plt + geom_line(aes(x=c(1:nrow(test)), y=test$target_, color=\"#377eb8\",size = 1))\r\n";
+						}
+						xgboost_gridsearch += "		tryCatch({\r\n";
+						xgboost_gridsearch += "	            print(plt)\r\n";
+						xgboost_gridsearch += "	            ggsave(file = paste(paste(\"ts_debug_plot/best_fit\", sep=\"\"), \".png\", sep=\"\"), plt, dpi = 120, width = 6.4*4*1, height = 3*4.8*1, limitsize = FALSE)\r\n";
+						xgboost_gridsearch += "         },\r\n";
+						xgboost_gridsearch += "		error = function(e) {\r\n";
+						xgboost_gridsearch += "            sink()\r\n";
+						xgboost_gridsearch += "		},\r\n";
+						xgboost_gridsearch += "		finally   = {\r\n";
+						xgboost_gridsearch += "		},silent = TRUE )\r\n";
+                        xgboost_gridsearch += "		flush.console()\r\n";
 						xgboost_gridsearch += "\r\n";
 						xgboost_gridsearch += "	}\r\n";
 						xgboost_gridsearch += "	if ( best_count_max >0 && best_count > best_count_max ) break\r\n";
 						xgboost_gridsearch += "	eval_count = eval_count + 1\r\n";
 						xgboost_gridsearch += "	cat(eval_count)\r\n";
-						xgboost_gridsearch += "	cat(\" score:\")\r\n";
+                        xgboost_gridsearch += "	cat (\"/\")\r\n";
+                        xgboost_gridsearch += "	cat(pattern_length)\r\n";
+                        xgboost_gridsearch += "	cat(\" score:\")\r\n";
 						xgboost_gridsearch += "	cat(model$best_score)\r\n";
 						xgboost_gridsearch += "	cat(\" best_score:\")\r\n";
 						xgboost_gridsearch += "	cat(best_score)\r\n";
-						xgboost_gridsearch += "	cat(\"\n\")\r\n";
+                        xgboost_gridsearch += "	cat(\" best_mer:\")\r\n";
+                        xgboost_gridsearch += "	cat(best_mer)\r\n";
+                        xgboost_gridsearch += "	cat(\"\\n\")\r\n";
                         xgboost_gridsearch += "\r\n";
                         xgboost_gridsearch += "\r\n";
-						xgboost_gridsearch += "        tryCatch({\r\n";
-						xgboost_gridsearch += "            sink(\"xgboost_gridSearch_progress.txt\")\r\n";
-						xgboost_gridsearch += "            cat(eval_count)\r\n";
-						xgboost_gridsearch += "            cat (\"/\")\r\n";
-						xgboost_gridsearch += "            cat(pattern_length)\r\n";
-						xgboost_gridsearch += "            cat(\"\\r\\n\")\r\n";
-						xgboost_gridsearch += "            flush.console()\r\n";
-						xgboost_gridsearch += "            sink()\r\n";
-						xgboost_gridsearch += "        },\r\n";
-						xgboost_gridsearch += "        error = function(e) {\r\n";
-						xgboost_gridsearch += "            sink()\r\n";
-						xgboost_gridsearch += "        },\r\n";
-						xgboost_gridsearch += "        finally   = {\r\n";
-						xgboost_gridsearch += "        },silent = TRUE )\r\n";
+						xgboost_gridsearch += "	tryCatch({\r\n";
+						xgboost_gridsearch += "		sink(\"xgboost_gridSearch_progress.txt\")\r\n";
+						xgboost_gridsearch += "		cat(eval_count)\r\n";
+						xgboost_gridsearch += "		cat (\"/\")\r\n";
+						xgboost_gridsearch += "		cat(pattern_length)\r\n";
+						xgboost_gridsearch += "		cat(\"\\r\\n\")\r\n";
+						xgboost_gridsearch += "		flush.console()\r\n";
+						xgboost_gridsearch += "		sink()\r\n";
+						xgboost_gridsearch += "	},\r\n";
+						xgboost_gridsearch += "		error = function(e) {\r\n";
+						xgboost_gridsearch += "		sink()\r\n";
+						xgboost_gridsearch += "		},\r\n";
+						xgboost_gridsearch += "		finally   = {\r\n";
+						xgboost_gridsearch += "	},silent = TRUE )\r\n";
                         xgboost_gridsearch += "\r\n";
 						xgboost_gridsearch += "\r\n";
 						xgboost_gridsearch += "	flush.console()\r\n";
@@ -3080,36 +3135,70 @@ namespace WindowsFormsApplication1
                         prophet_gridsearch += "	df_prophet$y   <- df_prophet$target_\r\n";
                         prophet_gridsearch += "\r\n";
 
-                        prophet_gridsearch += "	changepoint_prior_scale = c(0.001, 0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4)\r\n";
-                        prophet_gridsearch += "	seasonality_prior_scale = c(0.01, 0.1, 0.3, 0.5, 1.0, 1.5, 3.0, 4.0, 5.0, 6.0)\r\n";
-                        prophet_gridsearch += "	holidays_prior_scale = c(1.0, 1.5, 3.0, 4.0, 5.0, 6.0,8.0, 10.0 )\r\n";
-                        prophet_gridsearch += "	pattern_length = length(changepoint_prior_scale)*length(seasonality_prior_scale)*length(holidays_prior_scale)\r\n";
+						prophet_gridsearch += "	tarin_min_size = min(nrow(train), max(200, as.integer(nrow(train)/5)))\r\n";
+						prophet_gridsearch += "	test_min_size = min(nrow(test), max(200, as.integer(nrow(test)/2)))\r\n";
+						prophet_gridsearch += "	s1 = 1\r\n";
+						prophet_gridsearch += "	s2 = 0\r\n";
+						prophet_gridsearch += "	s3 = 0\r\n";
+
+
+                        prophet_gridsearch += "	changepoint_prior_scale = c(0.05, 0.1, 0.2, 0.4)\r\n";
+                        prophet_gridsearch += "	seasonality_prior_scale = c(10.0, 0.1, 0.5, 1.0, 3.0, 6.0, 8.0)\r\n";
+                        prophet_gridsearch += "	holidays_prior_scale =    c(10.0, 0.1, 0.5, 1.0, 3.0, 6.0, 8.0 )\r\n";
+                        prophet_gridsearch += "	period = c(0, 3, 7, 14, 30.5, 365.25 )\r\n";
+                        prophet_gridsearch += "	pattern_length = length(changepoint_prior_scale)*length(seasonality_prior_scale)*length(holidays_prior_scale)*length(period)\r\n";
                         prophet_gridsearch += "\r\n";
                         prophet_gridsearch += "	eval_count = 0\r\n";
                         prophet_gridsearch += "	best_count = 0\r\n";
                         prophet_gridsearch += "	best_score = 9999999\r\n";
                         prophet_gridsearch += "	best_params = NULL\r\n";
                         prophet_gridsearch += "	best_model = NULL\r\n";
-                        prophet_gridsearch += "	best_mse = 10000000\r\n";
+                        prophet_gridsearch += "	best_mer = 10000000\r\n";
+                        prophet_gridsearch += "	if (  file.exists(\"ts_debug_plot/best_fit.png\") ) file.remove(\"ts_debug_plot/best_fit.png\")\r\n";
                         prophet_gridsearch += "	for ( changepoint_prior_scale_i in changepoint_prior_scale ){\r\n";
                         prophet_gridsearch += "		if (  file.exists(\"prophet_gridsearch.stop\") ) break\r\n";
                         prophet_gridsearch += "	for ( seasonality_prior_scale_i in seasonality_prior_scale ){\r\n";
                         prophet_gridsearch += "		if (  file.exists(\"prophet_gridsearch.stop\") ) break\r\n";
                         prophet_gridsearch += "	for ( holidays_prior_scale_i in holidays_prior_scale ){\r\n";
                         prophet_gridsearch += "		if (  file.exists(\"prophet_gridsearch.stop\") ) break\r\n";
+                        prophet_gridsearch += "	for ( period_i in period ){\r\n";
+                        prophet_gridsearch += "		if (  file.exists(\"prophet_gridsearch.stop\") ) break\r\n";
 
+
+						prophet_gridsearch += "	if (nrow(train)-tarin_min_size > 0){\r\n";
+						prophet_gridsearch += "	    for ( i in 1:10 )\r\n";
+						prophet_gridsearch += "	    {\r\n";
+						prophet_gridsearch += "		    s1 = as.integer(runif(1, 1, nrow(train)-tarin_min_size))\r\n";
+						prophet_gridsearch += "		    s2 = s1 + tarin_min_size\r\n";
+						prophet_gridsearch += "		    if ( s2 <= nrow(train)) break\r\n";
+						prophet_gridsearch += "		    s2 = -1\r\n";
+						prophet_gridsearch += "	    }\r\n";
+						prophet_gridsearch += "	    if ( s2 < 1 ) {\r\n";
+						prophet_gridsearch += "		    s1 = 1\r\n";
+						prophet_gridsearch += "		    s2 = s1 + tarin_min_size\r\n";
+						prophet_gridsearch += "	    }\r\n";
+						prophet_gridsearch += "	}else{\r\n";
+						prophet_gridsearch += "		    s1 = 1\r\n";
+						prophet_gridsearch += "		    s2 = s1 + nrow(train)-1\r\n";
+						prophet_gridsearch += "	}\r\n";
+						prophet_gridsearch += "	s3 = s2 + test_min_size\r\n";
+						
                         prophet_gridsearch += "	m <-prophet(n.changepoints=25,weekly.seasonality=\"auto\",yearly.seasonality=\"auto\",daily.seasonality=\"auto\",\r\n";
-                        prophet_gridsearch += "                      seasonality.mode = \"" + xgb_ts_prm_.comboBox7.Text + "\",changepoint.prior.scale = changepoint_prior_scale_i,seasonality.prior.scale = seasonality_prior_scale_i, holidays.prior.scale=holidays_prior_scale_i, growth = \"linear\", fit=FALSE";
+                        prophet_gridsearch += "                      seasonality.mode = \"" + xgb_ts_prm_.comboBox7.Text + "\",\r\n";
+                        prophet_gridsearch += "                      changepoint.prior.scale = changepoint_prior_scale_i,\r\n";
+                        prophet_gridsearch += "                      seasonality.prior.scale = seasonality_prior_scale_i,\r\n";
+                        prophet_gridsearch += "                      holidays.prior.scale=holidays_prior_scale_i, \r\n";
+                        prophet_gridsearch += "                      growth = \"linear\", fit=FALSE\r\n";
                         if (holidays1 || holidays2)
                         {
                             if (holidays1)
                             {
-                                prophet_gridsearch += ",holidays = holidays";
+                                prophet_gridsearch += "                      ,holidays = holidays\r\n";
                             }
                             else
                             if (holidays2)
                             {
-                                prophet_gridsearch += ",holidays = i.holidays";
+                                prophet_gridsearch += "                      ,holidays = i.holidays\r\n";
                             }
                         }
                         prophet_gridsearch += "	)\r\n";
@@ -3121,38 +3210,55 @@ namespace WindowsFormsApplication1
 								prophet_gridsearch += "'"+ var.Items[i].ToString() +"')\r\n";
 			                }
 		                }
-                        prophet_gridsearch += "	prophet.model <-fit.prophet(m, df_prophet[1:(nrow(train)),])\r\n";
+                        if (xgb_ts_prm_.checkBox14.Checked && xgb_ts_prm_.numericUpDown21.Value > 1)
+                        {
+                            prophet_gridsearch += "	m <- add_seasonality(m, name='frq"+ xgb_ts_prm_.numericUpDown21.Value .ToString()+ "', period = " + xgb_ts_prm_.numericUpDown21.Value.ToString()+", fourier.order = 5)\r\n";
+                        }
+                        prophet_gridsearch += "	if ( period_i > 1 ) m <- add_seasonality(m, name='frq_'"+ ", period = period_i, fourier.order = 5)\r\n";
+                        prophet_gridsearch += "	prophet.model <-fit.prophet(m, df_prophet[s1:(s2-1),])\r\n";
                         prophet_gridsearch += "	\r\n";
-                        prophet_gridsearch += "	prophet_future<-make_future_dataframe(prophet.model, nrow(test), freq =dt_)\r\n";
+                        prophet_gridsearch += "	prophet_future<-make_future_dataframe(prophet.model, s3-s2+1, freq =dt_)\r\n";
                         if (xgb_ts_prm_.checkBox29.Checked)
                         {
                             for (int i = 0; i < var.Items.Count; i++)
                             {
                                 prophet_gridsearch += "	prophet_future$'" + var.Items[i].ToString() + "' <- ";
-                                prophet_gridsearch += "df_prophet$'" + var.Items[i].ToString() + "'[1:nrow(df_prophet)]\r\n";
+                                prophet_gridsearch += "	df_prophet$'" + var.Items[i].ToString() + "'[s1:s3]\r\n";
                             }
                         }
                         prophet_gridsearch += "	predict_prophet <- predict(prophet.model ,prophet_future," + growth + ")\r\n";
-                        prophet_gridsearch += "	y<-predict_prophet[,c(\"yhat\")]\r\n";
-                        prophet_gridsearch += "	mse = sum((y-df_prophet$y)*(y-df_prophet$y))/nrow(test)\r\n";
-                        prophet_gridsearch += "	if ( mse < best_mse )\r\n";
+                        prophet_gridsearch += "	y<-predict_prophet$yhat\r\n";
+                        prophet_gridsearch += "	mer = median((y-df_prophet$y[c(s1:s3)])*(y-df_prophet$y[c(s1:s3)]))\r\n";
+                        prophet_gridsearch += "	if ( mer < best_mer )\r\n";
                         prophet_gridsearch += "	{\r\n";
-                        prophet_gridsearch += "	    gp <- plot(prophet.model, predict_prophet)\r\n";
-                        prophet_gridsearch += "	    plot(gp)\r\n";
-                        prophet_gridsearch += "	    plot(y, type=\"l\")\r\n";
-                        prophet_gridsearch += "	    par(new=T)\r\n";
-                        prophet_gridsearch += "	    plot(test$target_, type=\"l\")\r\n";
-
+                        prophet_gridsearch += "	    #gp <- plot(prophet.model, predict_prophet)\r\n";
+                        prophet_gridsearch += "	    #plot(gp)\r\n";
+                        prophet_gridsearch += "	    #plot(y, type=\"l\", col=\"#ff7f00\")\r\n";
+                        prophet_gridsearch += "	    #par(new=T)\r\n";
+                        prophet_gridsearch += "	    #plot(df_prophet$y, type=\"l\", col = \"#377eb8\")\r\n";
+                        prophet_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=as.POSIXct(df_prophet$ds[c(s1:s3)]), y=y, color=\"#ff7f00\",size = 1))\r\n";
+                        prophet_gridsearch += "	    plt<- plt + geom_line(aes(x=as.POSIXct(df_prophet$ds[c(s1:s3)]), y=df_prophet$y[c(s1:s3)], color=\"#377eb8\",size = 1))\r\n";
+                        prophet_gridsearch += "		tryCatch({\r\n";
+                        prophet_gridsearch += "	            print(plt)\r\n";
+                        prophet_gridsearch += "	            ggsave(file = paste(paste(\"ts_debug_plot/best_fit\", sep=\"\"), \".png\", sep=\"\"), plt, dpi = 120, width = 6.4*4*1, height = 3*4.8*1, limitsize = FALSE)\r\n";
+                        prophet_gridsearch += "         },\r\n";
+                        prophet_gridsearch += "		error = function(e) {\r\n";
+                        prophet_gridsearch += "            sink()\r\n";
+                        prophet_gridsearch += "		},\r\n";
+                        prophet_gridsearch += "		finally   = {\r\n";
+                        prophet_gridsearch += "		},silent = TRUE )\r\n";
+                        prophet_gridsearch += "		flush.console()\r\n";
                         prophet_gridsearch += "		best_count = best_count +1\r\n";
-                        prophet_gridsearch += "		best_params = list(changepoint_prior_scale_i, seasonality_prior_scale_i, holidays_prior_scale_i)\r\n";
+                        prophet_gridsearch += "		best_params = list(changepoint_prior_scale_i, seasonality_prior_scale_i, holidays_prior_scale_i, period_i)\r\n";
                         prophet_gridsearch += "		best_model = prophet.model\r\n";
-                        prophet_gridsearch += "		best_mse = mse\r\n";
+                        prophet_gridsearch += "		best_mer = mer\r\n";
+                        prophet_gridsearch += "		print(best_params)\r\n";
                         prophet_gridsearch += "	}\r\n";
                         prophet_gridsearch += "	if ( best_count_max >0 && best_count > best_count_max ) break\r\n";
                         prophet_gridsearch += "	eval_count = eval_count + 1\r\n";
                         prophet_gridsearch += "	cat(eval_count)\r\n";
-                        prophet_gridsearch += "	cat(\" best_mse:\")\r\n";
-                        prophet_gridsearch += "	cat(best_mse)\r\n";
+                        prophet_gridsearch += "	cat(\" best_mer:\")\r\n";
+                        prophet_gridsearch += "	cat(best_mer)\r\n";
                         prophet_gridsearch += "	cat(\"\\n\")\r\n";
                         prophet_gridsearch += "	cat(eval_count)\r\n";
                         prophet_gridsearch += "	cat(\" / \")\r\n";
@@ -3160,24 +3266,24 @@ namespace WindowsFormsApplication1
                         prophet_gridsearch += "	cat(\"\\n\")\r\n";
                         prophet_gridsearch += "\r\n";
                         prophet_gridsearch += "\r\n";
-                        prophet_gridsearch += "        tryCatch({\r\n";
-                        prophet_gridsearch += "            sink(\"prophet_gridSearch_progress.txt\")\r\n";
-                        prophet_gridsearch += "            cat(eval_count)\r\n";
-                        prophet_gridsearch += "            cat (\"/\")\r\n";
-                        prophet_gridsearch += "            cat(pattern_length)\r\n";
-                        prophet_gridsearch += "            cat(\"\\r\\n\")\r\n";
-                        prophet_gridsearch += "            flush.console()\r\n";
-                        prophet_gridsearch += "            sink()\r\n";
-                        prophet_gridsearch += "        },\r\n";
-                        prophet_gridsearch += "        error = function(e) {\r\n";
-                        prophet_gridsearch += "            sink()\r\n";
-                        prophet_gridsearch += "        },\r\n";
-                        prophet_gridsearch += "        finally   = {\r\n";
-                        prophet_gridsearch += "        },silent = TRUE )\r\n";
+                        prophet_gridsearch += "	tryCatch({\r\n";
+                        prophet_gridsearch += "		sink(\"prophet_gridSearch_progress.txt\")\r\n";
+                        prophet_gridsearch += "		cat(eval_count)\r\n";
+                        prophet_gridsearch += "		cat (\"/\")\r\n";
+                        prophet_gridsearch += "		cat(pattern_length)\r\n";
+                        prophet_gridsearch += "		cat(\"\\r\\n\")\r\n";
+                        prophet_gridsearch += "		flush.console()\r\n";
+                        prophet_gridsearch += "		sink()\r\n";
+                        prophet_gridsearch += "	},\r\n";
+                        prophet_gridsearch += "	error = function(e) {\r\n";
+                        prophet_gridsearch += "		sink()\r\n";
+                        prophet_gridsearch += "	},\r\n";
+                        prophet_gridsearch += "		finally   = {\r\n";
+                        prophet_gridsearch += "	},silent = TRUE )\r\n";
                         prophet_gridsearch += "\r\n";
                         prophet_gridsearch += "\r\n";
                         prophet_gridsearch += "	flush.console()\r\n";
-                        prophet_gridsearch += "	}}}\r\n";
+                        prophet_gridsearch += "	}}}}\r\n";
                         prophet_gridsearch += "	return( list(best_params, best_model))\r\n";
                         prophet_gridsearch += "}\r\n";
                         prophet_gridsearch += "	if (  file.exists(\"prophet_gridsearch.stop\") ){\r\n";
@@ -3185,7 +3291,7 @@ namespace WindowsFormsApplication1
                         prophet_gridsearch += "	}\r\n";
                         prophet_gridsearch += "model_inf <- prophet_gridSearch(train, test, best_count_max=-1)\r\n";
                         prophet_gridsearch += "prophet.model_" + targetName + " <- model_inf[[2]]\r\n";
-                        prophet_gridsearch += "sink(file = \"prophet_gridsearch.options\")\r\n";
+                        prophet_gridsearch += "sink(file = \"prophet_gridSearch.options\")\r\n";
 
                         prophet_gridsearch += "cat(\"changepoint_prior_scale,\")\r\n";
                         prophet_gridsearch += "cat(model_inf[[1]][[1]])\r\n";
@@ -3199,11 +3305,16 @@ namespace WindowsFormsApplication1
                         prophet_gridsearch += "cat(model_inf[[1]][[3]])\r\n";
                         prophet_gridsearch += "cat(\"\\n\")\r\n";
 
+                        prophet_gridsearch += "cat(\"period,\")\r\n";
+                        prophet_gridsearch += "cat(model_inf[[1]][[4]])\r\n";
+                        prophet_gridsearch += "cat(\"\\n\")\r\n";
+
                         prophet_gridsearch += "sink()\r\n";
                         using (System.IO.StreamWriter sw = new System.IO.StreamWriter("prophet_gridsearch.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
                         {
                             sw.Write(prophet_gridsearch);
                         }
+						if ( xgb_ts_prm_.checkBox1.Checked )cmd += "source(\"prophet_gridsearch.r\")\r\n";
                     }
 
                     if (checkBox2.Checked && !time_series_mode)
@@ -3275,17 +3386,21 @@ namespace WindowsFormsApplication1
 							{
 	                            cmd += "\r\n";
 	                            cmd += "prophet.model_" + targetName + "<-prophet(n.changepoints=25,weekly.seasonality=\"auto\",yearly.seasonality=\"auto\",daily.seasonality=\"auto\",\r\n";
-	                            cmd += "                      seasonality.mode = \"" + xgb_ts_prm_.comboBox7.Text +"\",changepoint.prior.scale = 0.05,growth = \"linear\", fit=FALSE";
+                                cmd += "                      seasonality.mode = \"" + xgb_ts_prm_.comboBox7.Text + "\",\r\n";
+		                        cmd += "                      changepoint.prior.scale = "+xgb_ts_prm_.textBox1.Text +",\r\n";
+		                        cmd += "                      seasonality.prior.scale = "+xgb_ts_prm_.textBox2.Text +",\r\n";
+		                        cmd += "                      holidays.prior.scale="+xgb_ts_prm_.textBox3.Text +", \r\n";
+	                            cmd += "                      growth = \"linear\", fit=FALSE\r\n";
 	                            if (holidays1 || holidays2)
 	                            {
 	                                if (holidays1)
 	                                {
-	                                    cmd += ",holidays = holidays";
+	                                    cmd += "                      ,holidays = holidays\r\n";
 	                                }
 	                                else
 	                                if (holidays2)
 	                                {
-	                                    cmd += ",holidays = i.holidays";
+	                                    cmd += "                      ,holidays = i.holidays\r\n";
 	                                }
 	                            }
 	                            cmd += ")\r\n";
@@ -3296,10 +3411,18 @@ namespace WindowsFormsApplication1
 								{
 					                for (int i = 0; i < var.Items.Count; i++)
 					                {
-					                	cmd += "prophet_model_" + targetName + " <- add_regressor(prophet.model_" + targetName + ",";
+					                	cmd += "prophet.model_" + targetName + " <- add_regressor(prophet.model_" + targetName + ",";
 										cmd += "'"+ var.Items[i].ToString() +"')\r\n";
 					                }
 				                }
+		                        if (xgb_ts_prm_.checkBox14.Checked && xgb_ts_prm_.numericUpDown21.Value > 1)
+		                        {
+		                            cmd += "prophet.model_" + targetName + "  <- add_seasonality(prophet.model_" + targetName + ", name='frq" + xgb_ts_prm_.numericUpDown21.Value .ToString()+ "', period = " + xgb_ts_prm_.numericUpDown21.Value.ToString()+", fourier.order = 5)\r\n";
+		                        }
+		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0 )
+		                        {
+		                        	cmd += "prophet.model_" + targetName + " <- add_seasonality(prophet.model_" + targetName + " , name='frq_'"+ ", period = "+xgb_ts_prm_.textBox4.Text +", fourier.order = 5)\r\n";
+	                            }
 	                            cmd += "prophet.model_" + targetName + " <-fit.prophet(prophet.model_"+ targetName +", df_prophet[1:(nrow(train)),])\r\n";
  							}
                         }
@@ -3385,18 +3508,22 @@ namespace WindowsFormsApplication1
 
 							if ( time_series_mode )
 							{
-	                            cmd += "prophet.model_"+targetName + "<-prophet(n.changepoints=25,weekly.seasonality=\"auto\",yearly.seasonality=\"auto\",daily.seasonality=\"auto\",\r\n";
-	                            cmd += "                      seasonality.mode = \"" + xgb_ts_prm_.comboBox7.Text +"\",changepoint.prior.scale = 0.05,growth = \"linear\", fit=FALSE";
+	                            cmd += "prophet.model_" + targetName + "<-prophet(n.changepoints=25,weekly.seasonality=\"auto\",yearly.seasonality=\"auto\",daily.seasonality=\"auto\",\r\n";
+                                cmd += "                      seasonality.mode = \"" + xgb_ts_prm_.comboBox7.Text + "\",\r\n";
+		                        cmd += "                      changepoint.prior.scale = "+xgb_ts_prm_.textBox1.Text +",\r\n";
+		                        cmd += "                      seasonality.prior.scale = "+xgb_ts_prm_.textBox2.Text +",\r\n";
+		                        cmd += "                      holidays.prior.scale="+xgb_ts_prm_.textBox3.Text +", \r\n";
+	                            cmd += "                      growth = \"linear\", fit=FALSE\r\n";
 	                            if (holidays1 || holidays2)
 	                            {
 	                                if (holidays1)
 	                                {
-	                                    cmd += ",holidays = holidays";
+	                                    cmd += "                      ,holidays = holidays\r\n";
 	                                }
 	                                else
 	                                if (holidays2)
 	                                {
-	                                    cmd += ",holidays = i.holidays";
+	                                    cmd += "                      ,holidays = i.holidays\r\n";
 	                                }
 	                            }
 	                            cmd += ")\r\n";
@@ -3407,10 +3534,18 @@ namespace WindowsFormsApplication1
 								{
 					                for (int i = 0; i < var.Items.Count; i++)
 					                {
-					                	cmd += "prophet_model_" + targetName + "<- add_regressor(prophet.model_" + targetName + ",";
+					                	cmd += "prophet.model_" + targetName + "<- add_regressor(prophet.model_" + targetName + ",";
 										cmd += "'"+ var.Items[i].ToString() +"')\r\n";
 					                }
 				                }
+		                        if (xgb_ts_prm_.checkBox14.Checked && xgb_ts_prm_.numericUpDown21.Value > 1)
+		                        {
+		                            cmd += "prophet.model_" + targetName + "  <- add_seasonality(prophet.model_" + targetName + ", name='frq" + xgb_ts_prm_.numericUpDown21.Value .ToString()+ "', period = " + xgb_ts_prm_.numericUpDown21.Value.ToString()+", fourier.order = 5)\r\n";
+		                        }
+		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0 )
+		                        {
+		                        	cmd += "prophet.model_" + targetName + " <- add_seasonality(prophet.model_" + targetName + " , name='frq_'"+ ", period = "+xgb_ts_prm_.textBox4.Text +", fourier.order = 5)\r\n";
+	                            }
 	                            cmd += "prophet.model_" + targetName + " <-fit.prophet(prophet.model_" + targetName + ", df_prophet[1:(nrow(train)),])\r\n";
 	                         }
                         }
@@ -3502,6 +3637,23 @@ namespace WindowsFormsApplication1
                     if (System.IO.File.Exists("xgboost_gridSearch.options"))
                     {
                         form1.FileDelete("xgboost_gridSearch.options");
+                    }
+                    if (System.IO.File.Exists("xgboost_gridSearch_progress.txt"))
+                    {
+                        form1.FileDelete("xgboost_gridSearch_progress.txt");
+                    }
+                    if (System.IO.File.Exists("prophet_gridSearch.options"))
+                    {
+                        form1.FileDelete("prophet_gridSearch.options");
+                    }
+                    if (System.IO.File.Exists("prophet_gridSearch_progress.txt"))
+                    {
+                        form1.FileDelete("prophet_gridSearch_progress.txt");
+                    }
+                    if (!System.IO.Directory.Exists("ts_debug_plot"))
+                    {
+                        // Try to create the directory.
+                        System.IO.Directory.CreateDirectory("ts_debug_plot");
                     }
                     file = "tmp_xgboost.R";
 
@@ -4797,6 +4949,14 @@ namespace WindowsFormsApplication1
 										forecast_extension += "'"+ var.Items[i].ToString() +"')\r\n";
 					                }
 				                }
+		                        if (xgb_ts_prm_.checkBox14.Checked && xgb_ts_prm_.numericUpDown21.Value > 1)
+		                        {
+		                            forecast_extension += "                     prophet_model <- add_seasonality(prophet_model, name='frq" + xgb_ts_prm_.numericUpDown21.Value .ToString()+ "', period = " + xgb_ts_prm_.numericUpDown21.Value.ToString()+", fourier.order = 5)\r\n";
+		                        }
+		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0 )
+		                        {
+		                        	forecast_extension += "                     prophet_model <- add_seasonality(prophet_model , name='frq_'" + ", period = "+xgb_ts_prm_.textBox4.Text +", fourier.order = 5)\r\n";
+	                            }
                                 forecast_extension += "                     trendFit <-fit.prophet(prophet_model, df_t[1:(nrow(df_t)-1),])\r\n";
                                 forecast_extension += "                     t_step_forcast = t_step\r\n";
                                 forecast_extension += "                 }\r\n";
@@ -6265,6 +6425,12 @@ forecast_extension += "	    }\r\n";
                         form1.FileDelete("xgboost_gridSearch.options");
                         //checkBox23.Checked = false;
                     }
+                    if (System.IO.File.Exists("prophet_gridsearch.options"))
+                    {
+                        load_param("prophet_gridSearch");
+                        form1.FileDelete("prophet_gridSearch.options");
+                        //checkBox23.Checked = false;
+                    }
                 }
 
                 ACC = "";
@@ -6676,6 +6842,10 @@ forecast_extension += "	    }\r\n";
                 sw.Write("ensemble_randomforest,"); sw.Write(xgb_ts_prm_.numericUpDown6.Value.ToString() + "\r\n");
                 sw.Write("ensemble_prophet,"); sw.Write(xgb_ts_prm_.numericUpDown7.Value.ToString() + "\r\n");
 
+                sw.Write("changepoint_prior_scale,"); sw.Write(xgb_ts_prm_.textBox1.Text + "\r\n");
+                sw.Write("seasonality_prior_scale,"); sw.Write(xgb_ts_prm_.textBox2.Text + "\r\n");
+                sw.Write("holidays_prior_scale,"); sw.Write(xgb_ts_prm_.textBox3.Text + "\r\n");
+                sw.Write("period,"); sw.Write(xgb_ts_prm_.textBox4.Text + "\r\n");
                 sw.Close();
             }
         }
@@ -7391,6 +7561,26 @@ forecast_extension += "	    }\r\n";
                         {
                             xgb_ts_prm_.numericUpDown7.Value = int.Parse(ss[1].Replace("\r\n", ""));
                             xgb_ts_prm_.refresh_value();
+                            continue;
+                        }
+                        if (ss[0].IndexOf("changepoint_prior_scale") >= 0)
+                        {
+                            xgb_ts_prm_.textBox1.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("seasonality_prior_scale") >= 0)
+                        {
+                            xgb_ts_prm_.textBox2.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("holidays_prior_scale") >= 0)
+                        {
+                            xgb_ts_prm_.textBox3.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("period") >= 0)
+                        {
+                            xgb_ts_prm_.textBox4.Text = ss[1].Replace("\r\n", "");
                             continue;
                         }
                         continue;
@@ -9154,26 +9344,52 @@ forecast_extension += "	    }\r\n";
 
             if (line != "")
             {
+                if (measurement_of_time == 0.0)
+                {
+                    stopwatch.Start();
+                }
                 line = line.Replace("\r\n", "");
                 var count = line.Split('/')[0].TrimStart('0');
                 var tot = line.Split('/')[1].TrimStart('0');
                 progressBar4.Maximum = int.Parse(tot);
                 progressBar4.Value = int.Parse(count);
+
+                label23.Text = count + "/" + tot;
+                label23.Refresh();
+                if (progressBar4.Maximum == progressBar4.Value)
+                {
+                    timer4.Stop();
+                    measurement_of_time = 0;
+
+                }
             }
+            try
+            {
+                string pngfile = "ts_debug_plot\\best_fit.png";
+                if (System.IO.File.Exists(pngfile))
+                {
+                    pictureBox1.Image = Form1.CreateImage(pngfile);
+                }
+            }
+            catch { }            
         }
 
         private void checkBox22_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox22.Checked)
             {
-                if (System.IO.File.Exists("xgboost_gridsearch.stop"))
+                if (!System.IO.File.Exists("xgboost_gridsearch.stop"))
                 {
-                    return;
+                    using (System.IO.FileStream fs = System.IO.File.Create("xgboost_gridsearch.stop"))
+                    {
+                    }
                 }
-                using (System.IO.FileStream fs = System.IO.File.Create("xgboost_gridsearch.stop"))
+                if (!System.IO.File.Exists("prophet_gridsearch.stop"))
                 {
+                    using (System.IO.FileStream fs = System.IO.File.Create("prophet_gridsearch.stop"))
+                    {
+                    }
                 }
-
             }
         }
 
@@ -9200,6 +9416,111 @@ forecast_extension += "	    }\r\n";
         private void button30_Click(object sender, EventArgs e)
         {
             xgb_ts_prm_.Show();
+        }
+
+        private void timer5_Tick(object sender, EventArgs e)
+        {
+            string line = "";
+            System.IO.StreamReader sr = null;
+            try
+            {
+                if (System.IO.File.Exists("prophet_gridSearch_progress.txt"))
+                {
+                    sr = new System.IO.StreamReader("prophet_gridSearch_progress.txt");
+                    line = sr.ReadLine();
+                }
+            }
+            catch { }
+            finally
+            {
+                if (sr != null)
+                {
+                    sr.Close();
+                }
+            }
+
+            if (line != "")
+            {
+                if (measurement_of_time == 0.0)
+                {
+                    stopwatch.Start();
+                }
+                line = line.Replace("\r\n", "");
+                var count = line.Split('/')[0].TrimStart('0');
+                var tot = line.Split('/')[1].TrimStart('0');
+                progressBar4.Maximum = int.Parse(tot);
+                progressBar4.Value = int.Parse(count);
+
+                label23.Text = count + "/" + tot;
+                label23.Refresh();
+                if (progressBar4.Maximum == progressBar4.Value)
+                {
+                    timer5.Stop();
+                    measurement_of_time = 0;
+
+                }
+            }
+            
+            try
+            {
+                string pngfile = "ts_debug_plot\\best_fit.png";
+                if (System.IO.File.Exists(pngfile))
+                {
+                    pictureBox1.Image = Form1.CreateImage(pngfile);
+                }
+            }
+            catch { }            
+        }
+
+        private void checkBox23_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (!System.IO.File.Exists("xgboost_gridsearch.stop"))
+            {
+                using (System.IO.FileStream fs = System.IO.File.Create("xgboost_gridsearch.stop"))
+                {
+                }
+            }
+        }
+
+        private void progressBar4_MouseHover(object sender, EventArgs e)
+        {
+        }
+
+        private void label23_MouseHover(object sender, EventArgs e)
+        {
+            if (!timer4.Enabled && !timer5.Enabled)
+            {
+                toolTip1.SetToolTip(label23, "");
+                return;
+            }
+            stopwatch.Stop();
+            measurement_of_time = stopwatch.ElapsedMilliseconds;
+            stopwatch.Start();
+
+            var remaining = progressBar4.Maximum - progressBar4.Value;
+
+            var one_cycle_time = measurement_of_time/(double)progressBar4.Value;
+
+            var Time_to_finish = (one_cycle_time * remaining) / 1000.0;//sec
+
+            var min = (int)Time_to_finish / 60.0;   //min
+            var h = min / 60.0; //h
+            var day = h / 24.0;
+
+            string remaining_time = ((int)Time_to_finish).ToString() + "sec";
+            if (min > 1.0)
+            {
+                remaining_time = ((int)min).ToString() + "min";
+            }
+            if (h > 1.0)
+            {
+                remaining_time = ((int)h).ToString() + "hour";
+            }
+            if (day >= 1.0)
+            {
+                remaining_time = ((int)day).ToString() + "days";
+            }
+            toolTip1.SetToolTip(label23, "必要時間=" + remaining_time);
         }
     }
 

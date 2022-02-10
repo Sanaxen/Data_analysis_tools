@@ -13,6 +13,8 @@ namespace WindowsFormsApplication1
     public partial class xgb_ts_prm : Form
     {
         public xgboost xgb_ = null;
+        Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
+
         public xgb_ts_prm()
         {
             InitializeComponent();
@@ -264,6 +266,14 @@ namespace WindowsFormsApplication1
 
         private void xgb_ts_prm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            foreach (TextBox key in textBoxSintax.Keys)
+            {
+                if (!textBoxSintax[key])
+                {
+                    MessageBox.Show("設定の書式に誤りがあります");
+                    key.Focus();
+                }
+            }
             e.Cancel = true;
             Hide();
         }
@@ -408,6 +418,54 @@ namespace WindowsFormsApplication1
         private void numericUpDown14_ValueChanged(object sender, EventArgs e)
         {
             train_mode();
+        }
+
+        private void textBox1_Validating(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                float.Parse((sender as TextBox).Text);
+                (sender as TextBox).ForeColor = Color.Black;
+                (sender as TextBox).Font = new Font((sender as TextBox).Font, FontStyle.Regular);
+
+                if (!textBoxSintax.ContainsKey((sender as TextBox)))
+                {
+                    textBoxSintax.Add((sender as TextBox), true);
+                }
+                else
+                {
+                    textBoxSintax[(sender as TextBox)] = true;
+                }
+            }
+            catch
+            {
+                (sender as TextBox).ForeColor = Color.Red;
+                (sender as TextBox).Font = new Font((sender as TextBox).Font, FontStyle.Bold);
+                //MessageBox.Show("設定の書式に誤りがあります");
+
+                if (!textBoxSintax.ContainsKey((sender as TextBox)))
+                {
+                    textBoxSintax.Add((sender as TextBox), false);
+                }
+                else
+                {
+                    textBoxSintax[(sender as TextBox)] = false;
+                }
+            }
+            finally
+            {
+                (sender as TextBox).Refresh();
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!System.IO.File.Exists("prophet_gridsearch.stop"))
+            {
+                using (System.IO.FileStream fs = System.IO.File.Create("prophet_gridsearch.stop"))
+                {
+                }
+            }
         }
     }
 }
