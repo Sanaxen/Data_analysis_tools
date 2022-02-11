@@ -3021,16 +3021,16 @@ namespace WindowsFormsApplication1
                         xgboost_gridsearch += "	    #plot(test$target_, type=\"l\", col = \"#377eb8\")\r\n";
                         if ( time_series_mode )
                         {
-	                        xgboost_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=y, color=\"#ff7f00\",size = 1))\r\n";
-	                        xgboost_gridsearch += "	    plt<- plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test$target_, color=\"#377eb8\",size = 1))\r\n";
+	                        xgboost_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=as.POSIXct(test[,1]), y=y), color=\"#ff7f00\",size = 1.5)\r\n";
+	                        xgboost_gridsearch += "	    plt<- plt + geom_line(aes(x=as.POSIXct(test[,1]), y=test$target_), color=\"#000080\",size = 0.7)\r\n";
 						}else
 						{
-	                        xgboost_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=c(1:nrow(test)), y=y, color=\"#ff7f00\",size = 1))\r\n";
-	                        xgboost_gridsearch += "	    plt<- plt + geom_line(aes(x=c(1:nrow(test)), y=test$target_, color=\"#377eb8\",size = 1))\r\n";
+	                        xgboost_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=c(1:nrow(test)), y=y), color=\"#ff7f00\",size = 1.5)\r\n";
+	                        xgboost_gridsearch += "	    plt<- plt + geom_line(aes(x=c(1:nrow(test)), y=test$target_), color=\"#000080\",size = 0.7)\r\n";
 						}
 						xgboost_gridsearch += "		tryCatch({\r\n";
 						xgboost_gridsearch += "	            print(plt)\r\n";
-						xgboost_gridsearch += "	            ggsave(file = paste(paste(\"ts_debug_plot/best_fit\", sep=\"\"), \".png\", sep=\"\"), plt, dpi = 120, width = 6.4*4*1, height = 3*4.8*1, limitsize = FALSE)\r\n";
+						xgboost_gridsearch += "	            ggsave(file = paste(paste(\"ts_debug_plot/best_fit\", sep=\"\"), \".png\", sep=\"\"), plt, dpi = 120, width = 6.4*4*1, height = 2*4.8*1, limitsize = FALSE)\r\n";
 						xgboost_gridsearch += "         },\r\n";
 						xgboost_gridsearch += "		error = function(e) {\r\n";
 						xgboost_gridsearch += "            sink()\r\n";
@@ -3142,9 +3142,9 @@ namespace WindowsFormsApplication1
 						prophet_gridsearch += "	s3 = 0\r\n";
 
 
-                        prophet_gridsearch += "	changepoint_prior_scale = c(0.05, 0.1, 0.2, 0.4)\r\n";
-                        prophet_gridsearch += "	seasonality_prior_scale = c(10.0, 0.1, 0.5, 1.0, 3.0, 6.0, 8.0)\r\n";
-                        prophet_gridsearch += "	holidays_prior_scale =    c(10.0, 0.1, 0.5, 1.0, 3.0, 6.0, 8.0 )\r\n";
+                        prophet_gridsearch += "	changepoint_prior_scale = c(0.05, 0.1, 0.2)\r\n";
+                        prophet_gridsearch += "	seasonality_prior_scale = c(10.0, 0.1, 3.0, 6.0)\r\n";
+                        prophet_gridsearch += "	holidays_prior_scale =    c(10.0, 0.1, 3.0, 6.0 )\r\n";
                         prophet_gridsearch += "	period = c(0, 3, 7, 14, 30.5, 365.25 )\r\n";
                         prophet_gridsearch += "	pattern_length = length(changepoint_prior_scale)*length(seasonality_prior_scale)*length(holidays_prior_scale)*length(period)\r\n";
                         prophet_gridsearch += "\r\n";
@@ -3236,11 +3236,11 @@ namespace WindowsFormsApplication1
                         prophet_gridsearch += "	    #plot(y, type=\"l\", col=\"#ff7f00\")\r\n";
                         prophet_gridsearch += "	    #par(new=T)\r\n";
                         prophet_gridsearch += "	    #plot(df_prophet$y, type=\"l\", col = \"#377eb8\")\r\n";
-                        prophet_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=as.POSIXct(df_prophet$ds[c(s1:s3)]), y=y, color=\"#ff7f00\",size = 1))\r\n";
-                        prophet_gridsearch += "	    plt<- plt + geom_line(aes(x=as.POSIXct(df_prophet$ds[c(s1:s3)]), y=df_prophet$y[c(s1:s3)], color=\"#377eb8\",size = 1))\r\n";
+                        prophet_gridsearch += "	    plt<- ggplot() + geom_line(aes(x=as.POSIXct(df_prophet$ds[c(s1:s3)]), y=y), color=\"#ff7f00\",size = 1.5)\r\n";
+                        prophet_gridsearch += "	    plt<- plt + geom_line(aes(x=as.POSIXct(df_prophet$ds[c(s1:s3)]), y=df_prophet$y[c(s1:s3)]), color=\"#000080\",size = 0.7)\r\n";
                         prophet_gridsearch += "		tryCatch({\r\n";
                         prophet_gridsearch += "	            print(plt)\r\n";
-                        prophet_gridsearch += "	            ggsave(file = paste(paste(\"ts_debug_plot/best_fit\", sep=\"\"), \".png\", sep=\"\"), plt, dpi = 120, width = 6.4*4*1, height = 3*4.8*1, limitsize = FALSE)\r\n";
+                        prophet_gridsearch += "	            ggsave(file = paste(paste(\"ts_debug_plot/best_fit\", sep=\"\"), \".png\", sep=\"\"), plt, dpi = 120, width = 6.4*4*1, height = 2*4.8*1, limitsize = FALSE)\r\n";
                         prophet_gridsearch += "         },\r\n";
                         prophet_gridsearch += "		error = function(e) {\r\n";
                         prophet_gridsearch += "            sink()\r\n";
@@ -3314,7 +3314,7 @@ namespace WindowsFormsApplication1
                         {
                             sw.Write(prophet_gridsearch);
                         }
-						if ( xgb_ts_prm_.checkBox1.Checked )cmd += "source(\"prophet_gridsearch.r\")\r\n";
+						if ( xgb_ts_prm_.checkBox1.Checked && time_series_mode)cmd += "source(\"prophet_gridsearch.r\")\r\n";
                     }
 
                     if (checkBox2.Checked && !time_series_mode)
@@ -3764,8 +3764,45 @@ namespace WindowsFormsApplication1
                                 {
                                     view_data = "train";
                                 }
-                                cmd_tmp += "predict_tmp <- predict(xgboost.model_"+targetName + ",newdata = "+ view_data+"_dmat)\r\n";
+			                    cmd_tmp += "ensembleW0 <-  " + EnsembleW[0].ToString() + "\r\n";
+			                    cmd_tmp += "ensembleW1 <-  "+ EnsembleW[1].ToString() + "\r\n";
+			                    cmd_tmp += "ensembleW2 <-  "+ EnsembleW[2].ToString() + "\r\n";
+			                    cmd_tmp += "ensembleW3 <-  "+ EnsembleW[3].ToString() + "\r\n";
+			                    cmd_tmp += "ensembleW4 <-  "+ EnsembleW[4].ToString() + "\r\n";
+			                    cmd_tmp += "ensembleW5 <-  "+ EnsembleW[5].ToString() + "\r\n";
+                                cmd_tmp += "predict_tmp <- predict(xgboost.model_"+targetName + ",newdata = "+ view_data+"_dmat)*ensembleW0\r\n";
 
+								if ( checkBox26.Checked )
+								{
+			                        cmd_tmp += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*ensembleW1\r\n";
+			                        cmd_tmp += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*ensembleW2\r\n";
+			                        cmd_tmp += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*ensembleW3\r\n";
+			                        cmd_tmp += "predict_y4<-predict( object=randomForest.model_"+targetName + ", newdata=test)*ensembleW4\r\n";
+			                        
+			                        if ( time_series_mode )
+			                        {
+				                        cmd_tmp += "dt_ = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
+				                        cmd_tmp += "dt_ = as.numeric(dt_,units=\"secs\")\r\n";
+										cmd_tmp += "df_prophet <- rbind(train, test)\r\n";
+										cmd_tmp += "df_prophet$ds <- df_prophet[,1]\r\n";
+										cmd_tmp += "df_prophet$y   <- df_prophet$target_\r\n";
+			                            cmd_tmp += "prophet_future<-make_future_dataframe(prophet.model_"+targetName + ", nrow(test), freq =dt_)\r\n";   
+										if (xgb_ts_prm_.checkBox29.Checked )
+										{
+							                for (int i = 0; i < var.Items.Count; i++)
+							                {
+							                	cmd_tmp += "prophet_future$'"+ var.Items[i].ToString() +"' <- ";
+							                	cmd_tmp += "df_prophet$'"+ var.Items[i].ToString() +"'[1:nrow(df_prophet)]\r\n";
+							                }
+						                }
+					                    cmd_tmp += "predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future, growth = \"" + growth + "\")\r\n";
+					                    cmd_tmp += "predict_y5<-predict_prophet$yhat[-c(1:nrow(train))]*ensembleW5\r\n";
+			                        	cmd_tmp += "predict_tmp <- (predict_tmp + predict_y1 + predict_y2 + predict_y3 + predict_y4 + predict_y5)\r\n";
+				                    }else
+				                    {
+			                        	cmd_tmp += "predict_tmp <- (predict_tmp + predict_y1 + predict_y2 + predict_y3 + predict_y4)\r\n";
+				                    }
+		                        }
                                 if (time_series_mode)
                                 {
                                     cmd_tmp += "predict_tmp<- inv_diff(" + view_data + ",\""+decomp_type+"\""+",use_log_diff, predict_tmp + " + view_data + "$trend, " + view_data + "$" + targetName + "[1], log_diff[[2]],lambda=" + textBox10.Text + ")\r\n";
@@ -4028,8 +4065,8 @@ namespace WindowsFormsApplication1
 					                	forecast_extension += "df_prophet$'"+ var.Items[i].ToString() +"'[1:nrow(df_prophet)]\r\n";
 					                }
 				                }
-			                    forecast_extension += "predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future," + growth + ")\r\n";
-			                    forecast_extension += "predict_y5<-predict_prophet[,c(\"yhat\")][1]*ensembleW5\r\n";
+			                    forecast_extension += "predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future, growth = \"" + growth + "\")\r\n";
+			                    forecast_extension += "predict_y5<-predict_prophet$yhat[-c(1:nrow(train))]*ensembleW5\r\n";
 	                        	forecast_extension += "predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y4 + predict_y5)\r\n";
 		                    }else
 		                    {
@@ -4737,6 +4774,7 @@ namespace WindowsFormsApplication1
 
                                 forecast_extension += "        \r\n";
                                 forecast_extension += "        \r\n";
+                                forecast_extension += "         arima_error = 0\r\n";
                                 forecast_extension += "         if ( use_prophet == 0){\r\n";
                                 forecast_extension += "             tryCatch({\r\n";
                                 forecast_extension += "                 if ( is.null(trendFit)){\r\n";
@@ -4826,8 +4864,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                     }\r\n";
 
                                 forecast_extension += "                     if ( fast_arima == 0 ){\r\n";
-                                forecast_extension += "                         trendFit <- auto.arima(df_tt, ic=\"aic\",\r\n";
-
+                                forecast_extension += "                         trendFit <- try(auto.arima(df_tt, ic=\"aic\",\r\n";
                                 forecast_extension += "                             max.order=20,  #p+q+P+Q\r\n";
                                 forecast_extension += "                             max.d = 2,\r\n";
                                 forecast_extension += "                             max.D = 2,\r\n";
@@ -4837,12 +4874,13 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                             max.Q = 5,\r\n";
                                 forecast_extension += "                             nmodels = 100,\r\n";
                                 forecast_extension += "                             approximation=F,\r\n";
-                                forecast_extension += "                             seasonal = seasonal_prm, stepwise=F, trace=T, xreg = xreg)\r\n";
+                                forecast_extension += "                             seasonal = seasonal_prm, stepwise=F, trace=T, xreg = xreg), silent = FALSE)\r\n";
+                                forecast_extension += "                         if ( class(trendFit) == \"try-error\" ) arima_error = 1\r\n";
                                 forecast_extension += "                     }else{\r\n";
                                 forecast_extension += "                         if ( "+(xgb_ts_prm_.radioButton7.Checked ? "TRUE" : "FALSE")+"){\r\n";
                                 forecast_extension += "                             trendFit <- t_decomp\r\n";
                                 forecast_extension += "                         }else{\r\n";
-                                forecast_extension += "                             trendFit <- auto.arima(df_tt, ic=\"aic\",\r\n";
+                                forecast_extension += "                             trendFit <- try(auto.arima(df_tt, ic=\"aic\",\r\n";
 
                                 forecast_extension += "                                 max.order=20,  #p+q+P+Q\r\n";
                                 forecast_extension += "                                 max.d = 2,\r\n";
@@ -4852,9 +4890,24 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                                 max.P = 5,\r\n";
                                 forecast_extension += "                                 max.Q = 5,\r\n";
                                 forecast_extension += "                                 #approximation=F,\r\n";
-                                forecast_extension += "                                 seasonal = seasonal_prm, stepwise=T, trace=T, xreg = xreg)\r\n";
+                                forecast_extension += "                                 seasonal = seasonal_prm, stepwise=T, trace=T, xreg = xreg), silent = FALSE)\r\n";
+                                forecast_extension += "                              if ( class(trendFit) == \"try-error\" ) arima_error = 1\r\n";
                                 forecast_extension += "                         }\r\n";
                                 forecast_extension += "                     }\r\n";
+                                
+								forecast_extension += "                     if ( arima_error == 1 ){\r\n";
+								forecast_extension += "                     \r\n";
+								forecast_extension += "                      print(\"---- arima_error -----\")\r\n";
+								forecast_extension += "                      trendFit <- try(auto.arima(df_tt, ic=\"aic\"), silent = FALSE)\r\n";
+								forecast_extension += "                      if (class(trendFit) == \"try-error\" ) {\r\n";
+								forecast_extension += "                         arima_error = 1\r\n";
+								forecast_extension += "                         trendFit = NULL\r\n";
+								forecast_extension += "                      }else{\r\n";
+								forecast_extension += "                         arima_error = 0\r\n";
+								forecast_extension += "                      }\r\n";
+								forecast_extension += "                     }\r\n";
+
+
                                 forecast_extension += "                     print(trendFit)\r\n";
                                 forecast_extension += "                     flush.console()\r\n";
                                 forecast_extension += "                     t_step_forcast = t_step\r\n";
@@ -4884,10 +4937,17 @@ namespace WindowsFormsApplication1
 								forecast_extension += "                         xreg <- as.matrix(xreg)\r\n";
 								forecast_extension += "                         print(head(xreg))\r\n";
                                 forecast_extension += "                     }\r\n";
-                                forecast_extension += "                     pred<-forecast(trendFit, level = c(50,95), h = h, xreg = xreg)\r\n";
+                                forecast_extension += "                     if ( !is.null(trendFit)){\r\n";
+                                forecast_extension += "                         pred<-forecast(trendFit, level = c(50,95), h = h, xreg = xreg)\r\n";
+                                forecast_extension += "                     }\r\n";
                                 forecast_extension += "                 }\r\n";
                                 forecast_extension += "                 #Point Forecast\r\n";
-                                forecast_extension += "	                overall$trend[nrow(overall)] <- as.data.frame(pred)[h,1]\r\n";
+                                forecast_extension += "                 if ( !is.null(trendFit)){\r\n";
+                                forecast_extension += "                     overall$trend[nrow(overall)] <- as.data.frame(pred)[h,1]\r\n";
+                                forecast_extension += "                 }else{\r\n";
+                                forecast_extension += "                     print(\"移動３点平均\")\r\n";
+                                forecast_extension += "                     overall$trend[nrow(overall)] <- (overall$trend[nrow(overall)-1]+overall$trend[nrow(overall)-2]+overall$trend[nrow(overall)-3])/3.0\r\n";
+                                forecast_extension += "                 }\r\n";
                                 if (cutoff == 1)
                                 {
 
@@ -4911,13 +4971,20 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                #message(e)\r\n";
                                 forecast_extension += "                print(e)\r\n";
                                 forecast_extension += "                #復元抽出\r\n";
-                                forecast_extension += "                test$trend[nrow(test)] <- sample(train$trend, 1)\r\n";
+                                forecast_extension += "                overall$trend[nrow(overall)] <- (overall$trend[nrow(overall)-1]+overall$trend[nrow(overall)-2]+overall$trend[nrow(overall)-3])/3.0\r\n";
                                 forecast_extension += "             },\r\n";
                                 forecast_extension += "                 finally   = {\r\n";
                                 forecast_extension += "             },\r\n";
                                 forecast_extension += "                 silent = TRUE\r\n";
                                 forecast_extension += "             )\r\n";
                                 forecast_extension += "         }\r\n";
+                                forecast_extension += "         \r\n";
+                                forecast_extension += "         \r\n";
+                                forecast_extension += "         if ( arima_error == 1 ) trendFit = NULL\r\n";
+                                forecast_extension += "         cat(\"arima_error \")\r\n";
+                                forecast_extension += "         print(arima_error)\r\n";
+                                forecast_extension += "         \r\n";
+                                forecast_extension += "         \r\n";
                                 forecast_extension += "         \r\n";
                                 forecast_extension += "         \r\n";
                                 forecast_extension += "         if ( use_prophet == 1){\r\n";
@@ -4979,8 +5046,9 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "            error = function(e) {\r\n";
                                 forecast_extension += "                #message(e)\r\n";
                                 forecast_extension += "                print(e)\r\n";
-                                forecast_extension += "                #復元抽出\r\n";
-                                forecast_extension += "                test$trend[nrow(test)] <- sample(train$trend, 1)\r\n";
+                                forecast_extension += "                \r\n";
+                                forecast_extension += "                print(\"移動３点平均\")\r\n";
+                                forecast_extension += "                overall$trend[nrow(overall)] <- (overall$trend[nrow(overall)-1]+overall$trend[nrow(overall)-2]+overall$trend[nrow(overall)-3])/3.0\r\n";
                                 forecast_extension += "            },\r\n";
                                 forecast_extension += "            finally   = {\r\n";
                                 forecast_extension += "            },\r\n";
@@ -5055,8 +5123,8 @@ namespace WindowsFormsApplication1
 				                	forecast_extension += "df_prophet$'"+ var.Items[i].ToString() +"'[1:nrow(df_prophet)]\r\n";
 				                }
 			                }
-		                    forecast_extension += "              predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future," + growth + ")\r\n";
-		                    forecast_extension += "              y5<-predict_prophet[,c(\"yhat\")][1]*ensembleW5\r\n";
+		                    forecast_extension += "              predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future, growth = \"" + growth + "\")\r\n";
+		                    forecast_extension += "              y5<-predict_prophet$yhat[-c(1:nrow(train))]*ensembleW5\r\n";
 
 	                    	forecast_extension += "              y <- (y + y1 + y2 + y3 + y4 + y5)\r\n";                    //if (use_diff == 1 || use_decompose == 1)
                         }
@@ -5087,8 +5155,8 @@ namespace WindowsFormsApplication1
 				                	forecast_extension += "df_prophet$'"+ var.Items[i].ToString() +"'[1:nrow(df_prophet)]\r\n";
 				                }
 			                }
-		                    forecast_extension += "              predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future," + growth + ")\r\n";
-		                    forecast_extension += "             predict_y5<-predict_prophet[,c(\"yhat\")][1]*ensembleW5\r\n";
+		                    forecast_extension += "              predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future, growth = \"" + growth + "\")\r\n";
+		                    forecast_extension += "             predict_y5<-predict_prophet$yhat[-c(1:nrow(train))]*ensembleW5\r\n";
 
 	                    	forecast_extension += "             predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y4 + predict_y5)\r\n";
                     	}
@@ -5123,7 +5191,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "            debug_plotting = 1\r\n";
                             forecast_extension += "        }\r\n";
                         }
-                        forecast_extension += "	    if ( debug_plotting == 1 && as.integer(t_step %% 20) == 0){\r\n";
+                        forecast_extension += "	    if ( debug_plotting == 1 && as.integer(t_step %% 5) == 0){\r\n";
                         
 forecast_extension += "	        plt1 <- NULL\r\n";
 forecast_extension += "	        plt2 <- NULL\r\n";
@@ -5170,7 +5238,7 @@ forecast_extension += "	        }else{\r\n";
 forecast_extension += "	            plts<-gridExtra::grid.arrange(plt1, plt4, nrow = 2)\r\n";
 forecast_extension += "	        }\r\n";
 forecast_extension += "         tryCatch({\r\n";
-forecast_extension += "	            plts\r\n";
+forecast_extension += "	            print(plts)\r\n";
 forecast_extension += "	            ggsave(file = paste(paste(\"ts_debug_plot/tmp_"+targetName + "\", t_step, sep=\"\"), \".png\", sep=\"\"), plts, dpi = 120, width = 6.4*4*1, height = 3*4.8*1, limitsize = FALSE)\r\n";
 forecast_extension += "         },\r\n";
 forecast_extension += "         error = function(e) {\r\n";
@@ -5296,8 +5364,8 @@ forecast_extension += "	    }\r\n";
 				                	forecast_extension += "df_prophet$'"+ var.Items[i].ToString() +"'[1:nrow(df_prophet)]\r\n";
 				                }
 			                }
-		                    forecast_extension += "    predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future," + growth + ")\r\n";
-		                    forecast_extension += "    predict_y5<-predict_prophet[,c(\"yhat\")][1]*ensembleW5\r\n";
+		                    forecast_extension += "    predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future, growth = \"" + growth + "\")\r\n";
+		                    forecast_extension += "    predict_y5<-predict_prophet$yhat[-c(1:nrow(train))]*ensembleW5\r\n";
 		                    
 	                    	forecast_extension += "    predict_y <- (predict_y + predict_y1 + predict_y2 + predict_y3 + predict_y4 + predict_y5)\r\n";
                     	}
@@ -8986,11 +9054,23 @@ forecast_extension += "	    }\r\n";
 
             if ( line != "")
             {
+                if (measurement_of_time == 0)
+                {
+                    stopwatch.Start();
+                }
                 line = line.Replace("\r\n", "");
                 var count = line.Split('/')[0].TrimStart('0');
                 var tot = line.Split('/')[1].TrimStart('0');
                 progressBar1.Maximum = int.Parse(tot);
                 progressBar1.Value = int.Parse(count);
+
+                label31.Text = count + "/" + tot + " " + measurement_time(timer2, progressBar1);
+                label31.Refresh();
+                if (progressBar1.Maximum == progressBar1.Value)
+                {
+                    measurement_of_time = 0;
+                    stopwatch.Stop();
+                }
             }
 
             timer2_Tick3(sender, e);
@@ -9321,6 +9401,47 @@ forecast_extension += "	    }\r\n";
             }
         }
 
+        private string measurement_time(Timer t, ProgressBar prog)
+        {
+            if (!t.Enabled)
+            {
+                return "";
+            }
+            var remaining = prog.Maximum - prog.Value;
+            if (remaining == 0)
+            {
+                return "";
+            }
+
+            stopwatch.Stop();
+            measurement_of_time = stopwatch.ElapsedMilliseconds;
+            stopwatch.Start();
+
+
+            var one_cycle_time = measurement_of_time / (double)prog.Value;
+
+            var Time_to_finish = (one_cycle_time * remaining) / 1000.0;//sec
+
+            var min = (int)Time_to_finish / 60.0;   //min
+            var h = min / 60.0; //h
+            var day = h / 24.0;
+
+            string remaining_time = ((int)Time_to_finish).ToString() + "sec";
+            if (min > 1.0)
+            {
+                remaining_time = ((int)min).ToString() + "min";
+            }
+            if (h > 1.0)
+            {
+                remaining_time = ((int)h).ToString() + "hour";
+            }
+            if (day >= 1.0)
+            {
+                remaining_time = ((int)day).ToString() + "days";
+            }
+            return "残=" + remaining_time;
+        }
+
         private void timer4_Tick(object sender, EventArgs e)
         {
             string line = "";
@@ -9356,6 +9477,8 @@ forecast_extension += "	    }\r\n";
 
                 label23.Text = count + "/" + tot;
                 label23.Refresh();
+                label30.Text = measurement_time(timer4, progressBar4);
+                label30.Refresh();
                 if (progressBar4.Maximum == progressBar4.Value)
                 {
                     timer4.Stop();
@@ -9453,6 +9576,8 @@ forecast_extension += "	    }\r\n";
 
                 label23.Text = count + "/" + tot;
                 label23.Refresh();
+                label30.Text = measurement_time(timer5, progressBar4);
+                label30.Refresh();
                 if (progressBar4.Maximum == progressBar4.Value)
                 {
                     timer5.Stop();
@@ -9488,39 +9613,43 @@ forecast_extension += "	    }\r\n";
 
         private void label23_MouseHover(object sender, EventArgs e)
         {
-            if (!timer4.Enabled && !timer5.Enabled)
+            if (timer4.Enabled && !timer5.Enabled)
             {
-                toolTip1.SetToolTip(label23, "");
+                toolTip1.SetToolTip(label23, measurement_time(timer4, progressBar4));
                 return;
             }
-            stopwatch.Stop();
-            measurement_of_time = stopwatch.ElapsedMilliseconds;
-            stopwatch.Start();
-
-            var remaining = progressBar4.Maximum - progressBar4.Value;
-
-            var one_cycle_time = measurement_of_time/(double)progressBar4.Value;
-
-            var Time_to_finish = (one_cycle_time * remaining) / 1000.0;//sec
-
-            var min = (int)Time_to_finish / 60.0;   //min
-            var h = min / 60.0; //h
-            var day = h / 24.0;
-
-            string remaining_time = ((int)Time_to_finish).ToString() + "sec";
-            if (min > 1.0)
+            if (!timer4.Enabled && timer5.Enabled)
             {
-                remaining_time = ((int)min).ToString() + "min";
+                toolTip1.SetToolTip(label23, measurement_time(timer5, progressBar4));
+                return;
             }
-            if (h > 1.0)
+        }
+
+        private void checkBox8_CheckedChanged_1(object sender, EventArgs e)
+        {
+            if ( checkBox8.Checked)
             {
-                remaining_time = ((int)h).ToString() + "hour";
-            }
-            if (day >= 1.0)
+                xgb_ts_prm_.checkBox9.Checked = true;
+                xgb_ts_prm_.checkBox15.Checked = true;
+            }else
             {
-                remaining_time = ((int)day).ToString() + "days";
+                xgb_ts_prm_.checkBox9.Checked = false;
+                xgb_ts_prm_.checkBox15.Checked = false;
             }
-            toolTip1.SetToolTip(label23, "必要時間=" + remaining_time);
+        }
+
+        private void checkBox9_CheckedChanged_2(object sender, EventArgs e)
+        {
+            if (checkBox9.Checked)
+            {
+                xgb_ts_prm_.checkBox10.Checked = true;
+                xgb_ts_prm_.numericUpDown21.Value = 24;
+            }
+            else
+            {
+                xgb_ts_prm_.checkBox10.Checked = false;
+                xgb_ts_prm_.numericUpDown21.Value = 1;
+            }
         }
     }
 
