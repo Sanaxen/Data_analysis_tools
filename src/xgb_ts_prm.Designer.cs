@@ -74,6 +74,7 @@
             this.numericUpDown20 = new System.Windows.Forms.NumericUpDown();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
@@ -403,9 +404,10 @@
             this.button25.Location = new System.Drawing.Point(185, 30);
             this.button25.Margin = new System.Windows.Forms.Padding(4);
             this.button25.Name = "button25";
-            this.button25.Size = new System.Drawing.Size(49, 20);
+            this.button25.Size = new System.Drawing.Size(49, 27);
             this.button25.TabIndex = 174;
             this.button25.Text = "auto";
+            this.toolTip1.SetToolTip(this.button25, "支配的な周期を推定します\r\n");
             this.button25.UseVisualStyleBackColor = true;
             this.button25.Click += new System.EventHandler(this.button25_Click);
             // 
@@ -771,6 +773,7 @@
             // groupBox6
             // 
             this.groupBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.groupBox6.Controls.Add(this.checkBox2);
             this.groupBox6.Controls.Add(this.checkBox29);
             this.groupBox6.Controls.Add(this.checkBox14);
             this.groupBox6.Controls.Add(this.numericUpDown21);
@@ -793,6 +796,17 @@
             this.toolTip1.SetToolTip(this.groupBox6, "周期に相当しますがfrequency には「自然な時間の単位」内の観測値数です。\r\n「自然な時間の単位」は基本的には「年」が想定されています。\r\nしたがって、fr" +
         "equency = 1 ならば年次データ、\r\nfrequency = 4 ならば四半期毎データ、\r\nfrequency = 12 なら月次データになります。\r\n" +
         "\r\n");
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(217, 4);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(116, 19);
+            this.checkBox2.TabIndex = 197;
+            this.checkBox2.Text = "周期性の探索";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // groupBox7
             // 
@@ -1536,5 +1550,6 @@
         public System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.TextBox textBox2;
+        public System.Windows.Forms.CheckBox checkBox2;
     }
 }

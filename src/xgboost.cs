@@ -544,7 +544,17 @@ namespace WindowsFormsApplication1
 			{
 				save_target_parameter("num_class", "0", target);
 			}
-		}
+            if ( time_series_mode)
+            {
+                save_target_parameter("frequency", xgb_ts_prm_.numericUpDown14.Value.ToString(), target);
+                save_target_parameter("trend frequency", xgb_ts_prm_.numericUpDown21.Value.ToString(), target);
+
+                save_target_parameter("changepoint_prior_scale", xgb_ts_prm_.textBox1.Text, target);
+                save_target_parameter("seasonality_prior_scale", xgb_ts_prm_.textBox2.Text, target);
+                save_target_parameter("holidays_prior_scale", xgb_ts_prm_.textBox3.Text, target);
+                save_target_parameter("period", xgb_ts_prm_.textBox4.Text, target);
+            }
+        }
 
 		private void load_parameters()
 		{
@@ -571,7 +581,17 @@ namespace WindowsFormsApplication1
 			{
 				numericUpDown7.Text = parameters[target_dic[targetName]]["num_class"];
 			}
-		}
+            if (time_series_mode)
+            {
+                xgb_ts_prm_.numericUpDown14.Value = int.Parse(parameters[target_dic[targetName]]["frequency"]);
+                xgb_ts_prm_.numericUpDown21.Value = int.Parse(parameters[target_dic[targetName]]["trend frequency"]);
+
+                xgb_ts_prm_.textBox1.Text = parameters[target_dic[targetName]]["changepoint_prior_scale"];
+                xgb_ts_prm_.textBox2.Text = parameters[target_dic[targetName]]["seasonality_prior_scale"];
+                xgb_ts_prm_.textBox3.Text = parameters[target_dic[targetName]]["holidays_prior_scale"];
+                xgb_ts_prm_.textBox4.Text = parameters[target_dic[targetName]]["period"];
+            }
+        }
 
         void load_ensemble_learning_prm(double[] EnsembleW)
         {
@@ -670,6 +690,16 @@ namespace WindowsFormsApplication1
 
                 multi_target_count = 0;
                 label47.Text = multi_target_count + "/" + (listBox1.SelectedIndices.Count);
+                
+                bool serach_frequncy = xgb_ts_prm_.checkBox2.Checked;
+                bool separation_period = xgb_ts_prm_.checkBox10.Checked;
+                if (serach_frequncy)
+                {
+                    xgb_ts_prm_.checkBox10.Checked = false;
+                    xgb_ts_prm_.numericUpDown14.Value = 12;
+                    xgb_ts_prm_.numericUpDown21.Value = 24;
+                }
+
                 for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                 {
                     progressBar4.Value = 0;
@@ -682,9 +712,38 @@ namespace WindowsFormsApplication1
                         break;
                     }
                     targetName = listBox1.Items[listBox1.SelectedIndices[i]].ToString();
-                    
+
+                    xgb_ts_prm_.checkBox2.Checked = serach_frequncy;
+
+                    //Search for periodicity
+                    if (serach_frequncy)
+                    {
+                        //initialize
+                        xgb_ts_prm_.numericUpDown14.Value = 12;
+                        xgb_ts_prm_.numericUpDown21.Value = 24;
+                        if (System.IO.File.Exists("prophet_periodSearch_progress.txt"))
+                        {
+                            form1.FileDelete("prophet_periodSearch_progress.txt");
+                        }
+                        if (System.IO.File.Exists("ts_debug_plot/best_fit.png"))
+                        {
+                            form1.FileDelete("ts_debug_plot/best_fit.png");
+                        }
+                        progressBar1.Value = 0; 
+                        timer6.Enabled = true;
+                        timer6.Start();
+                    }
+
                     button1_Click_target(sender, e);
-                    
+                    if (serach_frequncy)
+                    {
+                        progressBar1.Value = progressBar1.Maximum;
+                        label31.Text = "----";
+                        timer6.Enabled = false;
+                        timer6.Stop();
+                    }
+
+
                     if (error_status != 0) break;
 
                     if (radioButton4.Checked)
@@ -695,6 +754,14 @@ namespace WindowsFormsApplication1
                     multi_target_count++;
                     label47.Text = multi_target_count + "/" + (listBox1.SelectedIndices.Count);
                 }
+                xgb_ts_prm_.checkBox10.Checked = separation_period;
+                xgb_ts_prm_.checkBox2.Checked = false;
+
+                if (serach_frequncy)
+                {
+                    MessageBox.Show("周期性の探索を完了しました");
+                }
+
                 if (error_status != 0) return;
 
                 if (radioButton3.Checked)
@@ -754,7 +821,8 @@ namespace WindowsFormsApplication1
                 timer5.Enabled = false;
                 timer5.Stop();
                 measurement_of_time = 0;
-
+                timer6.Enabled = false;
+                timer6.Stop();
             }
         }
 
@@ -2332,6 +2400,8 @@ namespace WindowsFormsApplication1
                 string explain = "";
                 string xgboost_gridsearch = "";
                 string prophet_gridsearch = "";
+                string prophet_periodSearch = "";
+                string arima_periodSearch = "";
                 string file = "";
                 {
                     if ((checkBox6.Checked || checkBox7.Checked) && radioButton1.Checked)
@@ -2875,6 +2945,400 @@ namespace WindowsFormsApplication1
                         cmd += cmd3;
                     }
                     
+					if (time_series_mode)
+					{
+						arima_periodSearch += "arima_periodSearch<- function(train, test, colname, best_count_max=-1){\r\n";
+						arima_periodSearch += "	overall <- rbind(train, test)\r\n";
+						arima_periodSearch += "\r\n";
+                        arima_periodSearch += "	colidx = grep(paste(paste(\"^\",colname, sep=\"\"),\"$\", sep=\"\"), colnames(test) )\r\n";
+                        arima_periodSearch += "	mer_min = 1000000\r\n";
+						arima_periodSearch += "	best_frequency_value = 0\r\n";
+						arima_periodSearch += "	best_pred = NULL\r\n";
+						arima_periodSearch += "	frequency_value = c( 2, 6, 7, 12, 14, 21, 24, 30, 60, 300, 360, 365 )\r\n";
+						arima_periodSearch += "\r\n";
+						arima_periodSearch += "	for ( frequency_value_i in frequency_value )\r\n";
+						arima_periodSearch += "	{\r\n";
+						arima_periodSearch += "	    #frequency_value_i = frequency_value[1]\r\n";
+						arima_periodSearch += "		train_length = min(500, max(nrow(train)/2, 2*frequency_value_i))\r\n";
+						arima_periodSearch += "\r\n";
+						arima_periodSearch += "		if ( nrow(overall)- train_length -2 <= 0 )\r\n";
+						arima_periodSearch += "		{\r\n";
+						arima_periodSearch += "		 train_length = nrow(overall)\r\n";
+						arima_periodSearch += "		}\r\n";
+						arima_periodSearch += "		train_tmp = overall[1:(nrow(overall)-train_length-1),]\r\n";
+						arima_periodSearch += "		test_tmp = overall[(nrow(overall)-train_length):(nrow(overall)-1),]\r\n";
+						arima_periodSearch += "		df_tt <- ts(train_tmp[,colidx],start=c(2015,1),frequency=frequency_value_i)\r\n";
+						arima_periodSearch += "\r\n";
+						arima_periodSearch += "		trend_freq = frequency_value_i\r\n";
+						arima_periodSearch += "		xreg = fourier(ts(df_tt,frequency=trend_freq) , K = trend_freq/2)\r\n";
+						arima_periodSearch += "		xreg <- as.matrix(xreg)\r\n";
+						arima_periodSearch += "\r\n";
+						arima_periodSearch += "		arima_model <- try(auto.arima(df_tt, ic=\"aic\", xreg = xreg), silent = FALSE)\r\n";
+						arima_periodSearch += "		if (class(arima_model) == \"try-error\" ) {\r\n";
+						arima_periodSearch += "			xreg = NULL\r\n";
+						arima_periodSearch += "			arima_model <- try(auto.arima(df_tt, ic=\"aic\", xreg = xreg), silent = FALSE)\r\n";
+						arima_periodSearch += "			if (class(arima_model) == \"try-error\" ) {\r\n";
+						arima_periodSearch += "		 		arima_error = 1\r\n";
+						arima_periodSearch += "				 next\r\n";
+						arima_periodSearch += "			}\r\n";
+						arima_periodSearch += "		}\r\n";
+						arima_periodSearch += "		h = nrow(test_tmp)\r\n";
+						arima_periodSearch += "		\r\n";
+						arima_periodSearch += "		if ( !is.null(xreg) )\r\n";
+						arima_periodSearch += "		{\r\n";
+						arima_periodSearch += "			xreg = fourier(ts(df_tt,frequency=trend_freq) , K = trend_freq/2, h = h)\r\n";
+						arima_periodSearch += "			xreg <- as.matrix(xreg)\r\n";
+						arima_periodSearch += "		}\r\n";
+						arima_periodSearch += "		\r\n";
+						arima_periodSearch += "		pred<-forecast(arima_model, level = c(50,95), h = h, xreg = xreg)\r\n";
+						arima_periodSearch += "		pred_df <- as.data.frame(pred)\r\n";
+						arima_periodSearch += "		\r\n";
+						arima_periodSearch += "		d = (test_tmp$target_ - pred_df[,1])\r\n";
+						arima_periodSearch += "		mer = median(d*d/nrow(test_tmp))\r\n";
+						arima_periodSearch += "		if ( mer < mer_min )\r\n";
+						arima_periodSearch += "		{\r\n";
+						arima_periodSearch += "			best_frequency_value = frequency_value_i\r\n";
+						arima_periodSearch += "			mer_min = mer\r\n";
+						arima_periodSearch += "			best_pred = pred_df\r\n";
+						arima_periodSearch += "			cat(\"mer_min \")\r\n";
+						arima_periodSearch += "			cat(mer_min)\r\n";
+						arima_periodSearch += "			cat(\" frequency_value \")\r\n";
+						arima_periodSearch += "			cat(best_frequency_value)\r\n";
+						arima_periodSearch += "			cat(\"\\n\")\r\n";
+						arima_periodSearch += "			flush.console()\r\n";
+						arima_periodSearch += "			\r\n";
+						arima_periodSearch += "			plot(test_tmp$target_, type=\"l\", col=\"blue\")\r\n";
+						arima_periodSearch += "			par(new=T)\r\n";
+						arima_periodSearch += "			plot(pred_df[,1], type=\"l\", col = \"red\")\r\n";
+						arima_periodSearch += "			par(new=F)\r\n";
+						arima_periodSearch += "			print(arima_model)\r\n";
+						arima_periodSearch += "		}\r\n";
+						arima_periodSearch += "		cat(\"mer \")\r\n";
+						arima_periodSearch += "		cat(mer)\r\n";
+						arima_periodSearch += "		cat(\" frequency_value \")\r\n";
+						arima_periodSearch += "		cat(frequency_value_i)\r\n";
+						arima_periodSearch += "		cat(\"   mer_min \")\r\n";
+						arima_periodSearch += "		cat(mer_min)\r\n";
+						arima_periodSearch += "		cat(\" frequency_value \")\r\n";
+						arima_periodSearch += "		cat(best_frequency_value)\r\n";
+						arima_periodSearch += "		cat(\"\\n\")\r\n";
+						arima_periodSearch += "		flush.console()\r\n";
+						arima_periodSearch += "	}\r\n";
+						arima_periodSearch += "	cat(\" frequency_value \")\r\n";
+						arima_periodSearch += "	cat(best_frequency_value)\r\n";
+						arima_periodSearch += "	cat(\"\\\n\")\r\n";
+						arima_periodSearch += "	flush.console()\r\n";
+						arima_periodSearch += "	plot(test_tmp$target_, type=\"l\", col=\"blue\")\r\n";
+						arima_periodSearch += "	par(new=T)\r\n";
+						arima_periodSearch += "	plot(best_pred[,1], type=\"l\", col = \"red\")\r\n";
+						arima_periodSearch += "	par(new=F)\r\n";
+						arima_periodSearch += "	return(best_frequency_value)\r\n";
+                        arima_periodSearch += "}\r\n";
+
+                        arima_periodSearch += "if ( file.exists(\"arima_trend_period"+ targetName +".txt\")) file.remove(\"arima_trend_period.txt\")\r\n";
+                        if (xgb_ts_prm_.checkBox15.Checked)
+                        {
+                            arima_periodSearch += "period <- arima_periodSearch(train, test, \"trend\", best_count_max=-1)\r\n";
+                            arima_periodSearch += "sink(file = \"arima_trend_period" + targetName + ".txt\")\r\n";
+                            arima_periodSearch += "cat(\"period,\")\r\n";
+                            arima_periodSearch += "cat(period)\r\n";
+                            arima_periodSearch += "cat(\"\\n\")\r\n";
+                            arima_periodSearch += "sink()\r\n";
+                            arima_periodSearch += "print(period)\r\n";
+                        }
+
+						using (System.IO.StreamWriter sw = new System.IO.StreamWriter("arima_periodSearch.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
+						{
+						    sw.Write(arima_periodSearch);
+						}
+
+
+						prophet_periodSearch += "prophet_periodSearch<- function(train, test, colname, best_count_max=-1)\r\n";
+						prophet_periodSearch += "{\r\n";
+                        prophet_periodSearch += "	if ( file.exists(\"prophet_periodSearch_progress.txt\")) file.remove(\"prophet_periodSearch_progress.txt\")\r\n";
+						prophet_periodSearch += "\r\n";
+                        prophet_periodSearch += "	colidx = grep(paste(paste(\"^\",colname, sep=\"\"),\"$\", sep=\"\"), colnames(test) )\r\n";
+						prophet_periodSearch += "	dt_ = difftime(as.POSIXlt(train[,1][2]),as.POSIXlt(train[,1][1]))\r\n";
+						prophet_periodSearch += "	dt_ = as.numeric(dt_,units=\"secs\")\r\n";
+
+						prophet_periodSearch += "	df_prophet <- rbind(train, test)\r\n";
+						prophet_periodSearch += "	df_prophet$ds <- df_prophet[,1]\r\n";
+						prophet_periodSearch += "	df_prophet$y   <- df_prophet[,colidx]\r\n";
+						prophet_periodSearch += "\r\n";
+
+						prophet_periodSearch += "	tarin_min_size = min(nrow(train), max(500, as.integer(nrow(train)/5)))\r\n";
+						prophet_periodSearch += "	test_min_size = min(nrow(test), max(500, as.integer(nrow(test)/2)))\r\n";
+						prophet_periodSearch += "	s1 = 1\r\n";
+						prophet_periodSearch += "	s2 = s1 + tarin_min_size\r\n";
+						prophet_periodSearch += "	s3 = s2 + test_min_size -1\r\n";
+
+
+						prophet_periodSearch += "	period = c( 2, 6, 7, 12, 14, 21, 24, 30, 60, 300, 360, 365 )\r\n";
+						prophet_periodSearch += "	pattern_length = length(period)\r\n";
+						prophet_periodSearch += "\r\n";
+						prophet_periodSearch += "	eval_count = 0\r\n";
+						prophet_periodSearch += "	best_count = 0\r\n";
+						prophet_periodSearch += "	best_score = 9999999\r\n";
+						prophet_periodSearch += "	best_params = NULL\r\n";
+						prophet_periodSearch += "	best_model = NULL\r\n";
+						prophet_periodSearch += "	best_mer = 10000000\r\n";
+						prophet_periodSearch += "	if (  file.exists(\"ts_debug_plot/best_fit.png\") ) file.remove(\"ts_debug_plot/best_fit.png\")\r\n";
+						prophet_periodSearch += "	for ( period_i in period ){\r\n";
+						prophet_periodSearch += "		if (  file.exists(\"prophet_periodSearch.stop\") ) break\r\n";
+
+
+						//prophet_periodSearch += "	if (nrow(train)-tarin_min_size > 0){\r\n";
+						//prophet_periodSearch += "	    for ( i in 1:10 )\r\n";
+						//prophet_periodSearch += "	    {\r\n";
+						//prophet_periodSearch += "		    s1 = as.integer(runif(1, 1, nrow(train)-tarin_min_size))\r\n";
+						//prophet_periodSearch += "		    s2 = s1 + tarin_min_size\r\n";
+						//prophet_periodSearch += "		    if ( s2 <= nrow(train)) break\r\n";
+						//prophet_periodSearch += "		    s2 = -1\r\n";
+						//prophet_periodSearch += "	    }\r\n";
+						//prophet_periodSearch += "	    if ( s2 < 1 ) {\r\n";
+						//prophet_periodSearch += "		    s1 = 1\r\n";
+						//prophet_periodSearch += "		    s2 = s1 + tarin_min_size\r\n";
+						//prophet_periodSearch += "	    }\r\n";
+						//prophet_periodSearch += "	}else{\r\n";
+						//prophet_periodSearch += "		    s1 = 1\r\n";
+						//prophet_periodSearch += "		    s2 = s1 + nrow(train)-1\r\n";
+						//prophet_periodSearch += "	}\r\n";
+						//prophet_periodSearch += "	s3 = s2 + test_min_size\r\n";
+
+						prophet_periodSearch += "	m <-prophet(n.changepoints=25,weekly.seasonality=\"auto\",yearly.seasonality=\"auto\",daily.seasonality=\"auto\",\r\n";
+						prophet_periodSearch += "                      seasonality.mode = \"" + xgb_ts_prm_.comboBox7.Text + "\",\r\n";
+						prophet_periodSearch += "                      growth = \"linear\", fit=FALSE\r\n";
+						if (holidays1 || holidays2)
+						{
+						    if (holidays1)
+						    {
+						        prophet_periodSearch += "                      ,holidays = holidays\r\n";
+						    }
+						    else
+						    if (holidays2)
+						    {
+						        prophet_periodSearch += "                      ,holidays = i.holidays\r\n";
+						    }
+						}
+						prophet_periodSearch += "	)\r\n";
+						if (xgb_ts_prm_.checkBox29.Checked )
+						{
+						    for (int i = 0; i < var.Items.Count; i++)
+						    {
+						    	prophet_periodSearch += "	m <- add_regressor(m,";
+								prophet_periodSearch += "'"+ var.Items[i].ToString() +"')\r\n";
+						    }
+						}
+						if (xgb_ts_prm_.checkBox14.Checked && xgb_ts_prm_.numericUpDown21.Value > 1)
+						{
+						    prophet_periodSearch += "	m <- add_seasonality(m, name='frq"+ xgb_ts_prm_.numericUpDown21.Value .ToString()+ "', period = " + xgb_ts_prm_.numericUpDown21.Value.ToString()+", fourier.order = 5)\r\n";
+						}
+						prophet_periodSearch += "	if ( period_i > 1 ) m <- add_seasonality(m, name='frq_'"+ ", period = period_i, fourier.order = 5)\r\n";
+						prophet_periodSearch += "	prophet.model <-fit.prophet(m, df_prophet[s1:(s2-1),])\r\n";
+						prophet_periodSearch += "	\r\n";
+						prophet_periodSearch += "	prophet_future<-make_future_dataframe(prophet.model, s3-s2+1, freq =dt_)\r\n";
+						if (xgb_ts_prm_.checkBox29.Checked)
+						{
+						    for (int i = 0; i < var.Items.Count; i++)
+						    {
+						        prophet_periodSearch += "	prophet_future$'" + var.Items[i].ToString() + "' <- ";
+						        prophet_periodSearch += "	df_prophet$'" + var.Items[i].ToString() + "'[s1:s3]\r\n";
+						    }
+						}
+						prophet_periodSearch += "	predict_prophet <- predict(prophet.model ,prophet_future," + growth + ")\r\n";
+						prophet_periodSearch += "	y<-predict_prophet$yhat\r\n";
+						prophet_periodSearch += "	mer = median((y-df_prophet$y[c(s1:s3)])*(y-df_prophet$y[c(s1:s3)]))\r\n";
+						prophet_periodSearch += "	if ( mer < best_mer )\r\n";
+						prophet_periodSearch += "	{\r\n";
+						prophet_periodSearch += "	    #gp <- plot(prophet.model, predict_prophet)\r\n";
+						prophet_periodSearch += "	    #plot(gp)\r\n";
+						prophet_periodSearch += "	    #plot(y, type=\"l\", col=\"#ff7f00\")\r\n";
+						prophet_periodSearch += "	    #par(new=T)\r\n";
+						prophet_periodSearch += "	    #plot(df_prophet$y, type=\"l\", col = \"#377eb8\")\r\n";
+						prophet_periodSearch += "	    plt<- ggplot() + geom_line(aes(x=as.POSIXct(df_prophet$ds[c(s1:s3)]), y=y), color=\"#ff7f00\",size = 1.5)\r\n";
+						prophet_periodSearch += "	    plt<- plt + geom_line(aes(x=as.POSIXct(df_prophet$ds[c(s1:s3)]), y=df_prophet$y[c(s1:s3)]), color=\"#000080\",size = 0.7)\r\n";
+						prophet_periodSearch += "		tryCatch({\r\n";
+						prophet_periodSearch += "	            print(plt)\r\n";
+						prophet_periodSearch += "	            ggsave(file = paste(paste(\"ts_debug_plot/best_fit\", sep=\"\"), \".png\", sep=\"\"), plt, dpi = 120, width = 6.4*4*1, height = 2*4.8*1, limitsize = FALSE)\r\n";
+						prophet_periodSearch += "         },\r\n";
+						prophet_periodSearch += "		error = function(e) {\r\n";
+						prophet_periodSearch += "            sink()\r\n";
+						prophet_periodSearch += "		},\r\n";
+						prophet_periodSearch += "		finally   = {\r\n";
+						prophet_periodSearch += "		},silent = TRUE )\r\n";
+						prophet_periodSearch += "		flush.console()\r\n";
+						prophet_periodSearch += "		best_count = best_count +1\r\n";
+						prophet_periodSearch += "		best_params = period_i\r\n";
+						prophet_periodSearch += "		best_model = prophet.model\r\n";
+						prophet_periodSearch += "		best_mer = mer\r\n";
+						prophet_periodSearch += "		print(best_params)\r\n";
+						prophet_periodSearch += "	}\r\n";
+						prophet_periodSearch += "	if ( best_count_max >0 && best_count > best_count_max ) break\r\n";
+						prophet_periodSearch += "	eval_count = eval_count + 1\r\n";
+						prophet_periodSearch += "	cat(eval_count)\r\n";
+						prophet_periodSearch += "	cat(\" best_mer:\")\r\n";
+						prophet_periodSearch += "	cat(best_mer)\r\n";
+						prophet_periodSearch += "	cat(\"\\\n\")\r\n";
+						prophet_periodSearch += "	cat(eval_count)\r\n";
+						prophet_periodSearch += "	cat(\" / \")\r\n";
+						prophet_periodSearch += "	cat(pattern_length)\r\n";
+						prophet_periodSearch += "	cat(\"\\\n\")\r\n";
+						prophet_periodSearch += "\r\n";
+						prophet_periodSearch += "\r\n";
+						prophet_periodSearch += "	tryCatch({\r\n";
+						prophet_periodSearch += "		sink(\"prophet_periodSearch_progress.txt\")\r\n";
+						prophet_periodSearch += "		cat(eval_count)\r\n";
+						prophet_periodSearch += "		cat (\"/\")\r\n";
+						prophet_periodSearch += "		cat(pattern_length)\r\n";
+						prophet_periodSearch += "		cat(\"\\r\\n\")\r\n";
+						prophet_periodSearch += "		flush.console()\r\n";
+						prophet_periodSearch += "		sink()\r\n";
+						prophet_periodSearch += "	},\r\n";
+						prophet_periodSearch += "	error = function(e) {\r\n";
+						prophet_periodSearch += "		sink()\r\n";
+						prophet_periodSearch += "	},\r\n";
+						prophet_periodSearch += "		finally   = {\r\n";
+						prophet_periodSearch += "	},silent = TRUE )\r\n";
+						prophet_periodSearch += "\r\n";
+						prophet_periodSearch += "\r\n";
+						prophet_periodSearch += "	flush.console()\r\n";
+						prophet_periodSearch += "	}\r\n";
+						prophet_periodSearch += "	return( best_params)\r\n";
+						prophet_periodSearch += "}\r\n";
+                        prophet_periodSearch += "if ( file.exists(\"prophet_trend_period" + targetName + ".txt\")) file.remove(\"prophet_trend_period" + targetName + ".txt\")\r\n";
+                        prophet_periodSearch += "if ( file.exists(\"prophet_period" + targetName + ".txt\")) file.remove(\"prophet_period" + targetName + ".txt\")\r\n";
+                        if (xgb_ts_prm_.checkBox15.Checked)
+                        {
+                            prophet_periodSearch += "period <- prophet_periodSearch(train, test, \"trend\", best_count_max=-1)\r\n";
+                            prophet_periodSearch += "sink(file = \"prophet_trend_period" + targetName + ".txt\")\r\n";
+                            prophet_periodSearch += "cat(\"period,\")\r\n";
+                            prophet_periodSearch += "cat(period)\r\n";
+                            prophet_periodSearch += "cat(\"\\n\")\r\n";
+                            prophet_periodSearch += "sink()\r\n";
+                            prophet_periodSearch += "print(period)\r\n";
+                        }
+                        prophet_periodSearch += "period <- prophet_periodSearch(train, test, \"" + targetName + "\", best_count_max=-1)\r\n";
+                        prophet_periodSearch += "sink(file = \"prophet_period" + targetName + ".txt\")\r\n";
+                        prophet_periodSearch += "cat(\"period,\")\r\n";
+                        prophet_periodSearch += "cat(period)\r\n";
+                        prophet_periodSearch += "cat(\"\\n\")\r\n";
+                        prophet_periodSearch += "sink()\r\n";
+                        prophet_periodSearch += "print(period)\r\n";
+
+                        if (System.IO.File.Exists("prophet_periodSearch_progress.txt"))
+                        {
+                            form1.FileDelete("prophet_periodSearch_progress.txt");
+                        }
+                        
+                        using (System.IO.StreamWriter sw = new System.IO.StreamWriter("prophet_periodSearch.r", false, System.Text.Encoding.GetEncoding("shift_jis")))
+						{
+						    sw.Write(prophet_periodSearch);
+						}
+                        if ( System.IO.File.Exists("prophet_trend_period" + targetName + ".txt"))
+                        {
+                            form1.FileDelete("prophet_trend_period" + targetName + ".txt");
+                        }
+                        if (System.IO.File.Exists("prophet_period" + targetName + ".txt"))
+                        {
+                            form1.FileDelete("prophet_period" + targetName + ".txt");
+                        }
+                        if ( xgb_ts_prm_.checkBox2.Checked && time_series_mode)
+						{
+                            if (System.IO.File.Exists("prophet_periodSearch_progress.txt"))
+                            {
+                                form1.FileDelete("prophet_periodSearch_progress.txt");
+                            }
+                            if (System.IO.File.Exists("ts_debug_plot/best_fit.png"))
+                            {
+                                form1.FileDelete("ts_debug_plot/best_fit.png");
+                            }
+                            progressBar1.Value = 0;
+
+                            timer6.Enabled = true;
+                            timer6.Start();
+
+                            //Search for periodicity
+                            form1.script_executestr("source(\"prophet_periodSearch.r\")\r\n");
+                            timer6.Enabled = false;
+                            timer6.Stop();
+                            progressBar1.Value = progressBar1.Maximum;
+                            label31.Text = "----";
+
+                            if (xgb_ts_prm_.checkBox15.Checked)
+                            {
+                                if (System.IO.File.Exists("prophet_trend_period" + targetName + ".txt"))
+                                {
+                                    System.IO.StreamReader sr = null;
+                                    try
+                                    {
+                                        string line = "";
+                                        if (System.IO.File.Exists("prophet_trend_period" + targetName + ".txt"))
+                                        {
+                                            sr = new System.IO.StreamReader("prophet_trend_period" + targetName + ".txt", Encoding.GetEncoding("SHIFT_JIS"));
+                                            if (sr != null)
+                                            {
+                                                line = sr.ReadLine().Replace("\n", "").Replace("\r", "");
+
+                                                var ss = line.Split(',');
+                                                if (ss[0] == "period")
+                                                {
+                                                    xgb_ts_prm_.numericUpDown21.Value = int.Parse(ss[1]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    catch { }
+                                    finally
+                                    {
+                                        if (sr != null)
+                                        {
+                                            sr.Close();
+                                        }
+                                    }
+                                }
+                            }
+                            if (System.IO.File.Exists("prophet_period" + targetName + ".txt"))
+                            {
+                                System.IO.StreamReader sr = null;
+                                try
+                                {
+                                    string line = "";
+                                    if (System.IO.File.Exists("prophet_period" + targetName + ".txt"))
+                                    {
+                                        sr = new System.IO.StreamReader("prophet_period" + targetName + ".txt", Encoding.GetEncoding("SHIFT_JIS"));
+                                        if (sr != null)
+                                        {
+                                            line = sr.ReadLine().Replace("\n", "").Replace("\r", "");
+
+                                            var ss = line.Split(',');
+                                            if (ss[0] == "period")
+                                            {
+                                                xgb_ts_prm_.numericUpDown14.Value = int.Parse(ss[1]);
+                                                xgb_ts_prm_.textBox4.Text = ss[1];
+                                            }
+                                        }
+                                    }
+                                }
+                                catch { }
+                                finally
+                                {
+                                    if (sr != null)
+                                    {
+                                        sr.Close();
+                                    }
+                                }
+                            }
+						}
+                        if (xgb_ts_prm_.checkBox2.Checked)
+                        {
+                            xgb_ts_prm_.checkBox2.Checked = false;
+                            save_target_parameter("frequency", xgb_ts_prm_.numericUpDown14.Value.ToString(), targetName);
+                            save_target_parameter("trend frequency", xgb_ts_prm_.numericUpDown21.Value.ToString(), targetName);
+                            save_target_parameter("period", xgb_ts_prm_.textBox4.Text, targetName);
+                            return;
+                        }
+                    }
+                    
                     if ( true )
                     {
 						xgboost_gridsearch += "xgboost_gridSearch<- function(train, test, best_count_max=-1)\r\n";
@@ -3122,7 +3586,7 @@ namespace WindowsFormsApplication1
 
                     }
 
-                    if (true)
+                    if (time_series_mode)
                     {
                         prophet_gridsearch += "prophet_gridSearch<- function(train, test, best_count_max=-1)\r\n";
                         prophet_gridsearch += "{\r\n";
@@ -3143,9 +3607,9 @@ namespace WindowsFormsApplication1
 
 
                         prophet_gridsearch += "	changepoint_prior_scale = c(0.05, 0.1, 0.2)\r\n";
-                        prophet_gridsearch += "	seasonality_prior_scale = c(10.0, 0.1, 3.0, 6.0)\r\n";
-                        prophet_gridsearch += "	holidays_prior_scale =    c(10.0, 0.1, 3.0, 6.0 )\r\n";
-                        prophet_gridsearch += "	period = c(0, 3, 7, 14, 30.5, 365.25 )\r\n";
+                        prophet_gridsearch += "	seasonality_prior_scale = c(10.0, 0.1, 3.0)\r\n";
+                        prophet_gridsearch += "	holidays_prior_scale =    c(10.0, 0.1, 3.0)\r\n";
+                        prophet_gridsearch += "	period = c( 2, 6, 7, 12, 14, 21, 24, 30, 60, 300, 360, 365 )\r\n";
                         prophet_gridsearch += "	pattern_length = length(changepoint_prior_scale)*length(seasonality_prior_scale)*length(holidays_prior_scale)*length(period)\r\n";
                         prophet_gridsearch += "\r\n";
                         prophet_gridsearch += "	eval_count = 0\r\n";
@@ -3419,7 +3883,7 @@ namespace WindowsFormsApplication1
 		                        {
 		                            cmd += "prophet.model_" + targetName + "  <- add_seasonality(prophet.model_" + targetName + ", name='frq" + xgb_ts_prm_.numericUpDown21.Value .ToString()+ "', period = " + xgb_ts_prm_.numericUpDown21.Value.ToString()+", fourier.order = 5)\r\n";
 		                        }
-		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0 )
+		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0  && ((double)(xgb_ts_prm_.numericUpDown21.Value) != double.Parse(xgb_ts_prm_.textBox4.Text)))
 		                        {
 		                        	cmd += "prophet.model_" + targetName + " <- add_seasonality(prophet.model_" + targetName + " , name='frq_'"+ ", period = "+xgb_ts_prm_.textBox4.Text +", fourier.order = 5)\r\n";
 	                            }
@@ -3542,7 +4006,7 @@ namespace WindowsFormsApplication1
 		                        {
 		                            cmd += "prophet.model_" + targetName + "  <- add_seasonality(prophet.model_" + targetName + ", name='frq" + xgb_ts_prm_.numericUpDown21.Value .ToString()+ "', period = " + xgb_ts_prm_.numericUpDown21.Value.ToString()+", fourier.order = 5)\r\n";
 		                        }
-		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0 )
+		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0 && ((double)(xgb_ts_prm_.numericUpDown21.Value) != double.Parse(xgb_ts_prm_.textBox4.Text)) )
 		                        {
 		                        	cmd += "prophet.model_" + targetName + " <- add_seasonality(prophet.model_" + targetName + " , name='frq_'"+ ", period = "+xgb_ts_prm_.textBox4.Text +", fourier.order = 5)\r\n";
 	                            }
@@ -3649,6 +4113,10 @@ namespace WindowsFormsApplication1
                     if (System.IO.File.Exists("prophet_gridSearch_progress.txt"))
                     {
                         form1.FileDelete("prophet_gridSearch_progress.txt");
+                    }
+                    if (System.IO.File.Exists("prophet_periodSearch_progress.txt"))
+                    {
+                        form1.FileDelete("prophet_periodSearch_progress.txt");
                     }
                     if (!System.IO.Directory.Exists("ts_debug_plot"))
                     {
@@ -3774,10 +4242,10 @@ namespace WindowsFormsApplication1
 
 								if ( checkBox26.Checked )
 								{
-			                        cmd_tmp += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata=test_dmat)*ensembleW1\r\n";
-			                        cmd_tmp += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata=test_dmat)*ensembleW2\r\n";
-			                        cmd_tmp += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata=test_dmat)*ensembleW3\r\n";
-			                        cmd_tmp += "predict_y4<-predict( object=randomForest.model_"+targetName + ", newdata=test)*ensembleW4\r\n";
+			                        cmd_tmp += "predict_y1<-predict( object=xgboost.model_"+targetName + "1, newdata="+ view_data+"_dmat)*ensembleW1\r\n";
+			                        cmd_tmp += "predict_y2<-predict( object=xgboost.model_"+targetName + "2, newdata="+ view_data+"_dmat)*ensembleW2\r\n";
+			                        cmd_tmp += "predict_y3<-predict( object=xgboost.model_"+targetName + "3, newdata="+ view_data+"_dmat)*ensembleW3\r\n";
+			                        cmd_tmp += "predict_y4<-predict( object=randomForest.model_"+targetName + ", "+ view_data+")*ensembleW4\r\n";
 			                        
 			                        if ( time_series_mode )
 			                        {
@@ -3796,7 +4264,7 @@ namespace WindowsFormsApplication1
 							                }
 						                }
 					                    cmd_tmp += "predict_prophet <- predict(prophet.model_"+targetName + ",prophet_future, growth = \"" + growth + "\")\r\n";
-					                    cmd_tmp += "predict_y5<-predict_prophet$yhat[-c(1:nrow(train))]*ensembleW5\r\n";
+					                    cmd_tmp += "predict_y5<-predict_prophet$yhat[c(1:nrow(train))]*ensembleW5\r\n";
 			                        	cmd_tmp += "predict_tmp <- (predict_tmp + predict_y1 + predict_y2 + predict_y3 + predict_y4 + predict_y5)\r\n";
 				                    }else
 				                    {
@@ -5020,7 +5488,7 @@ namespace WindowsFormsApplication1
 		                        {
 		                            forecast_extension += "                     prophet_model <- add_seasonality(prophet_model, name='frq" + xgb_ts_prm_.numericUpDown21.Value .ToString()+ "', period = " + xgb_ts_prm_.numericUpDown21.Value.ToString()+", fourier.order = 5)\r\n";
 		                        }
-		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0 )
+		                        if ( double.Parse(xgb_ts_prm_.textBox4.Text) > 1.0 && ((double)(xgb_ts_prm_.numericUpDown21.Value) != double.Parse(xgb_ts_prm_.textBox4.Text)))
 		                        {
 		                        	forecast_extension += "                     prophet_model <- add_seasonality(prophet_model , name='frq_'" + ", period = "+xgb_ts_prm_.textBox4.Text +", fourier.order = 5)\r\n";
 	                            }
@@ -9650,6 +10118,64 @@ forecast_extension += "	    }\r\n";
                 xgb_ts_prm_.checkBox10.Checked = false;
                 xgb_ts_prm_.numericUpDown21.Value = 1;
             }
+        }
+
+        private void timer6_Tick(object sender, EventArgs e)
+        {
+            string line = "";
+            System.IO.StreamReader sr = null;
+            try
+            {
+                if (System.IO.File.Exists("prophet_periodSearch_progress.txt"))
+                {
+                    sr = new System.IO.StreamReader("prophet_periodSearch_progress.txt");
+                    line = sr.ReadLine();
+                }
+            }
+            catch { }
+            finally
+            {
+                if (sr != null)
+                {
+                    sr.Close();
+                }
+            }
+
+            if (line != "")
+            {
+                if (measurement_of_time == 0.0)
+                {
+                    stopwatch.Start();
+                }
+                line = line.Replace("\r\n", "");
+                var count = line.Split('/')[0].TrimStart('0');
+                var tot = line.Split('/')[1].TrimStart('0');
+                progressBar1.Maximum = int.Parse(tot);
+                progressBar1.Value = int.Parse(count);
+
+                label31.Text = count + "/" + tot + " " + measurement_time(timer2, progressBar1);
+                label31.Refresh();
+                if (progressBar1.Maximum == progressBar1.Value)
+                {
+                    timer6.Stop();
+                    measurement_of_time = 0;
+                }
+            }
+
+            try
+            {
+                string pngfile = "ts_debug_plot\\best_fit.png";
+                if (System.IO.File.Exists(pngfile))
+                {
+                    pictureBox1.Image = Form1.CreateImage(pngfile);
+                }
+            }
+            catch { }
+        }
+
+        private void checkBox10_CheckedChanged_1(object sender, EventArgs e)
+        {
+            xgb_ts_prm_.checkBox2.Checked = checkBox10.Checked;
         }
     }
 

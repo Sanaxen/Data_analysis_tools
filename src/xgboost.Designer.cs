@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(xgboost));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label31 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.checkBox26 = new System.Windows.Forms.CheckBox();
@@ -171,7 +172,8 @@
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.timer4 = new System.Windows.Forms.Timer(this.components);
             this.timer5 = new System.Windows.Forms.Timer(this.components);
-            this.label31 = new System.Windows.Forms.Label();
+            this.timer6 = new System.Windows.Forms.Timer(this.components);
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown17)).BeginInit();
@@ -293,6 +295,17 @@
             this.panel2.Size = new System.Drawing.Size(1024, 955);
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label31.ForeColor = System.Drawing.Color.Blue;
+            this.label31.Location = new System.Drawing.Point(694, 158);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(52, 15);
+            this.label31.TabIndex = 161;
+            this.label31.Text = "-----";
             // 
             // label30
             // 
@@ -562,6 +575,7 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.panel7.Controls.Add(this.checkBox10);
             this.panel7.Controls.Add(this.checkBox9);
             this.panel7.Controls.Add(this.checkBox8);
             this.panel7.Controls.Add(this.button30);
@@ -2046,16 +2060,21 @@
             this.timer5.Interval = 5000;
             this.timer5.Tick += new System.EventHandler(this.timer5_Tick);
             // 
-            // label31
+            // timer6
             // 
-            this.label31.AutoSize = true;
-            this.label31.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label31.ForeColor = System.Drawing.Color.Blue;
-            this.label31.Location = new System.Drawing.Point(694, 158);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(52, 15);
-            this.label31.TabIndex = 161;
-            this.label31.Text = "-----";
+            this.timer6.Interval = 1000;
+            this.timer6.Tick += new System.EventHandler(this.timer6_Tick);
+            // 
+            // checkBox10
+            // 
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Location = new System.Drawing.Point(131, 84);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(116, 19);
+            this.checkBox10.TabIndex = 198;
+            this.checkBox10.Text = "周期性の探索";
+            this.checkBox10.UseVisualStyleBackColor = true;
+            this.checkBox10.CheckedChanged += new System.EventHandler(this.checkBox10_CheckedChanged_1);
             // 
             // xgboost
             // 
@@ -2252,5 +2271,7 @@
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.CheckBox checkBox9;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Timer timer6;
+        public System.Windows.Forms.CheckBox checkBox10;
     }
 }

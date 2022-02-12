@@ -467,5 +467,10 @@ namespace WindowsFormsApplication1
                 }
             }
         }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            xgb_.checkBox10.Checked = checkBox2.Checked;
+        }
     }
 }
