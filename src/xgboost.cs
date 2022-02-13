@@ -115,6 +115,9 @@ namespace WindowsFormsApplication1
             InitializeAsync();
             interactivePlot = new interactivePlot();
             interactivePlot.Hide();
+
+            //this.Height = 892;
+            //this.Width = 1758;
             
             xgb_ts_prm_ = new xgb_ts_prm();
             xgb_ts_prm_.Hide();
@@ -272,6 +275,8 @@ namespace WindowsFormsApplication1
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox1.Dock = DockStyle.Fill;
                     pictureBox1.Show();
+                    TopMost = true;
+                    TopMost = false;
                 }
                 if (radioButton3.Checked)
                 {
@@ -279,6 +284,8 @@ namespace WindowsFormsApplication1
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox1.Dock = DockStyle.Fill;
                     pictureBox1.Show();
+                    TopMost = true;
+                    TopMost = false;
 
                     if (xgboost_exp_ != null) xgboost_exp_.pictureBox1.Image = Form1.CreateImage("explain_predict\\tmp_xgboost_predict_" + targetName + ".png");
                     if (System.IO.File.Exists("explain_predict\\tmp_xgboost_predict_parts_" + targetName + "1.png"))
@@ -500,6 +507,8 @@ namespace WindowsFormsApplication1
 
                     pictureBox2.Image = Form1.CreateImage("split_train_test_" + targetName + ".png");
                     pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+                    TopMost = true;
+                    TopMost = false;
                 }
             }
             catch { }
@@ -656,22 +665,29 @@ namespace WindowsFormsApplication1
                         form1.FileDelete("prophet_gridsearch.stop");
                     }
 
-                    if (image_links != null) image_links = null;
-                    if (parameters != null) parameters = null;
-                    if (target_dic != null) target_dic = null;
+                    //if (image_links != null) image_links = null;
+                    //if (parameters != null) parameters = null;
+                    //if (target_dic != null) target_dic = null;
 
                     if (image_links == null || parameters == null)
                     {
                         image_links = new Dictionary<string, string>[listBox1.SelectedIndices.Count];
                         parameters = new Dictionary<string, string>[listBox1.SelectedIndices.Count];
                         target_dic = new Dictionary<string, int>();
-                    }
-                    for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
-                    {
-                        comboBox8.Items.Add(listBox1.Items[listBox1.SelectedIndices[i]].ToString());
-                        target_dic[listBox1.Items[listBox1.SelectedIndices[i]].ToString()] = i;
-                        parameters[i] = new Dictionary<string, string>();
-                        image_links[i] = new Dictionary<string, string>();
+                        for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                        {
+                            comboBox8.Items.Add(listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                            target_dic[listBox1.Items[listBox1.SelectedIndices[i]].ToString()] = i;
+                            parameters[i] = new Dictionary<string, string>();
+                            image_links[i] = new Dictionary<string, string>();
+                        }
+
+                        //save default parameter
+                        for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                        {
+                            save_target_parameters(listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                            save_param("xgboost_param_" + listBox1.Items[listBox1.SelectedIndices[i]].ToString());
+                        }
                     }
                 }
 
@@ -733,6 +749,8 @@ namespace WindowsFormsApplication1
                         timer6.Enabled = true;
                         timer6.Start();
                     }
+
+                    load_parameters();
 
                     button1_Click_target(sender, e);
                     if (serach_frequncy)
@@ -951,6 +969,8 @@ namespace WindowsFormsApplication1
                     pictureBox1.Show();
                     button2.Visible = true;
                     button3.Visible = true;
+                    TopMost = true;
+                    TopMost = false;
                 }
                 else
                 {
@@ -7184,6 +7204,8 @@ forecast_extension += "	    }\r\n";
 
                 //後片付け
                 bmp.Dispose();
+                TopMost = true;
+                TopMost = false;
             }
             catch
             {
@@ -9960,6 +9982,8 @@ forecast_extension += "	    }\r\n";
                 if (System.IO.File.Exists(pngfile))
                 {
                     pictureBox1.Image = Form1.CreateImage(pngfile);
+                    TopMost = true;
+                    TopMost = false;
                 }
             }
             catch { }            
@@ -10060,6 +10084,8 @@ forecast_extension += "	    }\r\n";
                 if (System.IO.File.Exists(pngfile))
                 {
                     pictureBox1.Image = Form1.CreateImage(pngfile);
+                    TopMost = true;
+                    TopMost = false;
                 }
             }
             catch { }            
@@ -10168,6 +10194,8 @@ forecast_extension += "	    }\r\n";
                 if (System.IO.File.Exists(pngfile))
                 {
                     pictureBox1.Image = Form1.CreateImage(pngfile);
+                    TopMost = true;
+                    TopMost = false;
                 }
             }
             catch { }
