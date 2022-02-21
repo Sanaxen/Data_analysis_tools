@@ -616,6 +616,19 @@ namespace WindowsFormsApplication1
                             }
                             continue;
                         }
+
+                        if (ss[0].IndexOf("nonlinear") >= 0)
+                        {
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox12.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox12.Checked = false;
+                            }
+                            continue;
+                        }
                     }
                     sr.Close();
                 }
@@ -732,6 +745,11 @@ namespace WindowsFormsApplication1
                     sw.Write("bootstrap,");
                     if (checkBox11.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
+
+                    sw.Write("nonlinear,");
+                    if (checkBox12.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+
                     sw.Close();
                 }
             }
@@ -1009,6 +1027,10 @@ namespace WindowsFormsApplication1
                 process = new System.Diagnostics.Process();
 
                 process.StartInfo.FileName = Form1.MyPath + "\\LiNGAM.exe";
+                if ( checkBox12.Checked)
+                {
+                    process.StartInfo.FileName = Form1.MyPath + "\\gpu_version\\LiNGAM_cuda.exe";
+                }
                 process.StartInfo.Arguments = "--csv " + fileName;
                 process.StartInfo.Arguments += " --header 1";
                 process.StartInfo.Arguments += " --col 0";
@@ -1228,6 +1250,14 @@ namespace WindowsFormsApplication1
                 else
                 {
                     process.StartInfo.Arguments += " --use_bootstrap 0";
+                }
+                if (checkBox12.Checked)
+                {
+                    process.StartInfo.Arguments += " --nonlinear 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --nonlinear 0";
                 }
 
                 int select_cols = listBox2.SelectedIndices.Count;

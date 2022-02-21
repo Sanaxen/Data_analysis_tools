@@ -38,6 +38,7 @@ echo "%DEEPAR_APP%"> "%BATPATH%bin\deep_ar_path.txt"
 
 echo "%GNUPLOT_PATH%"> "%PYTORCH_CUDA%\gnuplot_path.txt"
 echo "%GRAPHVIZ_PATH%"> "%GRAPHVIZ_PATH%\graphviz_path.txt"
+echo "%GRAPHVIZ_PATH%"> "%PYTORCH_CUDA%\graphviz_path.txt"
 
 echo 1 > "%BATPATH%bin\prophet_option.txt"
 
