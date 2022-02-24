@@ -629,6 +629,32 @@ namespace WindowsFormsApplication1
                             }
                             continue;
                         }
+
+                        if (ss[0].IndexOf("use_gpu") >= 0)
+                        {
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox13.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox13.Checked = false;
+                            }
+                            continue;
+                        }
+
+                        if (ss[0].IndexOf("use_hsic") >= 0)
+                        {
+                            if (ss[1].Replace("\r\n", "") == "true")
+                            {
+                                checkBox14.Checked = true;
+                            }
+                            else
+                            {
+                                checkBox14.Checked = false;
+                            }
+                            continue;
+                        }
                     }
                     sr.Close();
                 }
@@ -748,6 +774,14 @@ namespace WindowsFormsApplication1
 
                     sw.Write("nonlinear,");
                     if (checkBox12.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+
+                    sw.Write("use_gpu,");
+                    if (checkBox13.Checked) sw.Write("true\r\n");
+                    else sw.Write("false\r\n");
+
+                    sw.Write("use_hsic,");
+                    if (checkBox14.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
 
                     sw.Close();
@@ -1259,7 +1293,22 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --nonlinear 0";
                 }
-
+                if (checkBox13.Checked)
+                {
+                    process.StartInfo.Arguments += " --use_gpu 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --use_gpu 0";
+                }
+                if (checkBox14.Checked)
+                {
+                    process.StartInfo.Arguments += " --use_hsic 1";
+                }
+                else
+                {
+                    process.StartInfo.Arguments += " --use_hsic 0";
+                }
                 int select_cols = listBox2.SelectedIndices.Count;
                 if (select_cols == 0 )
                 {
