@@ -2271,6 +2271,18 @@ namespace WindowsFormsApplication1
                 _ImageView5.Show();
             }
         }
+
+        private void checkBox12_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (checkBox12.Checked)
+            {
+                checkBox4.Checked = true;
+            }else
+            {
+                checkBox13.Checked = false;
+                checkBox14.Checked = false;
+            }
+        }
     }
 }
 

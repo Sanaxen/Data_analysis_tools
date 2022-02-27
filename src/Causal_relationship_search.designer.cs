@@ -48,6 +48,9 @@
             this.button13 = new System.Windows.Forms.Button();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.checkBox14 = new System.Windows.Forms.CheckBox();
+            this.checkBox13 = new System.Windows.Forms.CheckBox();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.button19 = new System.Windows.Forms.Button();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
@@ -139,15 +142,13 @@
             this.timer5 = new System.Windows.Forms.Timer(this.components);
             this.timer6 = new System.Windows.Forms.Timer(this.components);
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.checkBox13 = new System.Windows.Forms.CheckBox();
-            this.checkBox14 = new System.Windows.Forms.CheckBox();
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.panel11.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -165,7 +166,6 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
-            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel4
@@ -431,6 +431,44 @@
             this.panel11.TabIndex = 50;
             this.panel11.Paint += new System.Windows.Forms.PaintEventHandler(this.panel11_Paint);
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.checkBox14);
+            this.groupBox4.Controls.Add(this.checkBox13);
+            this.groupBox4.Controls.Add(this.checkBox12);
+            this.groupBox4.Location = new System.Drawing.Point(324, 12);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(198, 99);
+            this.groupBox4.TabIndex = 76;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "非線形";
+            // 
+            // checkBox14
+            // 
+            this.checkBox14.AutoSize = true;
+            this.checkBox14.Location = new System.Drawing.Point(7, 51);
+            this.checkBox14.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox14.Name = "checkBox14";
+            this.checkBox14.Size = new System.Drawing.Size(97, 19);
+            this.checkBox14.TabIndex = 77;
+            this.checkBox14.Text = "HSICを使う";
+            this.toolTip2.SetToolTip(this.checkBox14, "各因子に関する独立性の評価をHSICを使う事が出来ますが計算負荷が高いため推奨できません。");
+            this.checkBox14.UseVisualStyleBackColor = true;
+            this.checkBox14.CheckStateChanged += new System.EventHandler(this.checkBox12_CheckStateChanged);
+            // 
+            // checkBox13
+            // 
+            this.checkBox13.AutoSize = true;
+            this.checkBox13.Location = new System.Drawing.Point(89, 22);
+            this.checkBox13.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox13.Name = "checkBox13";
+            this.checkBox13.Size = new System.Drawing.Size(58, 19);
+            this.checkBox13.TabIndex = 76;
+            this.checkBox13.Text = "GPU";
+            this.toolTip2.SetToolTip(this.checkBox13, "非線形回帰の計算でGPUを使います。\r\nデータ量に依存しますが多くの場合でGPUへの転送時間の方が大きいため必ず高速な処理が行われるかは不定です。");
+            this.checkBox13.UseVisualStyleBackColor = true;
+            this.checkBox13.CheckStateChanged += new System.EventHandler(this.checkBox12_CheckStateChanged);
+            // 
             // checkBox12
             // 
             this.checkBox12.AutoSize = true;
@@ -440,7 +478,9 @@
             this.checkBox12.Size = new System.Drawing.Size(74, 19);
             this.checkBox12.TabIndex = 75;
             this.checkBox12.Text = "非線形";
+            this.toolTip2.SetToolTip(this.checkBox12, "因果関係が非線形の関係にある事を想定した計算を行います。\r\n");
             this.checkBox12.UseVisualStyleBackColor = true;
+            this.checkBox12.CheckStateChanged += new System.EventHandler(this.checkBox12_CheckStateChanged);
             // 
             // button19
             // 
@@ -1406,40 +1446,6 @@
             // 
             this.timer6.Tick += new System.EventHandler(this.timer6_Tick);
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.checkBox14);
-            this.groupBox4.Controls.Add(this.checkBox13);
-            this.groupBox4.Controls.Add(this.checkBox12);
-            this.groupBox4.Location = new System.Drawing.Point(324, 12);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(198, 99);
-            this.groupBox4.TabIndex = 76;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "非線形";
-            // 
-            // checkBox13
-            // 
-            this.checkBox13.AutoSize = true;
-            this.checkBox13.Location = new System.Drawing.Point(89, 22);
-            this.checkBox13.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox13.Name = "checkBox13";
-            this.checkBox13.Size = new System.Drawing.Size(58, 19);
-            this.checkBox13.TabIndex = 76;
-            this.checkBox13.Text = "GPU";
-            this.checkBox13.UseVisualStyleBackColor = true;
-            // 
-            // checkBox14
-            // 
-            this.checkBox14.AutoSize = true;
-            this.checkBox14.Location = new System.Drawing.Point(7, 51);
-            this.checkBox14.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox14.Name = "checkBox14";
-            this.checkBox14.Size = new System.Drawing.Size(97, 19);
-            this.checkBox14.TabIndex = 77;
-            this.checkBox14.Text = "HSICを使う";
-            this.checkBox14.UseVisualStyleBackColor = true;
-            // 
             // Causal_relationship_search
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1465,6 +1471,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.panel11.ResumeLayout(false);
             this.panel11.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -1488,8 +1496,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1604,9 +1610,9 @@
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.Button button21;
-        private System.Windows.Forms.CheckBox checkBox12;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.CheckBox checkBox14;
-        private System.Windows.Forms.CheckBox checkBox13;
+        public System.Windows.Forms.CheckBox checkBox12;
+        public System.Windows.Forms.GroupBox groupBox4;
+        public System.Windows.Forms.CheckBox checkBox14;
+        public System.Windows.Forms.CheckBox checkBox13;
     }
 }
