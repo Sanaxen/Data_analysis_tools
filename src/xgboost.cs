@@ -669,7 +669,7 @@ namespace WindowsFormsApplication1
                     //if (parameters != null) parameters = null;
                     //if (target_dic != null) target_dic = null;
 
-                    if (image_links == null || parameters == null)
+                    //if (image_links == null || parameters == null)
                     {
                         image_links = new Dictionary<string, string>[listBox1.SelectedIndices.Count];
                         parameters = new Dictionary<string, string>[listBox1.SelectedIndices.Count];
