@@ -4,7 +4,7 @@ library(ggplot2)
 
 Anomalyplot <- function(df, res, vlinepos, vlinepos2)
 {
-	res$anoms$timestamp <- as.POSIXct(res$anoms$timestamp)
+	res$anoms$timestamp <- as.POSIXct(res$anoms$timestamp, tz="Japan")
 	if ( as.numeric(vlinepos2) > 0 )
 	{
 		plt <- ggplot(df, aes(timestamp, count)) + 
@@ -37,7 +37,7 @@ anomaly_DetectionTs<- function(df, colname, vlinepos, vlinepos2)
 	tmp <- cbind(df[,1], df[colname])
 	colnames(tmp)[1] <- c("timestamp")
 	colnames(tmp)[2] <- c("count")
-	tmp$timestamp <- as.POSIXct(tmp$timestamp)
+	tmp$timestamp <- as.POSIXct(tmp$timestamp, tz="Japan")
 	
 	res = NULL
 	plt = NULL
