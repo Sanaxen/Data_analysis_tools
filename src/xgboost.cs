@@ -750,7 +750,11 @@ namespace WindowsFormsApplication1
                         timer6.Start();
                     }
 
+                    bool mode = radioButton3.Checked;
                     load_parameters();
+
+                    radioButton3.Checked = mode;
+                    radioButton4.Checked = !mode;
 
                     button1_Click_target(sender, e);
                     if (serach_frequncy)
