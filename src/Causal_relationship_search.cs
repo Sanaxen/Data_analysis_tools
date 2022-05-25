@@ -1309,6 +1309,37 @@ namespace WindowsFormsApplication1
                 {
                     process.StartInfo.Arguments += " --use_hsic 0";
                 }
+
+                if (checkBox12.Checked)
+                {
+                    process.StartInfo.Arguments += " --n_layer "+ form17_.numericUpDown2.Value.ToString();
+                    process.StartInfo.Arguments += " --n_unit " + form17_.numericUpDown8.Value.ToString();
+                    process.StartInfo.Arguments += " --dropout_rate " + form17_.textBox8.Text;
+                    process.StartInfo.Arguments += " --minbatch " + form17_.numericUpDown1.Value.ToString();
+                    process.StartInfo.Arguments += " --confounding_factors_upper2 " + form17_.textBox1.Text;
+                    process.StartInfo.Arguments += " --learning_rate " + form17_.textBox2.Text;
+                    process.StartInfo.Arguments += " --n_epoch " + form17_.numericUpDown3.Value.ToString();
+                    process.StartInfo.Arguments += " --activation_fnc " + form17_.comboBox3.Text;
+                    process.StartInfo.Arguments += " --optimizer " + form17_.comboBox1.Text;
+                    if (form17_.checkBox2.Checked)
+                    {
+                        process.StartInfo.Arguments += " --use_pnl 1";
+                    }
+                    else
+                    {
+                        process.StartInfo.Arguments += " --use_pnl 0";
+                    }
+                    if (form17_.checkBox3.Checked)
+                    {
+                        process.StartInfo.Arguments += " --random_pattern 1";
+                    }
+                    else
+                    {
+                        process.StartInfo.Arguments += " --random_pattern 0";
+                    }
+                    process.StartInfo.Arguments += " --u1_param " + form17_.textBox3.Text;
+                }
+
                 int select_cols = listBox2.SelectedIndices.Count;
                 if (select_cols == 0 )
                 {
@@ -2282,6 +2313,19 @@ namespace WindowsFormsApplication1
                 checkBox13.Checked = false;
                 checkBox14.Checked = false;
             }
+            if (checkBox12.Checked)
+            {
+                form17_.panel1.Enabled = false;
+            }
+            else
+            {
+                form17_.panel1.Enabled = true;
+            }
+        }
+
+        private void checkBox12_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
