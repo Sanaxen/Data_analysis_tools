@@ -56,20 +56,20 @@ namespace WindowsFormsApplication1
             if (checkBox13.Checked &&(checkBox1.Checked|| checkBox2.Checked|| checkBox3.Checked|| checkBox4.Checked|| checkBox5.Checked|| checkBox6.Checked|| checkBox7.Checked))
             {
                 cmd += "df$weekdays_S<-sin(2*pi*6/6)*add_sunday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*5/6)*add_monday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*4/6)*add_tuesday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*3/6)*add_wednesday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*2/6)*add_thursday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*1/6)*add_friday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*0/6)*add_saturday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*5/7)*add_monday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*4/7)*add_tuesday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*3/7)*add_wednesday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*2/7)*add_thursday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*1/7)*add_friday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_S<-df$weekdays_S + sin(2*pi*0/7)*add_saturday(df$'" + comboBox2.Text + "')\r\n";
                 
                 cmd += "df$weekdays_C<-sin(2*pi*6/6)*add_sunday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*5/6)*add_monday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*4/6)*add_tuesday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*3/6)*add_wednesday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*2/6)*add_thursday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*1/6)*add_friday(df$'" + comboBox2.Text + "')\r\n";
-                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*0/6)*add_saturday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*5/7)*add_monday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*4/7)*add_tuesday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*3/7)*add_wednesday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*2/7)*add_thursday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*1/7)*add_friday(df$'" + comboBox2.Text + "')\r\n";
+                cmd += "df$weekdays_C<-df$weekdays_C + cos(2*pi*0/7)*add_saturday(df$'" + comboBox2.Text + "')\r\n";
             }
             else
             {

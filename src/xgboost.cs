@@ -86,14 +86,28 @@ namespace WindowsFormsApplication1
         int means_30n = 30;
         int means_60n = 60;
         int means_90n = 90;
+        int means_120n = 120;
+        int means_180n = 180;
+        int means_260n = 260;
+        int means_300n = 300;
+        int means_365n = 365;
+
         int befor_3day = 3;
         int befor_5day = 5;
         int befor_7day = 7;
         int befor_12day = 12;
         int befor_30day = 30;
+        int befor_60day = 60;
+        int befor_90day = 90;
+        int befor_120day = 120;
+        int befor_180day = 180;
+        int befor_260day = 260;
+        int befor_300day = 365;
+        int befor_365day = 365;
+
         int use_geom_point = 0;
         int use_decompose = 1;
-        int max_seasonal = 24;
+        int max_seasonal = 48;
         int use_arima = 1;
         int cutoff = 0;
         double split_train = 0.7;
@@ -953,6 +967,14 @@ namespace WindowsFormsApplication1
 			{
 				EnsembleW[0] = 1.0;
 			}
+            if (xgb_ts_prm_.checkBox15.Checked)
+            {
+                use_arima = 1;
+            }
+            else
+            {
+                use_arima = 0;
+            }
 			
             try
             {
@@ -1096,6 +1118,8 @@ namespace WindowsFormsApplication1
                     cmd1 += "n_diffs <- 0\r\n";
                     cmd1 += "df_ts_tmp <- df\r\n";
                     cmd1 += "#df_ts_tmp[is.na(df_ts_tmp)] <- 0\r\n";
+                    cmd1 += "df_ts_tmp$'index_" + targetName + "'" + "<- 1:nrow(df)\r\n";
+
                     cmd1 += "for (i in 2:ncol(df_ts_tmp)){ \r\n";
                     cmd1 += "	df_ts_tmp[is.na(df_ts_tmp[,i]),i] = mean(df_ts_tmp[,i],na.rm=TRUE)\r\n";
                     cmd1 += "} \r\n";
@@ -1109,6 +1133,44 @@ namespace WindowsFormsApplication1
                     cmd1 += "df_ts_tmp$'day1_diff_" + targetName + "'" + "<- c(0, 0, diff(df$'" + targetName + "')[1:(length(df[,1])-2)])\r\n";
                     cmd1 += "df_ts_tmp$'day1diff_diff_" + targetName + "'" + "<- c(0, 0, diff(df_ts_tmp$'day1_diff_" + targetName + "')[1:(length(df[,1])-2)])\r\n";
 
+					if ( xgb_ts_prm_.checkBox3.Checked )
+					{
+	                    cmd1 += "df_ts_tmp$'sin1_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+	                    cmd1 += "df_ts_tmp$'cos1_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	df_ts_tmp$'sin1_" + targetName + "'[i]" +" = sin(2*pi*i/"+ xgb_ts_prm_.numericUpDown9.Value.ToString() +")\r\n";
+                        cmd1 += "	df_ts_tmp$'cos1_" + targetName + "'[i]" +" = cos(2*pi*i/"+ xgb_ts_prm_.numericUpDown9.Value.ToString() +")\r\n";
+                        cmd1 += "}\r\n";
+					}
+					if ( xgb_ts_prm_.checkBox4.Checked )
+					{
+	                    cmd1 += "df_ts_tmp$'sin2_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+	                    cmd1 += "df_ts_tmp$'cos2_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	df_ts_tmp$'sin2_" + targetName + "'[i]" +" = sin(2*pi*i/"+ xgb_ts_prm_.numericUpDown10.Value.ToString() +")\r\n";
+                        cmd1 += "	df_ts_tmp$'cos2_" + targetName + "'[i]" +" = cos(2*pi*i/"+ xgb_ts_prm_.numericUpDown10.Value.ToString() +")\r\n";
+                        cmd1 += "}\r\n";
+					}
+					if ( xgb_ts_prm_.checkBox5.Checked )
+					{
+	                    cmd1 += "df_ts_tmp$'sin3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+	                    cmd1 += "df_ts_tmp$'cos3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	df_ts_tmp$'sin3_" + targetName + "'[i]" +" = sin(2*pi*i/"+ xgb_ts_prm_.numericUpDown11.Value.ToString() +")\r\n";
+                        cmd1 += "	df_ts_tmp$'cos3_" + targetName + "'[i]" +" = cos(2*pi*i/"+ xgb_ts_prm_.numericUpDown11.Value.ToString() +")\r\n";
+                        cmd1 += "}\r\n";
+					}
+					if ( xgb_ts_prm_.checkBox6.Checked )
+					{
+	                    cmd1 += "df_ts_tmp$'sin4_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+	                    cmd1 += "df_ts_tmp$'cos4_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	df_ts_tmp$'sin4_" + targetName + "'[i]" +" = sin(2*pi*i/"+ xgb_ts_prm_.numericUpDown12.Value.ToString() +")\r\n";
+                        cmd1 += "	df_ts_tmp$'cos4_" + targetName + "'[i]" +" = cos(2*pi*i/"+ xgb_ts_prm_.numericUpDown12.Value.ToString() +")\r\n";
+                        cmd1 += "}\r\n";
+					}
+					
+					/*
                     if ( lag >= means_3n)
                     {
                         cmd1 += "df_ts_tmp$'mean3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -1116,6 +1178,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'median3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'min3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'max3_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile3.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile3.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile3.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
                         cmd1 += "	if ( i <= "+ (means_3n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
@@ -1129,8 +1194,12 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'median3_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'max3_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'min3_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile3.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile3.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile3.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_3n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
+                    */
                     
                     if ( lag >= means_6n)
                     {
@@ -1139,6 +1208,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'median6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'min6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'max6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile6.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile6.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile6.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
                         cmd1 += "	if ( i <= "+ (means_6n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
@@ -1152,6 +1224,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'median6_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'max6_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'min6_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile6.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile6.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile6.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
                     if ( lag >= means_12n)
@@ -1161,6 +1236,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'median12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'min12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'max12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile12.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile12.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile12.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
                         cmd1 += "	if ( i <= "+ (means_12n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
@@ -1174,6 +1252,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'median12_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'max12_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'min12_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile12.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile12.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile12.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_12n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
                     if ( lag >= means_24n)
@@ -1183,6 +1264,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'median24_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'min24_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'max24_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile24.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile24.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile24.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
                         cmd1 += "	if ( i <= "+ (means_24n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
@@ -1196,6 +1280,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'median24_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'max24_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'min24_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile24.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile24.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile24.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_24n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }                    
                     if ( lag >= means_30n)
@@ -1205,6 +1292,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'median30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'min30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'max30_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile30.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile30.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile30.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
                         cmd1 += "	if ( i <= "+ (means_30n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
@@ -1218,6 +1308,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'median30_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'max30_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'min30_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile30.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile30.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile30.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_30n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
                     if ( lag >= means_60n)
@@ -1227,6 +1320,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'median60_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'min60_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'max60_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile60.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile60.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile60.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
                         cmd1 += "	if ( i <= "+ (means_60n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
@@ -1240,6 +1336,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'median60_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'max60_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'min60_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile60.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile60.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile60.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_60n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
                     if ( lag >= means_90n)
@@ -1249,6 +1348,9 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'median90_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'min90_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'max90_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile90.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile90.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile90.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
                         cmd1 += "	if ( i <= "+ (means_90n+1) + " )\r\n";
                         cmd1 += "	{\r\n";
@@ -1262,8 +1364,185 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'median90_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'max90_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'min90_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile90.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile90.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile90.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_90n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
+                    
+                    if ( lag >= means_120n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean120_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd120_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median120_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min120_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max120_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile120.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile120.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile120.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_120n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean120_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd120_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median120_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean120_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_120n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd120_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_120n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median120_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_120n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max120_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_120n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min120_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_120n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile120.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_120n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile120.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_120n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile120.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_120n+1) + "):(i-1)] )[[4]]\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    
+                    if ( lag >= means_180n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean180_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd180_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median180_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min180_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max180_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile180.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile180.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile180.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_180n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean180_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd180_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median180_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean180_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_180n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd180_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_180n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median180_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_180n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max180_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_180n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min180_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_180n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile180.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_180n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile180.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_180n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile180.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_180n+1) + "):(i-1)] )[[4]]\r\n";
+                        cmd1 += "}\r\n";
+                    }
+
+                    if ( lag >= means_260n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean260_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd260_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median260_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min260_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max260_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile260.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile260.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile260.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_260n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean260_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd260_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median260_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean260_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_260n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd260_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_260n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median260_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_260n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max260_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_260n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min260_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_260n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile260.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_260n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile260.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_260n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile260.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_260n+1) + "):(i-1)] )[[4]]\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    
+                    if ( lag >= means_300n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean300_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd300_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median300_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min300_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max300_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile300.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile300.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile300.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_300n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean300_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd300_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median300_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean300_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_300n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd300_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_300n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median300_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_300n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max300_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_300n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min300_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_300n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile300.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_300n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile300.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_300n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile300.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_300n+1) + "):(i-1)] )[[4]]\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    if ( lag >= means_365n)
+                    {
+                        cmd1 += "df_ts_tmp$'mean365_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'sd365_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'median365_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'min365_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'max365_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile365.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'quantile365.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'quantile365.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_365n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'mean365_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'sd365_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'median365_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'mean365_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[(i-" + (means_365n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'sd365_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[(i-" + (means_365n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'median365_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[(i-" + (means_365n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'max365_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[(i-" + (means_365n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'min365_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[(i-" + (means_365n+1) + "):(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile365.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_365n+1) + "):(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'quantile365.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_365n+1) + "):(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'quantile365.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_365n+1) + "):(i-1)] )[[4]]\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                    
+                    if ( lag >= 10)
+                    {
+                        cmd1 += "df_ts_tmp$'expanding_mean_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'expanding_sd_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'expanding_median_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'expanding_min_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'expanding_max_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'expanding_quantile.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'expanding_quantile.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "df_ts_tmp$'expanding_quantile.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= "+ (means_3n+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'expanding_mean_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'expanding_sd_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		df_ts_tmp$'expanding_median_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "	df_ts_tmp$'expanding_mean_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[1:(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'expanding_sd_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[1:(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'expanding_median_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[1:(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'expanding_max_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[1:(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'expanding_min_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[1:(i-1)] )\r\n";
+                        cmd1 += "	df_ts_tmp$'expanding_quantile.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[1:(i-1)] )[[2]]\r\n";
+                        //cmd1 += "	df_ts_tmp$'expanding_quantile.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[1:(i-1)] )[[3]]\r\n";
+                        cmd1 += "	df_ts_tmp$'expanding_quantile.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[1:(i-1)] )[[4]]\r\n";
+                        cmd1 += "}\r\n";
+                    }
+                                        
                     if ( lag >= befor_3day)
                     {
                         cmd1 += "df_ts_tmp$'day3_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
@@ -1340,6 +1619,97 @@ namespace WindowsFormsApplication1
                         cmd1 += "		next\r\n";
                         cmd1 += "	}\r\n";
                         cmd1 += "   df_ts_tmp$'day30_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_30day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    
+                    if ( lag >= befor_60day)
+                    {
+                        cmd1 += "df_ts_tmp$'day60_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_60day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day60_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day60_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_60day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    
+                    if ( lag >= befor_90day)
+                    {
+                        cmd1 += "df_ts_tmp$'day90_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_90day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day90_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day90_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_90day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    
+                    if ( lag >= befor_120day)
+                    {
+                        cmd1 += "df_ts_tmp$'day120_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_120day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day120_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day120_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_120day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    
+                    if ( lag >= befor_180day)
+                    {
+                        cmd1 += "df_ts_tmp$'day180_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_180day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day180_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day180_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_180day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    
+                    if ( lag >= befor_260day)
+                    {
+                        cmd1 += "df_ts_tmp$'day260_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_260day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day260_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day260_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_260day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    
+                    if ( lag >= befor_300day)
+                    {
+                        cmd1 += "df_ts_tmp$'day300_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_300day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day300_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day300_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_300day+1) + "]\r\n";
+                        cmd1 += "}\r\n\r\n";
+                    }
+                    
+                    if ( lag >= befor_365day)
+                    {
+                        cmd1 += "df_ts_tmp$'day365_diff_" + targetName + "'" + "<- df_ts_tmp$'" + targetName + "'\r\n";
+                        cmd1 += "for ( i in 1:nrow(df_ts_tmp)){\r\n";
+                        cmd1 += "	if ( i <= " + (befor_365day+1) + " )\r\n";
+                        cmd1 += "	{\r\n";
+                        cmd1 += "		df_ts_tmp$'day365_diff_" + targetName + "'[i] = 0\r\n";
+                        cmd1 += "		next\r\n";
+                        cmd1 += "	}\r\n";
+                        cmd1 += "   df_ts_tmp$'day365_diff_" + targetName + "'[i] <- df$'" + targetName + "'[i-1] - df$'" + targetName + "'[i-" + (befor_365day+1) + "]\r\n";
                         cmd1 += "}\r\n\r\n";
                     }
                     
@@ -1431,14 +1801,102 @@ namespace WindowsFormsApplication1
                         cmd1 += "tmp <- df_ts_tmp$'" + targetName + "'\r\n";
                         cmd1 += "#時系列データの分解（トレンド＋周期＋ノイズ）\r\n";
                         cmd1 += "tmp<-decompose(ts(tmp, frequency=frequency_value), type =\"" + decomp_type +"\")\r\n";
+                        cmd1 += "#tmp$seasonal[tmp$seasonal==0] <- 0.00001\r\n";
+						cmd1 += "if ( is.na(tmp$trend[1]) )\r\n";
+						cmd1 += "{\r\n";
+						cmd1 += "	id=-1\r\n";
+						cmd1 += "	for ( i in 1:length(tmp$trend))\r\n";
+						cmd1 += "	{\r\n";
+						cmd1 += "		if ( !is.na(tmp$trend[i]) )\r\n";
+						cmd1 += "		{\r\n";
+						cmd1 += "			id = i\r\n";
+						cmd1 += "		 	break\r\n";
+						cmd1 += "		}\r\n";
+						cmd1 += "	}\r\n";
+						cmd1 += "	if ( id >= 1 )\r\n";
+						cmd1 += "	{\r\n";
+						cmd1 += "		for ( i in 1:id)\r\n";
+						cmd1 += "		{\r\n";
+						cmd1 += "			tmp$trend[i] = tmp$trend[id]\r\n";
+						cmd1 += "		}\r\n";
+						cmd1 += "	}\r\n";
+						cmd1 += "}\r\n";
+						cmd1 += "if ( is.na(tmp$trend[length(tmp$trend)]) )\r\n";
+						cmd1 += "{\r\n";
+						cmd1 += "	id=-1\r\n";
+						cmd1 += "	for ( i in length(tmp$trend):1)\r\n";
+						cmd1 += "	{\r\n";
+						cmd1 += "		if ( !is.na(tmp$trend[i]) )\r\n";
+						cmd1 += "		{\r\n";
+						cmd1 += "			id = i\r\n";
+						cmd1 += "		 	break\r\n";
+						cmd1 += "		}\r\n";
+						cmd1 += "	}\r\n";
+						cmd1 += "	if ( id >= 1 )\r\n";
+						cmd1 += "	{\r\n";
+						cmd1 += "		for ( i in length(tmp$trend):id)\r\n";
+						cmd1 += "		{\r\n";
+						cmd1 += "			tmp$trend[i] = tmp$trend[id]\r\n";
+						cmd1 += "		}\r\n";
+						cmd1 += "	}\r\n";
+						cmd1 += "}\r\n";
+						cmd1 += "plot(tmp$trend)\r\n";
+						cmd1 += "if ( is.na(tmp$random[1]) )\r\n";
+						cmd1 += "{\r\n";
+						cmd1 += "	id=-1\r\n";
+						cmd1 += "	for ( i in 1:length(tmp$random))\r\n";
+						cmd1 += "	{\r\n";
+						cmd1 += "		if ( !is.na(tmp$random[i]) )\r\n";
+						cmd1 += "		{\r\n";
+						cmd1 += "			id = i\r\n";
+						cmd1 += "		 	break\r\n";
+						cmd1 += "		}\r\n";
+						cmd1 += "	}\r\n";
+						cmd1 += "	if ( id >= 1 )\r\n";
+						cmd1 += "	{\r\n";
+						cmd1 += "		for ( i in 1:id)\r\n";
+						cmd1 += "		{\r\n";
+						cmd1 += "			tmp$random[i] = tmp$random[id]\r\n";
+						cmd1 += "		}\r\n";
+						cmd1 += "	}\r\n";
+						cmd1 += "}\r\n";
+						cmd1 += "if ( is.na(tmp$random[length(tmp$random)]) )\r\n";
+						cmd1 += "{\r\n";
+						cmd1 += "	id=-1\r\n";
+						cmd1 += "	for ( i in length(tmp$random):1)\r\n";
+						cmd1 += "	{\r\n";
+						cmd1 += "		if ( !is.na(tmp$random[i]) )\r\n";
+						cmd1 += "		{\r\n";
+						cmd1 += "			id = i\r\n";
+						cmd1 += "		 	break\r\n";
+						cmd1 += "		}\r\n";
+						cmd1 += "	}\r\n";
+						cmd1 += "	if ( id >= 1 )\r\n";
+						cmd1 += "	{\r\n";
+						cmd1 += "		for ( i in length(tmp$random):id)\r\n";
+						cmd1 += "		{\r\n";
+						cmd1 += "			tmp$random[i] = tmp$random[id]\r\n";
+						cmd1 += "		}\r\n";
+						cmd1 += "	}\r\n";
+						cmd1 += "}\r\n";                        
+						cmd1 += "tmp$seasonal[is.na(tmp$seasonal)] <- 0\r\n";
+						cmd1 += "tmp$trend[is.na(tmp$trend)] <- 0\r\n";
+						cmd1 += "tmp$random[is.na(tmp$random)] <- 0\r\n";
+                        cmd1 += "tmp$seasonal[is.infinite(tmp$seasonal)] <- 0\r\n";
+                        cmd1 += "tmp$trend[is.infinite(tmp$trend)] <- 0\r\n";
+                        cmd1 += "tmp$random[is.infinite(tmp$random)] <- 0\r\n";
                         cmd1 += "decompose_df <- tmp\r\n";
                         cmd1 += "#時系列データから周期を削除 <- これを予測するようにする。\r\n";
                         cmd1 += "tmp<- seasadj(tmp)\r\n";
+                        cmd1 += "tmp[is.na(tmp)] <- 0\r\n";
+						cmd1 += "tmp[is.infinite(tmp)] <- 0\r\n";
+
                         cmd1 += "#ts.plot(tmp)\r\n";
                         cmd1 += "df_ts_tmp <- cbind(df_ts_tmp, as.data.frame(as.matrix(decompose_df$seasonal)))\r\n";
                         cmd1 += "colnames(df_ts_tmp)[ncol(df_ts_tmp)] <- c(\"seasonal\")\r\n";
                         cmd1 += "df_ts_tmp <- cbind(df_ts_tmp, as.data.frame(as.matrix(tmp)))\r\n";
                         cmd1 += "colnames(df_ts_tmp)[ncol(df_ts_tmp)] <- c(\"deseasonal\")\r\n";
+
                         cmd1 += "\r\n";
                         cmd1 += "dat1<-as.data.frame(as.matrix(decompose_df$seasonal))\r\n";
                         cmd1 += "dat2<-as.data.frame(as.matrix(decompose_df$trend))\r\n";
@@ -2017,6 +2475,7 @@ namespace WindowsFormsApplication1
                     {
 	                    for (int i = start_lag; i <= lag; i++)
 	                    {
+	                    	if ( i % 10 == 0 ) formuler += "\r\n";
 	                        formuler += "+ lag" + i.ToString() + "_" + targetName;
 	                        var_ts.Items.Add("lag" + i.ToString() + "_" + targetName);
 	                    }
@@ -2031,104 +2490,321 @@ namespace WindowsFormsApplication1
 	                    }
                     }
 
+					if ( xgb_ts_prm_.checkBox3.Checked )
+					{
+                    	formuler += "\r\n+ sin1_" + targetName;
+                    	formuler += "+ cos1_" + targetName;
+	                    var_ts.Items.Add("sin1_" + targetName);
+	                    var_ts.Items.Add("cos1_" + targetName);
+					}
+					if ( xgb_ts_prm_.checkBox4.Checked )
+					{
+                    	formuler += "\r\n+ sin2_" + targetName;
+                    	formuler += "+ cos2_" + targetName;
+	                    var_ts.Items.Add("sin2_" + targetName);
+	                    var_ts.Items.Add("cos2_" + targetName);
+					}
+					if ( xgb_ts_prm_.checkBox5.Checked )
+					{
+                    	formuler += "\r\n+ sin3_" + targetName;
+                    	formuler += "+ cos3_" + targetName;
+	                    var_ts.Items.Add("sin3_" + targetName);
+	                    var_ts.Items.Add("cos3_" + targetName);
+					}
+					if ( xgb_ts_prm_.checkBox6.Checked )
+					{
+                    	formuler += "\r\n+ sin4_" + targetName;
+                    	formuler += "+ cos4_" + targetName;
+	                    var_ts.Items.Add("sin4_" + targetName);
+	                    var_ts.Items.Add("cos4_" + targetName);
+					}
+					
+					/*
                     if (lag >= means_3n)
                     {
-                    	formuler += "+ mean3_" + targetName;
+                    	formuler += "\r\n+ mean3_" + targetName;
                     	formuler += "+ sd3_" + targetName;
                     	formuler += "+ median3_" + targetName;
                         formuler += "+ max3_" + targetName;
                         formuler += "+ min3_" + targetName;
+                        formuler += "+ quantile3.25_" + targetName;
+                        //formuler += "+ quantile3.50_" + targetName;
+                        formuler += "+ quantile3.75_" + targetName;
+
+                    	formuler += "\r\n+ expanding_mean_" + targetName;
+                    	formuler += "+ expanding_sd_" + targetName;
+                    	formuler += "+ expanding_median_" + targetName;
+                        formuler += "+ expanding_max_" + targetName;
+                        formuler += "+ expanding_min_" + targetName;
+                        formuler += "+ expanding_quantile.25_" + targetName;
+                        //formuler += "+ expanding_quantile.50_" + targetName;
+                        formuler += "+ expanding_quantile.75_" + targetName;
                         
 	                    var_ts.Items.Add("mean3_" + targetName);
 	                    var_ts.Items.Add("sd3_" + targetName);
 	                    var_ts.Items.Add("median3_" + targetName);
 	                    var_ts.Items.Add("max3_" + targetName);
 	                    var_ts.Items.Add("min3_" + targetName);
+	                    var_ts.Items.Add("quantile3.25_" + targetName);
+	                    //var_ts.Items.Add("quantile3.50_" + targetName);
+	                    var_ts.Items.Add("quantile3.75_" + targetName);
+	                    
+	                    var_ts.Items.Add("expanding_mean_" + targetName);
+	                    var_ts.Items.Add("expanding_sd_" + targetName);
+	                    var_ts.Items.Add("expanding_median_" + targetName);
+	                    var_ts.Items.Add("expanding_max_" + targetName);
+	                    var_ts.Items.Add("expanding_min_" + targetName);
+	                    var_ts.Items.Add("expanding_quantile.25_" + targetName);
+	                    //var_ts.Items.Add("expanding_quantile.50_" + targetName);
+	                    var_ts.Items.Add("expanding_quantile.75_" + targetName);
                     }
+                    */
+                    if (lag >= 10)
+                    {
+                    	formuler += "\r\n+ expanding_mean_" + targetName;
+                    	formuler += "+ expanding_sd_" + targetName;
+                    	formuler += "+ expanding_median_" + targetName;
+                        formuler += "+ expanding_max_" + targetName;
+                        formuler += "+ expanding_min_" + targetName;
+                        formuler += "+ expanding_quantile.25_" + targetName;
+                        //formuler += "+ expanding_quantile.50_" + targetName;
+                        formuler += "+ expanding_quantile.75_" + targetName;
+	                    
+	                    var_ts.Items.Add("expanding_mean_" + targetName);
+	                    var_ts.Items.Add("expanding_sd_" + targetName);
+	                    var_ts.Items.Add("expanding_median_" + targetName);
+	                    var_ts.Items.Add("expanding_max_" + targetName);
+	                    var_ts.Items.Add("expanding_min_" + targetName);
+	                    var_ts.Items.Add("expanding_quantile.25_" + targetName);
+	                    //var_ts.Items.Add("expanding_quantile.50_" + targetName);
+	                    var_ts.Items.Add("expanding_quantile.75_" + targetName);
+                    }                    
                     if (lag >= means_6n)
                     {
-                    	formuler += "+ mean6_" + targetName;
+                    	formuler += "\r\n+ mean6_" + targetName;
                     	formuler += "+ sd6_" + targetName;
                     	formuler += "+ median6_" + targetName;
                         formuler += "+ max6_" + targetName;
                         formuler += "+ min6_" + targetName;
+                        formuler += "+ quantile6.25_" + targetName;
+                        //formuler += "+ quantile6.50_" + targetName;
+                        formuler += "+ quantile6.75_" + targetName;
 
                         var_ts.Items.Add("mean6_" + targetName);
                         var_ts.Items.Add("sd6_" + targetName);
                         var_ts.Items.Add("median6_" + targetName);
                         var_ts.Items.Add("max6_" + targetName);
                         var_ts.Items.Add("min6_" + targetName);
+                        var_ts.Items.Add("quantile6.25_" + targetName);
+                        //var_ts.Items.Add("quantile6.50_" + targetName);
+                        var_ts.Items.Add("quantile6.75_" + targetName);
                     }
                     if (lag >= means_12n)
                     {
-                    	formuler += "+ mean12_" + targetName;
+                    	formuler += "\r\n+ mean12_" + targetName;
                     	formuler += "+ sd12_" + targetName;
                     	formuler += "+ median12_" + targetName;
                         formuler += "+ max12_" + targetName;
                         formuler += "+ min12_" + targetName;
+                        formuler += "+ quantile12.25_" + targetName;
+                        //formuler += "+ quantile12.50_" + targetName;
+                        formuler += "+ quantile12.75_" + targetName;
                         
 	                    var_ts.Items.Add("mean12_" + targetName);
 	                    var_ts.Items.Add("sd12_" + targetName);
 	                    var_ts.Items.Add("median12_" + targetName);
 	                    var_ts.Items.Add("max12_" + targetName);
 	                    var_ts.Items.Add("min12_" + targetName);
+	                    var_ts.Items.Add("quantile12.25_" + targetName);
+	                    //var_ts.Items.Add("quantile12.50_" + targetName);
+	                    var_ts.Items.Add("quantile12.75_" + targetName);
                     }
                     if (lag >= means_24n)
                     {
-                        formuler += "+ mean24_" + targetName;
+                        formuler += "\r\n+ mean24_" + targetName;
                         formuler += "+ sd24_" + targetName;
                         formuler += "+ median24_" + targetName;
                         formuler += "+ max24_" + targetName;
                         formuler += "+ min24_" + targetName;
+                        formuler += "+ quantile24.25_" + targetName;
+                        //formuler += "+ quantile24.50_" + targetName;
+                        formuler += "+ quantile24.75_" + targetName;
                         
 	                    var_ts.Items.Add("mean24_" + targetName);
 	                    var_ts.Items.Add("sd24_" + targetName);
 	                    var_ts.Items.Add("median24_" + targetName);
 	                    var_ts.Items.Add("max24_" + targetName);
 	                    var_ts.Items.Add("min24_" + targetName);
+	                    var_ts.Items.Add("quantile24.25_" + targetName);
+	                    //var_ts.Items.Add("quantile24.50_" + targetName);
+	                    var_ts.Items.Add("quantile24.75_" + targetName);
                     }
                     if (lag >= means_30n)
                     {
-                        formuler += "+ mean30_" + targetName;
+                        formuler += "\r\n+ mean30_" + targetName;
                         formuler += "+ sd30_" + targetName;
                         formuler += "+ median30_" + targetName;
                         formuler += "+ max30_" + targetName;
                         formuler += "+ min30_" + targetName;
+                        formuler += "+ quantile30.25_" + targetName;
+                        //formuler += "+ quantile30.50_" + targetName;
+                        formuler += "+ quantile30.75_" + targetName;
                         
 	                    var_ts.Items.Add("mean30_" + targetName);
 	                    var_ts.Items.Add("sd30_" + targetName);
 	                    var_ts.Items.Add("median30_" + targetName);
 	                    var_ts.Items.Add("max30_" + targetName);
 	                    var_ts.Items.Add("min30_" + targetName);
+	                    var_ts.Items.Add("quantile30.25_" + targetName);
+	                    //var_ts.Items.Add("quantile30.50_" + targetName);
+	                    var_ts.Items.Add("quantile30.75_" + targetName);
                     }
                     if (lag >= means_60n)
                     {
-                        formuler += "+ mean60_" + targetName;
+                        formuler += "\r\n+ mean60_" + targetName;
                         formuler += "+ sd60_" + targetName;
                         formuler += "+ median60_" + targetName;
                         formuler += "+ max60_" + targetName;
                         formuler += "+ min60_" + targetName;
+                        formuler += "+ quantile60.25_" + targetName;
+                        //formuler += "+ quantile60.50_" + targetName;
+                        formuler += "+ quantile60.75_" + targetName;
                         
 	                    var_ts.Items.Add("mean60_" + targetName);
 	                    var_ts.Items.Add("sd60_" + targetName);
 	                    var_ts.Items.Add("median60_" + targetName);
 	                    var_ts.Items.Add("max60_" + targetName);
 	                    var_ts.Items.Add("min60_" + targetName);
+	                    var_ts.Items.Add("quantile60.25_" + targetName);
+	                    //var_ts.Items.Add("quantile60.50_" + targetName);
+	                    var_ts.Items.Add("quantile60.75_" + targetName);
                     }
                     if (lag >= means_90n)
                     {
-                        formuler += "+ mean90_" + targetName;
+                        formuler += "\r\n+ mean90_" + targetName;
                         formuler += "+ sd90_" + targetName;
                         formuler += "+ median90_" + targetName;
                         formuler += "+ max90_" + targetName;
                         formuler += "+ min90_" + targetName;
+                        formuler += "+ quantile90.25_" + targetName;
+                        //formuler += "+ quantile90.50_" + targetName;
+                        formuler += "+ quantile90.75_" + targetName;
                         
 	                    var_ts.Items.Add("mean90_" + targetName);
 	                    var_ts.Items.Add("sd90_" + targetName);
 	                    var_ts.Items.Add("median90_" + targetName);
 	                    var_ts.Items.Add("max90_" + targetName);
-	                    var_ts.Items.Add("min90_" + targetName);
+	                    var_ts.Items.Add("quantile90.25_" + targetName);
+	                    //var_ts.Items.Add("quantile90.50_" + targetName);
+	                    var_ts.Items.Add("quantile90.75_" + targetName);
                     }
+                    if (lag >= means_120n)
+                    {
+                        formuler += "\r\n+ mean120_" + targetName;
+                        formuler += "+ sd120_" + targetName;
+                        formuler += "+ median120_" + targetName;
+                        formuler += "+ max120_" + targetName;
+                        formuler += "+ min120_" + targetName;
+                        formuler += "+ quantile120.25_" + targetName;
+                        //formuler += "+ quantile120.50_" + targetName;
+                        formuler += "+ quantile120.75_" + targetName;
+                        
+	                    var_ts.Items.Add("mean120_" + targetName);
+	                    var_ts.Items.Add("sd120_" + targetName);
+	                    var_ts.Items.Add("median120_" + targetName);
+	                    var_ts.Items.Add("max120_" + targetName);
+	                    var_ts.Items.Add("min120_" + targetName);
+	                    var_ts.Items.Add("quantile120.25_" + targetName);
+	                    //var_ts.Items.Add("quantile120.50_" + targetName);
+	                    var_ts.Items.Add("quantile120.75_" + targetName);
+                    }
+                    
+                    if (lag >= means_180n)
+                    {
+                        formuler += "\r\n+ mean180_" + targetName;
+                        formuler += "+ sd180_" + targetName;
+                        formuler += "+ median180_" + targetName;
+                        formuler += "+ max180_" + targetName;
+                        formuler += "+ min180_" + targetName;
+                        formuler += "+ quantile180.25_" + targetName;
+                        //formuler += "+ quantile180.50_" + targetName;
+                        formuler += "+ quantile180.75_" + targetName;
+                        
+	                    var_ts.Items.Add("mean180_" + targetName);
+	                    var_ts.Items.Add("sd180_" + targetName);
+	                    var_ts.Items.Add("median180_" + targetName);
+	                    var_ts.Items.Add("max180_" + targetName);
+	                    var_ts.Items.Add("min180_" + targetName);
+	                    var_ts.Items.Add("quantile180.25_" + targetName);
+	                    //var_ts.Items.Add("quantile180.50_" + targetName);
+	                    var_ts.Items.Add("quantile180.75_" + targetName);
+                    }
+                    
+                    if (lag >= means_260n)
+                    {
+                        formuler += "\r\n+ mean260_" + targetName;
+                        formuler += "+ sd260_" + targetName;
+                        formuler += "+ median260_" + targetName;
+                        formuler += "+ max260_" + targetName;
+                        formuler += "+ min260_" + targetName;
+                        formuler += "+ quantile260.25_" + targetName;
+                        //formuler += "+ quantile260.50_" + targetName;
+                        formuler += "+ quantile260.75_" + targetName;
+                        
+	                    var_ts.Items.Add("mean260_" + targetName);
+	                    var_ts.Items.Add("sd260_" + targetName);
+	                    var_ts.Items.Add("median260_" + targetName);
+	                    var_ts.Items.Add("max260_" + targetName);
+	                    var_ts.Items.Add("min260_" + targetName);
+	                    var_ts.Items.Add("quantile260.25_" + targetName);
+	                    //var_ts.Items.Add("quantile260.50_" + targetName);
+	                    var_ts.Items.Add("quantile260.75_" + targetName);
+                    }
+                    
+                    if (lag >= means_300n)
+                    {
+                        formuler += "\r\n+ mean300_" + targetName;
+                        formuler += "+ sd300_" + targetName;
+                        formuler += "+ median300_" + targetName;
+                        formuler += "+ max300_" + targetName;
+                        formuler += "+ min300_" + targetName;
+                        formuler += "+ quantile300.25_" + targetName;
+                        //formuler += "+ quantile300.50_" + targetName;
+                        formuler += "+ quantile300.75_" + targetName;
+                        
+	                    var_ts.Items.Add("mean300_" + targetName);
+	                    var_ts.Items.Add("sd300_" + targetName);
+	                    var_ts.Items.Add("median300_" + targetName);
+	                    var_ts.Items.Add("max300_" + targetName);
+	                    var_ts.Items.Add("min300_" + targetName);
+	                    var_ts.Items.Add("quantile300.25_" + targetName);
+	                    //var_ts.Items.Add("quantile300.50_" + targetName);
+	                    var_ts.Items.Add("quantile300.75_" + targetName);
+                    }
+                    
+                    if (lag >= means_365n)
+                    {
+                        formuler += "\r\n+ mean365_" + targetName;
+                        formuler += "+ sd365_" + targetName;
+                        formuler += "+ median365_" + targetName;
+                        formuler += "+ max365_" + targetName;
+                        formuler += "+ min365_" + targetName;
+                        formuler += "+ quantile365.25_" + targetName;
+                        //formuler += "+ quantile365.50_" + targetName;
+                        formuler += "+ quantile365.75_" + targetName;
+                        
+	                    var_ts.Items.Add("mean365_" + targetName);
+	                    var_ts.Items.Add("sd365_" + targetName);
+	                    var_ts.Items.Add("median365_" + targetName);
+	                    var_ts.Items.Add("max365_" + targetName);
+	                    var_ts.Items.Add("min365_" + targetName);
+	                    var_ts.Items.Add("quantile365.25_" + targetName);
+	                    //var_ts.Items.Add("quantile365.50_" + targetName);
+	                    var_ts.Items.Add("quantile365.75_" + targetName);
+                    }
+                    
+                    
+                    
                     if (xgb_ts_prm_.checkBox27.Checked && use_day_diff )
                     {
 	                    if (lag >= befor_3day)
@@ -2156,11 +2832,46 @@ namespace WindowsFormsApplication1
 	                        formuler += "+ day12_diff_" + targetName;
 		                    var_ts.Items.Add("day12_diff_" + targetName);
 	                    }
-	                    if (lag >= befor_30day)
-	                    {
-	                        formuler += "+ day30_diff_" + targetName;
-		                    var_ts.Items.Add("day30_diff_" + targetName);
-	                    }
+                        if (lag >= befor_30day)
+                        {
+                            formuler += "+ day30_diff_" + targetName;
+                            var_ts.Items.Add("day30_diff_" + targetName);
+                        }
+                        if (lag >= befor_60day)
+                        {
+                            formuler += "+ day60_diff_" + targetName;
+                            var_ts.Items.Add("day60_diff_" + targetName);
+                        }
+                        if (lag >= befor_90day)
+                        {
+                            formuler += "+ day90_diff_" + targetName;
+                            var_ts.Items.Add("day90_diff_" + targetName);
+                        }
+                        if (lag >= befor_120day)
+                        {
+                            formuler += "+ day120_diff_" + targetName;
+                            var_ts.Items.Add("day120_diff_" + targetName);
+                        }
+                        if (lag >= befor_180day)
+                        {
+                            formuler += "+ day180_diff_" + targetName;
+                            var_ts.Items.Add("day180_diff_" + targetName);
+                        }
+                        if (lag >= befor_260day)
+                        {
+                            formuler += "+ day260_diff_" + targetName;
+                            var_ts.Items.Add("day260_diff_" + targetName);
+                        }
+                        if (lag >= befor_300day)
+                        {
+                            formuler += "+ day300_diff_" + targetName;
+                            var_ts.Items.Add("day300_diff_" + targetName);
+                        }
+                        if (lag >= befor_365day)
+                        {
+                            formuler += "+ day365_diff_" + targetName;
+                            var_ts.Items.Add("day365_diff_" + targetName);
+                        }
                     }
 
                     if (xgb_ts_prm_.checkBox14.Checked)
@@ -4695,11 +5406,13 @@ namespace WindowsFormsApplication1
                         forecast_extension += "colidx3 = grep(\"^grad[0-9]?_" + targetName + "$\", colnames(test) )\r\n";
                         forecast_extension += "colidx4 = grep(\"^mean_" + targetName + "$\", colnames(test) )\r\n";
                         forecast_extension += "colidx5 = grep(\"^season[0-9]+$\", colnames(test) )\r\n";
-                        forecast_extension += "colidx6 = grep(\"^sd_" + targetName + "$\", colnames(test) )\r\n";
-                        forecast_extension += "colidx7 = grep(\"^mean2_" + targetName + "$\", colnames(test) )\r\n";
-                        forecast_extension += "colidx8 = grep(\"^sd2_" + targetName + "$\", colnames(test) )\r\n";
-                        forecast_extension += "colidx9 = grep(\"^median_" + targetName + "$\", colnames(test) )\r\n";
-                        forecast_extension += "colidx10 = grep(\"^median2_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx6 = grep(\"^min[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx7 = grep(\"^max[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx8 = grep(\"^sd[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx9 = grep(\"^median[0-9]+_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx10 = grep(\"^quantile[0-9]+[.][0-9]+_" + targetName + "$\", colnames(test) )\r\n";
+                        forecast_extension += "colidx11 = grep(\"^expanding_.+_" + targetName + "$\", colnames(test) )\r\n";
+                        //
                         forecast_extension += "if ( length(colidx0) != 1 ) colidx0 = -1\r\n";
                         forecast_extension += "if ( length(colidx1) != 1 ) colidx1 = -1\r\n";
                         forecast_extension += "if ( length(colidx2) != 1 ) colidx2 = -1\r\n";
@@ -4711,6 +5424,7 @@ namespace WindowsFormsApplication1
                         forecast_extension += "if ( length(colidx8) != 1 ) colidx8 = -1\r\n";
                         forecast_extension += "if ( length(colidx9) != 1 ) colidx9 = -1\r\n";
                         forecast_extension += "if ( length(colidx10) != 1 ) colidx10 = -1\r\n";
+                        forecast_extension += "if ( length(colidx11) != 1 ) colidx11 = -1\r\n";
 
                         forecast_extension += "suppressWarnings(\r\n";
                         forecast_extension += "    mean_ <- apply(train[,-1],2, function(x){ return(mean(as.numeric(x)))})\r\n";
@@ -4756,6 +5470,8 @@ namespace WindowsFormsApplication1
                         forecast_extension += "	        test<-rbind(test, test[nrow(test),])\r\n";
                         forecast_extension += "        #test[nrow(test),1] <- st_ + t_step*dt_\r\n";
                         forecast_extension += "        test[nrow(test),1] <- as.POSIXct(t_step*dt_, origin = st_)\r\n";
+						forecast_extension += "        test$'index_" + targetName + "'[length(test$target_)] = test$'index_" + targetName + "'[length(test$target_)-1]+1\r\n";
+
                         forecast_extension += "\r\n";
                         if (add_enevt_data == 1)
                         {
@@ -4801,7 +5517,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "                     }\r\n";
                             forecast_extension += "                }\r\n";
                         }
-                        forecast_extension += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && i != colidx6 && i != colidx7 && i != colidx8 && i != colidx9 && i != colidx10 && skip != TRUE)\r\n";
+                        forecast_extension += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && i != colidx6 && i != colidx7 && i != colidx8 && i != colidx9 && i != colidx10 && i != colidx11 && skip != TRUE)\r\n";
                         forecast_extension += "	            {\r\n";
                         forecast_extension += "                    test[nrow(test), i] <- rnorm(mean_, sd_)[i]\r\n";
                         forecast_extension += "                    if ( sample_metod == 1){\r\n";
@@ -4825,7 +5541,7 @@ namespace WindowsFormsApplication1
                         forecast_extension += "			            df_t <- ts(test[,i],start=c(2015,1),frequency=frequency_value)\r\n";
                         forecast_extension += "			            #ts.plot(df_t)\r\n";
                         forecast_extension += "                        tryCatch({\r\n";
-                        forecast_extension += "			                Fit <- auto.arima(df_t, ic=\"aic\", seasonal = TRUE, stepwise=T, trace=T)\r\n";
+                        forecast_extension += "			                Fit <- auto.arima(df_t, ic=\"aic\", max.p = 3, max.q = 3, seasonal = TRUE, stepwise=T, trace=T)\r\n";
                         forecast_extension += "			                pred <- predict(Fit,n.ahead=2)\r\n";
                         forecast_extension += "			                test[nrow(test),i] <- pred$pred[2]\r\n";
                         forecast_extension += "                        },\r\n";
@@ -4914,21 +5630,21 @@ namespace WindowsFormsApplication1
                         forecast_extension += "\r\n";
                         if (xgb_ts_prm_.checkBox18.Checked)
                         {
-                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*6/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*5/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*4/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*3/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*2/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*1/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*0/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_7s] <-    sin(2*pi*6/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_7s] <-    sin(2*pi*5/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_7s] <-   sin(2*pi*4/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_7s] <- sin(2*pi*3/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_7s] <-  sin(2*pi*2/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_7s] <-    sin(2*pi*1/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7s) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7s] <-  sin(2*pi*0/7)\r\n";
                         	
-                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*6/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*5/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*4/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*3/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*2/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*1/6)\r\n";
-                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*0/6)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Sunday\" || week == \"日曜日\")) test[nrow(test),colidx_7c] <-    cos(2*pi*6/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Monday\" || week == \"月曜日\")) test[nrow(test),colidx_7c] <-    cos(2*pi*5/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Tuesday\" || week == \"火曜日\")) test[nrow(test),colidx_7c] <-   cos(2*pi*4/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Wednesday\" || week == \"水曜日\")) test[nrow(test),colidx_7c] <- cos(2*pi*3/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Thursday\" || week == \"木曜日\")) test[nrow(test),colidx_7c] <-  cos(2*pi*2/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Friday\" || week == \"金曜日\")) test[nrow(test),colidx_7c] <-    cos(2*pi*1/7)\r\n";
+                        	forecast_extension += "        if ( length(colidx_7c) == 1 && (week == \"Saturday\" || week == \"土曜日\")) test[nrow(test),colidx_7c] <-  cos(2*pi*0/7)\r\n";
                         }
                         
                         forecast_extension += "        tryCatch({\r\n";
@@ -5040,6 +5756,36 @@ namespace WindowsFormsApplication1
                             forecast_extension += "        test$'day1diff_diff_" + targetName + "'" +
                             "[length(test$target_)]<- test$'day1_diff_" + targetName+"'[length(test$target_)-1]-test$'day1_diff_" + targetName+"'[length(test$target_)-2]\r\n";
 
+							if ( xgb_ts_prm_.checkBox3.Checked )
+							{
+                                forecast_extension += "        test$'sin1_" + targetName + "'" +
+                               "[length(test$target_)]<- sin(2*pi*(test$'index_" + targetName + "'[length(test$target_)])/"+xgb_ts_prm_.numericUpDown9.Value.ToString()+")\r\n";
+                                forecast_extension += "        test$'cos1_" + targetName + "'" +
+                               "[length(test$target_)]<- cos(2*pi*(test$'index_" + targetName + "'[length(test$target_)])/"+xgb_ts_prm_.numericUpDown9.Value.ToString()+")\r\n";
+							}
+							if ( xgb_ts_prm_.checkBox4.Checked )
+							{
+                                forecast_extension += "        test$'sin2_" + targetName + "'" +
+                               "[length(test$target_)]<- sin(2*pi*(test$'index_" + targetName + "'[length(test$target_)])/"+xgb_ts_prm_.numericUpDown10.Value.ToString()+")\r\n";
+                                forecast_extension += "        test$'cos2_" + targetName + "'" +
+                               "[length(test$target_)]<- cos(2*pi*(test$'index_" + targetName + "'[length(test$target_)])/"+xgb_ts_prm_.numericUpDown10.Value.ToString()+")\r\n";
+							}
+							if ( xgb_ts_prm_.checkBox5.Checked )
+							{
+                                forecast_extension += "        test$'sin3_" + targetName + "'" +
+                               "[length(test$target_)]<- sin(2*pi*(test$'index_" + targetName + "'[length(test$target_)])/"+xgb_ts_prm_.numericUpDown11.Value.ToString()+")\r\n";
+                                forecast_extension += "        test$'cos3_" + targetName + "'" +
+                               "[length(test$target_)]<- cos(2*pi*(test$'index_" + targetName + "'[length(test$target_)])/"+xgb_ts_prm_.numericUpDown11.Value.ToString()+")\r\n";
+							}
+							if ( xgb_ts_prm_.checkBox6.Checked )
+							{
+                                forecast_extension += "        test$'sin4_" + targetName + "'" +
+                               "[length(test$target_)]<- sin(2*pi*(test$'index_" + targetName + "'[length(test$target_)])/"+xgb_ts_prm_.numericUpDown12.Value.ToString()+")\r\n";
+                                forecast_extension += "        test$'cos4_" + targetName + "'" +
+                               "[length(test$target_)]<- cos(2*pi*(test$'index_" + targetName + "'[length(test$target_)])/"+xgb_ts_prm_.numericUpDown12.Value.ToString()+")\r\n";
+							}
+
+							/*
                             if (lag >= means_3n)
                             {
                                 forecast_extension += "        test$'mean3_" + targetName + "'" +
@@ -5056,7 +5802,64 @@ namespace WindowsFormsApplication1
                                 
                                 forecast_extension += "        test$'min3_" + targetName + "'" +
                                "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile3.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile3.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile3.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
+
+                                forecast_extension += "        test$'expanding_mean_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'expanding_sd_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'expanding_median_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'expanding_max_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'expanding_min_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'expanding_quantile.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'expanding_quantile.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'expanding_quantile.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[4]]\r\n";
+
                             }
+                            */
+                            if (lag >= 10)
+							{
+                                forecast_extension += "        test$'expanding_mean_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'expanding_sd_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'expanding_median_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'expanding_max_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'expanding_min_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'expanding_quantile.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'expanding_quantile.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'expanding_quantile.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[4]]\r\n";
+
+                            }
+                            
                             if (lag >= means_6n)
                             {
                                 forecast_extension += "        test$'mean6_" + targetName + "'" +
@@ -5073,6 +5876,13 @@ namespace WindowsFormsApplication1
                                 
                                 forecast_extension += "        test$'min6_" + targetName + "'" +
                                "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile6.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                                //forecast_extension += "        test$'quantile6.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile6.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
                             }
                             if (lag >= means_12n)
                             {
@@ -5090,6 +5900,14 @@ namespace WindowsFormsApplication1
                                 
                                 forecast_extension += "        test$'min12_" + targetName + "'" +
                                "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile12.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile12.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile12.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_12n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
+
                             }
                             if (lag >= means_24n)
                             {
@@ -5107,6 +5925,13 @@ namespace WindowsFormsApplication1
                                 
                                 forecast_extension += "        test$'min24_" + targetName + "'" +
                                "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile24.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile24.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile24.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_24n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
                             }
                             if (lag >= means_30n)
                             {
@@ -5124,6 +5949,13 @@ namespace WindowsFormsApplication1
                                 
                                 forecast_extension += "        test$'min30_" + targetName + "'" +
                                "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile30.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile30.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile30.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_30n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
                             }
                             if (lag >= means_60n)
                             {
@@ -5141,6 +5973,13 @@ namespace WindowsFormsApplication1
                                 
                                 forecast_extension += "        test$'min60_" + targetName + "'" +
                                "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile60.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile60.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile60.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_60n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
                             }
                             if (lag >= means_90n)
                             {
@@ -5158,7 +5997,142 @@ namespace WindowsFormsApplication1
                                 
                                 forecast_extension += "        test$'min90_" + targetName + "'" +
                                "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile90.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile90.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile90.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_90n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
                             }
+                            if (lag >= means_120n)
+                            {
+                                forecast_extension += "        test$'mean120_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_120n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd120_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_120n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median120_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_120n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max120_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_120n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min120_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_120n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile120.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_120n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile120.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_120n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile120.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_120n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
+                            }
+                            
+                            if (lag >= means_180n)
+                            {
+                                forecast_extension += "        test$'mean180_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_180n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd180_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_180n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median180_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_180n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max180_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_180n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min180_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_180n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile180.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_180n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile180.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_180n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile180.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_180n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
+                            }
+                            
+                            if (lag >= means_260n)
+                            {
+                                forecast_extension += "        test$'mean260_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_260n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd260_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_260n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median260_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_260n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max260_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_260n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min260_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_260n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile260.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_260n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile260.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_260n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile260.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_260n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
+                            }
+                            
+                            if (lag >= means_300n)
+                            {
+                                forecast_extension += "        test$'mean300_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_300n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd300_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_300n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median300_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_300n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max300_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_300n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min300_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_300n+1) + "):(length(test$target_)-1)])\r\n";
+
+                                forecast_extension += "        test$'quantile300.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_300n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile300.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_300n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile300.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_300n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
+                            }
+                            
+                            if (lag >= means_365n)
+                            {
+                                forecast_extension += "        test$'mean365_" + targetName + "'" +
+                               "[length(test$target_)]<- mean(test$'" + targetName + "'[(length(test$target_)-" + (means_365n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'sd365_" + targetName + "'" +
+                               "[length(test$target_)]<- sd(test$'" + targetName + "'[(length(test$target_)-" + (means_365n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'median365_" + targetName + "'" +
+                               "[length(test$target_)]<- median(test$'" + targetName + "'[(length(test$target_)-" + (means_365n+1) + "):(length(test$target_)-1)])\r\n";
+                               
+                                forecast_extension += "        test$'max365_" + targetName + "'" +
+                               "[length(test$target_)]<- max(test$'" + targetName + "'[(length(test$target_)-" + (means_365n+1) + "):(length(test$target_)-1)])\r\n";
+                                
+                                forecast_extension += "        test$'min365_" + targetName + "'" +
+                               "[length(test$target_)]<- min(test$'" + targetName + "'[(length(test$target_)-" + (means_365n+1) + "):(length(test$target_)-1)])\r\n";
+
+
+                                forecast_extension += "        test$'quantile365.25_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_365n+1) + "):(length(test$target_)-1)])[[2]]\r\n";
+                               // forecast_extension += "        test$'quantile365.50_" + targetName + "'" +
+                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_365n+1) + "):(length(test$target_)-1)])[[3]]\r\n";
+                                forecast_extension += "        test$'quantile365.75_" + targetName + "'" +
+                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_365n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
+                            }
+                            
+                            
+                            
 
                             if (lag >= befor_3day)
                             {
@@ -5193,6 +6167,41 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        test$'day30_diff_" + targetName + "'" +
                                 "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_30day) + "]\r\n";
                             }
+                            if (lag >= befor_60day)
+                            {
+                                forecast_extension += "        test$'day60_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_60day) + "]\r\n";
+                            }
+                            if (lag >= befor_90day)
+                            {
+                                forecast_extension += "        test$'day90_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_90day) + "]\r\n";
+                            }
+                            if (lag >= befor_120day)
+                            {
+                                forecast_extension += "        test$'day120_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_120day) + "]\r\n";
+                            }
+                            if (lag >= befor_180day)
+                            {
+                                forecast_extension += "        test$'day180_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_180day) + "]\r\n";
+                            }
+                            if (lag >= befor_260day)
+                            {
+                                forecast_extension += "        test$'day260_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_260day) + "]\r\n";
+                            }
+                            if (lag >= befor_300day)
+                            {
+                                forecast_extension += "        test$'day300_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_300day) + "]\r\n";
+                            }
+                            if (lag >= befor_365day)
+                            {
+                                forecast_extension += "        test$'day365_diff_" + targetName + "'" +
+                                "[length(test$target_)]<- test$'" + targetName + "'[length(test$target_)-1]-test$'" + targetName + "'[length(test$target_)-1- " + (befor_365day) + "]\r\n";
+                            }
 
 
 
@@ -5200,7 +6209,7 @@ namespace WindowsFormsApplication1
                             {
                                 forecast_extension += "        #The value of the variable 'test$season' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
                                 forecast_extension += "\r\n";
-                                forecast_extension += "        y2 <- test$'" + targetName + "'\r\n";
+                                forecast_extension += "        y2 <- c(train$'" + targetName + "', test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
                                 forecast_extension += "        f = frequency_value\r\n";
                                 forecast_extension += "        k = f/2\r\n";
                                 forecast_extension += "        #k =  max(1, min(round(f / 4 - 1), 10))\r\n";
@@ -5233,11 +6242,106 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        #The value of the variable 'test$seasonal' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
                                 forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
                                 forecast_extension += "            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency=frequency_value), type =\"" + decomp_type + "\")\r\n";
+								
+								forecast_extension += "if ( is.na(tmp$trend[1]) )\r\n";
+								forecast_extension += "{\r\n";
+								forecast_extension += "	id=-1\r\n";
+								forecast_extension += "	for ( i in 1:length(tmp$trend))\r\n";
+								forecast_extension += "	{\r\n";
+								forecast_extension += "		if ( !is.na(tmp$trend[i]) )\r\n";
+								forecast_extension += "		{\r\n";
+								forecast_extension += "			id = i\r\n";
+								forecast_extension += "		 	break\r\n";
+								forecast_extension += "		}\r\n";
+								forecast_extension += "	}\r\n";
+								forecast_extension += "	if ( id >= 1 )\r\n";
+								forecast_extension += "	{\r\n";
+								forecast_extension += "		for ( i in 1:id)\r\n";
+								forecast_extension += "		{\r\n";
+								forecast_extension += "			tmp$trend[i] = tmp$trend[id]\r\n";
+								forecast_extension += "		}\r\n";
+								forecast_extension += "	}\r\n";
+								forecast_extension += "}\r\n";
+								forecast_extension += "if ( is.na(tmp$trend[length(tmp$trend)]) )\r\n";
+								forecast_extension += "{\r\n";
+								forecast_extension += "	id=-1\r\n";
+								forecast_extension += "	for ( i in length(tmp$trend):1)\r\n";
+								forecast_extension += "	{\r\n";
+								forecast_extension += "		if ( !is.na(tmp$trend[i]) )\r\n";
+								forecast_extension += "		{\r\n";
+								forecast_extension += "			id = i\r\n";
+								forecast_extension += "		 	break\r\n";
+								forecast_extension += "		}\r\n";
+								forecast_extension += "	}\r\n";
+								forecast_extension += "	if ( id >= 1 )\r\n";
+								forecast_extension += "	{\r\n";
+								forecast_extension += "		for ( i in length(tmp$trend):id)\r\n";
+								forecast_extension += "		{\r\n";
+								forecast_extension += "			tmp$trend[i] = tmp$trend[id]\r\n";
+								forecast_extension += "		}\r\n";
+								forecast_extension += "	}\r\n";
+								forecast_extension += "}\r\n";
+								forecast_extension += "plot(tmp$trend)\r\n";
+								forecast_extension += "if ( is.na(tmp$random[1]) )\r\n";
+								forecast_extension += "{\r\n";
+								forecast_extension += "	id=-1\r\n";
+								forecast_extension += "	for ( i in 1:length(tmp$random))\r\n";
+								forecast_extension += "	{\r\n";
+								forecast_extension += "		if ( !is.na(tmp$random[i]) )\r\n";
+								forecast_extension += "		{\r\n";
+								forecast_extension += "			id = i\r\n";
+								forecast_extension += "		 	break\r\n";
+								forecast_extension += "		}\r\n";
+								forecast_extension += "	}\r\n";
+								forecast_extension += "	if ( id >= 1 )\r\n";
+								forecast_extension += "	{\r\n";
+								forecast_extension += "		for ( i in 1:id)\r\n";
+								forecast_extension += "		{\r\n";
+								forecast_extension += "			tmp$random[i] = tmp$random[id]\r\n";
+								forecast_extension += "		}\r\n";
+								forecast_extension += "	}\r\n";
+								forecast_extension += "}\r\n";
+								forecast_extension += "if ( is.na(tmp$random[length(tmp$random)]) )\r\n";
+								forecast_extension += "{\r\n";
+								forecast_extension += "	id=-1\r\n";
+								forecast_extension += "	for ( i in length(tmp$random):1)\r\n";
+								forecast_extension += "	{\r\n";
+								forecast_extension += "		if ( !is.na(tmp$random[i]) )\r\n";
+								forecast_extension += "		{\r\n";
+								forecast_extension += "			id = i\r\n";
+								forecast_extension += "		 	break\r\n";
+								forecast_extension += "		}\r\n";
+								forecast_extension += "	}\r\n";
+								forecast_extension += "	if ( id >= 1 )\r\n";
+								forecast_extension += "	{\r\n";
+								forecast_extension += "		for ( i in length(tmp$random):id)\r\n";
+								forecast_extension += "		{\r\n";
+								forecast_extension += "			tmp$random[i] = tmp$random[id]\r\n";
+								forecast_extension += "		}\r\n";
+								forecast_extension += "	}\r\n";
+								forecast_extension += "}\r\n";
+								
+						        forecast_extension += "\r\n";
+								forecast_extension += "            tmp$seasonal[is.na(tmp$seasonal)] <- 0\r\n";
+								forecast_extension += "            tmp$trend[is.na(tmp$trend)] <- 0\r\n";
+								forecast_extension += "            tmp$random[is.na(tmp$random)] <- 0\r\n";
+                                forecast_extension += "\r\n";
+		                        forecast_extension += "            tmp$seasonal[is.infinite(tmp$seasonal)] <- 0\r\n";
+		                        forecast_extension += "            tmp$trend[is.infinite(tmp$trend)] <- 0\r\n";
+		                        forecast_extension += "            tmp$random[is.infinite(tmp$random)] <- 0\r\n";
                                 forecast_extension += "            decompose_df <<- tmp\r\n";
                                 forecast_extension += "            #if ( t_step > 2 ) overall$seasonal[length(overall$target_)-1] = decompose_df$seasonal[length(overall$target_)-1]   #update\r\n";
                                 forecast_extension += "            overall$seasonal[length(overall$target_)] = decompose_df$seasonal[length(overall$target_)]\r\n";
                                 forecast_extension += "\r\n";
+                                forecast_extension += "            #tmp$seasonal[tmp$seasonal==0] <- 0.00001\r\n";
+								forecast_extension += "            tmp$seasonal[is.na(tmp$seasonal)] <- 0\r\n";
+								forecast_extension += "            tmp$trend[is.na(tmp$trend)] <- 0\r\n";
+								forecast_extension += "            tmp$random[is.na(tmp$random)] <- 0\r\n";
+
                                 forecast_extension += "            tmp<- seasadj(tmp)\r\n";
+                                forecast_extension += "            tmp[is.na(tmp)]<-0\r\n";
+                                forecast_extension += "            tmp[is.infinite(tmp)] <- 0\r\n";
+
                                 forecast_extension += "            tmp <- as.data.frame(as.matrix(tmp))\r\n";
                                 forecast_extension += "            #if ( t_step > 2 ) overall$deseasonal[length(overall$target_) - 1] = tmp[length(overall$target_) - 1, 1]\r\n";
                                 forecast_extension += "            overall$deseasonal[length(overall$target_)] = tmp[length(overall$target_), 1]\r\n";
@@ -5357,13 +6461,13 @@ namespace WindowsFormsApplication1
 
                                 forecast_extension += "                     if ( fast_arima == 0 ){\r\n";
                                 forecast_extension += "                         trendFit <- try(auto.arima(df_tt, ic=\"aic\",\r\n";
-                                forecast_extension += "                             max.order=20,  #p+q+P+Q\r\n";
+                                forecast_extension += "                             max.order=5,  #p+q+P+Q\r\n";
                                 forecast_extension += "                             max.d = 2,\r\n";
-                                forecast_extension += "                             max.D = 2,\r\n";
-                                forecast_extension += "                             max.p = 5,\r\n";
-                                forecast_extension += "                             max.q = 5,\r\n";
-                                forecast_extension += "                             max.P = 5,\r\n";
-                                forecast_extension += "                             max.Q = 5,\r\n";
+                                forecast_extension += "                             max.D = 1,\r\n";
+                                forecast_extension += "                             max.p = 3,\r\n";
+                                forecast_extension += "                             max.q = 3,\r\n";
+                                forecast_extension += "                             max.P = 2,\r\n";
+                                forecast_extension += "                             max.Q = 2,\r\n";
                                 forecast_extension += "                             nmodels = 100,\r\n";
                                 forecast_extension += "                             approximation=F,\r\n";
                                 forecast_extension += "                             seasonal = seasonal_prm, stepwise=F, trace=T, xreg = xreg), silent = FALSE)\r\n";
@@ -5374,13 +6478,13 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "                         }else{\r\n";
                                 forecast_extension += "                             trendFit <- try(auto.arima(df_tt, ic=\"aic\",\r\n";
 
-                                forecast_extension += "                                 max.order=20,  #p+q+P+Q\r\n";
+                                forecast_extension += "                                 max.order=5,  #p+q+P+Q\r\n";
                                 forecast_extension += "                                 max.d = 2,\r\n";
-                                forecast_extension += "                                 max.D = 2,\r\n";
-                                forecast_extension += "                                 max.p = 5,\r\n";
-                                forecast_extension += "                                 max.q = 5,\r\n";
-                                forecast_extension += "                                 max.P = 5,\r\n";
-                                forecast_extension += "                                 max.Q = 5,\r\n";
+                                forecast_extension += "                                 max.D = 1,\r\n";
+                                forecast_extension += "                                 max.p = 3,\r\n";
+                                forecast_extension += "                                 max.q = 3,\r\n";
+                                forecast_extension += "                                 max.P = 2,\r\n";
+                                forecast_extension += "                                 max.Q = 2,\r\n";
                                 forecast_extension += "                                 #approximation=F,\r\n";
                                 forecast_extension += "                                 seasonal = seasonal_prm, stepwise=T, trace=T, xreg = xreg), silent = FALSE)\r\n";
                                 forecast_extension += "                              if ( class(trendFit) == \"try-error\" ) arima_error = 1\r\n";
@@ -7408,6 +8512,26 @@ forecast_extension += "	    }\r\n";
                 sw.Write("seasonality_prior_scale,"); sw.Write(xgb_ts_prm_.textBox2.Text + "\r\n");
                 sw.Write("holidays_prior_scale,"); sw.Write(xgb_ts_prm_.textBox3.Text + "\r\n");
                 sw.Write("period,"); sw.Write(xgb_ts_prm_.textBox4.Text + "\r\n");
+                
+                sw.Write("sin_cos1,");
+                if (xgb_ts_prm_.checkBox3.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                sw.Write("sin_cos1_freqency,"); sw.Write(xgb_ts_prm_.numericUpDown9.Value.ToString() + "\r\n");
+
+                sw.Write("sin_cos2,");
+                if (xgb_ts_prm_.checkBox4.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                sw.Write("sin_cos2_freqency,"); sw.Write(xgb_ts_prm_.numericUpDown10.Value.ToString() + "\r\n");
+
+                sw.Write("sin_cos3,");
+                if (xgb_ts_prm_.checkBox5.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                sw.Write("sin_cos3_freqency,"); sw.Write(xgb_ts_prm_.numericUpDown11.Value.ToString() + "\r\n");
+
+                sw.Write("sin_cos4,");
+                if (xgb_ts_prm_.checkBox6.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
+                sw.Write("sin_cos4_freqency,"); sw.Write(xgb_ts_prm_.numericUpDown12.Value.ToString() + "\r\n");
                 sw.Close();
             }
         }
@@ -8088,65 +9212,138 @@ forecast_extension += "	    }\r\n";
                         {
                             xgb_ts_prm_.checkBox29.Checked = false;
                         }
-
-                        if (ss[0].IndexOf("ensemble_xgboost0") >= 0)
-                        {
-                            xgb_ts_prm_.numericUpDown1.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                            xgb_ts_prm_.refresh_value();
-                            continue;
-                        }
-                        if (ss[0].IndexOf("ensemble_xgboost1") >= 0)
-                        {
-                            xgb_ts_prm_.numericUpDown2.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                            xgb_ts_prm_.refresh_value();
-                            continue;
-                        }
-                        if (ss[0].IndexOf("ensemble_xgboost2") >= 0)
-                        {
-                            xgb_ts_prm_.numericUpDown3.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                            xgb_ts_prm_.refresh_value();
-                            continue;
-                        }
-                        if (ss[0].IndexOf("ensemble_xgboost3") >= 0)
-                        {
-                            xgb_ts_prm_.numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                            xgb_ts_prm_.refresh_value();
-                            continue;
-                        }
-                        if (ss[0].IndexOf("ensemble_randomforest") >= 0)
-                        {
-                            xgb_ts_prm_.numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                            xgb_ts_prm_.refresh_value();
-                            continue;
-                        }
-                        if (ss[0].IndexOf("ensemble_prophet") >= 0)
-                        {
-                            xgb_ts_prm_.numericUpDown7.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                            xgb_ts_prm_.refresh_value();
-                            continue;
-                        }
-                        if (ss[0].IndexOf("changepoint_prior_scale") >= 0)
-                        {
-                            xgb_ts_prm_.textBox1.Text = ss[1].Replace("\r\n", "");
-                            continue;
-                        }
-                        if (ss[0].IndexOf("seasonality_prior_scale") >= 0)
-                        {
-                            xgb_ts_prm_.textBox2.Text = ss[1].Replace("\r\n", "");
-                            continue;
-                        }
-                        if (ss[0].IndexOf("holidays_prior_scale") >= 0)
-                        {
-                            xgb_ts_prm_.textBox3.Text = ss[1].Replace("\r\n", "");
-                            continue;
-                        }
-                        if (ss[0].IndexOf("period") >= 0)
-                        {
-                            xgb_ts_prm_.textBox4.Text = ss[1].Replace("\r\n", "");
-                            continue;
-                        }
                         continue;
-                    }                    //
+                    }
+
+                    if (ss[0].IndexOf("ensemble_xgboost0") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown1.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    if (ss[0].IndexOf("ensemble_xgboost1") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown2.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    if (ss[0].IndexOf("ensemble_xgboost2") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown3.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    if (ss[0].IndexOf("ensemble_xgboost3") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    if (ss[0].IndexOf("ensemble_randomforest") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown6.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    if (ss[0].IndexOf("ensemble_prophet") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown7.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    if (ss[0].IndexOf("changepoint_prior_scale") >= 0)
+                    {
+                        xgb_ts_prm_.textBox1.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("seasonality_prior_scale") >= 0)
+                    {
+                        xgb_ts_prm_.textBox2.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("holidays_prior_scale") >= 0)
+                    {
+                        xgb_ts_prm_.textBox3.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("period") >= 0)
+                    {
+                        xgb_ts_prm_.textBox4.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+
+                    if (ss[0].IndexOf("sin_cos1") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            xgb_ts_prm_.checkBox3.Checked = true;
+                        }
+                        else
+                        {
+                            xgb_ts_prm_.checkBox3.Checked = false;
+                        }
+                    }
+                    if (ss[0].IndexOf("freqency_sin_cos1") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown9.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    
+                    if (ss[0].IndexOf("sin_cos2") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            xgb_ts_prm_.checkBox4.Checked = true;
+                        }
+                        else
+                        {
+                            xgb_ts_prm_.checkBox4.Checked = false;
+                        }
+                    }
+                    if (ss[0].IndexOf("freqency_sin_cos2") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown10.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    
+                    if (ss[0].IndexOf("sin_cos3") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            xgb_ts_prm_.checkBox5.Checked = true;
+                        }
+                        else
+                        {
+                            xgb_ts_prm_.checkBox5.Checked = false;
+                        }
+                    }
+                    if (ss[0].IndexOf("freqency_sin_cos3") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown11.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    
+                    if (ss[0].IndexOf("sin_cos4") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            xgb_ts_prm_.checkBox6.Checked = true;
+                        }
+                        else
+                        {
+                            xgb_ts_prm_.checkBox6.Checked = false;
+                        }
+                    }
+                    if (ss[0].IndexOf("freqency_sin_cos4") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown12.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
+                    continue;
                 }
                 sr.Close();
             }

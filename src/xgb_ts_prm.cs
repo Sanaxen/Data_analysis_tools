@@ -472,5 +472,10 @@ namespace WindowsFormsApplication1
         {
             xgb_.checkBox10.Checked = checkBox2.Checked;
         }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

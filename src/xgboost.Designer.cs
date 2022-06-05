@@ -2266,10 +2266,10 @@
         private System.Windows.Forms.Timer timer5;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.CheckBox checkBox9;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Timer timer6;
         public System.Windows.Forms.CheckBox checkBox10;
+        public System.Windows.Forms.CheckBox checkBox8;
+        public System.Windows.Forms.CheckBox checkBox9;
     }
 }
