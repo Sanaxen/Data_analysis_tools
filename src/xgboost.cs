@@ -107,7 +107,7 @@ namespace WindowsFormsApplication1
 
         int use_geom_point = 0;
         int use_decompose = 1;
-        int max_seasonal = 48;
+        int max_seasonal = 6;
         int use_arima = 1;
         int cutoff = 0;
         double split_train = 0.7;
@@ -9290,6 +9290,12 @@ forecast_extension += "	    }\r\n";
                         continue;
                     }
                     
+                    if (ss[0].IndexOf("sin_cos2_freqency") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown10.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
                     if (ss[0].IndexOf("sin_cos2") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")
@@ -9301,13 +9307,13 @@ forecast_extension += "	    }\r\n";
                             xgb_ts_prm_.checkBox4.Checked = false;
                         }
                     }
-                    if (ss[0].IndexOf("freqency_sin_cos2") >= 0)
+                    
+                    if (ss[0].IndexOf("sin_cos3_freqency") >= 0)
                     {
-                        xgb_ts_prm_.numericUpDown10.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.numericUpDown11.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         xgb_ts_prm_.refresh_value();
                         continue;
                     }
-                    
                     if (ss[0].IndexOf("sin_cos3") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")
@@ -9319,13 +9325,14 @@ forecast_extension += "	    }\r\n";
                             xgb_ts_prm_.checkBox5.Checked = false;
                         }
                     }
-                    if (ss[0].IndexOf("freqency_sin_cos3") >= 0)
+
+                    
+                    if (ss[0].IndexOf("sin_cos4_freqency") >= 0)
                     {
-                        xgb_ts_prm_.numericUpDown11.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.numericUpDown12.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         xgb_ts_prm_.refresh_value();
                         continue;
                     }
-                    
                     if (ss[0].IndexOf("sin_cos4") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")
@@ -9336,12 +9343,6 @@ forecast_extension += "	    }\r\n";
                         {
                             xgb_ts_prm_.checkBox6.Checked = false;
                         }
-                    }
-                    if (ss[0].IndexOf("freqency_sin_cos4") >= 0)
-                    {
-                        xgb_ts_prm_.numericUpDown12.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                        xgb_ts_prm_.refresh_value();
-                        continue;
                     }
                     continue;
                 }
