@@ -9272,6 +9272,12 @@ forecast_extension += "	    }\r\n";
                         continue;
                     }
 
+                    if (ss[0].IndexOf("freqency_sin_cos1") >= 0)
+                    {
+                        xgb_ts_prm_.numericUpDown9.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        xgb_ts_prm_.refresh_value();
+                        continue;
+                    }
                     if (ss[0].IndexOf("sin_cos1") >= 0)
                     {
                         if (ss[1].Replace("\r\n", "") == "true")
@@ -9282,12 +9288,6 @@ forecast_extension += "	    }\r\n";
                         {
                             xgb_ts_prm_.checkBox3.Checked = false;
                         }
-                    }
-                    if (ss[0].IndexOf("freqency_sin_cos1") >= 0)
-                    {
-                        xgb_ts_prm_.numericUpDown9.Value = int.Parse(ss[1].Replace("\r\n", ""));
-                        xgb_ts_prm_.refresh_value();
-                        continue;
                     }
                     
                     if (ss[0].IndexOf("sin_cos2_freqency") >= 0)
