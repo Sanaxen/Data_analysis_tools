@@ -120,6 +120,15 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>660, 17</value>
   </metadata>
+  <data name="label32.ToolTip" xml:space="preserve">
+    <value>auto：ヒューリスティックを使用して、最速の方法を選択します。
+          小さなデータセットの場合、正確な欲張り（exact）が使用されます。
+          より大きなデータセットの場合、近似アルゴリズム（approx）が選択されます。大規模なデータセットを使用してパフォーマンスを向上させることhistをお勧めします。gpu_hist（gpu_hist）はをサポートしています。external memory
+exact：正確な欲張りアルゴリズム。すべての分割候補を列挙します。
+approx：分位数スケッチと勾配ヒストグラムを使用した欲張りアルゴリズムの近似。
+hist：より高速なヒストグラム最適化近似欲張りアルゴリズム。
+gpu_histhist：アルゴリズムのGPU実装。</value>
+  </data>
   <data name="label10.ToolTip" xml:space="preserve">
     <value>テストデータに対する評価指標を意味します。
 デフォルトの基準はobjectiveパラメータによって決まります。
@@ -157,6 +166,6 @@
     <value>17, 17</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>65</value>
+    <value>198</value>
   </metadata>
 </root>

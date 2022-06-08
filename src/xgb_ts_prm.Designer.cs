@@ -718,7 +718,7 @@
             this.numericUpDown23.Size = new System.Drawing.Size(60, 22);
             this.numericUpDown23.TabIndex = 183;
             this.toolTip1.SetToolTip(this.numericUpDown23, "testデータの終端から過去で何時点分を出力するかを指定できます。\r\n100を超えるかデータ終端からのステップ数で指定するチェックをONにすると、\r\nデータ終端か" +
-        "ら指定した値のステップまでさかのぼった位置までに制限出来ます。\r\n");
+        "ら指定した値のステップまでさかのぼった位置までに制限出来ます。\r\nチェックがOFFの場合はtestデータの終端から過去の指定値の割合（％）分を出力します。\r\n");
             this.numericUpDown23.Value = new decimal(new int[] {
             100,
             0,

@@ -551,15 +551,20 @@ namespace WindowsFormsApplication1
 			save_target_parameter("lambda", textBox6.Text, target);
 			save_target_parameter("colsample_bytree", textBox7.Text, target);
 			save_target_parameter("nthread", numericUpDown10.Value.ToString(), target);
-			if ( checkBox3.Checked )
+			if ( checkBox3.Checked  && comboBox5.Text == "'gpu_hist'")
 			{
 				save_target_parameter("tree_method", "'gpu_hist'", target);
 				save_target_parameter("predictor", "'gpu_predictor'", target);
 			}else
+			if ( comboBox5.Text == "'hist'" || comboBox5.Text == "'gpu_hist'")
 			{
 				save_target_parameter("tree_method", "'hist'", target);
 				save_target_parameter("predictor", "'cpu_predictor'", target);
+			}else
+			{
+				save_target_parameter("tree_method", comboBox5.Text, target);
 			}
+			
 			if (radioButton2.Checked)
 			{
 				save_target_parameter("num_class", numericUpDown7.Text, target);
@@ -597,6 +602,8 @@ namespace WindowsFormsApplication1
 			{
 				checkBox3.Checked = false;
 			}
+			
+			
 			if ( parameters[target_dic[targetName]]["num_class"] == "0" )
 			{
 				radioButton2.Checked = false;
@@ -2912,7 +2919,7 @@ namespace WindowsFormsApplication1
                 l_params += ",lambda=" + textBox6.Text + "\r\n";
                 l_params += ",colsample_bytree=" + textBox7.Text + "\r\n";
                 l_params += ",nthread=" + numericUpDown10.Value.ToString() + "\r\n";
-                if ( checkBox3.Checked )
+                if ( checkBox3.Checked && comboBox5.Text == "'gpu_hist'")
                 {
                     l_params += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
                		l_params += "		,single_precision_histogram = T\r\n";
@@ -2920,9 +2927,13 @@ namespace WindowsFormsApplication1
                		l_params += "		,tree_method = 'gpu_hist'\r\n";
                 	l_params += "		,predictor='gpu_predictor'\r\n";
                 }else
+                if ( comboBox5.Text == "'hist'" || comboBox5.Text == "'gpu_hist'")
                 {
                 	l_params += "		,tree_method = 'hist'\r\n";
                 	l_params += "		,predictor='cpu_predictor'\r\n";
+                }else
+                {
+                	l_params += "		,tree_method = " + comboBox5.Text + "\r\n";
                 }
 
                 if (radioButton2.Checked)
@@ -3159,17 +3170,21 @@ namespace WindowsFormsApplication1
                         l_params_tmp += "   ,lambda=" + textBox6.Text + "\r\n";
                         l_params_tmp += "   ,colsample_bytree=" + textBox7.Text + "*0.8\r\n";
                         l_params_tmp += "   ,nthread=" + numericUpDown10.Value.ToString() + "\r\n";
-		                if ( checkBox3.Checked )
+		                if ( checkBox3.Checked && comboBox5.Text == "'gpu_hist'")
 		                {
-		                    l_params_tmp += "	#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-               				l_params_tmp += "		,single_precision_histogram = T\r\n";
-               				l_params_tmp += "		,gpu_id = 0\r\n";
-		               		l_params_tmp += "	,tree_method = 'gpu_hist'\r\n";
-		                	l_params_tmp += "	,predictor='gpu_predictor'\r\n";
+		                    l_params_tmp += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+		               		l_params_tmp += "		,single_precision_histogram = T\r\n";
+		               		l_params_tmp += "		,gpu_id = 0\r\n";
+		               		l_params_tmp += "		,tree_method = 'gpu_hist'\r\n";
+		                	l_params_tmp += "		,predictor='gpu_predictor'\r\n";
+		                }else
+		                if ( comboBox5.Text == "'hist'" || comboBox5.Text == "'gpu_hist'")
+		                {
+		                	l_params_tmp += "		,tree_method = 'hist'\r\n";
+		                	l_params_tmp += "		,predictor='cpu_predictor'\r\n";
 		                }else
 		                {
-		                	l_params_tmp += "	,tree_method = 'hist'\r\n";
-		                	l_params_tmp += "	,predictor='cpu_predictor'\r\n";
+		                	l_params_tmp += "		,tree_method = "+ comboBox5.Text +"\r\n";
 		                }
 
                         if (radioButton2.Checked)
@@ -3211,18 +3226,23 @@ namespace WindowsFormsApplication1
                         cmd2 += "		,lambda=1.0\r\n";
                         cmd2 += "		,colsample_bytree=0.8*c\r\n";
                         cmd2 += "		,nthread=3\r\n";
-		                if ( checkBox3.Checked )
+		                if ( checkBox3.Checked && comboBox5.Text == "'gpu_hist'")
 		                {
 		                    cmd2 += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-               				cmd2 += "		,single_precision_histogram = T\r\n";
-               				cmd2 += "		,gpu_id = 0\r\n";
+		               		cmd2 += "		,single_precision_histogram = T\r\n";
+		               		cmd2 += "		,gpu_id = 0\r\n";
 		               		cmd2 += "		,tree_method = 'gpu_hist'\r\n";
 		                	cmd2 += "		,predictor='gpu_predictor'\r\n";
 		                }else
+		                if ( comboBox5.Text == "'hist'" || comboBox5.Text == "'gpu_hist'")
 		                {
 		                	cmd2 += "		,tree_method = 'hist'\r\n";
 		                	cmd2 += "		,predictor='cpu_predictor'\r\n";
+		                }else
+		                {
+		                	cmd2 += "		,tree_method = " + comboBox5.Text + "\r\n";
 		                }
+
                         cmd2 += "	)\r\n";
                         */
                         cmd2 += "	\r\n";
@@ -3384,17 +3404,21 @@ namespace WindowsFormsApplication1
                         l_params_tmp += "   ,lambda=" + textBox6.Text + "\r\n";
                         l_params_tmp += "   ,colsample_bytree=" + textBox7.Text + "*0.8\r\n";
                         l_params_tmp += "   ,nthread=" + numericUpDown10.Value.ToString() + "\r\n";
-		                if ( checkBox3.Checked )
+		                if ( checkBox3.Checked && comboBox5.Text == "'gpu_hist'")
 		                {
 		                    l_params_tmp += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-               				l_params_tmp += "		,single_precision_histogram = T\r\n";
-               				l_params_tmp += "		,gpu_id = 0\r\n";
+		               		l_params_tmp += "		,single_precision_histogram = T\r\n";
+		               		l_params_tmp += "		,gpu_id = 0\r\n";
 		               		l_params_tmp += "		,tree_method = 'gpu_hist'\r\n";
 		                	l_params_tmp += "		,predictor='gpu_predictor'\r\n";
 		                }else
+		                if ( comboBox5.Text == "'hist'" || comboBox5.Text == "'gpu_hist'")
 		                {
 		                	l_params_tmp += "		,tree_method = 'hist'\r\n";
 		                	l_params_tmp += "		,predictor='cpu_predictor'\r\n";
+		                }else
+		                {
+		                	l_params_tmp += "		,tree_method = "+comboBox5.Text+"\r\n";
 		                }
 
                         if (radioButton2.Checked)
@@ -3437,17 +3461,21 @@ namespace WindowsFormsApplication1
                         cmd3 += "   ,lambda=1.0\r\n";
                         cmd3 += "   ,colsample_bytree=0.5 # １以下にする事で説明変数の選択が確率的になる\r\n";
                         cmd3 += "   ,nthread=3\r\n";
-		                if ( checkBox3.Checked )
+		                if ( checkBox3.Checked && comboBox5.Text == "'gpu_hist'")
 		                {
 		                    cmd3 += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-               				cmd3 += "		,single_precision_histogram = T\r\n";
-               				cmd3 += "		,gpu_id = 0\r\n";
+		               		cmd3 += "		,single_precision_histogram = T\r\n";
+		               		cmd3 += "		,gpu_id = 0\r\n";
 		               		cmd3 += "		,tree_method = 'gpu_hist'\r\n";
 		                	cmd3 += "		,predictor='gpu_predictor'\r\n";
 		                }else
+		                if ( comboBox5.Text == "'hist'" || comboBox5.Text == "'gpu_hist'")
 		                {
 		                	cmd3 += "		,tree_method = 'hist'\r\n";
 		                	cmd3 += "		,predictor='cpu_predictor'\r\n";
+		                }else
+		                {
+		                	cmd3 += "		,tree_method = " + comboBox5.Text +"\r\n";
 		                }
                         cmd3 += ")\r\n";
                         */
@@ -4177,19 +4205,22 @@ namespace WindowsFormsApplication1
 						xgboost_gridsearch += "	,lambda=lambda_i\r\n";
 						xgboost_gridsearch += "	,colsample_bytree=colsample_bytree_i\r\n";
 						xgboost_gridsearch += "	,nthread=3\r\n";
-                        if (checkBox3.Checked)
-                        {
-                            xgboost_gridsearch += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-                            xgboost_gridsearch += "		,single_precision_histogram = T\r\n";
-                            xgboost_gridsearch += "		,gpu_id = 0\r\n";
-                            xgboost_gridsearch += "		,tree_method = 'gpu_hist'\r\n";
-                            xgboost_gridsearch += "		,predictor='gpu_predictor'\r\n";
-                        }
-                        else
-                        {
-                            xgboost_gridsearch += "		,tree_method = 'hist'\r\n";
-                            xgboost_gridsearch += "		,predictor='cpu_predictor'\r\n";
-                        }
+		                if ( checkBox3.Checked && comboBox5.Text == "'gpu_hist'")
+		                {
+		                    xgboost_gridsearch += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
+		               		xgboost_gridsearch += "		,single_precision_histogram = T\r\n";
+		               		xgboost_gridsearch += "		,gpu_id = 0\r\n";
+		               		xgboost_gridsearch += "		,tree_method = 'gpu_hist'\r\n";
+		                	xgboost_gridsearch += "		,predictor='gpu_predictor'\r\n";
+		                }else
+		                if ( comboBox5.Text == "'hist'" || comboBox5.Text == "'gpu_hist'")
+		                {
+		                	xgboost_gridsearch += "		,tree_method = 'hist'\r\n";
+		                	xgboost_gridsearch += "		,predictor='cpu_predictor'\r\n";
+		                }else
+		                {
+		                	xgboost_gridsearch += "		,tree_method = " + comboBox5.Text +"\r\n";
+		                }
 
                         if (radioButton2.Checked)
                         {
@@ -8370,6 +8401,7 @@ forecast_extension += "	    }\r\n";
                 sw.Write("target_weight,"); sw.Write(numericUpDown4.Value.ToString() + "\r\n");
                 sw.Write("coef_weight,"); sw.Write(comboBox4.Text + "\r\n");
                 sw.Write("booster,"); sw.Write(comboBox1.Text + "\r\n");
+                sw.Write("tree_method,"); sw.Write(comboBox5.Text + "\r\n");
                 sw.Write("objective,"); sw.Write(comboBox2.Text + "\r\n");
                 sw.Write("eval_metric,"); sw.Write(comboBox3.Text + "\r\n");
                 sw.Write("eta,"); sw.Write(textBox3.Text + "\r\n");
@@ -8798,6 +8830,11 @@ forecast_extension += "	    }\r\n";
                     if (ss[0].IndexOf("booster") >= 0)
                     {
                         comboBox1.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
+                    if (ss[0].IndexOf("tree_method") >= 0)
+                    {
+                        comboBox5.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
                     if (ss[0].IndexOf("objective") >= 0)
