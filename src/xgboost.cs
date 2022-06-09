@@ -9309,7 +9309,7 @@ forecast_extension += "	    }\r\n";
                         continue;
                     }
 
-                    if (ss[0].IndexOf("freqency_sin_cos1") >= 0)
+                    if (ss[0].IndexOf("sin_cos1_freqency") >= 0)
                     {
                         xgb_ts_prm_.numericUpDown9.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         xgb_ts_prm_.refresh_value();
