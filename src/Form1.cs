@@ -8779,7 +8779,7 @@ namespace WindowsFormsApplication1
             _xgboost.BackColor = BackColor;
             _xgboost.add_enevt_data = 0;
             _xgboost.xgb_ts_prm_.checkBox8.Checked = true;
-
+            if (_xgboost.importance_var != null) _xgboost.importance_var.Items.Clear();
 
             string cmd = "";
             if (form1.ExistObj("holidays"))

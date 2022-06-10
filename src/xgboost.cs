@@ -43,7 +43,7 @@ namespace WindowsFormsApplication1
         public Dictionary<string, string> estimative = new Dictionary<string, string>();
 
         int grid_serch_stop = 0;
-        ListBox importance_var = new ListBox();
+        public ListBox importance_var = new ListBox();
 
         Dictionary<TextBox, bool> textBoxSintax = new Dictionary<TextBox, bool>();
 
@@ -869,6 +869,23 @@ namespace WindowsFormsApplication1
             }
         }
 
+		public string importance_varChk(string var_name)
+		{
+            if (importance_var.Items.Count < 1 || numericUpDown9.Value == 0) return var_name;
+
+            int j = 0;
+            for ( int i = importance_var.Items.Count-1; i >=0 ; i--)
+            {
+            	j++;
+            	if ( j > numericUpDown9.Value ) break;
+                if (importance_var.Items[i].ToString() == var_name)
+                {
+                	return var_name;
+                }
+            }
+            return "";
+		}
+		
         public void button1_Click_target(object sender, EventArgs e)
         {
             if (running != 0) return;
@@ -2463,7 +2480,7 @@ namespace WindowsFormsApplication1
 
                 for (int i = 0; i < var.Items.Count; i++)
                 {
-                    formuler += var.Items[i].ToString();
+                    formuler += importance_varChk(var.Items[i].ToString());
                     if (i < var.Items.Count - 1)
                     {
                         formuler += "+";
@@ -2483,14 +2500,14 @@ namespace WindowsFormsApplication1
 	                    for (int i = start_lag; i <= lag; i++)
 	                    {
 	                    	if ( i % 10 == 0 ) formuler += "\r\n";
-	                        formuler += "+ lag" + i.ToString() + "_" + targetName;
+	                        formuler += "+" + importance_varChk("lag" + i.ToString() + "_" + targetName);
 	                        var_ts.Items.Add("lag" + i.ToString() + "_" + targetName);
 	                    }
 	                    
 	                    if ( use_day_diff )
 	                    {
-		                    formuler += "+ day1_diff_" + targetName;
-		                    formuler += "+ day1diff_diff_" + targetName;
+		                    formuler += "+" +importance_varChk("day1_diff_" + targetName);
+		                    formuler += "+" +importance_varChk("day1diff_diff_" + targetName);
 
 		                    var_ts.Items.Add("day1_diff_" + targetName);
 		                    var_ts.Items.Add("day1diff_diff_" + targetName);
@@ -2499,29 +2516,29 @@ namespace WindowsFormsApplication1
 
 					if ( xgb_ts_prm_.checkBox3.Checked )
 					{
-                    	formuler += "\r\n+ sin1_" + targetName;
-                    	formuler += "+ cos1_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("sin1_" + targetName);
+                    	formuler += "+" +importance_varChk("cos1_" + targetName);
 	                    var_ts.Items.Add("sin1_" + targetName);
 	                    var_ts.Items.Add("cos1_" + targetName);
 					}
 					if ( xgb_ts_prm_.checkBox4.Checked )
 					{
-                    	formuler += "\r\n+ sin2_" + targetName;
-                    	formuler += "+ cos2_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("sin2_" + targetName);
+                    	formuler += "+" +importance_varChk("cos2_" + targetName);
 	                    var_ts.Items.Add("sin2_" + targetName);
 	                    var_ts.Items.Add("cos2_" + targetName);
 					}
 					if ( xgb_ts_prm_.checkBox5.Checked )
 					{
-                    	formuler += "\r\n+ sin3_" + targetName;
-                    	formuler += "+ cos3_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("sin3_" + targetName);
+                    	formuler += "+" +importance_varChk("cos3_" + targetName);
 	                    var_ts.Items.Add("sin3_" + targetName);
 	                    var_ts.Items.Add("cos3_" + targetName);
 					}
 					if ( xgb_ts_prm_.checkBox6.Checked )
 					{
-                    	formuler += "\r\n+ sin4_" + targetName;
-                    	formuler += "+ cos4_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("sin4_" + targetName);
+                    	formuler += "+" +importance_varChk("cos4_" + targetName);
 	                    var_ts.Items.Add("sin4_" + targetName);
 	                    var_ts.Items.Add("cos4_" + targetName);
 					}
@@ -2529,23 +2546,23 @@ namespace WindowsFormsApplication1
 					/*
                     if (lag >= means_3n)
                     {
-                    	formuler += "\r\n+ mean3_" + targetName;
-                    	formuler += "+ sd3_" + targetName;
-                    	formuler += "+ median3_" + targetName;
-                        formuler += "+ max3_" + targetName;
-                        formuler += "+ min3_" + targetName;
-                        formuler += "+ quantile3.25_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("mean3_" + targetName);
+                    	formuler += "+" +importance_varChk("sd3_" + targetName);
+                    	formuler += "+" +importance_varChk("median3_" + targetName);
+                        formuler += "+" +importance_varChk("max3_" + targetName);
+                        formuler += "+" +importance_varChk("min3_" + targetName);
+                        formuler += "+" +importance_varChk("quantile3.25_" + targetName);
                         //formuler += "+ quantile3.50_" + targetName;
-                        formuler += "+ quantile3.75_" + targetName;
+                        formuler += "+" +importance_varChk("quantile3.75_" + targetName);
 
-                    	formuler += "\r\n+ expanding_mean_" + targetName;
-                    	formuler += "+ expanding_sd_" + targetName;
-                    	formuler += "+ expanding_median_" + targetName;
-                        formuler += "+ expanding_max_" + targetName;
-                        formuler += "+ expanding_min_" + targetName;
-                        formuler += "+ expanding_quantile.25_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("expanding_mean_" + targetName);
+                    	formuler += "+" +importance_varChk("expanding_sd_" + targetName);
+                    	formuler += "+" +importance_varChk("expanding_median_" + targetName);
+                        formuler += "+" +importance_varChk("expanding_max_" + targetName);
+                        formuler += "+" +importance_varChk("expanding_min_" + targetName);
+                        formuler += "+" +importance_varChk("expanding_quantile.25_" + targetName);
                         //formuler += "+ expanding_quantile.50_" + targetName;
-                        formuler += "+ expanding_quantile.75_" + targetName;
+                        formuler += "+" +importance_varChk("expanding_quantile.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean3_" + targetName);
 	                    var_ts.Items.Add("sd3_" + targetName);
@@ -2568,14 +2585,14 @@ namespace WindowsFormsApplication1
                     */
                     if (lag >= 10)
                     {
-                    	formuler += "\r\n+ expanding_mean_" + targetName;
-                    	formuler += "+ expanding_sd_" + targetName;
-                    	formuler += "+ expanding_median_" + targetName;
-                        formuler += "+ expanding_max_" + targetName;
-                        formuler += "+ expanding_min_" + targetName;
-                        formuler += "+ expanding_quantile.25_" + targetName;
-                        //formuler += "+ expanding_quantile.50_" + targetName;
-                        formuler += "+ expanding_quantile.75_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("expanding_mean_" + targetName);
+                    	formuler += "+" +importance_varChk("expanding_sd_" + targetName);
+                    	formuler += "+" +importance_varChk("expanding_median_" + targetName);
+                        formuler += "+" +importance_varChk("expanding_max_" + targetName);
+                        formuler += "+" +importance_varChk("expanding_min_" + targetName);
+                        formuler += "+" +importance_varChk("expanding_quantile.25_" + targetName);
+                        //formuler += "+ expanding_quantile.50_" + targetName);
+                        formuler += "+" +importance_varChk("expanding_quantile.75_" + targetName);
 	                    
 	                    var_ts.Items.Add("expanding_mean_" + targetName);
 	                    var_ts.Items.Add("expanding_sd_" + targetName);
@@ -2588,14 +2605,14 @@ namespace WindowsFormsApplication1
                     }                    
                     if (lag >= means_6n)
                     {
-                    	formuler += "\r\n+ mean6_" + targetName;
-                    	formuler += "+ sd6_" + targetName;
-                    	formuler += "+ median6_" + targetName;
-                        formuler += "+ max6_" + targetName;
-                        formuler += "+ min6_" + targetName;
-                        formuler += "+ quantile6.25_" + targetName;
-                        //formuler += "+ quantile6.50_" + targetName;
-                        formuler += "+ quantile6.75_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("mean6_" + targetName);
+                    	formuler += "+" +importance_varChk("sd6_" + targetName);
+                    	formuler += "+" +importance_varChk("median6_" + targetName);
+                        formuler += "+" +importance_varChk("max6_" + targetName);
+                        formuler += "+" +importance_varChk("min6_" + targetName);
+                        formuler += "+" +importance_varChk("quantile6.25_" + targetName);
+                        //formuler += "+ quantile6.50_" + targetName);
+                        formuler += "+" +importance_varChk("quantile6.75_" + targetName);
 
                         var_ts.Items.Add("mean6_" + targetName);
                         var_ts.Items.Add("sd6_" + targetName);
@@ -2608,14 +2625,14 @@ namespace WindowsFormsApplication1
                     }
                     if (lag >= means_12n)
                     {
-                    	formuler += "\r\n+ mean12_" + targetName;
-                    	formuler += "+ sd12_" + targetName;
-                    	formuler += "+ median12_" + targetName;
-                        formuler += "+ max12_" + targetName;
-                        formuler += "+ min12_" + targetName;
-                        formuler += "+ quantile12.25_" + targetName;
-                        //formuler += "+ quantile12.50_" + targetName;
-                        formuler += "+ quantile12.75_" + targetName;
+                    	formuler += "\r\n+" +importance_varChk("mean12_" + targetName);
+                    	formuler += "+" +importance_varChk("sd12_" + targetName);
+                    	formuler += "+" +importance_varChk("median12_" + targetName);
+                        formuler += "+" +importance_varChk("max12_" + targetName);
+                        formuler += "+" +importance_varChk("min12_" + targetName);
+                        formuler += "+" +importance_varChk("quantile12.25_" + targetName);
+                        //formuler += "+ quantile12.50_" + targetName);
+                        formuler += "+" +importance_varChk("quantile12.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean12_" + targetName);
 	                    var_ts.Items.Add("sd12_" + targetName);
@@ -2628,14 +2645,14 @@ namespace WindowsFormsApplication1
                     }
                     if (lag >= means_24n)
                     {
-                        formuler += "\r\n+ mean24_" + targetName;
-                        formuler += "+ sd24_" + targetName;
-                        formuler += "+ median24_" + targetName;
-                        formuler += "+ max24_" + targetName;
-                        formuler += "+ min24_" + targetName;
-                        formuler += "+ quantile24.25_" + targetName;
-                        //formuler += "+ quantile24.50_" + targetName;
-                        formuler += "+ quantile24.75_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean24_" + targetName);
+                        formuler += "+" +importance_varChk("sd24_" + targetName);
+                        formuler += "+" +importance_varChk("median24_" + targetName);
+                        formuler += "+" +importance_varChk("max24_" + targetName);
+                        formuler += "+" +importance_varChk("min24_" + targetName);
+                        formuler += "+" +importance_varChk("quantile24.25_" + targetName);
+                        //formuler += "+ quantile24.50_" + targetName);
+                        formuler += "+" +importance_varChk("quantile24.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean24_" + targetName);
 	                    var_ts.Items.Add("sd24_" + targetName);
@@ -2648,14 +2665,14 @@ namespace WindowsFormsApplication1
                     }
                     if (lag >= means_30n)
                     {
-                        formuler += "\r\n+ mean30_" + targetName;
-                        formuler += "+ sd30_" + targetName;
-                        formuler += "+ median30_" + targetName;
-                        formuler += "+ max30_" + targetName;
-                        formuler += "+ min30_" + targetName;
-                        formuler += "+ quantile30.25_" + targetName;
-                        //formuler += "+ quantile30.50_" + targetName;
-                        formuler += "+ quantile30.75_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean30_" + targetName);
+                        formuler += "+" +importance_varChk("sd30_" + targetName);
+                        formuler += "+" +importance_varChk("median30_" + targetName);
+                        formuler += "+" +importance_varChk("max30_" + targetName);
+                        formuler += "+" +importance_varChk("min30_" + targetName);
+                        formuler += "+" +importance_varChk("quantile30.25_" + targetName);
+                        //formuler += "+ quantile30.50_" + targetName);
+                        formuler += "+" +importance_varChk("quantile30.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean30_" + targetName);
 	                    var_ts.Items.Add("sd30_" + targetName);
@@ -2668,14 +2685,14 @@ namespace WindowsFormsApplication1
                     }
                     if (lag >= means_60n)
                     {
-                        formuler += "\r\n+ mean60_" + targetName;
-                        formuler += "+ sd60_" + targetName;
-                        formuler += "+ median60_" + targetName;
-                        formuler += "+ max60_" + targetName;
-                        formuler += "+ min60_" + targetName;
-                        formuler += "+ quantile60.25_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean60_" + targetName);
+                        formuler += "+" +importance_varChk("sd60_" + targetName);
+                        formuler += "+" +importance_varChk("median60_" + targetName);
+                        formuler += "+" +importance_varChk("max60_" + targetName);
+                        formuler += "+" +importance_varChk("min60_" + targetName);
+                        formuler += "+" +importance_varChk("quantile60.25_" + targetName);
                         //formuler += "+ quantile60.50_" + targetName;
-                        formuler += "+ quantile60.75_" + targetName;
+                        formuler += "+" +importance_varChk("quantile60.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean60_" + targetName);
 	                    var_ts.Items.Add("sd60_" + targetName);
@@ -2688,14 +2705,14 @@ namespace WindowsFormsApplication1
                     }
                     if (lag >= means_90n)
                     {
-                        formuler += "\r\n+ mean90_" + targetName;
-                        formuler += "+ sd90_" + targetName;
-                        formuler += "+ median90_" + targetName;
-                        formuler += "+ max90_" + targetName;
-                        formuler += "+ min90_" + targetName;
-                        formuler += "+ quantile90.25_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean90_" + targetName);
+                        formuler += "+" +importance_varChk("sd90_" + targetName);
+                        formuler += "+" +importance_varChk("median90_" + targetName);
+                        formuler += "+" +importance_varChk("max90_" + targetName);
+                        formuler += "+" +importance_varChk("min90_" + targetName);
+                        formuler += "+" +importance_varChk("quantile90.25_" + targetName);
                         //formuler += "+ quantile90.50_" + targetName;
-                        formuler += "+ quantile90.75_" + targetName;
+                        formuler += "+" +importance_varChk("quantile90.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean90_" + targetName);
 	                    var_ts.Items.Add("sd90_" + targetName);
@@ -2707,14 +2724,14 @@ namespace WindowsFormsApplication1
                     }
                     if (lag >= means_120n)
                     {
-                        formuler += "\r\n+ mean120_" + targetName;
-                        formuler += "+ sd120_" + targetName;
-                        formuler += "+ median120_" + targetName;
-                        formuler += "+ max120_" + targetName;
-                        formuler += "+ min120_" + targetName;
-                        formuler += "+ quantile120.25_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean120_" + targetName);
+                        formuler += "+" +importance_varChk("sd120_" + targetName);
+                        formuler += "+" +importance_varChk("median120_" + targetName);
+                        formuler += "+" +importance_varChk("max120_" + targetName);
+                        formuler += "+" +importance_varChk("min120_" + targetName);
+                        formuler += "+" +importance_varChk("quantile120.25_" + targetName);
                         //formuler += "+ quantile120.50_" + targetName;
-                        formuler += "+ quantile120.75_" + targetName;
+                        formuler += "+" +importance_varChk("quantile120.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean120_" + targetName);
 	                    var_ts.Items.Add("sd120_" + targetName);
@@ -2728,14 +2745,14 @@ namespace WindowsFormsApplication1
                     
                     if (lag >= means_180n)
                     {
-                        formuler += "\r\n+ mean180_" + targetName;
-                        formuler += "+ sd180_" + targetName;
-                        formuler += "+ median180_" + targetName;
-                        formuler += "+ max180_" + targetName;
-                        formuler += "+ min180_" + targetName;
-                        formuler += "+ quantile180.25_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean180_" + targetName);
+                        formuler += "+" +importance_varChk("sd180_" + targetName);
+                        formuler += "+" +importance_varChk("median180_" + targetName);
+                        formuler += "+" +importance_varChk("max180_" + targetName);
+                        formuler += "+" +importance_varChk("min180_" + targetName);
+                        formuler += "+" +importance_varChk("quantile180.25_" + targetName);
                         //formuler += "+ quantile180.50_" + targetName;
-                        formuler += "+ quantile180.75_" + targetName;
+                        formuler += "+" +importance_varChk("quantile180.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean180_" + targetName);
 	                    var_ts.Items.Add("sd180_" + targetName);
@@ -2749,14 +2766,14 @@ namespace WindowsFormsApplication1
                     
                     if (lag >= means_260n)
                     {
-                        formuler += "\r\n+ mean260_" + targetName;
-                        formuler += "+ sd260_" + targetName;
-                        formuler += "+ median260_" + targetName;
-                        formuler += "+ max260_" + targetName;
-                        formuler += "+ min260_" + targetName;
-                        formuler += "+ quantile260.25_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean260_" + targetName);
+                        formuler += "+" +importance_varChk("sd260_" + targetName);
+                        formuler += "+" +importance_varChk("median260_" + targetName);
+                        formuler += "+" +importance_varChk("max260_" + targetName);
+                        formuler += "+" +importance_varChk("min260_" + targetName);
+                        formuler += "+" +importance_varChk("quantile260.25_" + targetName);
                         //formuler += "+ quantile260.50_" + targetName;
-                        formuler += "+ quantile260.75_" + targetName;
+                        formuler += "+" +importance_varChk("quantile260.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean260_" + targetName);
 	                    var_ts.Items.Add("sd260_" + targetName);
@@ -2770,14 +2787,14 @@ namespace WindowsFormsApplication1
                     
                     if (lag >= means_300n)
                     {
-                        formuler += "\r\n+ mean300_" + targetName;
-                        formuler += "+ sd300_" + targetName;
-                        formuler += "+ median300_" + targetName;
-                        formuler += "+ max300_" + targetName;
-                        formuler += "+ min300_" + targetName;
-                        formuler += "+ quantile300.25_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean300_" + targetName);
+                        formuler += "+" +importance_varChk("sd300_" + targetName);
+                        formuler += "+" +importance_varChk("median300_" + targetName);
+                        formuler += "+" +importance_varChk("max300_" + targetName);
+                        formuler += "+" +importance_varChk("min300_" + targetName);
+                        formuler += "+" +importance_varChk("quantile300.25_" + targetName);
                         //formuler += "+ quantile300.50_" + targetName;
-                        formuler += "+ quantile300.75_" + targetName;
+                        formuler += "+" +importance_varChk("quantile300.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean300_" + targetName);
 	                    var_ts.Items.Add("sd300_" + targetName);
@@ -2791,14 +2808,14 @@ namespace WindowsFormsApplication1
                     
                     if (lag >= means_365n)
                     {
-                        formuler += "\r\n+ mean365_" + targetName;
-                        formuler += "+ sd365_" + targetName;
-                        formuler += "+ median365_" + targetName;
-                        formuler += "+ max365_" + targetName;
-                        formuler += "+ min365_" + targetName;
-                        formuler += "+ quantile365.25_" + targetName;
+                        formuler += "\r\n+" +importance_varChk("mean365_" + targetName);
+                        formuler += "+" +importance_varChk("sd365_" + targetName);
+                        formuler += "+" +importance_varChk("median365_" + targetName);
+                        formuler += "+" +importance_varChk("max365_" + targetName);
+                        formuler += "+" +importance_varChk("min365_" + targetName);
+                        formuler += "+" +importance_varChk("quantile365.25_" + targetName);
                         //formuler += "+ quantile365.50_" + targetName;
-                        formuler += "+ quantile365.75_" + targetName;
+                        formuler += "+" +importance_varChk("quantile365.75_" + targetName);
                         
 	                    var_ts.Items.Add("mean365_" + targetName);
 	                    var_ts.Items.Add("sd365_" + targetName);
@@ -2816,14 +2833,14 @@ namespace WindowsFormsApplication1
                     {
 	                    if (lag >= befor_3day)
 	                    {
-	                        formuler += "+ day3_diff_" + targetName;
+	                        formuler += "+" +importance_varChk("day3_diff_" + targetName);
 		                    var_ts.Items.Add("day3_diff_" + targetName);
 	                    }
 	                    if (lag >= befor_5day)
 	                    {
-	                        formuler += "+ day5_diff_" + targetName;
-	                        formuler += "+ second_derivative_" + targetName;
-	                        formuler += "+ curvature_" + targetName;
+	                        formuler += "+" +importance_varChk("day5_diff_" + targetName);
+	                        formuler += "+" +importance_varChk("second_derivative_" + targetName);
+	                        formuler += "+" +importance_varChk("curvature_" + targetName);
 	                        
 		                    var_ts.Items.Add("day5_diff_" + targetName);
 		                    var_ts.Items.Add("second_derivative_" + targetName);
@@ -2831,52 +2848,52 @@ namespace WindowsFormsApplication1
 	                    }
 	                    if (lag >= befor_7day)
 	                    {
-	                        formuler += "+ day7_diff_" + targetName;
+	                        formuler += "+" +importance_varChk("day7_diff_" + targetName);
 		                    var_ts.Items.Add("day7_diff_" + targetName);
 	                    }
 	                    if (lag >= befor_12day)
 	                    {
-	                        formuler += "+ day12_diff_" + targetName;
+	                        formuler += "+" +importance_varChk("day12_diff_" + targetName);
 		                    var_ts.Items.Add("day12_diff_" + targetName);
 	                    }
                         if (lag >= befor_30day)
                         {
-                            formuler += "+ day30_diff_" + targetName;
+                            formuler += "+" +importance_varChk("day30_diff_" + targetName);
                             var_ts.Items.Add("day30_diff_" + targetName);
                         }
                         if (lag >= befor_60day)
                         {
-                            formuler += "+ day60_diff_" + targetName;
+                            formuler += "+" +importance_varChk("day60_diff_" + targetName);
                             var_ts.Items.Add("day60_diff_" + targetName);
                         }
                         if (lag >= befor_90day)
                         {
-                            formuler += "+ day90_diff_" + targetName;
+                            formuler += "+" +importance_varChk("day90_diff_" + targetName);
                             var_ts.Items.Add("day90_diff_" + targetName);
                         }
                         if (lag >= befor_120day)
                         {
-                            formuler += "+ day120_diff_" + targetName;
+                            formuler += "+" +importance_varChk("day120_diff_" + targetName);
                             var_ts.Items.Add("day120_diff_" + targetName);
                         }
                         if (lag >= befor_180day)
                         {
-                            formuler += "+ day180_diff_" + targetName;
+                            formuler += "+" +importance_varChk("day180_diff_" + targetName);
                             var_ts.Items.Add("day180_diff_" + targetName);
                         }
                         if (lag >= befor_260day)
                         {
-                            formuler += "+ day260_diff_" + targetName;
+                            formuler += "+" +importance_varChk("day260_diff_" + targetName);
                             var_ts.Items.Add("day260_diff_" + targetName);
                         }
                         if (lag >= befor_300day)
                         {
-                            formuler += "+ day300_diff_" + targetName;
+                            formuler += "+" +importance_varChk("day300_diff_" + targetName);
                             var_ts.Items.Add("day300_diff_" + targetName);
                         }
                         if (lag >= befor_365day)
                         {
-                            formuler += "+ day365_diff_" + targetName;
+                            formuler += "+" +importance_varChk("day365_diff_" + targetName);
                             var_ts.Items.Add("day365_diff_" + targetName);
                         }
                     }
@@ -2887,10 +2904,24 @@ namespace WindowsFormsApplication1
                         {
                             for (int i = 1; i <= Math.Min(max_seasonal, n_seasons - 1); i++)
                             {
-                                formuler += "+ season" + i.ToString();
+                                formuler += "+" +importance_varChk("season" + i.ToString());
  	                    		var_ts.Items.Add("season"+ i.ToString());
                            }
                         }
+                    }
+
+                    while (formuler.IndexOf("++") >= 0 || formuler.IndexOf("+,") >= 0 || formuler.IndexOf("~+") >= 0 || formuler.IndexOf("+\r\n+") >= 0 || formuler.IndexOf("+\r\n,") >= 0)
+                    {
+                        //
+                        formuler = formuler.Replace("++", "+");
+                        formuler = formuler.Replace("+\r\n+", "+");
+                        formuler = formuler.Replace("+\r\n,", ",");
+                        formuler = formuler.Replace("+,", ",");
+                        formuler = formuler.Replace("~+", "~");
+                    }
+                    if (formuler != "" && formuler.Substring(formuler.Length - 1)=="+")
+                    {
+                        formuler = formuler.Substring(0, formuler.Length - 1);
                     }
                 }
                 if (Form1.batch_mode == 0)
@@ -6274,83 +6305,83 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
                                 forecast_extension += "            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency=frequency_value), type =\"" + decomp_type + "\")\r\n";
 								
-								forecast_extension += "if ( is.na(tmp$trend[1]) )\r\n";
-								forecast_extension += "{\r\n";
-								forecast_extension += "	id=-1\r\n";
-								forecast_extension += "	for ( i in 1:length(tmp$trend))\r\n";
-								forecast_extension += "	{\r\n";
-								forecast_extension += "		if ( !is.na(tmp$trend[i]) )\r\n";
+								forecast_extension += "		if ( is.na(tmp$trend[1]) )\r\n";
 								forecast_extension += "		{\r\n";
-								forecast_extension += "			id = i\r\n";
-								forecast_extension += "		 	break\r\n";
+								forecast_extension += "			id=-1\r\n";
+								forecast_extension += "			for ( i in 1:length(tmp$trend))\r\n";
+								forecast_extension += "			{\r\n";
+								forecast_extension += "				if ( !is.na(tmp$trend[i]) )\r\n";
+								forecast_extension += "				{\r\n";
+								forecast_extension += "					id = i\r\n";
+								forecast_extension += "		 			break\r\n";
+								forecast_extension += "				}\r\n";
+								forecast_extension += "			}\r\n";
+								forecast_extension += "			if ( id >= 1 )\r\n";
+								forecast_extension += "			{\r\n";
+								forecast_extension += "				for ( i in 1:id)\r\n";
+								forecast_extension += "				{\r\n";
+								forecast_extension += "					tmp$trend[i] = tmp$trend[id]\r\n";
+								forecast_extension += "				}\r\n";
+								forecast_extension += "			}\r\n";
 								forecast_extension += "		}\r\n";
-								forecast_extension += "	}\r\n";
-								forecast_extension += "	if ( id >= 1 )\r\n";
-								forecast_extension += "	{\r\n";
-								forecast_extension += "		for ( i in 1:id)\r\n";
+								forecast_extension += "		if ( is.na(tmp$trend[length(tmp$trend)]) )\r\n";
 								forecast_extension += "		{\r\n";
-								forecast_extension += "			tmp$trend[i] = tmp$trend[id]\r\n";
+								forecast_extension += "			id=-1\r\n";
+								forecast_extension += "			for ( i in length(tmp$trend):1)\r\n";
+								forecast_extension += "			{\r\n";
+								forecast_extension += "				if ( !is.na(tmp$trend[i]) )\r\n";
+								forecast_extension += "				{\r\n";
+								forecast_extension += "					id = i\r\n";
+								forecast_extension += "		 			break\r\n";
+								forecast_extension += "				}\r\n";
+								forecast_extension += "			}\r\n";
+								forecast_extension += "			if ( id >= 1 )\r\n";
+								forecast_extension += "			{\r\n";
+								forecast_extension += "				for ( i in length(tmp$trend):id)\r\n";
+								forecast_extension += "				{\r\n";
+								forecast_extension += "					tmp$trend[i] = tmp$trend[id]\r\n";
+								forecast_extension += "				}\r\n";
+								forecast_extension += "			}\r\n";
 								forecast_extension += "		}\r\n";
-								forecast_extension += "	}\r\n";
-								forecast_extension += "}\r\n";
-								forecast_extension += "if ( is.na(tmp$trend[length(tmp$trend)]) )\r\n";
-								forecast_extension += "{\r\n";
-								forecast_extension += "	id=-1\r\n";
-								forecast_extension += "	for ( i in length(tmp$trend):1)\r\n";
-								forecast_extension += "	{\r\n";
-								forecast_extension += "		if ( !is.na(tmp$trend[i]) )\r\n";
+								forecast_extension += "		plot(tmp$trend)\r\n";
+								forecast_extension += "		if ( is.na(tmp$random[1]) )\r\n";
 								forecast_extension += "		{\r\n";
-								forecast_extension += "			id = i\r\n";
-								forecast_extension += "		 	break\r\n";
+								forecast_extension += "			id=-1\r\n";
+								forecast_extension += "			for ( i in 1:length(tmp$random))\r\n";
+								forecast_extension += "			{\r\n";
+								forecast_extension += "				if ( !is.na(tmp$random[i]) )\r\n";
+								forecast_extension += "				{\r\n";
+								forecast_extension += "					id = i\r\n";
+								forecast_extension += "		 			break\r\n";
+								forecast_extension += "				}\r\n";
+								forecast_extension += "			}\r\n";
+								forecast_extension += "			if ( id >= 1 )\r\n";
+								forecast_extension += "			{\r\n";
+								forecast_extension += "				for ( i in 1:id)\r\n";
+								forecast_extension += "				{\r\n";
+								forecast_extension += "					tmp$random[i] = tmp$random[id]\r\n";
+								forecast_extension += "				}\r\n";
+								forecast_extension += "			}\r\n";
 								forecast_extension += "		}\r\n";
-								forecast_extension += "	}\r\n";
-								forecast_extension += "	if ( id >= 1 )\r\n";
-								forecast_extension += "	{\r\n";
-								forecast_extension += "		for ( i in length(tmp$trend):id)\r\n";
+								forecast_extension += "		if ( is.na(tmp$random[length(tmp$random)]) )\r\n";
 								forecast_extension += "		{\r\n";
-								forecast_extension += "			tmp$trend[i] = tmp$trend[id]\r\n";
+								forecast_extension += "			id=-1\r\n";
+								forecast_extension += "			for ( i in length(tmp$random):1)\r\n";
+								forecast_extension += "			{\r\n";
+								forecast_extension += "				if ( !is.na(tmp$random[i]) )\r\n";
+								forecast_extension += "				{\r\n";
+								forecast_extension += "					id = i\r\n";
+								forecast_extension += "		 			break\r\n";
+								forecast_extension += "				}\r\n";
+								forecast_extension += "			}\r\n";
+								forecast_extension += "			if ( id >= 1 )\r\n";
+								forecast_extension += "			{\r\n";
+								forecast_extension += "				for ( i in length(tmp$random):id)\r\n";
+								forecast_extension += "				{\r\n";
+								forecast_extension += "					tmp$random[i] = tmp$random[id]\r\n";
+								forecast_extension += "				}\r\n";
+								forecast_extension += "			}\r\n";
 								forecast_extension += "		}\r\n";
-								forecast_extension += "	}\r\n";
-								forecast_extension += "}\r\n";
-								forecast_extension += "plot(tmp$trend)\r\n";
-								forecast_extension += "if ( is.na(tmp$random[1]) )\r\n";
-								forecast_extension += "{\r\n";
-								forecast_extension += "	id=-1\r\n";
-								forecast_extension += "	for ( i in 1:length(tmp$random))\r\n";
-								forecast_extension += "	{\r\n";
-								forecast_extension += "		if ( !is.na(tmp$random[i]) )\r\n";
-								forecast_extension += "		{\r\n";
-								forecast_extension += "			id = i\r\n";
-								forecast_extension += "		 	break\r\n";
-								forecast_extension += "		}\r\n";
-								forecast_extension += "	}\r\n";
-								forecast_extension += "	if ( id >= 1 )\r\n";
-								forecast_extension += "	{\r\n";
-								forecast_extension += "		for ( i in 1:id)\r\n";
-								forecast_extension += "		{\r\n";
-								forecast_extension += "			tmp$random[i] = tmp$random[id]\r\n";
-								forecast_extension += "		}\r\n";
-								forecast_extension += "	}\r\n";
-								forecast_extension += "}\r\n";
-								forecast_extension += "if ( is.na(tmp$random[length(tmp$random)]) )\r\n";
-								forecast_extension += "{\r\n";
-								forecast_extension += "	id=-1\r\n";
-								forecast_extension += "	for ( i in length(tmp$random):1)\r\n";
-								forecast_extension += "	{\r\n";
-								forecast_extension += "		if ( !is.na(tmp$random[i]) )\r\n";
-								forecast_extension += "		{\r\n";
-								forecast_extension += "			id = i\r\n";
-								forecast_extension += "		 	break\r\n";
-								forecast_extension += "		}\r\n";
-								forecast_extension += "	}\r\n";
-								forecast_extension += "	if ( id >= 1 )\r\n";
-								forecast_extension += "	{\r\n";
-								forecast_extension += "		for ( i in length(tmp$random):id)\r\n";
-								forecast_extension += "		{\r\n";
-								forecast_extension += "			tmp$random[i] = tmp$random[id]\r\n";
-								forecast_extension += "		}\r\n";
-								forecast_extension += "	}\r\n";
-								forecast_extension += "}\r\n";
 								
 						        forecast_extension += "\r\n";
 								forecast_extension += "            tmp$seasonal[is.na(tmp$seasonal)] <- 0\r\n";
@@ -8564,6 +8595,12 @@ forecast_extension += "	    }\r\n";
                 if (xgb_ts_prm_.checkBox6.Checked) sw.Write("true\r\n");
                 else sw.Write("false\r\n");
                 sw.Write("sin_cos4_freqency,"); sw.Write(xgb_ts_prm_.numericUpDown12.Value.ToString() + "\r\n");
+
+                sw.Write("importance_var,");sw.Write(importance_var.Items.Count);
+                for (int k = 0; k < importance_var.Items.Count; k++)
+                {
+                    sw.Write(importance_var.Items[k].ToString()+"\r\n");
+                }
                 sw.Close();
             }
         }
@@ -9381,6 +9418,18 @@ forecast_extension += "	    }\r\n";
                             xgb_ts_prm_.checkBox6.Checked = false;
                         }
                     }
+                    if (ss[0].IndexOf("importance_var") >= 0)
+                    {
+                        int items_num = int.Parse(ss[1].Replace("\r\n", ""));
+                        importance_var.Items.Clear();
+
+                        for (int k = 0; k < items_num; k++)
+                        {
+                            importance_var.Items.Add(sr.ReadLine().Replace("\r\n", ""));
+                        }
+                    }
+
+
                     continue;
                 }
                 sr.Close();
@@ -11443,6 +11492,12 @@ forecast_extension += "	    }\r\n";
         private void checkBox10_CheckedChanged_1(object sender, EventArgs e)
         {
             xgb_ts_prm_.checkBox2.Checked = checkBox10.Checked;
+        }
+
+        private void checkBox9_CheckStateChanged_2(object sender, EventArgs e)
+        {
+            if (checkBox9.Checked) use_decompose = 1;
+            else use_decompose = 0;
         }
     }
 
