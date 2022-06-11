@@ -79,6 +79,7 @@ namespace WindowsFormsApplication1
 
         public int lag = 0;
         public int start_lag = 0;
+        int expanding_means = 10;
         int means_3n = 3;
         int means_6n = 6;
         int means_12n = 12;
@@ -1224,7 +1225,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "}\r\n";
                     }
                     */
-                    
+                    /*
                     if ( lag >= means_6n)
                     {
                         cmd1 += "df_ts_tmp$'mean6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -1253,6 +1254,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'quantile6.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
+                    */
                     if ( lag >= means_12n)
                     {
                         cmd1 += "df_ts_tmp$'mean12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -1538,7 +1540,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "}\r\n";
                     }
                     
-                    if ( lag >= 10)
+                    if ( lag >= expanding_means)
                     {
                         cmd1 += "df_ts_tmp$'expanding_mean_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'expanding_sd_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -2583,7 +2585,7 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("expanding_quantile.75_" + targetName);
                     }
                     */
-                    if (lag >= 10)
+                    if (lag >= expanding_means)
                     {
                     	formuler += "\r\n+" +importance_varChk("expanding_mean_" + targetName);
                     	formuler += "+" +importance_varChk("expanding_sd_" + targetName);
@@ -2602,7 +2604,8 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("expanding_quantile.25_" + targetName);
 	                    //var_ts.Items.Add("expanding_quantile.50_" + targetName);
 	                    var_ts.Items.Add("expanding_quantile.75_" + targetName);
-                    }                    
+                    }
+                    /*                    
                     if (lag >= means_6n)
                     {
                     	formuler += "\r\n+" +importance_varChk("mean6_" + targetName);
@@ -2623,6 +2626,7 @@ namespace WindowsFormsApplication1
                         //var_ts.Items.Add("quantile6.50_" + targetName);
                         var_ts.Items.Add("quantile6.75_" + targetName);
                     }
+                    */
                     if (lag >= means_12n)
                     {
                     	formuler += "\r\n+" +importance_varChk("mean12_" + targetName);
@@ -5896,7 +5900,7 @@ namespace WindowsFormsApplication1
 
                             }
                             */
-                            if (lag >= 10)
+                            if (lag >= expanding_means)
 							{
                                 forecast_extension += "        test$'expanding_mean_" + targetName + "'" +
                                "[length(test$target_)]<- mean(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
@@ -5922,6 +5926,7 @@ namespace WindowsFormsApplication1
 
                             }
                             
+                            /*
                             if (lag >= means_6n)
                             {
                                 forecast_extension += "        test$'mean6_" + targetName + "'" +
@@ -5946,6 +5951,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        test$'quantile6.75_" + targetName + "'" +
                                "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
                             }
+                            */
                             if (lag >= means_12n)
                             {
                                 forecast_extension += "        test$'mean12_" + targetName + "'" +
@@ -8445,6 +8451,8 @@ forecast_extension += "	    }\r\n";
                 sw.Write("alpha,"); sw.Write(textBox5.Text + "\r\n");
                 sw.Write("lambda,"); sw.Write(textBox6.Text + "\r\n");
                 sw.Write("num_class,"); sw.Write(numericUpDown7.Value.ToString() + "\r\n");
+                sw.Write("prior_importance,"); sw.Write(numericUpDown9.Value.ToString() + "\r\n");
+                sw.Write("tree_method,"); sw.Write(comboBox5.Text + "\r\n");
 
                 sw.Write("transform,"); sw.Write(numericUpDown16.Value.ToString() + "\r\n");
                 sw.Write("ndiff,"); sw.Write(numericUpDown17.Value.ToString() + "\r\n");
@@ -8874,6 +8882,11 @@ forecast_extension += "	    }\r\n";
                         comboBox5.Text = ss[1].Replace("\r\n", "");
                         continue;
                     }
+                    if (ss[0].IndexOf("tree_method") >= 0)
+                    {
+                        comboBox5.Text = ss[1].Replace("\r\n", "");
+                        continue;
+                    }
                     if (ss[0].IndexOf("objective") >= 0)
                     {
                         comboBox2.Text = ss[1].Replace("\r\n", "");
@@ -8932,6 +8945,11 @@ forecast_extension += "	    }\r\n";
                     if (ss[0].IndexOf("num_class") >= 0)
                     {
                         numericUpDown7.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("prior_importance") >= 0)
+                    {
+                        numericUpDown9.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
                     if (ss[0].IndexOf("transform") >= 0)
@@ -9418,15 +9436,20 @@ forecast_extension += "	    }\r\n";
                             xgb_ts_prm_.checkBox6.Checked = false;
                         }
                     }
-                    if (ss[0].IndexOf("importance_var") >= 0)
+                    if (ss[0].IndexOf("importance_var") >= 0 && importance_var != null)
                     {
                         int items_num = int.Parse(ss[1].Replace("\r\n", ""));
                         importance_var.Items.Clear();
 
-                        for (int k = 0; k < items_num; k++)
-                        {
-                            importance_var.Items.Add(sr.ReadLine().Replace("\r\n", ""));
-                        }
+						if ( items_num == 0 ) continue;
+						try
+						{
+	                        for (int k = 0; k < items_num; k++)
+	                        {
+	                            importance_var.Items.Add(sr.ReadLine().Replace("\r\n", ""));
+	                        }
+	                     }catch
+	                     {}
                     }
 
 
@@ -10918,10 +10941,16 @@ forecast_extension += "	    }\r\n";
 
         private void button27_Click(object sender, EventArgs e)
         {
-            load_param("xgboost_param_");
-            if (System.IO.File.Exists("xgboost_param_" + targetName + ".options"))
+            try
             {
-                load_param("xgboost_param_" + targetName);
+                load_param("xgboost_param_");
+                if (System.IO.File.Exists("xgboost_param_" + targetName + ".options"))
+                {
+                    load_param("xgboost_param_" + targetName);
+                }
+            }catch
+            {
+
             }
         }
 
