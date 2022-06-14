@@ -1225,7 +1225,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "}\r\n";
                     }
                     */
-                    /*
+                    
                     if ( lag >= means_6n)
                     {
                         cmd1 += "df_ts_tmp$'mean6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -1254,7 +1254,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'quantile6.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
-                    */
+                    
                     if ( lag >= means_12n)
                     {
                         cmd1 += "df_ts_tmp$'mean12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -2605,7 +2605,7 @@ namespace WindowsFormsApplication1
 	                    //var_ts.Items.Add("expanding_quantile.50_" + targetName);
 	                    var_ts.Items.Add("expanding_quantile.75_" + targetName);
                     }
-                    /*                    
+                                        
                     if (lag >= means_6n)
                     {
                     	formuler += "\r\n+" +importance_varChk("mean6_" + targetName);
@@ -2626,7 +2626,7 @@ namespace WindowsFormsApplication1
                         //var_ts.Items.Add("quantile6.50_" + targetName);
                         var_ts.Items.Add("quantile6.75_" + targetName);
                     }
-                    */
+                    
                     if (lag >= means_12n)
                     {
                     	formuler += "\r\n+" +importance_varChk("mean12_" + targetName);
@@ -5926,7 +5926,7 @@ namespace WindowsFormsApplication1
 
                             }
                             
-                            /*
+                            
                             if (lag >= means_6n)
                             {
                                 forecast_extension += "        test$'mean6_" + targetName + "'" +
@@ -5951,7 +5951,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        test$'quantile6.75_" + targetName + "'" +
                                "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
                             }
-                            */
+                            
                             if (lag >= means_12n)
                             {
                                 forecast_extension += "        test$'mean12_" + targetName + "'" +
@@ -8609,7 +8609,7 @@ forecast_extension += "	    }\r\n";
                 {
                     sw.Write(importance_var.Items[k].ToString()+"\r\n");
                 }
-                sw.Close();
+                if (sw != null ) sw.Close();
             }
         }
         private void button4_Click(object sender, EventArgs e)
@@ -9450,12 +9450,17 @@ forecast_extension += "	    }\r\n";
 	                        }
 	                     }catch
 	                     {}
+                        finally
+                        {
+                            if (sr != null) sr.Close();
+                            sr = null;
+                        }
                     }
 
 
                     continue;
                 }
-                sr.Close();
+                if (sr != null) sr.Close();
             }
         }
 
@@ -11527,6 +11532,29 @@ forecast_extension += "	    }\r\n";
         {
             if (checkBox9.Checked) use_decompose = 1;
             else use_decompose = 0;
+        }
+
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ( comboBox5.Text == "'gpu_hist'")
+            {
+                checkBox3.Checked = true;
+            }else
+            {
+                checkBox3.Checked = false;
+            }
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox3.Checked)
+            {
+                comboBox5.Text = "'gpu_hist'";
+            }
+            else
+            {
+                comboBox5.Text = "'hist'";
+            }
         }
     }
 

@@ -324,6 +324,7 @@
             this.comboBox5.Size = new System.Drawing.Size(113, 23);
             this.comboBox5.TabIndex = 162;
             this.comboBox5.Text = "\"auto\"";
+            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
             // 
             // label31
             // 
@@ -862,6 +863,7 @@
             this.checkBox3.Text = "GPU";
             this.toolTip1.SetToolTip(this.checkBox3, "GPUを使って計算速度を加速出来ます");
             this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
             // numericUpDown11
             // 
@@ -960,7 +962,6 @@
             this.button14.Size = new System.Drawing.Size(64, 22);
             this.button14.TabIndex = 117;
             this.button14.Text = "重要度";
-            this.toolTip1.SetToolTip(this.button14, "最重要な変数を重要度の高い順に選択\r\n0に設定すると全ての変数を使います。\r\n※一度はtrainモードで計算しておく必要があります。");
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
@@ -976,6 +977,11 @@
             this.numericUpDown9.Name = "numericUpDown9";
             this.numericUpDown9.Size = new System.Drawing.Size(64, 22);
             this.numericUpDown9.TabIndex = 116;
+            this.numericUpDown9.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
             // 
             // label22
             // 
