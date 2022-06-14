@@ -4243,10 +4243,10 @@ namespace WindowsFormsApplication1
 		                if ( checkBox3.Checked && comboBox5.Text == "'gpu_hist'")
 		                {
 		                    xgboost_gridsearch += "		#,n_gpus =" + numericUpDown11.Value.ToString() + "\r\n";
-		               		xgboost_gridsearch += "		,single_precision_histogram = T\r\n";
-		               		xgboost_gridsearch += "		,gpu_id = 0\r\n";
-		               		xgboost_gridsearch += "		,tree_method = 'gpu_hist'\r\n";
-		                	xgboost_gridsearch += "		,predictor='gpu_predictor'\r\n";
+		               		xgboost_gridsearch += "		#,single_precision_histogram = T\r\n";
+		               		xgboost_gridsearch += "		#,gpu_id = 0\r\n";
+		               		xgboost_gridsearch += "		#,tree_method = 'gpu_hist'\r\n";
+		                	xgboost_gridsearch += "		#,predictor='gpu_predictor'\r\n";
 		                }else
 		                if ( comboBox5.Text == "'hist'" || comboBox5.Text == "'gpu_hist'")
 		                {
