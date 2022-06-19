@@ -477,5 +477,21 @@ namespace WindowsFormsApplication1
         {
 
         }
+
+        private void checkBox7_CheckedChanged(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists("stopping_predict"))
+            {
+                System.IO.File.Delete("stopping_predict");
+            }
+            if (!System.IO.File.Exists("stopping_predict"))
+            {
+                using (System.IO.FileStream fs = System.IO.File.Create("stopping_predict"))
+                {
+                }
+            }
+            xgb_.timer3.Enabled = false;
+            xgb_.timer3.Stop();
+        }
     }
 }

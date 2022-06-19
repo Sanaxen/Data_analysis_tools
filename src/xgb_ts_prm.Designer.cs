@@ -131,6 +131,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown19)).BeginInit();
@@ -185,11 +186,9 @@
             this.groupBox2.Controls.Add(this.checkBox9);
             this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox2.Location = new System.Drawing.Point(13, 12);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Location = new System.Drawing.Point(10, 10);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(339, 158);
+            this.groupBox2.Size = new System.Drawing.Size(254, 126);
             this.groupBox2.TabIndex = 161;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "トレンド";
@@ -200,10 +199,10 @@
             this.comboBox7.Items.AddRange(new object[] {
             "multiplicative",
             "additive"});
-            this.comboBox7.Location = new System.Drawing.Point(195, 25);
-            this.comboBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox7.Location = new System.Drawing.Point(146, 20);
+            this.comboBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(116, 23);
+            this.comboBox7.Size = new System.Drawing.Size(88, 20);
             this.comboBox7.TabIndex = 177;
             this.comboBox7.Text = "multiplicative";
             this.toolTip1.SetToolTip(this.comboBox7, "Additive:  = Trend + Seasonal + Random\r\nMultiplicative:  = Trend * Seasonal * Ran" +
@@ -214,9 +213,10 @@
             // 
             this.linkLabel5.AutoSize = true;
             this.linkLabel5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.linkLabel5.Location = new System.Drawing.Point(140, 30);
+            this.linkLabel5.Location = new System.Drawing.Point(105, 24);
+            this.linkLabel5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.linkLabel5.Name = "linkLabel5";
-            this.linkLabel5.Size = new System.Drawing.Size(48, 15);
+            this.linkLabel5.Size = new System.Drawing.Size(40, 12);
             this.linkLabel5.TabIndex = 173;
             this.linkLabel5.TabStop = true;
             this.linkLabel5.Text = "image";
@@ -226,10 +226,10 @@
             // button23
             // 
             this.button23.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button23.Location = new System.Drawing.Point(116, 24);
-            this.button23.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button23.Location = new System.Drawing.Point(87, 19);
+            this.button23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(19, 20);
+            this.button23.Size = new System.Drawing.Size(14, 16);
             this.button23.TabIndex = 172;
             this.button23.Text = "image";
             this.toolTip1.SetToolTip(this.button23, "トレンド成分の推定結果");
@@ -241,10 +241,10 @@
             this.checkBox17.AutoSize = true;
             this.checkBox17.Checked = true;
             this.checkBox17.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox17.Location = new System.Drawing.Point(173, 90);
-            this.checkBox17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox17.Location = new System.Drawing.Point(130, 72);
+            this.checkBox17.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox17.Name = "checkBox17";
-            this.checkBox17.Size = new System.Drawing.Size(53, 19);
+            this.checkBox17.Size = new System.Drawing.Size(44, 16);
             this.checkBox17.TabIndex = 162;
             this.checkBox17.Text = "fast";
             this.toolTip1.SetToolTip(this.checkBox17, "SARIMAでパラメータ推定を簡素化する");
@@ -253,9 +253,10 @@
             // label42
             // 
             this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(261, 70);
+            this.label42.Location = new System.Drawing.Point(196, 56);
+            this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(44, 15);
+            this.label42.Size = new System.Drawing.Size(36, 12);
             this.label42.TabIndex = 164;
             this.label42.Text = "rolling";
             // 
@@ -265,11 +266,11 @@
             this.groupBox3.Controls.Add(this.radioButton6);
             this.groupBox3.Controls.Add(this.radioButton5);
             this.groupBox3.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox3.Location = new System.Drawing.Point(3, 71);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox3.Location = new System.Drawing.Point(2, 57);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox3.Size = new System.Drawing.Size(157, 68);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Size = new System.Drawing.Size(118, 54);
             this.groupBox3.TabIndex = 161;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "推定方法";
@@ -278,10 +279,10 @@
             // 
             this.radioButton7.AutoSize = true;
             this.radioButton7.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.radioButton7.Location = new System.Drawing.Point(88, 42);
-            this.radioButton7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.radioButton7.Location = new System.Drawing.Point(66, 34);
+            this.radioButton7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(59, 18);
+            this.radioButton7.Size = new System.Drawing.Size(47, 15);
             this.radioButton7.TabIndex = 174;
             this.radioButton7.TabStop = true;
             this.radioButton7.Text = "naive";
@@ -291,10 +292,10 @@
             // 
             this.radioButton6.AutoSize = true;
             this.radioButton6.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.radioButton6.Location = new System.Drawing.Point(9, 42);
-            this.radioButton6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.radioButton6.Location = new System.Drawing.Point(7, 34);
+            this.radioButton6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(73, 18);
+            this.radioButton6.Size = new System.Drawing.Size(59, 15);
             this.radioButton6.TabIndex = 1;
             this.radioButton6.TabStop = true;
             this.radioButton6.Text = "prophet";
@@ -305,10 +306,10 @@
             this.radioButton5.AutoSize = true;
             this.radioButton5.Checked = true;
             this.radioButton5.Font = new System.Drawing.Font("MS UI Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.radioButton5.Location = new System.Drawing.Point(8, 21);
-            this.radioButton5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.radioButton5.Location = new System.Drawing.Point(6, 17);
+            this.radioButton5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(76, 18);
+            this.radioButton5.Size = new System.Drawing.Size(62, 15);
             this.radioButton5.TabIndex = 0;
             this.radioButton5.TabStop = true;
             this.radioButton5.Text = "SARIMA";
@@ -321,8 +322,8 @@
             0,
             0,
             0});
-            this.numericUpDown19.Location = new System.Drawing.Point(237, 88);
-            this.numericUpDown19.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown19.Location = new System.Drawing.Point(178, 70);
+            this.numericUpDown19.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown19.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -334,7 +335,7 @@
             0,
             0});
             this.numericUpDown19.Name = "numericUpDown19";
-            this.numericUpDown19.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown19.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown19.TabIndex = 163;
             this.numericUpDown19.Value = new decimal(new int[] {
             60,
@@ -347,10 +348,10 @@
             this.checkBox15.AutoSize = true;
             this.checkBox15.Checked = true;
             this.checkBox15.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox15.Location = new System.Drawing.Point(5, 49);
-            this.checkBox15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox15.Location = new System.Drawing.Point(4, 39);
+            this.checkBox15.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox15.Name = "checkBox15";
-            this.checkBox15.Size = new System.Drawing.Size(103, 19);
+            this.checkBox15.Size = new System.Drawing.Size(83, 16);
             this.checkBox15.TabIndex = 160;
             this.checkBox15.Text = "トレンド推定";
             this.checkBox15.UseVisualStyleBackColor = true;
@@ -361,10 +362,10 @@
             this.checkBox9.AutoSize = true;
             this.checkBox9.Checked = true;
             this.checkBox9.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox9.Location = new System.Drawing.Point(5, 25);
-            this.checkBox9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox9.Location = new System.Drawing.Point(4, 20);
+            this.checkBox9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(103, 19);
+            this.checkBox9.Size = new System.Drawing.Size(83, 16);
             this.checkBox9.TabIndex = 158;
             this.checkBox9.Text = "トレンド分離";
             this.checkBox9.UseVisualStyleBackColor = true;
@@ -373,10 +374,10 @@
             // checkBox29
             // 
             this.checkBox29.AutoSize = true;
-            this.checkBox29.Location = new System.Drawing.Point(27, 131);
-            this.checkBox29.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox29.Location = new System.Drawing.Point(20, 105);
+            this.checkBox29.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox29.Name = "checkBox29";
-            this.checkBox29.Size = new System.Drawing.Size(99, 19);
+            this.checkBox29.Size = new System.Drawing.Size(81, 16);
             this.checkBox29.TabIndex = 184;
             this.checkBox29.Text = "Regression";
             this.toolTip1.SetToolTip(this.checkBox29, "ONにした場合Dynamic harmonic regressionがONの時に有効になります");
@@ -385,15 +386,15 @@
             // 
             // numericUpDown21
             // 
-            this.numericUpDown21.Location = new System.Drawing.Point(11, 54);
-            this.numericUpDown21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown21.Location = new System.Drawing.Point(8, 43);
+            this.numericUpDown21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown21.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.numericUpDown21.Name = "numericUpDown21";
-            this.numericUpDown21.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown21.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown21.TabIndex = 175;
             this.numericUpDown21.Value = new decimal(new int[] {
             24,
@@ -407,9 +408,10 @@
             this.label45.AutoSize = true;
             this.label45.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label45.ForeColor = System.Drawing.Color.Black;
-            this.label45.Location = new System.Drawing.Point(93, 61);
+            this.label45.Location = new System.Drawing.Point(70, 49);
+            this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(124, 15);
+            this.label45.Size = new System.Drawing.Size(100, 12);
             this.label45.TabIndex = 176;
             this.label45.Text = "trend frequency";
             this.toolTip1.SetToolTip(this.label45, "トレンド成分のfrequencyを指定できます。\r\n０：自動計算\r\n１：考慮しない\r\n２以上：指定の値をトレンド成分のfrequencyに設定します。\r\n");
@@ -417,10 +419,9 @@
             // button25
             // 
             this.button25.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button25.Location = new System.Drawing.Point(185, 30);
-            this.button25.Margin = new System.Windows.Forms.Padding(4);
+            this.button25.Location = new System.Drawing.Point(139, 24);
             this.button25.Name = "button25";
-            this.button25.Size = new System.Drawing.Size(49, 28);
+            this.button25.Size = new System.Drawing.Size(37, 22);
             this.button25.TabIndex = 174;
             this.button25.Text = "auto";
             this.toolTip1.SetToolTip(this.button25, "支配的な周期を推定します\r\n");
@@ -429,10 +430,10 @@
             // 
             // button21
             // 
-            this.button21.Location = new System.Drawing.Point(203, 156);
-            this.button21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button21.Location = new System.Drawing.Point(152, 125);
+            this.button21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(73, 22);
+            this.button21.Size = new System.Drawing.Size(55, 18);
             this.button21.TabIndex = 171;
             this.button21.Text = "show decompose2";
             this.toolTip1.SetToolTip(this.button21, "トレンド、周期、ノイズへの分解結果");
@@ -441,10 +442,10 @@
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(56, 156);
-            this.button20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button20.Location = new System.Drawing.Point(42, 125);
+            this.button20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(137, 22);
+            this.button20.Size = new System.Drawing.Size(103, 18);
             this.button20.TabIndex = 152;
             this.button20.Text = "show decompose";
             this.toolTip1.SetToolTip(this.button20, "トレンドと周期、周期影響除去");
@@ -455,9 +456,10 @@
             // 
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.linkLabel3.Location = new System.Drawing.Point(5, 161);
+            this.linkLabel3.Location = new System.Drawing.Point(4, 129);
+            this.linkLabel3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(48, 15);
+            this.linkLabel3.Size = new System.Drawing.Size(40, 12);
             this.linkLabel3.TabIndex = 153;
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Text = "image";
@@ -471,15 +473,15 @@
             0,
             0,
             0});
-            this.numericUpDown14.Location = new System.Drawing.Point(11, 26);
-            this.numericUpDown14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown14.Location = new System.Drawing.Point(8, 21);
+            this.numericUpDown14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown14.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.numericUpDown14.Name = "numericUpDown14";
-            this.numericUpDown14.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown14.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown14.TabIndex = 139;
             this.numericUpDown14.Value = new decimal(new int[] {
             12,
@@ -493,10 +495,10 @@
             this.checkBox10.AutoSize = true;
             this.checkBox10.Checked = true;
             this.checkBox10.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox10.Location = new System.Drawing.Point(5, 92);
-            this.checkBox10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox10.Location = new System.Drawing.Point(4, 74);
+            this.checkBox10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(154, 19);
+            this.checkBox10.Size = new System.Drawing.Size(125, 16);
             this.checkBox10.TabIndex = 159;
             this.checkBox10.Text = "周期(seasonal)分離";
             this.checkBox10.UseVisualStyleBackColor = true;
@@ -507,9 +509,10 @@
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label32.ForeColor = System.Drawing.Color.Black;
-            this.label32.Location = new System.Drawing.Point(93, 32);
+            this.label32.Location = new System.Drawing.Point(70, 26);
+            this.label32.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(80, 15);
+            this.label32.Size = new System.Drawing.Size(64, 12);
             this.label32.TabIndex = 140;
             this.label32.Text = "frequency";
             // 
@@ -518,10 +521,10 @@
             this.checkBox14.AutoSize = true;
             this.checkBox14.Checked = true;
             this.checkBox14.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox14.Location = new System.Drawing.Point(5, 114);
-            this.checkBox14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox14.Location = new System.Drawing.Point(4, 91);
+            this.checkBox14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox14.Name = "checkBox14";
-            this.checkBox14.Size = new System.Drawing.Size(217, 19);
+            this.checkBox14.Size = new System.Drawing.Size(175, 16);
             this.checkBox14.TabIndex = 152;
             this.checkBox14.Text = "Dynamic harmonic regression";
             this.toolTip1.SetToolTip(this.checkBox14, "季節的な期間が長い場合、フーリエ項を使用した動的回帰は、この本で検討した他のモデルよりも優れていることがよくあります");
@@ -540,19 +543,19 @@
             // 
             this.label46.AutoSize = true;
             this.label46.ForeColor = System.Drawing.Color.Black;
-            this.label46.Location = new System.Drawing.Point(5, 44);
+            this.label46.Location = new System.Drawing.Point(4, 35);
+            this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(79, 15);
+            this.label46.Size = new System.Drawing.Size(63, 12);
             this.label46.TabIndex = 201;
             this.label46.Text = "訓練step数";
             this.toolTip1.SetToolTip(this.label46, "数値を指定することで強制的に\r\nデータフレームの先頭から何行分を訓練データにするか指定する事が出来ます。");
             // 
             // button24
             // 
-            this.button24.Location = new System.Drawing.Point(267, 44);
-            this.button24.Margin = new System.Windows.Forms.Padding(4);
+            this.button24.Location = new System.Drawing.Point(200, 35);
             this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(51, 22);
+            this.button24.Size = new System.Drawing.Size(38, 18);
             this.button24.TabIndex = 199;
             this.button24.Text = "auto";
             this.toolTip1.SetToolTip(this.button24, "最低限参照すべき連続した過去のデータ数を指定します。");
@@ -565,10 +568,10 @@
             this.checkBox18.Checked = true;
             this.checkBox18.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox18.Font = new System.Drawing.Font("MS UI Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.checkBox18.Location = new System.Drawing.Point(235, 129);
-            this.checkBox18.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox18.Location = new System.Drawing.Point(176, 103);
+            this.checkBox18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox18.Name = "checkBox18";
-            this.checkBox18.Size = new System.Drawing.Size(113, 18);
+            this.checkBox18.Size = new System.Drawing.Size(90, 15);
             this.checkBox18.TabIndex = 197;
             this.checkBox18.Text = "月日時連続化";
             this.toolTip1.SetToolTip(this.checkBox18, "時間的な変化に連続になるように調整します。\r\n例えば月単位のデータの場合１月、２月、、、１２月で次が１月になるため数値変化が極端になります。\r\nこの影響を除くため" +
@@ -578,9 +581,10 @@
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(196, 28);
+            this.label40.Location = new System.Drawing.Point(147, 22);
+            this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(41, 15);
+            this.label40.Size = new System.Drawing.Size(32, 12);
             this.label40.TabIndex = 196;
             this.label40.Text = "lower";
             this.toolTip1.SetToolTip(this.label40, "下限値");
@@ -588,9 +592,10 @@
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(75, 25);
+            this.label39.Location = new System.Drawing.Point(56, 20);
+            this.label39.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(42, 15);
+            this.label39.Size = new System.Drawing.Size(33, 12);
             this.label39.TabIndex = 195;
             this.label39.Text = "upper";
             this.toolTip1.SetToolTip(this.label39, "上限値");
@@ -598,10 +603,10 @@
             // checkBox16
             // 
             this.checkBox16.AutoSize = true;
-            this.checkBox16.Location = new System.Drawing.Point(11, 24);
-            this.checkBox16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox16.Location = new System.Drawing.Point(8, 19);
+            this.checkBox16.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox16.Name = "checkBox16";
-            this.checkBox16.Size = new System.Drawing.Size(59, 19);
+            this.checkBox16.Size = new System.Drawing.Size(48, 16);
             this.checkBox16.TabIndex = 192;
             this.checkBox16.Text = "制約";
             this.toolTip1.SetToolTip(this.checkBox16, "予測値の飽和を指定できます。\r\n売り上げ等の予測値が右肩上がりの場合予測を伸ばすごとに増加して行きますが実際には上限があります、\r\nこのような上限、下限を指定でき" +
@@ -612,9 +617,10 @@
             // 
             this.label23.AutoSize = true;
             this.label23.ForeColor = System.Drawing.Color.Black;
-            this.label23.Location = new System.Drawing.Point(153, 18);
+            this.label23.Location = new System.Drawing.Point(115, 14);
+            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(82, 15);
+            this.label23.Size = new System.Drawing.Size(65, 12);
             this.label23.TabIndex = 185;
             this.label23.Text = "参照過去数";
             this.toolTip1.SetToolTip(this.label23, "何時点分過去データを参照するかを指定します");
@@ -623,9 +629,10 @@
             // 
             this.label33.AutoSize = true;
             this.label33.ForeColor = System.Drawing.Color.Black;
-            this.label33.Location = new System.Drawing.Point(5, 18);
+            this.label33.Location = new System.Drawing.Point(4, 14);
+            this.label33.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(67, 15);
+            this.label33.Size = new System.Drawing.Size(53, 12);
             this.label33.TabIndex = 191;
             this.label33.Text = "参照過去";
             this.toolTip1.SetToolTip(this.label33, "何時点過去からのデータを参照するかを指定します。\r\n１時点過去を参照する場合は１時点過去のデータは真の予測値に近い事が多いため\r\n１時点過去を予測値する方がMSE" +
@@ -640,10 +647,10 @@
             "AutoRegression",
             "auto.arima",
             "不確実"});
-            this.comboBox5.Location = new System.Drawing.Point(77, 98);
-            this.comboBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox5.Location = new System.Drawing.Point(58, 78);
+            this.comboBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(116, 23);
+            this.comboBox5.Size = new System.Drawing.Size(88, 20);
             this.comboBox5.TabIndex = 186;
             this.comboBox5.Text = "復元抽出";
             this.toolTip1.SetToolTip(this.comboBox5, "予測延長する場合、説明変数が未設定となるため指定の方法で推定する");
@@ -652,9 +659,10 @@
             // 
             this.label30.AutoSize = true;
             this.label30.ForeColor = System.Drawing.Color.Black;
-            this.label30.Location = new System.Drawing.Point(3, 101);
+            this.label30.Location = new System.Drawing.Point(2, 81);
+            this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(67, 15);
+            this.label30.Size = new System.Drawing.Size(53, 12);
             this.label30.TabIndex = 187;
             this.label30.Text = "説明変数";
             this.toolTip1.SetToolTip(this.label30, "予測を延長した場合、\r\n自動的に決まらない未来の説明変数を指定の方法で推定して穴埋めをします\r\n");
@@ -666,15 +674,15 @@
             0,
             0,
             0});
-            this.numericUpDown5.Location = new System.Drawing.Point(83, 111);
-            this.numericUpDown5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown5.Location = new System.Drawing.Point(62, 89);
+            this.numericUpDown5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown5.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
             this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown5.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown5.TabIndex = 188;
             this.toolTip1.SetToolTip(this.numericUpDown5, "testデータの終端からさらに先を指定ステップ数分予測");
             // 
@@ -682,9 +690,10 @@
             // 
             this.label31.AutoSize = true;
             this.label31.ForeColor = System.Drawing.Color.Black;
-            this.label31.Location = new System.Drawing.Point(11, 112);
+            this.label31.Location = new System.Drawing.Point(8, 90);
+            this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(67, 15);
+            this.label31.Size = new System.Drawing.Size(53, 12);
             this.label31.TabIndex = 189;
             this.label31.Text = "予測延長";
             this.toolTip1.SetToolTip(this.label31, "予測に使うデータのさらに未来を何時点まで予測するかを指定します");
@@ -697,25 +706,25 @@
             this.panel8.Controls.Add(this.checkBox20);
             this.panel8.Controls.Add(this.label43);
             this.panel8.Controls.Add(this.numericUpDown20);
-            this.panel8.Location = new System.Drawing.Point(8, 50);
-            this.panel8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel8.Location = new System.Drawing.Point(6, 40);
+            this.panel8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(325, 56);
+            this.panel8.Size = new System.Drawing.Size(244, 45);
             this.panel8.TabIndex = 189;
             this.toolTip1.SetToolTip(this.panel8, "既に観測されているデータの一部を検証用としてtestデータとしますが、このtestデータに\r\n設定されている説明変数は実際の予測ではまだ未観測のデータになります。" +
         "\r\n予測性能の確認をしたい場合はそのtestデータの後半部分の説明変数を未観測として予測させる事が出来ます");
             // 
             // numericUpDown23
             // 
-            this.numericUpDown23.Location = new System.Drawing.Point(261, 31);
-            this.numericUpDown23.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown23.Location = new System.Drawing.Point(196, 25);
+            this.numericUpDown23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown23.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
             this.numericUpDown23.Name = "numericUpDown23";
-            this.numericUpDown23.Size = new System.Drawing.Size(60, 22);
+            this.numericUpDown23.Size = new System.Drawing.Size(45, 19);
             this.numericUpDown23.TabIndex = 183;
             this.toolTip1.SetToolTip(this.numericUpDown23, "testデータの終端から過去で何時点分を出力するかを指定できます。\r\n100を超えるかデータ終端からのステップ数で指定するチェックをONにすると、\r\nデータ終端か" +
         "ら指定した値のステップまでさかのぼった位置までに制限出来ます。\r\nチェックがOFFの場合はtestデータの終端から過去の指定値の割合（％）分を出力します。\r\n");
@@ -728,9 +737,10 @@
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(203, 35);
+            this.label48.Location = new System.Drawing.Point(152, 28);
+            this.label48.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(52, 15);
+            this.label48.Size = new System.Drawing.Size(41, 12);
             this.label48.TabIndex = 184;
             this.label48.Text = "出力長";
             // 
@@ -738,10 +748,10 @@
             // 
             this.checkBox20.AutoSize = true;
             this.checkBox20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.checkBox20.Location = new System.Drawing.Point(5, 34);
-            this.checkBox20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox20.Location = new System.Drawing.Point(4, 27);
+            this.checkBox20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox20.Name = "checkBox20";
-            this.checkBox20.Size = new System.Drawing.Size(187, 19);
+            this.checkBox20.Size = new System.Drawing.Size(152, 16);
             this.checkBox20.TabIndex = 175;
             this.checkBox20.Text = "データ終端から過去で指定";
             this.checkBox20.UseVisualStyleBackColor = false;
@@ -749,23 +759,24 @@
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(3, 9);
+            this.label43.Location = new System.Drawing.Point(2, 7);
+            this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(191, 15);
+            this.label43.Size = new System.Drawing.Size(154, 12);
             this.label43.TabIndex = 172;
             this.label43.Text = "観測値を含むtestデータの割合";
             // 
             // numericUpDown20
             // 
-            this.numericUpDown20.Location = new System.Drawing.Point(211, 5);
-            this.numericUpDown20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown20.Location = new System.Drawing.Point(158, 4);
+            this.numericUpDown20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown20.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
             this.numericUpDown20.Name = "numericUpDown20";
-            this.numericUpDown20.Size = new System.Drawing.Size(75, 22);
+            this.numericUpDown20.Size = new System.Drawing.Size(56, 19);
             this.numericUpDown20.TabIndex = 173;
             this.toolTip1.SetToolTip(this.numericUpDown20, "testデータのどの部分までは説明変数が設定されているかをパーセントで指定します。\r\n100を超えるかデータ終端からのステップ数で指定するチェックをONにすると、" +
         "\r\nデータ終端から指定した値のステップまでさかのぼった位置までに制限出来ます。\r\n\r\n目的変数または説明変数が設定されていない部分は予測延長処理を行います。\r\n" +
@@ -778,10 +789,10 @@
             // 
             // textBox14
             // 
-            this.textBox14.Location = new System.Drawing.Point(5, 81);
-            this.textBox14.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox14.Location = new System.Drawing.Point(4, 65);
+            this.textBox14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(91, 22);
+            this.textBox14.Size = new System.Drawing.Size(69, 19);
             this.textBox14.TabIndex = 188;
             this.textBox14.Text = "%Y\\n%m-%d";
             this.toolTip1.SetToolTip(this.textBox14, "％Y　４桁西暦\r\n％y　２桁西暦\r\n%m　２桁の月（０１～１２）\r\n%B　日本語の月（1月～12月）\r\n%d　日付（01~31）\r\n%H　時間（24時）\r\n%I　" +
@@ -814,11 +825,11 @@
             this.groupBox6.Controls.Add(this.linkLabel3);
             this.groupBox6.Controls.Add(this.button20);
             this.groupBox6.Controls.Add(this.button21);
-            this.groupBox6.Location = new System.Drawing.Point(13, 179);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox6.Location = new System.Drawing.Point(10, 143);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox6.Size = new System.Drawing.Size(339, 350);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Size = new System.Drawing.Size(254, 280);
             this.groupBox6.TabIndex = 165;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "周期性";
@@ -831,9 +842,10 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(168, 273);
+            this.label8.Location = new System.Drawing.Point(126, 218);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(39, 15);
+            this.label8.Size = new System.Drawing.Size(31, 12);
             this.label8.TabIndex = 208;
             this.label8.Text = "周期";
             // 
@@ -844,15 +856,15 @@
             0,
             0,
             0});
-            this.numericUpDown12.Location = new System.Drawing.Point(91, 270);
-            this.numericUpDown12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown12.Location = new System.Drawing.Point(68, 216);
+            this.numericUpDown12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown12.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.numericUpDown12.Name = "numericUpDown12";
-            this.numericUpDown12.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown12.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown12.TabIndex = 207;
             this.numericUpDown12.Value = new decimal(new int[] {
             60,
@@ -863,10 +875,9 @@
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(4, 273);
-            this.checkBox6.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox6.Location = new System.Drawing.Point(3, 218);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(78, 19);
+            this.checkBox6.Size = new System.Drawing.Size(63, 16);
             this.checkBox6.TabIndex = 206;
             this.checkBox6.Text = "sin/cos";
             this.toolTip1.SetToolTip(this.checkBox6, "Encoding cyclical continuous features ");
@@ -877,9 +888,10 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(168, 245);
+            this.label7.Location = new System.Drawing.Point(126, 196);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(39, 15);
+            this.label7.Size = new System.Drawing.Size(31, 12);
             this.label7.TabIndex = 205;
             this.label7.Text = "周期";
             // 
@@ -890,15 +902,15 @@
             0,
             0,
             0});
-            this.numericUpDown11.Location = new System.Drawing.Point(91, 242);
-            this.numericUpDown11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown11.Location = new System.Drawing.Point(68, 194);
+            this.numericUpDown11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown11.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.numericUpDown11.Name = "numericUpDown11";
-            this.numericUpDown11.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown11.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown11.TabIndex = 204;
             this.numericUpDown11.Value = new decimal(new int[] {
             52,
@@ -909,10 +921,9 @@
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(4, 245);
-            this.checkBox5.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox5.Location = new System.Drawing.Point(3, 196);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(78, 19);
+            this.checkBox5.Size = new System.Drawing.Size(63, 16);
             this.checkBox5.TabIndex = 203;
             this.checkBox5.Text = "sin/cos";
             this.toolTip1.SetToolTip(this.checkBox5, "Encoding cyclical continuous features ");
@@ -923,9 +934,10 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(168, 219);
+            this.label6.Location = new System.Drawing.Point(126, 175);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(39, 15);
+            this.label6.Size = new System.Drawing.Size(31, 12);
             this.label6.TabIndex = 202;
             this.label6.Text = "周期";
             // 
@@ -936,15 +948,15 @@
             0,
             0,
             0});
-            this.numericUpDown10.Location = new System.Drawing.Point(91, 216);
-            this.numericUpDown10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown10.Location = new System.Drawing.Point(68, 173);
+            this.numericUpDown10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown10.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.numericUpDown10.Name = "numericUpDown10";
-            this.numericUpDown10.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown10.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown10.TabIndex = 201;
             this.numericUpDown10.Value = new decimal(new int[] {
             24,
@@ -955,10 +967,9 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(4, 219);
-            this.checkBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox4.Location = new System.Drawing.Point(3, 175);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(78, 19);
+            this.checkBox4.Size = new System.Drawing.Size(63, 16);
             this.checkBox4.TabIndex = 200;
             this.checkBox4.Text = "sin/cos";
             this.toolTip1.SetToolTip(this.checkBox4, "Encoding cyclical continuous features ");
@@ -969,23 +980,24 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(168, 193);
+            this.label5.Location = new System.Drawing.Point(126, 154);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(39, 15);
+            this.label5.Size = new System.Drawing.Size(31, 12);
             this.label5.TabIndex = 199;
             this.label5.Text = "周期";
             // 
             // numericUpDown9
             // 
-            this.numericUpDown9.Location = new System.Drawing.Point(91, 190);
-            this.numericUpDown9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown9.Location = new System.Drawing.Point(68, 152);
+            this.numericUpDown9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown9.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.numericUpDown9.Name = "numericUpDown9";
-            this.numericUpDown9.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown9.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown9.TabIndex = 198;
             this.numericUpDown9.Value = new decimal(new int[] {
             12,
@@ -996,10 +1008,9 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(4, 193);
-            this.checkBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox3.Location = new System.Drawing.Point(3, 154);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(78, 19);
+            this.checkBox3.Size = new System.Drawing.Size(63, 16);
             this.checkBox3.TabIndex = 197;
             this.checkBox3.Text = "sin/cos";
             this.toolTip1.SetToolTip(this.checkBox3, "Encoding cyclical continuous features ");
@@ -1008,10 +1019,10 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(217, 4);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox2.Location = new System.Drawing.Point(163, 3);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(116, 19);
+            this.checkBox2.Size = new System.Drawing.Size(94, 16);
             this.checkBox2.TabIndex = 197;
             this.checkBox2.Text = "周期性の探索";
             this.checkBox2.UseVisualStyleBackColor = true;
@@ -1024,11 +1035,11 @@
             this.groupBox7.Controls.Add(this.groupBox8);
             this.groupBox7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox7.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox7.Location = new System.Drawing.Point(725, 12);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox7.Location = new System.Drawing.Point(544, 10);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox7.Size = new System.Drawing.Size(289, 616);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox7.Size = new System.Drawing.Size(217, 493);
             this.groupBox7.TabIndex = 166;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "ensemble-learning";
@@ -1040,32 +1051,32 @@
             this.groupBox9.Controls.Add(this.numericUpDown7);
             this.groupBox9.Controls.Add(this.trackBar6);
             this.groupBox9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox9.Location = new System.Drawing.Point(16, 432);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox9.Location = new System.Drawing.Point(12, 346);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox9.Size = new System.Drawing.Size(268, 85);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox9.Size = new System.Drawing.Size(201, 68);
             this.groupBox9.TabIndex = 167;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "prophet";
             // 
             // numericUpDown7
             // 
-            this.numericUpDown7.Location = new System.Drawing.Point(197, 32);
-            this.numericUpDown7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown7.Location = new System.Drawing.Point(148, 26);
+            this.numericUpDown7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown7.Size = new System.Drawing.Size(48, 19);
             this.numericUpDown7.TabIndex = 11;
             this.numericUpDown7.ValueChanged += new System.EventHandler(this.numericUpDown7_ValueChanged);
             // 
             // trackBar6
             // 
             this.trackBar6.LargeChange = 1;
-            this.trackBar6.Location = new System.Drawing.Point(7, 21);
-            this.trackBar6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.trackBar6.Location = new System.Drawing.Point(5, 17);
+            this.trackBar6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trackBar6.Maximum = 100;
             this.trackBar6.Name = "trackBar6";
-            this.trackBar6.Size = new System.Drawing.Size(187, 56);
+            this.trackBar6.Size = new System.Drawing.Size(140, 45);
             this.trackBar6.TabIndex = 5;
             this.trackBar6.Scroll += new System.EventHandler(this.trackBar6_Scroll);
             // 
@@ -1074,32 +1085,32 @@
             this.grouBox9.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.grouBox9.Controls.Add(this.numericUpDown6);
             this.grouBox9.Controls.Add(this.trackBar5);
-            this.grouBox9.Location = new System.Drawing.Point(16, 322);
-            this.grouBox9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grouBox9.Location = new System.Drawing.Point(12, 258);
+            this.grouBox9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grouBox9.Name = "grouBox9";
-            this.grouBox9.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.grouBox9.Size = new System.Drawing.Size(268, 104);
+            this.grouBox9.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grouBox9.Size = new System.Drawing.Size(201, 83);
             this.grouBox9.TabIndex = 167;
             this.grouBox9.TabStop = false;
             this.grouBox9.Text = "randomForest";
             // 
             // numericUpDown6
             // 
-            this.numericUpDown6.Location = new System.Drawing.Point(197, 44);
-            this.numericUpDown6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown6.Location = new System.Drawing.Point(148, 35);
+            this.numericUpDown6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(61, 22);
+            this.numericUpDown6.Size = new System.Drawing.Size(46, 19);
             this.numericUpDown6.TabIndex = 10;
             this.numericUpDown6.ValueChanged += new System.EventHandler(this.numericUpDown6_ValueChanged);
             // 
             // trackBar5
             // 
             this.trackBar5.LargeChange = 1;
-            this.trackBar5.Location = new System.Drawing.Point(7, 38);
-            this.trackBar5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.trackBar5.Location = new System.Drawing.Point(5, 30);
+            this.trackBar5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trackBar5.Maximum = 100;
             this.trackBar5.Name = "trackBar5";
-            this.trackBar5.Size = new System.Drawing.Size(187, 56);
+            this.trackBar5.Size = new System.Drawing.Size(140, 45);
             this.trackBar5.TabIndex = 4;
             this.trackBar5.Scroll += new System.EventHandler(this.trackBar5_Scroll);
             // 
@@ -1114,11 +1125,11 @@
             this.groupBox8.Controls.Add(this.trackBar4);
             this.groupBox8.Controls.Add(this.numericUpDown2);
             this.groupBox8.Controls.Add(this.trackBar2);
-            this.groupBox8.Location = new System.Drawing.Point(16, 21);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox8.Location = new System.Drawing.Point(12, 17);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox8.Size = new System.Drawing.Size(268, 245);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox8.Size = new System.Drawing.Size(201, 196);
             this.groupBox8.TabIndex = 167;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "xgboost";
@@ -1126,21 +1137,21 @@
             // trackBar1
             // 
             this.trackBar1.LargeChange = 1;
-            this.trackBar1.Location = new System.Drawing.Point(7, 16);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.trackBar1.Location = new System.Drawing.Point(5, 13);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trackBar1.Maximum = 100;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(187, 56);
+            this.trackBar1.Size = new System.Drawing.Size(140, 45);
             this.trackBar1.TabIndex = 0;
             this.trackBar1.Value = 100;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(197, 22);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown1.Location = new System.Drawing.Point(148, 18);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown1.Size = new System.Drawing.Size(48, 19);
             this.numericUpDown1.TabIndex = 6;
             this.numericUpDown1.Value = new decimal(new int[] {
             100,
@@ -1151,71 +1162,70 @@
             // 
             // numericUpDown4
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(197, 195);
-            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown4.Location = new System.Drawing.Point(148, 156);
+            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown4.Size = new System.Drawing.Size(48, 19);
             this.numericUpDown4.TabIndex = 9;
             this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown4_ValueChanged);
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(199, 131);
-            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown3.Location = new System.Drawing.Point(149, 105);
+            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(63, 22);
+            this.numericUpDown3.Size = new System.Drawing.Size(47, 19);
             this.numericUpDown3.TabIndex = 8;
             this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
             // 
             // trackBar3
             // 
             this.trackBar3.LargeChange = 1;
-            this.trackBar3.Location = new System.Drawing.Point(7, 131);
-            this.trackBar3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.trackBar3.Location = new System.Drawing.Point(5, 105);
+            this.trackBar3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trackBar3.Maximum = 100;
             this.trackBar3.Name = "trackBar3";
-            this.trackBar3.Size = new System.Drawing.Size(187, 56);
+            this.trackBar3.Size = new System.Drawing.Size(140, 45);
             this.trackBar3.TabIndex = 2;
             this.trackBar3.Scroll += new System.EventHandler(this.trackBar3_Scroll);
             // 
             // trackBar4
             // 
             this.trackBar4.LargeChange = 1;
-            this.trackBar4.Location = new System.Drawing.Point(7, 186);
-            this.trackBar4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.trackBar4.Location = new System.Drawing.Point(5, 149);
+            this.trackBar4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trackBar4.Maximum = 100;
             this.trackBar4.Name = "trackBar4";
-            this.trackBar4.Size = new System.Drawing.Size(187, 56);
+            this.trackBar4.Size = new System.Drawing.Size(140, 45);
             this.trackBar4.TabIndex = 3;
             this.trackBar4.Scroll += new System.EventHandler(this.trackBar4_Scroll);
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(197, 79);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown2.Location = new System.Drawing.Point(148, 63);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown2.Size = new System.Drawing.Size(48, 19);
             this.numericUpDown2.TabIndex = 7;
             this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
             // trackBar2
             // 
             this.trackBar2.LargeChange = 1;
-            this.trackBar2.Location = new System.Drawing.Point(7, 75);
-            this.trackBar2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.trackBar2.Location = new System.Drawing.Point(5, 60);
+            this.trackBar2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trackBar2.Maximum = 100;
             this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(187, 56);
+            this.trackBar2.Size = new System.Drawing.Size(140, 45);
             this.trackBar2.TabIndex = 1;
             this.trackBar2.ValueChanged += new System.EventHandler(this.trackBar2_ValueChanged);
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(8, 22);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox1.Location = new System.Drawing.Point(6, 18);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(106, 19);
+            this.checkBox1.Size = new System.Drawing.Size(88, 16);
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "gridSerach";
             this.toolTip1.SetToolTip(this.checkBox1, "探索には時間が掛かります。\r\nチェックを外すことで中止出来ます。\r\n");
@@ -1238,11 +1248,11 @@
             this.groupBox1.Controls.Add(this.comboBox5);
             this.groupBox1.Controls.Add(this.numericUpDown15);
             this.groupBox1.Controls.Add(this.label30);
-            this.groupBox1.Location = new System.Drawing.Point(361, 12);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Location = new System.Drawing.Point(271, 10);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(357, 251);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Size = new System.Drawing.Size(268, 201);
             this.groupBox1.TabIndex = 162;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "特徴量の設定";
@@ -1250,10 +1260,10 @@
             // checkBox28
             // 
             this.checkBox28.AutoSize = true;
-            this.checkBox28.Location = new System.Drawing.Point(11, 74);
-            this.checkBox28.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox28.Location = new System.Drawing.Point(8, 59);
+            this.checkBox28.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox28.Name = "checkBox28";
-            this.checkBox28.Size = new System.Drawing.Size(104, 19);
+            this.checkBox28.Size = new System.Drawing.Size(84, 16);
             this.checkBox28.TabIndex = 203;
             this.checkBox28.Text = "差分特徴量";
             this.checkBox28.UseVisualStyleBackColor = true;
@@ -1264,10 +1274,10 @@
             this.checkBox27.AutoSize = true;
             this.checkBox27.Checked = true;
             this.checkBox27.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox27.Location = new System.Drawing.Point(235, 74);
-            this.checkBox27.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox27.Location = new System.Drawing.Point(176, 59);
+            this.checkBox27.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox27.Name = "checkBox27";
-            this.checkBox27.Size = new System.Drawing.Size(86, 19);
+            this.checkBox27.Size = new System.Drawing.Size(69, 16);
             this.checkBox27.TabIndex = 202;
             this.checkBox27.Text = "ラグを使う";
             this.checkBox27.UseVisualStyleBackColor = true;
@@ -1275,15 +1285,15 @@
             // 
             // numericUpDown22
             // 
-            this.numericUpDown22.Location = new System.Drawing.Point(92, 44);
-            this.numericUpDown22.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown22.Location = new System.Drawing.Point(69, 35);
+            this.numericUpDown22.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown22.Maximum = new decimal(new int[] {
             1000000,
             0,
             0,
             0});
             this.numericUpDown22.Name = "numericUpDown22";
-            this.numericUpDown22.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown22.Size = new System.Drawing.Size(48, 19);
             this.numericUpDown22.TabIndex = 200;
             this.numericUpDown22.ValueChanged += new System.EventHandler(this.numericUpDown14_ValueChanged);
             // 
@@ -1292,10 +1302,9 @@
             this.checkBox19.AutoSize = true;
             this.checkBox19.Checked = true;
             this.checkBox19.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox19.Location = new System.Drawing.Point(11, 128);
-            this.checkBox19.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox19.Location = new System.Drawing.Point(8, 102);
             this.checkBox19.Name = "checkBox19";
-            this.checkBox19.Size = new System.Drawing.Size(201, 19);
+            this.checkBox19.Size = new System.Drawing.Size(161, 16);
             this.checkBox19.TabIndex = 198;
             this.checkBox19.Text = "設定済説明変数は利用する";
             this.checkBox19.UseVisualStyleBackColor = true;
@@ -1303,8 +1312,8 @@
             // 
             // numericUpDown8
             // 
-            this.numericUpDown8.Location = new System.Drawing.Point(244, 16);
-            this.numericUpDown8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown8.Location = new System.Drawing.Point(183, 13);
+            this.numericUpDown8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown8.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -1316,7 +1325,7 @@
             0,
             0});
             this.numericUpDown8.Name = "numericUpDown8";
-            this.numericUpDown8.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown8.Size = new System.Drawing.Size(55, 19);
             this.numericUpDown8.TabIndex = 184;
             this.numericUpDown8.Value = new decimal(new int[] {
             2,
@@ -1327,8 +1336,8 @@
             // 
             // numericUpDown15
             // 
-            this.numericUpDown15.Location = new System.Drawing.Point(77, 16);
-            this.numericUpDown15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown15.Location = new System.Drawing.Point(58, 13);
+            this.numericUpDown15.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown15.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -1340,7 +1349,7 @@
             0,
             0});
             this.numericUpDown15.Name = "numericUpDown15";
-            this.numericUpDown15.Size = new System.Drawing.Size(64, 22);
+            this.numericUpDown15.Size = new System.Drawing.Size(48, 19);
             this.numericUpDown15.TabIndex = 190;
             this.numericUpDown15.Value = new decimal(new int[] {
             1,
@@ -1351,20 +1360,20 @@
             // 
             // textBox13
             // 
-            this.textBox13.Location = new System.Drawing.Point(244, 21);
-            this.textBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox13.Location = new System.Drawing.Point(183, 17);
+            this.textBox13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(63, 22);
+            this.textBox13.Size = new System.Drawing.Size(48, 19);
             this.textBox13.TabIndex = 194;
             this.textBox13.Text = "0.0";
             this.textBox13.Validating += new System.ComponentModel.CancelEventHandler(this.textBox1_Validating);
             // 
             // textBox12
             // 
-            this.textBox12.Location = new System.Drawing.Point(123, 21);
-            this.textBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox12.Location = new System.Drawing.Point(92, 17);
+            this.textBox12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(63, 22);
+            this.textBox12.Size = new System.Drawing.Size(48, 19);
             this.textBox12.TabIndex = 193;
             this.textBox12.Text = "10000";
             this.textBox12.Validating += new System.ComponentModel.CancelEventHandler(this.textBox1_Validating);
@@ -1380,11 +1389,11 @@
             this.groupBox4.Controls.Add(this.checkBox12);
             this.groupBox4.Controls.Add(this.checkBox11);
             this.groupBox4.Controls.Add(this.checkBox8);
-            this.groupBox4.Location = new System.Drawing.Point(13, 536);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox4.Location = new System.Drawing.Point(10, 429);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox4.Size = new System.Drawing.Size(335, 111);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Size = new System.Drawing.Size(251, 89);
             this.groupBox4.TabIndex = 163;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "その他";
@@ -1392,10 +1401,10 @@
             // checkBox21
             // 
             this.checkBox21.AutoSize = true;
-            this.checkBox21.Location = new System.Drawing.Point(243, 41);
-            this.checkBox21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox21.Location = new System.Drawing.Point(182, 33);
+            this.checkBox21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox21.Name = "checkBox21";
-            this.checkBox21.Size = new System.Drawing.Size(66, 19);
+            this.checkBox21.Size = new System.Drawing.Size(54, 16);
             this.checkBox21.TabIndex = 190;
             this.checkBox21.Text = "debug";
             this.checkBox21.UseVisualStyleBackColor = true;
@@ -1404,9 +1413,10 @@
             // label41
             // 
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(102, 89);
+            this.label41.Location = new System.Drawing.Point(76, 71);
+            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(37, 15);
+            this.label41.Size = new System.Drawing.Size(29, 12);
             this.label41.TabIndex = 187;
             this.label41.Text = "間隔";
             // 
@@ -1421,24 +1431,24 @@
             "week",
             "month",
             "year"});
-            this.comboBox6.Location = new System.Drawing.Point(195, 81);
-            this.comboBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox6.Location = new System.Drawing.Point(146, 65);
+            this.comboBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(75, 23);
+            this.comboBox6.Size = new System.Drawing.Size(57, 20);
             this.comboBox6.TabIndex = 186;
             this.comboBox6.Text = "month";
             // 
             // numericUpDown18
             // 
-            this.numericUpDown18.Location = new System.Drawing.Point(146, 81);
-            this.numericUpDown18.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown18.Location = new System.Drawing.Point(110, 65);
+            this.numericUpDown18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numericUpDown18.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.numericUpDown18.Name = "numericUpDown18";
-            this.numericUpDown18.Size = new System.Drawing.Size(44, 22);
+            this.numericUpDown18.Size = new System.Drawing.Size(33, 19);
             this.numericUpDown18.TabIndex = 185;
             this.numericUpDown18.Value = new decimal(new int[] {
             3,
@@ -1449,10 +1459,10 @@
             // checkBox12
             // 
             this.checkBox12.AutoSize = true;
-            this.checkBox12.Location = new System.Drawing.Point(2, 18);
-            this.checkBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox12.Location = new System.Drawing.Point(2, 14);
+            this.checkBox12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox12.Name = "checkBox12";
-            this.checkBox12.Size = new System.Drawing.Size(89, 19);
+            this.checkBox12.Size = new System.Drawing.Size(72, 16);
             this.checkBox12.TabIndex = 184;
             this.checkBox12.Text = "異常検出";
             this.checkBox12.UseVisualStyleBackColor = true;
@@ -1460,10 +1470,10 @@
             // checkBox11
             // 
             this.checkBox11.AutoSize = true;
-            this.checkBox11.Location = new System.Drawing.Point(127, 41);
-            this.checkBox11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox11.Location = new System.Drawing.Point(95, 33);
+            this.checkBox11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBox11.Name = "checkBox11";
-            this.checkBox11.Size = new System.Drawing.Size(104, 19);
+            this.checkBox11.Size = new System.Drawing.Size(84, 16);
             this.checkBox11.TabIndex = 183;
             this.checkBox11.Text = "全区間表示";
             this.checkBox11.UseVisualStyleBackColor = true;
@@ -1473,10 +1483,9 @@
             this.checkBox8.AutoSize = true;
             this.checkBox8.Checked = true;
             this.checkBox8.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox8.Location = new System.Drawing.Point(3, 41);
-            this.checkBox8.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox8.Location = new System.Drawing.Point(2, 33);
             this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(109, 19);
+            this.checkBox8.Size = new System.Drawing.Size(88, 16);
             this.checkBox8.TabIndex = 182;
             this.checkBox8.Text = "X軸を時間軸";
             this.checkBox8.UseVisualStyleBackColor = true;
@@ -1492,11 +1501,11 @@
             this.groupBox5.Controls.Add(this.label39);
             this.groupBox5.Controls.Add(this.label40);
             this.groupBox5.Controls.Add(this.textBox12);
-            this.groupBox5.Location = new System.Drawing.Point(361, 269);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox5.Location = new System.Drawing.Point(271, 215);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox5.Size = new System.Drawing.Size(357, 170);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Size = new System.Drawing.Size(268, 136);
             this.groupBox5.TabIndex = 164;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "時系列データ出力";
@@ -1514,11 +1523,9 @@
             this.groupBox10.Controls.Add(this.textBox1);
             this.groupBox10.Controls.Add(this.checkBox1);
             this.groupBox10.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox10.Location = new System.Drawing.Point(361, 470);
-            this.groupBox10.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox10.Location = new System.Drawing.Point(271, 376);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox10.Size = new System.Drawing.Size(353, 175);
+            this.groupBox10.Size = new System.Drawing.Size(265, 140);
             this.groupBox10.TabIndex = 167;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "prophet";
@@ -1527,19 +1534,17 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label4.Location = new System.Drawing.Point(11, 146);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(8, 117);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(45, 15);
+            this.label4.Size = new System.Drawing.Size(36, 12);
             this.label4.TabIndex = 8;
             this.label4.Text = "period";
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(211, 142);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox4.Location = new System.Drawing.Point(158, 114);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(93, 22);
+            this.textBox4.Size = new System.Drawing.Size(71, 19);
             this.textBox4.TabIndex = 7;
             this.textBox4.Text = "0";
             // 
@@ -1547,19 +1552,17 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label3.Location = new System.Drawing.Point(7, 114);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(5, 91);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(128, 15);
+            this.label3.Size = new System.Drawing.Size(105, 12);
             this.label3.TabIndex = 6;
             this.label3.Text = "holidays_prior_scale";
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(212, 110);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox3.Location = new System.Drawing.Point(159, 88);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(92, 22);
+            this.textBox3.Size = new System.Drawing.Size(70, 19);
             this.textBox3.TabIndex = 5;
             this.textBox3.Text = "10";
             // 
@@ -1567,19 +1570,17 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.Location = new System.Drawing.Point(8, 84);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(6, 67);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(148, 15);
+            this.label2.Size = new System.Drawing.Size(121, 12);
             this.label2.TabIndex = 4;
             this.label2.Text = "seasonality_prior_scale";
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(212, 79);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox2.Location = new System.Drawing.Point(159, 63);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(93, 22);
+            this.textBox2.Size = new System.Drawing.Size(71, 19);
             this.textBox2.TabIndex = 3;
             this.textBox2.Text = "10";
             // 
@@ -1587,28 +1588,38 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label1.Location = new System.Drawing.Point(8, 50);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(6, 40);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(155, 15);
+            this.label1.Size = new System.Drawing.Size(124, 12);
             this.label1.TabIndex = 2;
             this.label1.Text = "changepoint_prior_scale";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(212, 46);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox1.Location = new System.Drawing.Point(159, 37);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(93, 22);
+            this.textBox1.Size = new System.Drawing.Size(71, 19);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "0.05";
             this.textBox1.Validating += new System.ComponentModel.CancelEventHandler(this.textBox1_Validating);
             // 
+            // checkBox7
+            // 
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Location = new System.Drawing.Point(772, 512);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(27, 16);
+            this.checkBox7.TabIndex = 204;
+            this.checkBox7.Text = "!";
+            this.checkBox7.UseVisualStyleBackColor = true;
+            this.checkBox7.CheckedChanged += new System.EventHandler(this.checkBox7_CheckedChanged);
+            // 
             // xgb_ts_prm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1064, 658);
+            this.ClientSize = new System.Drawing.Size(798, 526);
+            this.Controls.Add(this.checkBox7);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
@@ -1616,7 +1627,7 @@
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "xgb_ts_prm";
             this.Text = "xgb_ts_prm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.xgb_ts_prm_FormClosing);
@@ -1670,6 +1681,7 @@
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1776,5 +1788,6 @@
         public System.Windows.Forms.Label label6;
         public System.Windows.Forms.NumericUpDown numericUpDown10;
         public System.Windows.Forms.CheckBox checkBox4;
+        public System.Windows.Forms.CheckBox checkBox7;
     }
 }

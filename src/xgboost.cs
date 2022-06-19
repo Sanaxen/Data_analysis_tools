@@ -1225,7 +1225,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "}\r\n";
                     }
                     */
-                    
+                    /*
                     if ( lag >= means_6n)
                     {
                         cmd1 += "df_ts_tmp$'mean6_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -1254,7 +1254,7 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'quantile6.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[(i-" + (means_6n+1) + "):(i-1)] )[[4]]\r\n";
                         cmd1 += "}\r\n";
                     }
-                    
+                    */
                     if ( lag >= means_12n)
                     {
                         cmd1 += "df_ts_tmp$'mean12_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -1545,8 +1545,8 @@ namespace WindowsFormsApplication1
                         cmd1 += "df_ts_tmp$'expanding_mean_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'expanding_sd_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'expanding_median_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'expanding_min_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
-                        cmd1 += "df_ts_tmp$'expanding_max_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'expanding_min_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
+                        //cmd1 += "df_ts_tmp$'expanding_max_" + targetName + "'" + "<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'expanding_quantile.25_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         //cmd1 += "df_ts_tmp$'expanding_quantile.50_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
                         cmd1 += "df_ts_tmp$'expanding_quantile.75_" + targetName + "'" +"<- df_ts_tmp$'day1_diff_" + targetName + "'\r\n";
@@ -1561,8 +1561,8 @@ namespace WindowsFormsApplication1
                         cmd1 += "	df_ts_tmp$'expanding_mean_" + targetName + "'[i]" +" = mean( df$'" +targetName + "'[1:(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'expanding_sd_" + targetName + "'[i]" +" = sd( df$'" +targetName + "'[1:(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'expanding_median_" + targetName + "'[i]" +" = median( df$'" +targetName + "'[1:(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'expanding_max_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[1:(i-1)] )\r\n";
-                        cmd1 += "	df_ts_tmp$'expanding_min_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[1:(i-1)] )\r\n";
+                        //cmd1 += "	df_ts_tmp$'expanding_max_" + targetName + "'[i]" +" = max( df$'" +targetName + "'[1:(i-1)] )\r\n";
+                        //cmd1 += "	df_ts_tmp$'expanding_min_" + targetName + "'[i]" +" = min( df$'" +targetName + "'[1:(i-1)] )\r\n";
                         cmd1 += "	df_ts_tmp$'expanding_quantile.25_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[1:(i-1)] )[[2]]\r\n";
                         //cmd1 += "	df_ts_tmp$'expanding_quantile.50_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[1:(i-1)] )[[3]]\r\n";
                         cmd1 += "	df_ts_tmp$'expanding_quantile.75_" + targetName + "'[i]" +" = quantile( df$'" +targetName + "'[1:(i-1)] )[[4]]\r\n";
@@ -2560,8 +2560,8 @@ namespace WindowsFormsApplication1
                     	formuler += "\r\n+" +importance_varChk("expanding_mean_" + targetName);
                     	formuler += "+" +importance_varChk("expanding_sd_" + targetName);
                     	formuler += "+" +importance_varChk("expanding_median_" + targetName);
-                        formuler += "+" +importance_varChk("expanding_max_" + targetName);
-                        formuler += "+" +importance_varChk("expanding_min_" + targetName);
+                        //formuler += "+" +importance_varChk("expanding_max_" + targetName);
+                        //formuler += "+" +importance_varChk("expanding_min_" + targetName);
                         formuler += "+" +importance_varChk("expanding_quantile.25_" + targetName);
                         //formuler += "+ expanding_quantile.50_" + targetName;
                         formuler += "+" +importance_varChk("expanding_quantile.75_" + targetName);
@@ -2578,8 +2578,8 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("expanding_mean_" + targetName);
 	                    var_ts.Items.Add("expanding_sd_" + targetName);
 	                    var_ts.Items.Add("expanding_median_" + targetName);
-	                    var_ts.Items.Add("expanding_max_" + targetName);
-	                    var_ts.Items.Add("expanding_min_" + targetName);
+	                    //var_ts.Items.Add("expanding_max_" + targetName);
+	                    //var_ts.Items.Add("expanding_min_" + targetName);
 	                    var_ts.Items.Add("expanding_quantile.25_" + targetName);
 	                    //var_ts.Items.Add("expanding_quantile.50_" + targetName);
 	                    var_ts.Items.Add("expanding_quantile.75_" + targetName);
@@ -2590,8 +2590,8 @@ namespace WindowsFormsApplication1
                     	formuler += "\r\n+" +importance_varChk("expanding_mean_" + targetName);
                     	formuler += "+" +importance_varChk("expanding_sd_" + targetName);
                     	formuler += "+" +importance_varChk("expanding_median_" + targetName);
-                        formuler += "+" +importance_varChk("expanding_max_" + targetName);
-                        formuler += "+" +importance_varChk("expanding_min_" + targetName);
+                        //formuler += "+" +importance_varChk("expanding_max_" + targetName);
+                        //formuler += "+" +importance_varChk("expanding_min_" + targetName);
                         formuler += "+" +importance_varChk("expanding_quantile.25_" + targetName);
                         //formuler += "+ expanding_quantile.50_" + targetName);
                         formuler += "+" +importance_varChk("expanding_quantile.75_" + targetName);
@@ -2599,13 +2599,13 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("expanding_mean_" + targetName);
 	                    var_ts.Items.Add("expanding_sd_" + targetName);
 	                    var_ts.Items.Add("expanding_median_" + targetName);
-	                    var_ts.Items.Add("expanding_max_" + targetName);
-	                    var_ts.Items.Add("expanding_min_" + targetName);
+	                    //var_ts.Items.Add("expanding_max_" + targetName);
+	                    //var_ts.Items.Add("expanding_min_" + targetName);
 	                    var_ts.Items.Add("expanding_quantile.25_" + targetName);
 	                    //var_ts.Items.Add("expanding_quantile.50_" + targetName);
 	                    var_ts.Items.Add("expanding_quantile.75_" + targetName);
                     }
-                                        
+                    /*                    
                     if (lag >= means_6n)
                     {
                     	formuler += "\r\n+" +importance_varChk("mean6_" + targetName);
@@ -2626,7 +2626,7 @@ namespace WindowsFormsApplication1
                         //var_ts.Items.Add("quantile6.50_" + targetName);
                         var_ts.Items.Add("quantile6.75_" + targetName);
                     }
-                    
+                    */
                     if (lag >= means_12n)
                     {
                     	formuler += "\r\n+" +importance_varChk("mean12_" + targetName);
@@ -5268,6 +5268,7 @@ namespace WindowsFormsApplication1
                     forecast_extension += cmd_tmp;
 
                     forecast_extension += "df_<-test\r\n";
+                    forecast_extension += "stopping_predict = 0\r\n";
                     forecast_extension += "add_ext <-  0\r\n";
                     forecast_extension += "ensembleW0 <-  " + EnsembleW[0].ToString() + "\r\n";
                     forecast_extension += "ensembleW1 <-  "+ EnsembleW[1].ToString() + "\r\n";
@@ -5518,6 +5519,7 @@ namespace WindowsFormsApplication1
                         {
                             forecast_extension += "debug_plotting = 0\r\n";
                         }
+                        //
                         forecast_extension += "\r\n";
                         forecast_extension += "t_step_forcast = 1\r\n";
 						forecast_extension += "xreg = NULL\r\n";
@@ -5809,6 +5811,9 @@ namespace WindowsFormsApplication1
 	                    forecast_extension += "        if ( length(colidx_21) == 1)  test[nrow(test),colidx_21] <- ifelse(h >= 8 & h <= 21, 1, 0)\r\n";
 
 
+                        forecast_extension += "        train_test <- rbind(train, test)\r\n";
+                        forecast_extension += "\r\n";
+
                         //for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
                         {
                             for (int j = start_lag; j <= lag; j++)
@@ -5877,56 +5882,56 @@ namespace WindowsFormsApplication1
                                "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_3n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
 
                                 forecast_extension += "        test$'expanding_mean_" + targetName + "'" +
-                               "[length(test$target_)]<- mean(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- mean(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
                                 
                                 forecast_extension += "        test$'expanding_sd_" + targetName + "'" +
-                               "[length(test$target_)]<- sd(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- sd(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
                                
                                 forecast_extension += "        test$'expanding_median_" + targetName + "'" +
-                               "[length(test$target_)]<- median(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- median(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
                                
-                                forecast_extension += "        test$'expanding_max_" + targetName + "'" +
-                               "[length(test$target_)]<- max(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               // forecast_extension += "        test$'expanding_max_" + targetName + "'" +
+                               //"[length(test$target_)]<- max(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
                                 
-                                forecast_extension += "        test$'expanding_min_" + targetName + "'" +
-                               "[length(test$target_)]<- min(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               // forecast_extension += "        test$'expanding_min_" + targetName + "'" +
+                               //"[length(test$target_)]<- min(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
 
                                 forecast_extension += "        test$'expanding_quantile.25_" + targetName + "'" +
-                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[2]]\r\n";
+                               "[length(test$target_)]<- quantile(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])[[2]]\r\n";
                                // forecast_extension += "        test$'expanding_quantile.50_" + targetName + "'" +
-                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[3]]\r\n";
+                               //"[length(test$target_)]<- quantile(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])[[3]]\r\n";
                                 forecast_extension += "        test$'expanding_quantile.75_" + targetName + "'" +
-                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[4]]\r\n";
+                               "[length(test$target_)]<- quantile(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])[[4]]\r\n";
 
                             }
                             */
                             if (lag >= expanding_means)
 							{
                                 forecast_extension += "        test$'expanding_mean_" + targetName + "'" +
-                               "[length(test$target_)]<- mean(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- mean(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
                                 
                                 forecast_extension += "        test$'expanding_sd_" + targetName + "'" +
-                               "[length(test$target_)]<- sd(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- sd(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
                                
                                 forecast_extension += "        test$'expanding_median_" + targetName + "'" +
-                               "[length(test$target_)]<- median(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               "[length(test$target_)]<- median(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
                                
-                                forecast_extension += "        test$'expanding_max_" + targetName + "'" +
-                               "[length(test$target_)]<- max(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               // forecast_extension += "        test$'expanding_max_" + targetName + "'" +
+                               //"[length(test$target_)]<- max(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
                                 
-                                forecast_extension += "        test$'expanding_min_" + targetName + "'" +
-                               "[length(test$target_)]<- min(test$'" + targetName + "'[1:(length(test$target_)-1)])\r\n";
+                               // forecast_extension += "        test$'expanding_min_" + targetName + "'" +
+                               //"[length(test$target_)]<- min(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])\r\n";
 
                                 forecast_extension += "        test$'expanding_quantile.25_" + targetName + "'" +
-                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[2]]\r\n";
+                               "[length(test$target_)]<- quantile(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])[[2]]\r\n";
                                // forecast_extension += "        test$'expanding_quantile.50_" + targetName + "'" +
-                               //"[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[3]]\r\n";
+                               //"[length(test$target_)]<- quantile(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])[[3]]\r\n";
                                 forecast_extension += "        test$'expanding_quantile.75_" + targetName + "'" +
-                               "[length(test$target_)]<- quantile(test$'" + targetName + "'[1:(length(test$target_)-1)])[[4]]\r\n";
+                               "[length(test$target_)]<- quantile(train_test$'" + targetName + "'[1:(length(train_test$target_)-1)])[[4]]\r\n";
 
                             }
                             
-                            
+                            /*
                             if (lag >= means_6n)
                             {
                                 forecast_extension += "        test$'mean6_" + targetName + "'" +
@@ -5951,7 +5956,7 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        test$'quantile6.75_" + targetName + "'" +
                                "[length(test$target_)]<- quantile(test$'" + targetName + "'[(length(test$target_)-" + (means_6n+1) + "):(length(test$target_)-1)])[[4]]\r\n";
                             }
-                            
+                            */
                             if (lag >= means_12n)
                             {
                                 forecast_extension += "        test$'mean12_" + targetName + "'" +
@@ -6855,6 +6860,12 @@ namespace WindowsFormsApplication1
                             forecast_extension += "            debug_plotting = 1\r\n";
                             forecast_extension += "        }\r\n";
                         }
+
+                        //
+                        forecast_extension += "\r\n";
+                        forecast_extension += "\r\n";
+                        forecast_extension += "     if ( file.exists(\"stopping_predict\") ) stopping_predict = 1\r\n";
+                        //
                         forecast_extension += "	    if ( debug_plotting == 1 && as.integer(t_step %% 5) == 0){\r\n";
                         
 forecast_extension += "	        plt1 <- NULL\r\n";
@@ -6980,7 +6991,10 @@ forecast_extension += "	    }\r\n";
 						forecast_extension += "        finally   = {\r\n";
 						forecast_extension += "        },silent = TRUE )\r\n";
                         forecast_extension += "\r\n";
-                       
+                        forecast_extension += "        if ( stopping_predict==1) {\r\n";
+                        forecast_extension += "            break\r\n";
+                        forecast_extension += "        }\r\n";
+
                         forecast_extension += "    }\r\n";
                         forecast_extension += "}\r\n";
                         forecast_extension += "\r\n";
@@ -8039,6 +8053,7 @@ forecast_extension += "	    }\r\n";
                 pictureBox1.Image = null;
                 pictureBox1.Refresh();
 
+                form1.FileDelete("stopping_predict");
                 form1.FileDelete("no_debug_plotting");
                 form1.FileDelete("on_debug_plotting");
                 form1.FileDelete("progress.txt");
@@ -8066,6 +8081,7 @@ forecast_extension += "	    }\r\n";
                 form1.FileDelete("progress.txt");
                 form1.FileDelete("predict_sampling.txt");
                 form1.FileDelete("no_debug_plotting");
+                form1.FileDelete("stopping_predict");
                 label44.Text = "";
 
 
