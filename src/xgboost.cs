@@ -6277,7 +6277,32 @@ namespace WindowsFormsApplication1
                             }
 
 
+                            forecast_extension += "        overall <- test\r\n";
+                            forecast_extension += "        if ( overall_flg == 1) overall <- rbind(train, test)\r\n";
+                            forecast_extension += "\r\n";
+                            if (n_seasons / 2 > 1 && xgb_ts_prm_.checkBox14.Checked)
+                            {
+                                forecast_extension += "        #The value of the variable 'test$season' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
+                                forecast_extension += "\r\n";
+                                forecast_extension += "        y2 <- overall$'" + targetName + "'\r\n";
+                                forecast_extension += "        f = frequency_value\r\n";
+                                forecast_extension += "        k = f/2\r\n";
+                                forecast_extension += "        #k =  max(1, min(round(f / 4 - 1), 10))\r\n";
+                                forecast_extension += "        if ( k > 0 ){\r\n";
+                                forecast_extension += "             fx <-  fourier(ts(y2,frequency=frequency_value) , K = k)\r\n";
 
+                                for (int j = 1; j <= Math.Min(max_seasonal, n_seasons-1); j++)
+                                {
+                                    forecast_extension += "             overall$season" + j.ToString() + "<- fx[," + j.ToString() + "]\r\n";
+                                }
+                                for (int j = 1; j <= Math.Min(max_seasonal, n_seasons-1); j++)
+                                {
+                                    forecast_extension += "             test$season" + j.ToString() + "<- overall$season" + j.ToString() + "[(nrow(train)+1):nrow(overall)]\r\n";
+                                }
+                                forecast_extension += "        }\r\n";
+                                forecast_extension += "\r\n";
+                            }
+/*
                             if (n_seasons / 2 > 1 && xgb_ts_prm_.checkBox14.Checked)
                             {
                                 forecast_extension += "        #The value of the variable 'test$season' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
@@ -6305,11 +6330,8 @@ namespace WindowsFormsApplication1
                                 forecast_extension += "        }\r\n";
                                 forecast_extension += "\r\n";
                             }
+*/
 
-
-                            forecast_extension += "        overall <- test\r\n";
-                            forecast_extension += "        if ( overall_flg == 1) overall <- rbind(train, test)\r\n";
-                            forecast_extension += "\r\n";
                             if (use_decompose == 1 && n_seasons >= 1)
                             {
                                 forecast_extension += "        #The value of the variable 'test$seasonal' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
