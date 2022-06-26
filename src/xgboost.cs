@@ -7751,11 +7751,11 @@ forecast_extension += "	    }\r\n";
 		                if (time_series_mode && exist_time_axis == 1 && xgb_ts_prm_.checkBox8.Checked)
 		                {
 			                position_maker += "    plt <- plt + geom_line(aes(x=as.POSIXct(y[,1]), y =y$" + targetName + ", colour = \"input data\"), size = 0.5)\r\n";
-			                position_maker += "    plt <- plt + geom_vline(data = y, aes(xintercept=as.POSIXct(y[pos,1])), size = 1.5)\r\n";
+			                position_maker += "    plt <- plt + geom_vline( aes(xintercept=as.POSIXct(y[pos,1])), size = 1.5)\r\n";
 		                }else
 		                {
 			                position_maker += "    plt <- plt + geom_line(aes(x=c(1:length(y$" + targetName +")), y =y$" + targetName + ", colour = \"input data\"), size = 0.5)\r\n";
-			                position_maker += "    plt <- plt + geom_vline(data = y, aes(xintercept=pos), size = 1.5)\r\n";
+			                position_maker += "    plt <- plt + geom_vline( aes(xintercept=pos), size = 1.5)\r\n";
 		                }
 		                position_maker += "	\r\n";
 		                position_maker += "	#plt\r\n";
