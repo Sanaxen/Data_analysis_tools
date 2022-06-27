@@ -4870,7 +4870,7 @@ namespace WindowsFormsApplication1
                     if ( eval == 1)
                     {
                         anomaly_det += "df_tmp <- rbind(train, test)\r\n";
-                        anomaly_det += "anomaly_det_"+ targetName+" < - anomaly_DetectionTs(df_tmp, \"" + targetName + "\", df_tmp[,1][nrow(train)+1], df_tmp[,1][nrow(train)+nrow(test_org)])\r\n";
+                        anomaly_det += "anomaly_det_"+ targetName+" <- anomaly_DetectionTs(df_tmp, \"" + targetName + "\", df_tmp[,1][nrow(train)+1], df_tmp[,1][nrow(train)+nrow(test_org)])\r\n";
                     }
                     else
                     {
@@ -5590,7 +5590,8 @@ namespace WindowsFormsApplication1
                         forecast_extension += "                    test[nrow(test), i] <- rnorm(mean_, sd_)[i]\r\n";
                         forecast_extension += "                    if ( sample_metod == 1){\r\n";
                         forecast_extension += "                        #復元抽出\r\n";
-                        forecast_extension += "                        test[nrow(test), i] <- sample(train[, i], 1)\r\n";
+                        forecast_extension += "                        prob = c(log(1:nrow(train)))\r\n";
+                        forecast_extension += "                        test[nrow(test), i] <- sample(train[, i], 1, replace = TRUE, prob = prob/sum(prob))\r\n";
                         forecast_extension += "                    }\r\n";
                         forecast_extension += "                    if ( sample_metod == 2){\r\n";
                         forecast_extension += "   	        	        #移動平均\r\n";
