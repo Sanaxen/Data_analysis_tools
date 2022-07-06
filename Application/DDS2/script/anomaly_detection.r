@@ -1,23 +1,41 @@
 library(MASS) 
+
+#https://tjo.hatenablog.com/entry/2017/02/08/190000
+#Xt <- as.matrix(df)
+#mxt <- colMeans(Xt)
+#Xct <- as.matrix(Xt) - matrix(1, nrow(Xt), 1) %*% mxt
+#Sxt <- t(Xct) %*% Xct / nrow(Xt)
+#amt <- rowSums((Xct %*% solve(Sxt)) * Xct) / ncol(Xt)
  
 # unsupervised anomaly detection
 anomaly_detection_train <- function( df )
 {
-	X <- as.matrix(df)
+	df[is.na(df)] <- 0
+	mu <- apply(df,2,mean)
+	sd <- apply(df,2,sd)
+	
+	tmp <- df
+	for ( i in 1:ncol(df))
+	{
+		tmp[,i] = (df[,i] - mu[i])/sd[i]
+	}
+	#apply(tmp,2,mean)
+	#apply(tmp,2,sd)
+
+	X <- as.matrix(tmp)
 
 	X[is.na(X)] <- 0
-	mu <- apply(X,2,mean)
-	sd <- apply(X,2,sd)
+	mu_ <- apply(X,2,mean)
+	sd_ <- apply(X,2,sd)
 
 	
 	
-	X <- (X-mu)/sd
 	X[is.na(X)] <- 0
 	X[is.nan(X)] <- 0
 	X[is.infinite(X)] <- 0.00000001
 	#print(X)
 	
-	Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu
+	Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu_
 	Sigma <- t(Xc) %*% Xc / nrow(X)
 	
 	tryCatch({
@@ -38,22 +56,31 @@ anomaly_detection_train <- function( df )
 
 anomaly_detection_test <- function( model, df, method="mahalanobis", threshold=0)
 {
-	X <- as.matrix(df)
-	X[is.na(X)] <- 0
-	
-	invSigma = model[[5]]
+	df[is.na(df)] <- 0
 	mu = model[[2]]
 	sd = model[[3]]
-	X <- (X-mu)/sd
+	
+	tmp <- df
+	for ( i in 1:ncol(df))
+	{
+		tmp[,i] = (df[,i] - mu[i])/sd[i]
+	}
+
+	X <- as.matrix(tmp)
+	
+	invSigma = model[[5]]
 	
 	X[is.na(X)] <- 0
 	X[is.nan(X)] <- 0
 	X[is.infinite(X)] <- 0.00000001
+
+	mu_ <- apply(X,2,mean)
+	sd_ <- apply(X,2,sd)
 	
 	am <- NULL
 	if (method == "hotelling")
 	{
-		Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu
+		Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu_
 		tryCatch({
 			am <- rowSums((Xc %*% invSigma * Xc))
 		},
@@ -68,7 +95,7 @@ anomaly_detection_test <- function( model, df, method="mahalanobis", threshold=0
 		if ( threshold == 0 ) threshold <- qchisq(0.99, 3)
 	}else
 	{
-		Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu
+		Xc <- as.matrix(X) - matrix(1, nrow(X), 1) %*% mu_
 		if ( threshold == 0 ) threshold <- 1
 		tryCatch({
 			am <- rowSums((Xc %*% invSigma * Xc)) / ncol(Xc)
