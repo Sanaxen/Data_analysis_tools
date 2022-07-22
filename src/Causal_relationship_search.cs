@@ -2315,11 +2315,11 @@ namespace WindowsFormsApplication1
             }
             if (checkBox12.Checked)
             {
-                form17_.panel1.Enabled = false;
+                form17_.panel1.Enabled = true;
             }
             else
             {
-                form17_.panel1.Enabled = true;
+                form17_.panel1.Enabled = false;
             }
         }
 
