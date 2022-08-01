@@ -361,7 +361,9 @@
             this.comboBox4.Items.AddRange(new object[] {
             "tanh",
             "relu",
-            "leakyrelu"});
+            "leakyrelu",
+            "selu",
+            "mish"});
             this.comboBox4.Location = new System.Drawing.Point(339, 259);
             this.comboBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox4.Name = "comboBox4";

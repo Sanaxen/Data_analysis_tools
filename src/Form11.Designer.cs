@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
@@ -68,7 +69,6 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
@@ -124,6 +124,16 @@
             this.groupBox1.Size = new System.Drawing.Size(829, 324);
             this.groupBox1.TabIndex = 86;
             this.groupBox1.TabStop = false;
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(92, 40);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(129, 19);
+            this.checkBox9.TabIndex = 122;
+            this.checkBox9.Text = "batch normalize";
+            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -278,7 +288,9 @@
             this.comboBox3.Items.AddRange(new object[] {
             "tanh",
             "relu",
-            "leakyrelu"});
+            "leakyrelu",
+            "selu",
+            "mish"});
             this.comboBox3.Location = new System.Drawing.Point(371, 40);
             this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox3.Name = "comboBox3";
@@ -608,16 +620,6 @@
             this.label6.TabIndex = 11;
             this.label6.Text = "epochs";
             this.toolTip1.SetToolTip(this.label6, "エポック数");
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(92, 40);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(129, 19);
-            this.checkBox9.TabIndex = 122;
-            this.checkBox9.Text = "batch normalize";
-            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // Form11
             // 
