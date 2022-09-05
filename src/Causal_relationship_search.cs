@@ -1339,6 +1339,7 @@ namespace WindowsFormsApplication1
                     }
                     process.StartInfo.Arguments += " --u1_param " + form17_.textBox3.Text;
                 }
+                process.StartInfo.Arguments += " --layout  " + comboBox3.Text;
 
                 int select_cols = listBox2.SelectedIndices.Count;
                 if (select_cols == 0 )
@@ -2316,10 +2317,12 @@ namespace WindowsFormsApplication1
             if (checkBox12.Checked)
             {
                 form17_.panel1.Enabled = true;
+                form17_.textBox13.Text = "1.0";
             }
             else
             {
                 form17_.panel1.Enabled = false;
+                form17_.textBox13.Text = "0.1";
             }
         }
 

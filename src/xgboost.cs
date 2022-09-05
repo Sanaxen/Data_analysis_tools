@@ -5286,9 +5286,29 @@ namespace WindowsFormsApplication1
                             forecast_extension += "obs_test_step <- as.integer(max( max(frequency_value," + lag.ToString() + "), nrow(test)*" + xgb_ts_prm_.numericUpDown20.Value.ToString() + "*0.01))\r\n";
                         }
                         forecast_extension += "if ( obs_test_step > nrow(test)) obs_test_step = nrow(test)\r\n";
+                        forecast_extension += "\r\n";
+                        if ( Double.Parse(xgb_ts_prm_.textBox5.Text) < 1.0 )
+                        {
+                        	forecast_extension += "ext_length <- nrow(test)*" + xgb_ts_prm_.textBox5.Text + "\r\n";
+                        }else
+                        {
+                            forecast_extension += "ext_length <- " + xgb_ts_prm_.textBox5.Text + "\r\n";
+						}
+                        forecast_extension += "if ( ext_length >= obs_test_step){\r\n";
+                        forecast_extension += "     ext_length = 0\r\n";
+                        forecast_extension += "}else {\r\n"; 
+                        forecast_extension += "     obs_test_step = obs_test_step - ext_length\r\n";
+                        forecast_extension += "}\r\n"; 
 
+
+                        forecast_extension += "ext_df <- NULL\r\n";
                         forecast_extension += "test <- test[1:obs_test_step,]\r\n";
                         forecast_extension += "add_ext <- nrow(df_) - nrow(test)\r\n";
+                        forecast_extension += "if ( ext_length > 0){\r\n";
+                        forecast_extension += "    ext_df <- df_[(obs_test_step+1):nrow(df_),]\r\n";
+                        forecast_extension += "    add_ext <- nrow(ext_df)\r\n";
+                        forecast_extension += "}\r\n";
+
                         forecast_extension += "if ( add_ext <= 0 ){\r\n";
                         forecast_extension += "    test <- df_\r\n";
                         forecast_extension += "    obs_test_step <- nrow(test)\r\n";
@@ -5535,10 +5555,15 @@ namespace WindowsFormsApplication1
                         forecast_extension += "    for ( t_step in 1:(" + xgb_ts_prm_.numericUpDown5.Value.ToString()+ " + add_ext)){\r\n";
                         forecast_extension += "        predict_y <- predict_y_org\r\n";
                         forecast_extension += "	        # 1行追加\r\n";
-                        forecast_extension += "	        test<-rbind(test, test[nrow(test),])\r\n";
+                        forecast_extension += "	        if ( ext_length > 0 && t_step <= nrow(ext_df)){\r\n";
+                        forecast_extension += "	            test<-rbind(test, ext_df[t_step,])\r\n";
+                        forecast_extension += "	        }else{\r\n";
+                        forecast_extension += "	            test<-rbind(test, test[nrow(test),])\r\n";
+                        forecast_extension += "	        }\r\n";
                         forecast_extension += "        #test[nrow(test),1] <- st_ + t_step*dt_\r\n";
                         forecast_extension += "        test[nrow(test),1] <- as.POSIXct(t_step*dt_, origin = st_)\r\n";
 						forecast_extension += "        test$'index_" + targetName + "'[length(test$target_)] = test$'index_" + targetName + "'[length(test$target_)-1]+1\r\n";
+						forecast_extension += "        test$'" + targetName + "'[length(test$target_)] = -100000\r\n";
 
                         forecast_extension += "\r\n";
                         if (add_enevt_data == 1)
@@ -5585,7 +5610,7 @@ namespace WindowsFormsApplication1
                             forecast_extension += "                     }\r\n";
                             forecast_extension += "                }\r\n";
                         }
-                        forecast_extension += "	            if ( i != colidx1 && i != colidx2 && i != colidx4 && i != colidx6 && i != colidx7 && i != colidx8 && i != colidx9 && i != colidx10 && i != colidx11 && skip != TRUE)\r\n";
+                        forecast_extension += "	            if ( ext_length == 0 && i != colidx1 && i != colidx2 && i != colidx4 && i != colidx6 && i != colidx7 && i != colidx8 && i != colidx9 && i != colidx10 && i != colidx11 && skip != TRUE)\r\n";
                         forecast_extension += "	            {\r\n";
                         forecast_extension += "                    test[nrow(test), i] <- rnorm(mean_, sd_)[i]\r\n";
                         forecast_extension += "                    if ( sample_metod == 1){\r\n";
@@ -6333,10 +6358,15 @@ namespace WindowsFormsApplication1
                             }
 */
 
+                            forecast_extension += "        overall <- test\r\n";
+                            forecast_extension += "        if ( overall_flg == 1) overall <- rbind(train, test)\r\n";
+                            forecast_extension += "\r\n";
                             if (use_decompose == 1 && n_seasons >= 1)
                             {
                                 forecast_extension += "        #The value of the variable 'test$seasonal' is inconsistent because it uses the value that we are trying to predict, but we assume that the predicted value is the same as the previous value.\r\n";
                                 forecast_extension += "        if ( !is.null(decompose_df)){\r\n";
+                                forecast_extension += "            test_bak <- test\r\n";
+								forecast_extension += "            overall$'" + targetName + "'[length(overall$target_)] = overall$'" + targetName + "'[length(overall$target_)-1]\r\n";
                                 forecast_extension += "            tmp<-decompose(ts(as.vector(overall$'" + targetName + "'), frequency=frequency_value), type =\"" + decomp_type + "\")\r\n";
 								
 								forecast_extension += "		if ( is.na(tmp$trend[1]) )\r\n";
@@ -6377,7 +6407,7 @@ namespace WindowsFormsApplication1
 								forecast_extension += "				}\r\n";
 								forecast_extension += "			}\r\n";
 								forecast_extension += "		}\r\n";
-								forecast_extension += "		plot(tmp$trend)\r\n";
+								forecast_extension += "		#plot(tmp$trend)\r\n";
 								forecast_extension += "		if ( is.na(tmp$random[1]) )\r\n";
 								forecast_extension += "		{\r\n";
 								forecast_extension += "			id=-1\r\n";
@@ -6427,7 +6457,8 @@ namespace WindowsFormsApplication1
 		                        forecast_extension += "            tmp$random[is.infinite(tmp$random)] <- 0\r\n";
                                 forecast_extension += "            decompose_df <<- tmp\r\n";
                                 forecast_extension += "            #if ( t_step > 2 ) overall$seasonal[length(overall$target_)-1] = decompose_df$seasonal[length(overall$target_)-1]   #update\r\n";
-                                forecast_extension += "            overall$seasonal[length(overall$target_)] = decompose_df$seasonal[length(overall$target_)]\r\n";
+                                forecast_extension += "            #overall$seasonal[length(overall$target_)] = decompose_df$seasonal[length(overall$target_)]\r\n";
+                                forecast_extension += "            overall$seasonal = decompose_df$seasonal\r\n";
                                 forecast_extension += "\r\n";
                                 forecast_extension += "            #tmp$seasonal[tmp$seasonal==0] <- 0.00001\r\n";
 								forecast_extension += "            tmp$seasonal[is.na(tmp$seasonal)] <- 0\r\n";
@@ -6440,11 +6471,17 @@ namespace WindowsFormsApplication1
 
                                 forecast_extension += "            tmp <- as.data.frame(as.matrix(tmp))\r\n";
                                 forecast_extension += "            #if ( t_step > 2 ) overall$deseasonal[length(overall$target_) - 1] = tmp[length(overall$target_) - 1, 1]\r\n";
-                                forecast_extension += "            overall$deseasonal[length(overall$target_)] = tmp[length(overall$target_), 1]\r\n";
+                                forecast_extension += "            #overall$deseasonal[length(overall$target_)] = tmp[length(overall$target_), 1]\r\n";
+                                forecast_extension += "            overall$deseasonal = tmp[,1]\r\n";
                                 forecast_extension += "\r\n";
-		            			forecast_extension += "            test$deseasonal <- overall$deseasonal[(length(train$target_)+1):length(overall$target_)]\r\n";
-		            			forecast_extension += "            test$seasonal <- overall$seasonal[(length(train$target_)+1):length(overall$target_)]\r\n";
+                                forecast_extension += "            test <- overall[(nrow(train)+1):nrow(overall),]\r\n";
+		            			forecast_extension += "            #test$deseasonal[length(test$target_)-1] = test_bak$deseasonal[length(test_bak$target_)]\r\n";
+                                forecast_extension += "            #test$seasonal[length(test$target_)-1] = test_bak$seasonal[length(test_bak$target_)]\r\n";
+                                forecast_extension += "            #test$trend[length(test$target_)-1] = test_bak$trend[length(test_bak$target_)]\r\n";
                                 forecast_extension += "        }\r\n";
+                                forecast_extension += "\r\n";
+                                forecast_extension += "        overall <- test\r\n";
+                                forecast_extension += "        if ( overall_flg == 1) overall <- rbind(train, test)\r\n";
                                 forecast_extension += "\r\n";
                             }
 
@@ -6868,10 +6905,16 @@ namespace WindowsFormsApplication1
                         forecast_extension += "        predict.y <- data.frame(\"predict\" = predict_y)\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "	    #データの最後を予測値で更新\r\n";
-                        forecast_extension += "	    test$target_[length(test$target_)] <- predict_y_org[length(predict_y)]\r\n";
-                        forecast_extension += "	    test$'" + targetName + "'[length(test$target_)] <- predict_y[length(predict_y)]\r\n";
+                        forecast_extension += "	    for ( i in 0:" + lag + ")\r\n";
+                        forecast_extension += "	    {\r\n";
+                        forecast_extension += "	        test$target_[length(test$target_)-i] <- predict_y_org[length(predict_y)-i]\r\n";
+                        forecast_extension += "	        test$'" + targetName + "'[length(test$target_)-i] <- predict_y[length(predict_y)-i]\r\n";
+                        forecast_extension += "	    }\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
+                        forecast_extension += "      plot(test$target_, type=\"l\")\r\n";
+                        forecast_extension += "      #par(new=T)\r\n";
+                        forecast_extension += "      #plot(test$deseasonal, type=\"l\", col=\"red\")\r\n";
                         forecast_extension += "     if ( debug_plotting > 0 && file.exists(\"no_debug_plotting\") ) debug_plotting = 0\r\n";
 
                         if (xgb_ts_prm_.checkBox21.Checked)
@@ -8643,6 +8686,10 @@ forecast_extension += "	    }\r\n";
                 else sw.Write("false\r\n");
                 sw.Write("sin_cos4_freqency,"); sw.Write(xgb_ts_prm_.numericUpDown12.Value.ToString() + "\r\n");
 
+                sw.Write("ext_part,");
+                sw.Write(xgb_ts_prm_.textBox5.Text + "\r\n");
+
+
                 sw.Write("importance_var,");sw.Write(importance_var.Items.Count);
                 for (int k = 0; k < importance_var.Items.Count; k++)
                 {
@@ -9474,6 +9521,10 @@ forecast_extension += "	    }\r\n";
                         {
                             xgb_ts_prm_.checkBox6.Checked = false;
                         }
+                    }
+                    if (ss[0].IndexOf("ext_part") >= 0)
+                    {
+                         xgb_ts_prm_.textBox5.Text = ss[1].Replace("\r\n", "");
                     }
                     if (ss[0].IndexOf("importance_var") >= 0 && importance_var != null)
                     {
