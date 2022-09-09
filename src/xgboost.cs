@@ -2505,18 +2505,17 @@ namespace WindowsFormsApplication1
 	                        formuler += "+" + importance_varChk("lag" + i.ToString() + "_" + targetName);
 	                        var_ts.Items.Add("lag" + i.ToString() + "_" + targetName);
 	                    }
-	                    
-	                    if ( use_day_diff )
-	                    {
-		                    formuler += "+" +importance_varChk("day1_diff_" + targetName);
-		                    formuler += "+" +importance_varChk("day1diff_diff_" + targetName);
-
-		                    var_ts.Items.Add("day1_diff_" + targetName);
-		                    var_ts.Items.Add("day1diff_diff_" + targetName);
-	                    }
                     }
+                    if (use_day_diff)
+                    {
+                        formuler += "+" + importance_varChk("day1_diff_" + targetName);
+                        formuler += "+" + importance_varChk("day1diff_diff_" + targetName);
 
-					if ( xgb_ts_prm_.checkBox3.Checked )
+                        var_ts.Items.Add("day1_diff_" + targetName);
+                        var_ts.Items.Add("day1diff_diff_" + targetName);
+                    }
+                    
+                    if ( xgb_ts_prm_.checkBox3.Checked )
 					{
                     	formuler += "\r\n+" +importance_varChk("sin1_" + targetName);
                     	formuler += "+" +importance_varChk("cos1_" + targetName);
@@ -2585,7 +2584,7 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("expanding_quantile.75_" + targetName);
                     }
                     */
-                    if (lag >= expanding_means)
+                    if (lag >= expanding_means && xgb_ts_prm_.checkBox13.Checked)
                     {
                     	formuler += "\r\n+" +importance_varChk("expanding_mean_" + targetName);
                     	formuler += "+" +importance_varChk("expanding_sd_" + targetName);
@@ -2627,7 +2626,7 @@ namespace WindowsFormsApplication1
                         var_ts.Items.Add("quantile6.75_" + targetName);
                     }
                     */
-                    if (lag >= means_12n)
+                    if (lag >= means_12n && xgb_ts_prm_.checkBox13.Checked)
                     {
                     	formuler += "\r\n+" +importance_varChk("mean12_" + targetName);
                     	formuler += "+" +importance_varChk("sd12_" + targetName);
@@ -2647,7 +2646,7 @@ namespace WindowsFormsApplication1
 	                    //var_ts.Items.Add("quantile12.50_" + targetName);
 	                    var_ts.Items.Add("quantile12.75_" + targetName);
                     }
-                    if (lag >= means_24n)
+                    if (lag >= means_24n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean24_" + targetName);
                         formuler += "+" +importance_varChk("sd24_" + targetName);
@@ -2667,7 +2666,7 @@ namespace WindowsFormsApplication1
 	                    //var_ts.Items.Add("quantile24.50_" + targetName);
 	                    var_ts.Items.Add("quantile24.75_" + targetName);
                     }
-                    if (lag >= means_30n)
+                    if (lag >= means_30n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean30_" + targetName);
                         formuler += "+" +importance_varChk("sd30_" + targetName);
@@ -2687,7 +2686,7 @@ namespace WindowsFormsApplication1
 	                    //var_ts.Items.Add("quantile30.50_" + targetName);
 	                    var_ts.Items.Add("quantile30.75_" + targetName);
                     }
-                    if (lag >= means_60n)
+                    if (lag >= means_60n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean60_" + targetName);
                         formuler += "+" +importance_varChk("sd60_" + targetName);
@@ -2707,7 +2706,7 @@ namespace WindowsFormsApplication1
 	                    //var_ts.Items.Add("quantile60.50_" + targetName);
 	                    var_ts.Items.Add("quantile60.75_" + targetName);
                     }
-                    if (lag >= means_90n)
+                    if (lag >= means_90n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean90_" + targetName);
                         formuler += "+" +importance_varChk("sd90_" + targetName);
@@ -2726,7 +2725,7 @@ namespace WindowsFormsApplication1
 	                    //var_ts.Items.Add("quantile90.50_" + targetName);
 	                    var_ts.Items.Add("quantile90.75_" + targetName);
                     }
-                    if (lag >= means_120n)
+                    if (lag >= means_120n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean120_" + targetName);
                         formuler += "+" +importance_varChk("sd120_" + targetName);
@@ -2747,7 +2746,7 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("quantile120.75_" + targetName);
                     }
                     
-                    if (lag >= means_180n)
+                    if (lag >= means_180n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean180_" + targetName);
                         formuler += "+" +importance_varChk("sd180_" + targetName);
@@ -2768,7 +2767,7 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("quantile180.75_" + targetName);
                     }
                     
-                    if (lag >= means_260n)
+                    if (lag >= means_260n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean260_" + targetName);
                         formuler += "+" +importance_varChk("sd260_" + targetName);
@@ -2789,7 +2788,7 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("quantile260.75_" + targetName);
                     }
                     
-                    if (lag >= means_300n)
+                    if (lag >= means_300n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean300_" + targetName);
                         formuler += "+" +importance_varChk("sd300_" + targetName);
@@ -2810,7 +2809,7 @@ namespace WindowsFormsApplication1
 	                    var_ts.Items.Add("quantile300.75_" + targetName);
                     }
                     
-                    if (lag >= means_365n)
+                    if (lag >= means_365n && xgb_ts_prm_.checkBox13.Checked)
                     {
                         formuler += "\r\n+" +importance_varChk("mean365_" + targetName);
                         formuler += "+" +importance_varChk("sd365_" + targetName);
@@ -2833,7 +2832,7 @@ namespace WindowsFormsApplication1
                     
                     
                     
-                    if (xgb_ts_prm_.checkBox27.Checked && use_day_diff )
+                    if ( use_day_diff )
                     {
 	                    if (lag >= befor_3day)
 	                    {
@@ -8649,6 +8648,9 @@ forecast_extension += "	    }\r\n";
                 sw.Write("差分変数使用,");
                 if (xgb_ts_prm_.checkBox28.Checked) sw.Write("true\r\n");
                 else sw.Write("false\r\n");
+                sw.Write("統計量変数使用,");
+                if (xgb_ts_prm_.checkBox13.Checked) sw.Write("true\r\n");
+                else sw.Write("false\r\n");
 
                 sw.Write("xreg_Regression,");
                 if (xgb_ts_prm_.checkBox29.Checked) sw.Write("true\r\n");
@@ -9377,6 +9379,18 @@ forecast_extension += "	    }\r\n";
                         else
                         {
                             xgb_ts_prm_.checkBox28.Checked = false;
+                        }
+                        continue;
+                    }
+                    if (ss[0].IndexOf("統計量使用") >= 0)
+                    {
+                        if (ss[1].Replace("\r\n", "") == "true")
+                        {
+                            xgb_ts_prm_.checkBox13.Checked = true;
+                        }
+                        else
+                        {
+                            xgb_ts_prm_.checkBox13.Checked = false;
                         }
                         continue;
                     }
