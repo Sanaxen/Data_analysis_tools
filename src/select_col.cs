@@ -217,6 +217,7 @@ namespace WindowsFormsApplication1
 
         private void List_selection1()
         {
+            if (Reversing) return;
             if (listBox1.SelectedIndices.Count == 0) return;
             int index = listBox1.SelectedIndices[listBox1.SelectedIndices.Count-1];
             if (index >= 0)
@@ -468,8 +469,10 @@ namespace WindowsFormsApplication1
 
         }
 
+        bool Reversing = false;
         private void button9_Click(object sender, EventArgs e)
         {
+            Reversing = true;
             int[] array = new int[listBox1.Items.Count];
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
@@ -490,6 +493,7 @@ namespace WindowsFormsApplication1
                 int idx = array[i];
                 if (idx >= 0) listBox1.SetSelected(idx, false);
             }
+            Reversing = false;
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -530,12 +534,37 @@ namespace WindowsFormsApplication1
             if (running != 0) return;
             running = 1;
 
+            if ( listBox1.SelectedIndices.Count != 0)
+            {
+                MessageBox.Show("この機能については選択されている変数は削除対象外になります");
+            }
             try
             {
                 string s = form1.textBox1.Text;
 
                 string cmd = "";
-                cmd += "df" + Form1.Df_count.ToString() + "<- df[vapply(df, function(x) length(unique(x)) > 1, logical(1L))]\r\n";
+                
+                string sc = Form1.MyPath + "..\\script\\delete_almost_same_value.r";
+                sc = sc.Replace("\\", "/");
+                form1.evalute_cmdstr("source(\"" + sc + "\")");
+
+                cmd += "dont_delete <- NULL\r\n";
+                if ( listBox1.SelectedIndices.Count > 1)
+                {
+                    cmd += "dont_delete <- c(\r\n";
+                    for (int i = 0; i < listBox1.SelectedIndices.Count; i++)
+                    {
+                        cmd += "\""+listBox1.Items[listBox1.SelectedIndices[i]].ToString()+"\"";
+                        if ( i != listBox1.SelectedIndices.Count-1)
+                        {
+                            cmd += ",";
+                        }
+                    }
+                    cmd += ")\r\n";
+                }
+                cmd += "df" + Form1.Df_count.ToString() + "<- delete_almost_same_value(df, unique_occupancy = "+ textBox2.Text +", outname = \"固定値列削除.csv\", dont_delete =dont_delete)\r\n";
+                
+                //cmd += "df" + Form1.Df_count.ToString() + "<- df[vapply(df, function(x) length(unique(x)) > 1, logical(1L))]\r\n";
 
                 form1.textBox1.Text = cmd;
                 form1.script_execute(sender, e);
