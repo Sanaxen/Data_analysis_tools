@@ -655,6 +655,11 @@ namespace WindowsFormsApplication1
                             }
                             continue;
                         }
+                        if (ss[0].IndexOf("independent_variable_skip") >= 0)
+                        {
+                            textBox12.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
                     }
                     sr.Close();
                 }
@@ -784,6 +789,7 @@ namespace WindowsFormsApplication1
                     if (checkBox14.Checked) sw.Write("true\r\n");
                     else sw.Write("false\r\n");
 
+                    sw.Write("independent_variable_skip,"); sw.Write(textBox12.Text + "\r\n");
                     sw.Close();
                 }
             }
@@ -1340,6 +1346,7 @@ namespace WindowsFormsApplication1
                     process.StartInfo.Arguments += " --u1_param " + form17_.textBox3.Text;
                 }
                 process.StartInfo.Arguments += " --layout  " + comboBox3.Text;
+                process.StartInfo.Arguments += " --independent_variable_skip " + textBox12.Text;
 
                 int select_cols = listBox2.SelectedIndices.Count;
                 if (select_cols == 0 )
@@ -1376,6 +1383,11 @@ namespace WindowsFormsApplication1
                     save_model("lingam.model");
                 }
                 catch { }
+
+                if (!System.IO.File.Exists("__lingam_process_exit__"))
+                {
+                    form1.FileDelete("__lingam_process_exit__"); ;
+                }
 
                 if (System.IO.File.Exists("Digraph.bat")) form1.FileDelete("Digraph.bat");
                 if (System.IO.File.Exists("Digraph.png")) form1.FileDelete("Digraph.png");
@@ -1703,6 +1715,11 @@ namespace WindowsFormsApplication1
 
         private void button10_Click(object sender, EventArgs e)
         {
+            if (!System.IO.File.Exists("__lingam_process_exit__"))
+            {
+                form1.FileDelete("__lingam_process_exit__"); ;
+            }
+
             timer4.Stop();
             timer4.Enabled = false;
             loss_plot = false;
@@ -2077,6 +2094,10 @@ namespace WindowsFormsApplication1
                 if (process_batch != null && process_batch.HasExited)
                 {
                     process_batch = null;
+                }
+                if ( !System.IO.File.Exists("__lingam_process_exit__"))
+                {
+                    return;
                 }
 
                 if (process_batch == null)
