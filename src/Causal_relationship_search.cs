@@ -660,6 +660,11 @@ namespace WindowsFormsApplication1
                             textBox12.Text = ss[1].Replace("\r\n", "");
                             continue;
                         }
+                        if (ss[0].IndexOf("unique_check_rate") >= 0)
+                        {
+                            textBox13.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
                     }
                     sr.Close();
                 }
@@ -790,6 +795,7 @@ namespace WindowsFormsApplication1
                     else sw.Write("false\r\n");
 
                     sw.Write("independent_variable_skip,"); sw.Write(textBox12.Text + "\r\n");
+                    sw.Write("unique_check_rate,"); sw.Write(textBox13.Text + "\r\n");
                     sw.Close();
                 }
             }
@@ -1347,6 +1353,7 @@ namespace WindowsFormsApplication1
                 }
                 process.StartInfo.Arguments += " --layout  " + comboBox3.Text;
                 process.StartInfo.Arguments += " --independent_variable_skip " + textBox12.Text;
+                process.StartInfo.Arguments += " --unique_check_rate " + textBox13.Text;
 
                 int select_cols = listBox2.SelectedIndices.Count;
                 if (select_cols == 0 )
@@ -1464,12 +1471,13 @@ namespace WindowsFormsApplication1
                     //button10.Enabled = false;
 
                     loss_plot = false;
+
+                    process_batch.Start();
+                    System.Threading.Thread.Sleep(200);
                     timer4.Start();
                     timer4.Enabled = true;
                     timer6.Start();
                     timer6.Enabled = true;
-                    process_batch.Start();
-
                     return;
                 }
                 try

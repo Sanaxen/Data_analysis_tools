@@ -102,6 +102,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label25 = new System.Windows.Forms.Label();
+            this.textBox12 = new System.Windows.Forms.TextBox();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.button18 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
@@ -144,8 +146,7 @@
             this.timer5 = new System.Windows.Forms.Timer(this.components);
             this.timer6 = new System.Windows.Forms.Timer(this.components);
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.textBox12 = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
+            this.textBox13 = new System.Windows.Forms.TextBox();
             this.panel4.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
@@ -236,6 +237,7 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.textBox13);
             this.panel9.Controls.Add(this.button21);
             this.panel9.Controls.Add(this.button20);
             this.panel9.Controls.Add(this.checkBox11);
@@ -396,7 +398,7 @@
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(253, 107);
+            this.checkBox6.Location = new System.Drawing.Point(254, 126);
             this.checkBox6.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(115, 16);
@@ -727,7 +729,7 @@
             // 
             this.button10.BackColor = System.Drawing.Color.Red;
             this.button10.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button10.Location = new System.Drawing.Point(253, 44);
+            this.button10.Location = new System.Drawing.Point(253, 66);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(108, 23);
             this.button10.TabIndex = 48;
@@ -742,7 +744,7 @@
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button6.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button6.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button6.Location = new System.Drawing.Point(253, 70);
+            this.button6.Location = new System.Drawing.Point(253, 89);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(108, 32);
             this.button6.TabIndex = 27;
@@ -1060,6 +1062,25 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1387, 81);
             this.panel1.TabIndex = 8;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(381, 35);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(77, 12);
+            this.label25.TabIndex = 69;
+            this.label25.Text = "独立変数削除";
+            this.toolTip2.SetToolTip(this.label25, "目的変数との独立性をチェックして独立性の指標が指定値より小さい場合は\r\nその変数は独立しているとみなして因果探索対象外とします");
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(392, 50);
+            this.textBox12.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(38, 19);
+            this.textBox12.TabIndex = 68;
+            this.textBox12.Text = "0.0";
             // 
             // numericUpDown4
             // 
@@ -1441,23 +1462,15 @@
             // 
             this.timer6.Tick += new System.EventHandler(this.timer6_Tick);
             // 
-            // textBox12
+            // textBox13
             // 
-            this.textBox12.Location = new System.Drawing.Point(392, 50);
-            this.textBox12.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(38, 19);
-            this.textBox12.TabIndex = 68;
-            this.textBox12.Text = "0.0";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(381, 35);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(77, 12);
-            this.label25.TabIndex = 69;
-            this.label25.Text = "独立変数削除";
+            this.textBox13.Location = new System.Drawing.Point(307, 44);
+            this.textBox13.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(38, 19);
+            this.textBox13.TabIndex = 69;
+            this.textBox13.Text = "0.1";
+            this.toolTip2.SetToolTip(this.textBox13, "変数が特定の値だけしかなくそのバリエーションが全体の指定値x100%以下の場合\r\nはほとんど変化のない値として処理の対象外にします");
             // 
             // Causal_relationship_search
             // 
@@ -1630,5 +1643,6 @@
         public System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.TextBox textBox13;
     }
 }
