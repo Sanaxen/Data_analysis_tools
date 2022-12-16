@@ -1343,11 +1343,15 @@ namespace WindowsFormsApplication1
                     }
                     if (form17_.checkBox3.Checked)
                     {
-                        process.StartInfo.Arguments += " --random_pattern 1";
+                        process.StartInfo.Arguments += " --random_pattern 0";
                     }
                     else
                     {
-                        process.StartInfo.Arguments += " --random_pattern 0";
+                        process.StartInfo.Arguments += " --random_pattern 1";
+                    }
+                    if (Names.Items.Count > 7)
+                    {
+                        MessageBox.Show("変数が7を超えるため変数の組み合わせランダムパターでの計算はキャンセルされます");
                     }
                     process.StartInfo.Arguments += " --u1_param " + form17_.textBox3.Text;
                 }
@@ -1391,10 +1395,6 @@ namespace WindowsFormsApplication1
                 }
                 catch { }
 
-                if (!System.IO.File.Exists("__lingam_process_exit__"))
-                {
-                    form1.FileDelete("__lingam_process_exit__"); ;
-                }
 
                 if (System.IO.File.Exists("Digraph.bat")) form1.FileDelete("Digraph.bat");
                 if (System.IO.File.Exists("Digraph.png")) form1.FileDelete("Digraph.png");
@@ -1723,10 +1723,6 @@ namespace WindowsFormsApplication1
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if (!System.IO.File.Exists("__lingam_process_exit__"))
-            {
-                form1.FileDelete("__lingam_process_exit__"); ;
-            }
 
             timer4.Stop();
             timer4.Enabled = false;
@@ -2102,10 +2098,6 @@ namespace WindowsFormsApplication1
                 if (process_batch != null && process_batch.HasExited)
                 {
                     process_batch = null;
-                }
-                if ( !System.IO.File.Exists("__lingam_process_exit__"))
-                {
-                    return;
                 }
 
                 if (process_batch == null)
