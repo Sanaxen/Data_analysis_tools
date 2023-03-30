@@ -1,6 +1,12 @@
 #install_libpath = .libPaths()[1]
 #install_libpath = .libPaths()[2]
-install_libpath = .libPaths()
+
+org_libpath <- .libPaths()
+
+### Specify the R library path in DDS2
+install_libpath = "C:/tmp/tmp_yama/DDS2/DDS2/bin/R-4.2.3/library"
+
+.libPaths( c(install_libpath))
 
 targetPackages <- c('forecast', 'ellipse', 'magrittr','randomForest','car','dplyr', 
 'tidyverse', 'makedummies', 'VIM', 'imputeMissings', 'PerformanceAnalytics', 'reshape2'
@@ -22,12 +28,16 @@ install.packages("RMeCab", repos = "http://rmecab.jp/R", lib=install_libpath)
 #install.packages("wordcloud2", repo="http://cran.r-project.org", dep=T, lib=install_libpath)
 install.packages("devtools", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
 library(devtools)
+library(remotes)
+
+install.packages("remotes", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
+
 devtools::install_github("lchiffon/wordcloud2", lib=install_libpath)
 
 devtools::install_github("ModelOriented/iBreakDown", lib=install_libpath)
 devtools::install_github("ModelOriented/ingredients", lib=install_libpath)
 
-install.packages("SHAPforxgboost", lib=install_libpath)
+install.packages("SHAPforxgboost", repos = "http://cran.us.r-project.org",lib=install_libpath)
 devtools::install_github("liuyanguu/SHAPforxgboost", lib=install_libpath)
 
 install.packages("devtools", repos = "https://cloud.r-project.org/",dependencies=TRUE, lib=install_libpath)
@@ -42,5 +52,14 @@ devtools::install_github("fisproject/lineNotify", lib=install_libpath)
 #install.packages("car", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
 #install.packages("VIM", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
 #install.packages("glmnet", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
+#install.packages("forecast", repos = "http://cran.us.r-project.org", lib=install_libpath) 
+#install.packages("ellipse", repos = "http://cran.us.r-project.org", lib=install_libpath) 
 
 #install.packages('dHSIC', repos = "http://cran.us.r-project.org", lib=install_libpath)
+
+install.packages('processx', repos = "http://cran.us.r-project.org", lib=install_libpath)
+
+###########################
+
+
+.libPaths( org_libpath)
