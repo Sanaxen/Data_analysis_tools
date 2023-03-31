@@ -1793,6 +1793,7 @@ namespace WindowsFormsApplication1
 
             if (File.Exists(startup))
             {
+                SendCommand("options(encoding=\"sjis\")\r\n");
                 SendCommand("load(\"" + startup + "\")\r\n");
             }
             ChecklibraryAll();
@@ -1902,6 +1903,7 @@ namespace WindowsFormsApplication1
             //RProcess.StandardInput.Write("options(warn=-1)\r\n");
             if (File.Exists(".RData"))
             {
+                SendCommand("options(encoding=\"sjis\")\r\n");
                 SendCommand("load(\".RData\")\r\n");
             }
             ChecklibraryAll();

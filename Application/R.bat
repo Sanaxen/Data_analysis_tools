@@ -1,5 +1,13 @@
-set R_INSTALL_PATH=%~dp0\DDS2\bin\R-4.1.2
-set  R_LIBS_USER=%~dp0\DDS2\bin\R-4.1.2\library
+set R_INSTALL_PATH=%~dp0\DDS2\bin\R-4.2.3
+set  R_LIBS_USER=%~dp0\DDS2\bin\R-4.2.3\library
+
+set RTOOL_PATH=%~dp0\DDS2\bin\rtools42
+set RTOOLS40_HOME=%~dp0\DDS2\bin\rtools42
+
+set MECAB_PATH=%~dp0\DDS2\bin\MeCab
+
+set PATH=%MECAB_PATH%\bin;%PATH%
+set MECABRC=%MECAB_PATH%\etc\mecabrc
 
 set RTOOL_PATH=%~dp0\DDS2\bin\rtools40
 set RTOOLS40_HOME=%~dp0\DDS2\bin\rtools40
