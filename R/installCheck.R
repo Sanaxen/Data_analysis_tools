@@ -4,7 +4,7 @@
 org_libpath <- .libPaths()
 
 ### Specify the R library path in DDS2
-install_libpath = "C:/tmp/tmp_yama/DDS2/DDS2/bin/R-4.2.3/library"
+install_libpath = "C:/Users/bccat/Desktop/DDS2/DDS2/bin/R-4.2.3/library"
 
 .libPaths( c(install_libpath))
 
