@@ -1,6 +1,6 @@
 
-set data=C:\Users\neutral\Desktop\predictive_aintenance\MATLAB_data
-set serv=C:\Users\neutral\Desktop\predictive_aintenance\work\Untreated
+set data=.\振動_data
+set serv=.\work\Untreated
 
 
 
