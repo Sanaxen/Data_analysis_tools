@@ -1,0 +1,188 @@
+ --csv tmp_Causal_relationship_search.csv --header 1 --col 0 --iter 1000 --tol 0.0001 --diaglam_size 20 --lasso 0 --error_distr 1 --capture 1 --error_distr_size  1920,1440 --min_cor_delete 0 --min_delete 0.01 --x_var "X1" --x_var "X2" --x_var "X3" --ignore_constant_value_columns 1 --lasso_tol 0.0001 --lasso_itr_max 1000 --confounding_factors 1 --confounding_factors_sampling 30000 --mutual_information_cut 0.0 --mutual_information_values 0 --temperature_alp 0.95 --distribution_rate 0.1 --rho 3.0 --prior_knowledge_rate  1 --early_stopping  0 --confounding_factors_upper  0.9 --view_confounding_factors  0 --bins 30 --pause 1 --normalize_type 0 --use_intercept 1 --min_delete_srt 0 --use_adaptive_lasso 1 --use_bootstrap 0 --nonlinear 1 --use_gpu 0 --use_hsic 0 --R_cmd_path "C:\Users\neutral\Desktop\DDS2\DDS2\bin\R-4.1.2\bin\R.exe" 
+ --use_bootstrap 1 
+ --load_model lingam.model  --loss_data_load 0 
+ --min_cor_delete 0.0 
+ --mutual_information_cut 0 
+ --min_delete 0.5 
+ --confounding_factors_upper 1.5 
+ --view_confounding_factors 0 
+ --pause 0 
+
+m,n:10000, 3
+empty cell:0
+nan cell:0
+m,n:10000, 3
+
+set term windows size 1920,1440
+         ^
+"plot_0003.plt" line 34: You can't change the terminal in multiplot mode
+
+empty cell:0
+nan cell:0
+c_var:0
+x_var:"X1" 0
+x_var:"X2" 1
+x_var:"X3" 2
+[X1] category:false
+[X1]Max-Min:0.999822
+[X1]
+[X2] category:false
+[X2]Max-Min:4.938668
+[X2]
+[X3] category:false
+[X3]Max-Min:4.492982
+[X3]
+[0] X1
+[1] X2
+[2] X3
+shapiro_wilk test(0.05) start
+[X1                  ]w:0.955    p_value:0.0000000000000000
+[X2                  ]w:0.893    p_value:0.0000000000000000
+[X3                  ]w:0.998    p_value:0.0000261270931467
+shapiro_wilk test end
+
+input:[tmp_Causal_relationship_search.csv]
+m,n:3, 3
+empty cell:0
+nan cell:0
+laod B
+m,n:3, 3
+empty cell:0
+nan cell:0
+load B_pre_sort
+m,n:10000, 3
+empty cell:0
+nan cell:0
+load input
+m,n:10000, 3
+empty cell:0
+nan cell:0
+load modification_input
+m,n:3, 3
+empty cell:0
+nan cell:0
+load mutual_information
+m,n:10000, 3
+empty cell:0
+nan cell:0
+load ƒÊ
+m,n:3, 3
+empty cell:0
+nan cell:0
+residual_error_independ
+m,n:10000, 3
+empty cell:0
+nan cell:0
+residual_error
+m,n:3, 1
+empty cell:0
+nan cell:0
+intercept
+m,n:3, 3
+empty cell:0
+nan cell:0
+b_probability
+m,n:5, 5
+empty cell:0
+nan cell:0
+load_model ok.
+=== (#1)B ===
+3 x 3
+0.000000e+00 0.000000e+00 0.000000e+00 
+8.637670e-01 0.000000e+00 0.000000e+00 
+-2.802356e+00 8.903430e-01 0.000000e+00 
+
+importance
+colnames_id:3
+importance end
+
+set term windows size 1920,1440
+         ^
+"plot_0003.plt" line 34: You can't change the terminal in multiplot mode
+
+R_cmd_path:["C:\Users\neutral\Desktop\DDS2\DDS2\bin\R-4.1.2\bin\R.exe"]
+["C:\Users\neutral\Desktop\DDS2\DDS2\bin\R-4.1.2\bin\R.exe" CMD BATCH --slave --vanilla  b_importance.r]
+b_importance.txt:000001DB74C7BAE0
+b_importance:2
+[X2(1)]
+	[X1(0)]:2.217595
+	[Unknown1(-1)]:0.294988
+[X3(2)]
+	[X2(1)]:1.113047
+	[Unknown2(-1)]:0.290958
+=== B ===
+3 x 3
+  0.000000   0.000000   0.000000 
+  0.863767   0.000000   0.000000 
+ -2.802356   0.890343   0.000000 
+
+=== impB_ ===
+3 x 3
+  0.000000   0.000000   0.000000 
+  2.217595   0.000000   0.000000 
+  0.000000   1.113047   0.000000 
+
+=== LiNGAM.importance_B ===
+3 x 3
+  0.000000   0.000000   0.000000 
+  1.000000   0.000000   0.000000 
+  0.000000   1.000000   0.000000 
+
+=== (#2)B ===
+3 x 3
+0.000000e+00 0.000000e+00 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00 
+0.000000e+00 1.000000e+00 0.000000e+00 
+
+=== (#3)B ===
+3 x 3
+0.000000e+00 0.000000e+00 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00 
+0.000000e+00 1.000000e+00 0.000000e+00 
+
+scale:1920.000000
+b_probability_barplot
+b_probability_barplot end
+Causal_effect
+Causal_effect end
+shapiro_wilk test(0.05) start
+[X1                  ]w:0.892    p_value:0.0000000000000000
+[X2                  ]w:0.980    p_value:0.0000000000000000
+[X3                  ]w:0.983    p_value:0.0000000000000000
+shapiro_wilk test end
+
+view_confounding_factors:0
+confounding_factors_upper:1.500000
+=== remove 0.001 ===
+3 x 3
+0.000000e+00 0.000000e+00 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00 
+0.000000e+00 1.000000e+00 0.000000e+00 
+
+=== #mutual_information ===
+3 x 3
+  0.000000   0.360291   0.288380 
+  0.360277   0.000000   2.900208 
+  0.288324   2.900304   0.000000 
+
+"C:\Users\neutral\Desktop\DDS2\\DDS2\bin\Graphviz2.38\bin\dot.exe" -Tpng digraph.txt -o Digraph.png
+=======	Cause - and-effect diagram =======
+X1 --[ 1.000]--> X2
+X2 --[ 1.000]--> X3
+------------------------------------------
+intercept[X1]:0.0009
+intercept[X2]:5.4542
+intercept[X3]:0.5380
+epsilon_mean[X1]:0.0060 [-0.0056 ~ 0.0353]
+epsilon_mean[X2]:0.0536 [-0.7363 ~ 0.8786]
+epsilon_mean[X3]:0.0392 [-0.9432 ~ 1.0188]
+residual_error_independ(MI)[X1,X2]:0.1481
+residual_error_independ(MI)[X1,X3]:0.0000
+residual_error_independ(MI)[X2,X3]:0.0617
+residual_error_independ(HSIC)[X1,X2]:0.0000
+residual_error_independ(HSIC)[X1,X3]:0.0000
+residual_error_independ(HSIC)[X2,X3]:0.0000
+Iter:30000 early_stopping:0
+loss:[0.4747]
+residual_independence:[0.0000,0.0000]
+residual_error:[-0.9432, 1.0188]

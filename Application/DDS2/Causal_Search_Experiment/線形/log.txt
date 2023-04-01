@@ -1,0 +1,254 @@
+ --csv tmp_Causal_relationship_search.csv --header 1 --col 0 --iter 1000 --tol 0.0001 --diaglam_size 20 --lasso 0 --error_distr 1 --capture 1 --error_distr_size  1920,1440 --min_cor_delete 0 --min_delete 0.01 --x_var "x1" --x_var "x2" --x_var "x3" --x_var "x4" --x_var "x5" --ignore_constant_value_columns 1 --lasso_tol 0.0001 --lasso_itr_max 1000 --confounding_factors 1 --confounding_factors_sampling 30000 --mutual_information_cut 0.0 --mutual_information_values 0 --temperature_alp 0.95 --distribution_rate 0.1 --rho 3.0 --prior_knowledge_rate  1 --early_stopping  0 --confounding_factors_upper  0.9 --view_confounding_factors  0 --bins 30 --pause 1 --normalize_type 0 --use_intercept 1 --min_delete_srt 0 --use_adaptive_lasso 1 --use_bootstrap 0 --nonlinear 1 --use_gpu 0 --use_hsic 0 --R_cmd_path "C:\Users\bccat\Desktop\DDS2\DDS2\bin\R-4.1.2\bin\R.exe" 
+ --use_bootstrap 1 
+ --load_model lingam.model  --loss_data_load 0 
+ --min_cor_delete 0.0 
+ --mutual_information_cut 0 
+ --min_delete 0.7 
+ --confounding_factors_upper 1.5 
+ --view_confounding_factors 1 
+ --pause 0 
+
+m,n:10000, 7
+empty cell:0
+nan cell:0
+m,n:10000, 7
+
+set term windows size 1920,1440
+         ^
+"plot_0003.plt" line 46: You can't change the terminal in multiplot mode
+
+empty cell:0
+nan cell:0
+c_var:0
+x_var:"x1" 0
+x_var:"x2" 1
+x_var:"x3" 2
+x_var:"x4" 3
+x_var:"x5" 4
+[x1] category:false
+[x1]Max-Min:0.999822
+[x1]
+[x2] category:false
+[x2]Max-Min:2.794279
+[x2]
+[x3] category:false
+[x3]Max-Min:2.997197
+[x3]
+[x4] category:false
+[x4]Max-Min:2.508113
+[x4]
+[x5] category:false
+[x5]Max-Min:3.415578
+[x5]
+[0] x1
+[1] x2
+[2] x3
+[3] x4
+[4] x5
+shapiro_wilk test(0.05) start
+[x1                  ]w:0.955    p_value:0.0000000000000000
+[x2                  ]w:0.997    p_value:0.0000000022700517
+[x3                  ]w:0.999    p_value:0.0004794337356443
+[x4                  ]w:0.997    p_value:0.0000002057533547
+[x5                  ]w:0.998    p_value:0.0000447949942545
+shapiro_wilk test end
+
+input:[tmp_Causal_relationship_search.csv]
+m,n:5, 5
+empty cell:0
+nan cell:0
+laod B
+m,n:5, 5
+empty cell:0
+nan cell:0
+load B_pre_sort
+m,n:10000, 5
+empty cell:0
+nan cell:0
+load input
+m,n:10000, 5
+empty cell:0
+nan cell:0
+load modification_input
+m,n:5, 5
+empty cell:0
+nan cell:0
+load mutual_information
+m,n:10000, 5
+empty cell:0
+nan cell:0
+load ƒÊ
+m,n:5, 5
+empty cell:0
+nan cell:0
+residual_error_independ
+m,n:10000, 5
+empty cell:0
+nan cell:0
+residual_error
+m,n:5, 1
+empty cell:0
+nan cell:0
+intercept
+m,n:5, 5
+empty cell:0
+nan cell:0
+b_probability
+load_model ok.
+=== (#1)B ===
+5 x 5
+0.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+-7.179680e-01 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+2.221460e-01 6.108360e-01 0.000000e+00  ... 0.000000e+00 
+2.120660e-01 -2.986260e-01 7.871810e-01  ... 0.000000e+00 
+1.216381e+00 -1.449000e-02 6.738000e-03  ... 0.000000e+00 
+
+importance
+colnames_id:5
+importance end
+
+set term windows size 1920,1440
+         ^
+"plot_0003.plt" line 46: You can't change the terminal in multiplot mode
+
+R_cmd_path:["C:\Users\bccat\Desktop\DDS2\DDS2\bin\R-4.1.2\bin\R.exe"]
+["C:\Users\bccat\Desktop\DDS2\DDS2\bin\R-4.1.2\bin\R.exe" CMD BATCH --slave --vanilla  b_importance.r]
+b_importance.txt:000001CA2514D5E0
+b_importance:4
+[x2(1)]
+	[x1(0)]:0.531780
+	[Unknown1(-1)]:0.447854
+[x3(2)]
+	[x2(1)]:0.489389
+	[x1(0)]:0.337506
+	[Unknown1(-1)]:0.332942
+	[Unknown2(-1)]:0.332293
+[x4(3)]
+	[x1(0)]:0.323268
+	[x2(1)]:0.306273
+	[Unknown1(-1)]:0.301476
+	[x3(2)]:0.291370
+	[Unknown3(-1)]:0.290773
+	[Unknown2(-1)]:0.283207
+[x5(4)]
+	[x1(0)]:0.525501
+	[x4(3)]:0.509609
+	[x2(1)]:0.206028
+	[Unknown2(-1)]:0.201119
+	[Unknown4(-1)]:0.197891
+	[Unknown1(-1)]:0.196417
+=== B ===
+5 x 5
+  0.000000   0.000000   0.000000  ...   0.000000 
+ -0.717968   0.000000   0.000000  ...   0.000000 
+  0.222146   0.610836   0.000000  ...   0.000000 
+  0.212066  -0.298626   0.787181  ...   0.000000 
+  1.216381  -0.014490   0.006738  ...   0.000000 
+
+=== impB_ ===
+5 x 5
+  0.000000   0.000000   0.000000  ...   0.000000 
+  0.531780   0.000000   0.000000  ...   0.000000 
+  0.337506   0.489389   0.000000  ...   0.000000 
+  0.323268   0.306273   0.291370  ...   0.000000 
+  0.525501   0.206028   0.000000  ...   0.000000 
+
+=== LiNGAM.importance_B ===
+5 x 5
+  0.000000   0.000000   0.000000  ...   0.000000 
+  1.000000   0.000000   0.000000  ...   0.000000 
+  0.689648   1.000000   0.000000  ...   0.000000 
+  1.000000   0.947427   0.901327  ...   0.000000 
+  1.000000   0.392059   0.000000  ...   0.000000 
+
+=== (#2)B ===
+5 x 5
+0.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+6.896476e-01 1.000000e+00 0.000000e+00  ... 0.000000e+00 
+1.000000e+00 9.474275e-01 9.013273e-01  ... 0.000000e+00 
+1.000000e+00 3.920594e-01 0.000000e+00  ... 0.000000e+00 
+
+=== (#3)B ===
+5 x 5
+0.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+0.000000e+00 1.000000e+00 0.000000e+00  ... 0.000000e+00 
+1.000000e+00 9.474275e-01 9.013273e-01  ... 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+
+scale:1920.000000
+b_probability_barplot
+b_probability_barplot end
+Causal_effect
+Causal_effect end
+shapiro_wilk test(0.05) start
+[x1                  ]w:0.914    p_value:0.0000000000000000
+[x2                  ]w:0.992    p_value:0.0000000000000002
+[x3                  ]w:0.995    p_value:0.0000000000049872
+[x4                  ]w:0.998    p_value:0.0000007952898643
+[x5                  ]w:0.979    p_value:0.0000000000000000
+shapiro_wilk test end
+
+view_confounding_factors:1
+confounding_factors_upper:1.500000
+=== remove 0.001 ===
+5 x 5
+0.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+0.000000e+00 1.000000e+00 0.000000e+00  ... 0.000000e+00 
+1.000000e+00 9.474275e-01 9.013273e-01  ... 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00  ... 0.000000e+00 
+
+=== #mutual_information ===
+5 x 5
+  0.000000   0.053743   0.329026  ...   0.101996 
+  0.053680   0.000000   1.628450  ...   0.467970 
+  0.328997   1.628357   0.000000  ...   2.316275 
+  0.180217   0.116887   1.362727  ...   0.765678 
+  0.101927   0.468148   2.316359  ...   0.000000 
+
+"C:\Users\bccat\Desktop\DDS2\\DDS2\bin\Graphviz2.38\bin\dot.exe" -Tpng digraph.txt -o Digraph.png
+=======	Cause - and-effect diagram =======
+x1 --[ 1.000]--> x2
+x2 --[ 1.000]--> x3
+x1 --[ 1.000]--> x4
+x2 --[ 0.947]--> x4
+x3 --[ 0.901]--> x4
+x1 --[ 1.000]--> x5
+x4 --[ 0.970]--> x5
+------------------------------------------
+intercept[x1]:-0.6579
+intercept[x2]:2.9566
+intercept[x3]:1.0993
+intercept[x4]:-0.5727
+intercept[x5]:-0.1973
+epsilon_mean[x1]:-0.0001 [-0.0682 ~ 0.0469]
+epsilon_mean[x2]:0.0050 [-1.1064 ~ 1.1135]
+epsilon_mean[x3]:0.0083 [-1.2793 ~ 1.1603]
+epsilon_mean[x4]:-0.0009 [-1.2438 ~ 1.2546]
+epsilon_mean[x5]:-0.0458 [-0.8193 ~ 0.7456]
+residual_error_independ(MI)[x1,x2]:0.0151
+residual_error_independ(MI)[x1,x3]:0.3740
+residual_error_independ(MI)[x1,x4]:0.0495
+residual_error_independ(MI)[x1,x5]:0.1872
+residual_error_independ(MI)[x2,x3]:0.0612
+residual_error_independ(MI)[x2,x4]:0.0699
+residual_error_independ(MI)[x2,x5]:0.5208
+residual_error_independ(MI)[x3,x4]:0.0610
+residual_error_independ(MI)[x3,x5]:0.3368
+residual_error_independ(MI)[x4,x5]:0.2435
+residual_error_independ(HSIC)[x1,x2]:0.0000
+residual_error_independ(HSIC)[x1,x3]:0.0000
+residual_error_independ(HSIC)[x1,x4]:0.0000
+residual_error_independ(HSIC)[x1,x5]:0.0000
+residual_error_independ(HSIC)[x2,x3]:0.0000
+residual_error_independ(HSIC)[x2,x4]:0.0001
+residual_error_independ(HSIC)[x2,x5]:0.0000
+residual_error_independ(HSIC)[x3,x4]:0.0001
+residual_error_independ(HSIC)[x3,x5]:0.0000
+residual_error_independ(HSIC)[x4,x5]:0.0000
+Iter:30000 early_stopping:0
+loss:[0.6625]
+residual_independence:[0.0000,0.0001]
+residual_error:[-1.2793, 1.2546]

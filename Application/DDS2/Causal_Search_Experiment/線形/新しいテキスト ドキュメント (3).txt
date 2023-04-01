@@ -1,0 +1,59 @@
+setwd("C:\\Users\\bccat\\Desktop\\DDS2\\DDS2\\\\Work")
+library('Ckmeans.1d.dp')
+options(width=10000)
+require(xgboost)
+require(Matrix)
+require(DALEX)
+require(DALEXtra)
+require(ingredients)
+require(mlr)
+library(SHAPforxgboost)
+
+
+previous_na_action <- options()$na.action
+options(na.action='na.pass')
+
+df <- read.csv( "nonlinear_LiNGAM_latest3.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+
+train <- df
+
+y_ <- train$'x5'
+train$target_<- y_
+train_mx<-sparse.model.matrix(target_ ~x1+x2+x3+x4, data = train)
+train_dmat <- xgb.DMatrix(train_mx, label = train$target_)
+
+l_params=l_params = list(booster="gbtree"
+,objective="reg:squarederror"
+,eta=0.1
+,gamma=0.0
+,min_child_weight=1.0
+,subsample=1
+,max_depth=6
+,alpha=0.0
+,lambda=1.0
+,colsample_bytree=0.8
+,nthread=3
+,tree_method = 'hist'
+,predictor='cpu_predictor'
+)
+
+
+
+options(na.action=previous_na_action)
+
+set.seed(1) 
+xgboost.model_x5 <- xgb.train(data = train_dmat,nrounds = 50000,verbose = 2, # 繰り返し過程を表示する
+,early_stopping_rounds = 100,params = l_params)
+
+explainer <-explain_xgboost(xgboost.model_x5, data = train_mx, train$target_, label = "Contribution of each variable", type = "regression")
+imp_<-feature_importance(explainer, label="特徴量重要度",loss_function = DALEX::loss_root_mean_square)
+shap_values <- shap.values(xgb_model = xgboost.model_x5, X_train = train_dmat)
+plot_data <- shap.prep.stack.data(shap_contrib = shap_values$shap_score,top_n = 6, n_groups = 1)
+shap.plot.force_plot(plot_data, zoom_in_location=1)
+train_force_plot_plt_x5 <- shap.plot.force_plot_bygroup(plot_data)
+ggsave("xgboost_train_force_plot_x5.png", train_force_plot_plt_x5, dpi = 100, width = 6.4*3*1, height = 4.8*1*1, limitsize = FALSE)
+print(imp_)
+
+plt__x5<-plot(imp_)
+ggsave("xgboost_importance_x5.png", plt__x5, dpi = 100, width = 6.4*3*1, height = 4.8*1*1, limitsize = FALSE)
+
