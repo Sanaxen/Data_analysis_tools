@@ -7,5 +7,8 @@ exit
 )
 
 call setup_ini.bat
+cd DDS2\bin
+
+
 %R_INSTALL_PATH%\bin\RScript.exe %~dp0\DDS2\script\installCheck.R
 
