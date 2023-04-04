@@ -4,7 +4,7 @@ call ..\..\setup_ini.bat
 set  R_LIBS_USER=.\library
 
 set test="./src/predictive_maintenance2.r"
-copy "U“®_parameters.r" work\parameters.r /v /y
+copy "vibration_parameters.r" work\parameters.r /v /y
 
 cd %~dp0
 
