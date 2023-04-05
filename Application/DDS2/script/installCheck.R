@@ -9,6 +9,8 @@ install_libpath <- paste(curdir, "/R-4.2.3/library", sep="")
 
 .libPaths( c(install_libpath))
 
+print(.libPaths())
+
 targetPackages <- c('forecast', 'ellipse', 'magrittr','randomForest','car','dplyr', 
 'tidyverse', 'makedummies', 'VIM', 'imputeMissings', 'PerformanceAnalytics', 'reshape2'
 ,'glmnet','formattable','webshot', 'epitools','kableExtra'

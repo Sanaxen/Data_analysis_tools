@@ -1712,7 +1712,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 	dt <- mean(diff(gfm2$time_index))
 	print(sprintf("dt:%f", dt))
 	
-	print(sprintf("failure_time:%d", failure_time))
+	print(sprintf("failure_time:%d", as.integer(failure_time)))
 	failure_time_str = "+Infinity"
 	failure_time50p_str = "+Infinity"
 	if ( failure_time < failure_time_init )

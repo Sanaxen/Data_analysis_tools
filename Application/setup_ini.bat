@@ -9,7 +9,7 @@ set  R_LIBS_USER=%~dp0\DDS2\bin\R-4.2.3\library
 set GNUPLOT_PATH=%~dp0\DDS2\bin\gnuplot\bin
 set GRAPHVIZ_PATH=%~dp0\DDS2\bin\Graphviz2.38\bin
 
-#set RTOOL_PATH=%~dp0\DDS2\bin\Rtools
+:set RTOOL_PATH=%~dp0\DDS2\bin\Rtools
 set RTOOL_PATH=%~dp0\DDS2\bin\rtools42
 set RTOOLS42_HOME=%~dp0\DDS2\bin\rtools42
 
@@ -22,6 +22,6 @@ set DEEPAR_APP=D:\application_dev\deepARapp\deepAR_application
 set APPDATA_DDS=%~dp0\bin\AppData\Roaming
  
 set PYTORCH_CUDA=%~dp0\DDS2\bin\gpu_version
-mkdir %PYTORCH_CUDA%
+if not exist "%PYTORCH_CUDA%" mkdir"%PYTORCH_CUDA%"
 
 

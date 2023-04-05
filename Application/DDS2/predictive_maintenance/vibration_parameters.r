@@ -3,7 +3,7 @@ use_spline = FALSE
 
 #入力データの分解能
 unit_of_time = "sec"
-unit_of_record = 1
+unit_of_record = (1/585936)*60*60*24
 
 #特徴量平滑化
 feature_smooth_window = 0
