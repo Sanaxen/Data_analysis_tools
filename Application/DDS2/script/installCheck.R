@@ -30,10 +30,11 @@ install.packages("RMeCab", repos = "http://rmecab.jp/R", lib=install_libpath)
 
 #install.packages("wordcloud2", repo="http://cran.r-project.org", dep=T, lib=install_libpath)
 install.packages("devtools", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
+install.packages("remotes", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
+
 library(devtools)
 library(remotes)
 
-install.packages("remotes", repos = "http://cran.us.r-project.org",dependencies=TRUE, lib=install_libpath)
 
 devtools::install_github("lchiffon/wordcloud2", lib=install_libpath)
 

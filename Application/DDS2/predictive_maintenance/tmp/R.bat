@@ -1,6 +1,6 @@
-call  init.bat
+:call  init.bat
 
-call ..\..\setup_ini.bat
+call ..\..\..\setup_ini.bat
 
 set  R_LIBS_USER=.\lib
 
