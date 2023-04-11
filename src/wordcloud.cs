@@ -269,6 +269,7 @@ namespace WindowsFormsApplication1
             running = 1;
 
             string cmd = "";
+            cmd += "options(encoding =" + form1.r_encoding_opt + ")\r\n";
             cmd += "library(RMeCab)\r\n";
             cmd += "library(wordcloud)\r\n";
             cmd += "library(ggplot2)\r\n";

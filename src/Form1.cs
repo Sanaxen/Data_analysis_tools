@@ -286,6 +286,9 @@ namespace WindowsFormsApplication1
 
             return false;
         }
+
+        public string r_encoding_opt="\"sjis\"";
+
         static public int WaitForExitLimit = 300000;
         bool unusable = false;          // = true --> 利用不可状態
         public string App_userinfo = "";
@@ -1793,7 +1796,7 @@ namespace WindowsFormsApplication1
 
             if (File.Exists(startup))
             {
-                SendCommand("options(encoding=\"sjis\")\r\n");
+                SendCommand("options(encoding="+ r_encoding_opt+")\r\n");
                 SendCommand("load(\"" + startup + "\")\r\n");
             }
             ChecklibraryAll();
@@ -1903,7 +1906,7 @@ namespace WindowsFormsApplication1
             //RProcess.StandardInput.Write("options(warn=-1)\r\n");
             if (File.Exists(".RData"))
             {
-                SendCommand("options(encoding=\"sjis\")\r\n");
+                SendCommand("options(encoding=" + r_encoding_opt + ")\r\n");
                 SendCommand("load(\".RData\")\r\n");
             }
             ChecklibraryAll();
@@ -2947,6 +2950,7 @@ namespace WindowsFormsApplication1
 #if true
                     string cmd = "";
                     cmd += "\r\n";
+                    cmd += "options(encoding =" + r_encoding_opt +")\r\n";
                     cmd += "tryCatch({\r\n";
                     cmd += execution;
                     cmd += "},\r\n";
@@ -3442,6 +3446,7 @@ namespace WindowsFormsApplication1
 
                         System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis"));
                         sw.Write("options(width=" + _setting.numericUpDown2.Value.ToString() + ")\r\n");
+                        sw.Write("options(encoding=" + r_encoding_opt + ")\r\n");
                         sw.Write("sink(file = \"summary.txt\")\r\n");
                         if (script_execute_flag == 0)
                         {
@@ -5291,6 +5296,7 @@ namespace WindowsFormsApplication1
                 src += "num_ <-" + numericUpDown3.Value.ToString() + "*0.01*nrow(df)\r\n";
                 src += "if ( num_ < 1 ) num_ <- 1\r\n";
                 src += "smpl<-sample( nrow( df ), num_)\r\n";
+                src += "print(smpl)\r\n";
                 src += "train <- df[smpl,]\r\n";
                 src += "test <- df[-smpl,]\r\n";
             }else
