@@ -16,7 +16,7 @@ targetPackages <- c('forecast', 'ellipse', 'magrittr','randomForest','car','dply
 ,'glmnet','formattable','webshot', 'epitools','kableExtra'
 ,'rpart', 'rpart.plot', 'partykit','ggpmisc', 'pls', 'e1071', 'plotly', 'xgboost'
 ,'wordcloud', 'magrittr', 'tagcloud', 'mice' , 'KFAS'
-, 'Ckmeans.1d.dp', 'DiagrammeR', 'ggfortify', 'proxy', 'lubridate', 'wordcloud2'
+, 'Ckmeans.1d.dp', 'DiagrammeR', 'ggfortify', 'proxy', 'lubridate', 'wordcloud2','htmltools'
 , 'ggplotify', 'DALEX', 'DALEXtra', 'mlr', 'doParallel', 'ggsci', 'DT'
 , 'dHSIC')
 

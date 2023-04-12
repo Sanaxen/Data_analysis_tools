@@ -7,6 +7,9 @@ exit
 )
 
 call setup_ini.bat
+set APPDATA=%APPDATA_DDS%
+set PATH=%APPDATA%\;%PATH%
+
 cd DDS2\bin
 
 

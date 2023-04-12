@@ -276,6 +276,7 @@ namespace WindowsFormsApplication1
             cmd += "library(magrittr)\r\n";
             cmd += "library(dplyr)\r\n";
             cmd += "library(stringr)\r\n";
+            cmd += "library(htmltools)\r\n";
 
             if (textFile == "")
             {
@@ -378,17 +379,21 @@ namespace WindowsFormsApplication1
             }
 
             //# バイグラムの出現頻度の高いものについて、有向グラフでその関係
-            cmd += "ngram <-NgramDF(x_, type = 1, pos = c(\"名詞\"), N = 2)\r\n";
+            cmd += "ngram <-NgramDF(x_, type = 1, pos = c(\"名詞\", \"動詞\"), N = 2)\r\n";
             cmd += "ngram2 <-ngram[order(ngram$Freq, decreasing = T),]\r\n";
             cmd += "ngram2 <-subset(ngram2, Freq >= "+ numericUpDown1.Value.ToString()+")\r\n";
 
             cmd += "library(igraph)\r\n";
             cmd += "graph <-graph.data.frame(ngram2)\r\n";
 
-            cmd += "png(\"ngram.png\", height = " + "480*" + form1._setting.numericUpDown4.Value.ToString() + ",width =" + "640*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n";
-            cmd += "par(cex=1*" + form1._setting.numericUpDown4.Value.ToString() + ")\r\n";
+            cmd += "scale_tmp <- " + form1._setting.numericUpDown4.Value.ToString()+"\r\n";
+            cmd += "png(\"ngram.png\", height = 480*scale_tmp, width =640*scale_tmp)\r\n";
+            cmd += "par(cex=1*sqrt(scale_tmp+0.1))\r\n";
 
-            cmd += "plot(graph, vertex.label = V(graph)$name, vertex.size = 25)\r\n";
+            cmd += "#plot(graph, vertex.label = V(graph)$name, vertex.size = 25)\r\n";
+            cmd += "plot(graph, vertex.label = V(graph)$name, edge.color=\"red\", vertex.color=\"lightblue\",\r\n" +
+            "   vertex.size = 5 * log(scale_tmp + 0.1), vertex.label.cex = 1.1 * sqrt(scale_tmp + 0.1) , vertex.label.font = 6,\r\n" +
+            "    edge.arrow.size = 0.2 * scale_tmp,layout = layout.fruchterman.reingold)\r\n";
             cmd += "dev.off()\r\n";
 
             linkLabel1.Visible = false;
