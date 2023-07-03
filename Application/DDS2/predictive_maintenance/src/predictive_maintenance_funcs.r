@@ -348,23 +348,39 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 		
 		f <- NULL
 		j = smooth_window
-		while ( (j - smooth_window+1) >= 1 && j <= nrow(x) )
-		{
-			z <- mean(y[(j - smooth_window+1):j], rm.na = T)
-			if ( i == time_index )
-			{
-				z <- y[j]
-			}
-			
-			if ( is.null(f))
-			{
-				f <- z
-			}else
-			{
-				f <- c(f, z)
-			}
-			j <- j + smooth_window_slide
-		}
+        if ( use_lowess )
+        {
+            if ( i == time_index )
+            {
+                z <- y
+            }else
+            {
+                #(default)f=0.75
+                z <- lowess(x[,time_index], y, f = 2.0)$y
+                #lines(x[,time_index], z, col='red')
+            }
+        }else
+        {
+            while ( (j - smooth_window+1) >= 1 && j <= nrow(x) )
+            {
+                z <- mean(y[(j - smooth_window+1):j], rm.na = T)
+
+                if ( i == time_index )
+                {
+                    z <- y[j]
+                }
+
+
+                if ( is.null(f))
+                {
+                    f <- z
+                }else
+                {
+                    f <- c(f, z)
+                }
+                j <- j + smooth_window_slide
+            }
+        }
 		if ( is.null(df3))
 		{
 			df3 <- f

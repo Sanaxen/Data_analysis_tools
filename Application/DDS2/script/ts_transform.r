@@ -4,6 +4,9 @@ coltype_time<- function(df){
        if (is.character(x)){
            x <- as.POSIXct(x)
        }
+       if (is.factor(x)){
+           x <- as.POSIXct(x)
+       }
    },
    error = function(e) {
        #message(e)
@@ -16,7 +19,7 @@ coltype_time<- function(df){
 
    class_str = class(x)
    for ( k in 1:length(class_str)){
-       if (class_str[k] =="POSIXlt" || class_str[k] =="POSIXt" ){
+       if (class_str[k] =="POSIXlt" || class_str[k] =="POSIXt" || class_str[k] =="Date" ){
            return (1)
        }
    }

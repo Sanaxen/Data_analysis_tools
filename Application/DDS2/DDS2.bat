@@ -48,6 +48,7 @@ set MECABRC=%MECAB_PATH%\etc\mecabrc
 :set MECABRC=C:\Program Files (x86)\MeCab\etc\mecabrc
 
 set APPDATA=%APPDATA_DDS%
+set PATH=%APPDATA%\;%PATH%
 
 del "%WRK%\*.r" /Q
 

@@ -5291,6 +5291,11 @@ namespace WindowsFormsApplication1
 
             string src = "";
             src += "if ( nrow(df) < 2 ) stop(\"データが少なすぎます\")\r\n";
+            src += "df_tmp <- df\r\n";
+            src += "for (i in 1:ncol(df_tmp))\r\n";
+            src += "{\r\n";
+            src += "    if ( is.character(df[, i])) df[, i] <- as.factor(df[, i])\r\n";
+            src += "}\r\n";
             if (checkBox5.Checked)
             {
                 src += "num_ <-" + numericUpDown3.Value.ToString() + "*0.01*nrow(df)\r\n";

@@ -3,4 +3,7 @@ call ..\..\setup_ini.bat
 
 set  R_LIBS_USER=.\library
 
-"%R_INSTALL_PATH%\bin\x64\Rgui.exe"
+cd %~dp0
+
+
+"%R_INSTALL_PATH%\bin\x64"\Rgui.exe

@@ -2350,6 +2350,7 @@ namespace WindowsFormsApplication1
 
                 bool typeNG = false;
 
+                string select_var = "";
                 string formuler = "";
                 formuler += "target_";
                 formuler += " ~";
@@ -2927,6 +2928,13 @@ namespace WindowsFormsApplication1
                         formuler = formuler.Substring(0, formuler.Length - 1);
                     }
                 }
+                select_var = formuler.Replace("\r\n", "");
+                select_var = select_var.Replace("+", "\",\r\n\"");
+                select_var = select_var.Replace("target_ ~", "\"");
+                select_var += "\"";
+
+
+
                 if (Form1.batch_mode == 0)
                 {
                     if (typeNG)
@@ -3015,17 +3023,21 @@ namespace WindowsFormsApplication1
                     xgboost_initial_cmd += "    y_  <- as.factor(y_)\r\n";
                     xgboost_initial_cmd += "}\r\n";
                     xgboost_initial_cmd += "if ( is.factor(y_)){\r\n";
-                    xgboost_initial_cmd += "    y_  <- as.integer(y_)\r\n";
+                    xgboost_initial_cmd += "    #y_  <- as.integer(y_)\r\n";
                     xgboost_initial_cmd += "}\r\n";
                     xgboost_initial_cmd += "if ( min(y_) > 0){\r\n";
                     xgboost_initial_cmd += "   y_ <- y_ - min(y_)\r\n";
                     xgboost_initial_cmd += "}\r\n";
                 }
+                
+                xgboost_initial_cmd += "use_features = c(" + select_var +")\r\n";
                 xgboost_initial_cmd += "train$target_<- y_\r\n";
 
-                xgboost_initial_cmd += "train_mx<-";
-                xgboost_initial_cmd += "sparse.model.matrix(" + formuler + ", data = train)\r\n";
-                xgboost_initial_cmd += "train_dmat <- xgb.DMatrix(train_mx, label = train$target_";
+                //xgboost_initial_cmd += "#train_mx<-";
+                //xgboost_initial_cmd += "#sparse.model.matrix(" + formuler + ", data = train)\r\n";
+                //xgboost_initial_cmd += "#train_dmat <- xgb.DMatrix(train_mx, label = train$target_\r\n";
+                xgboost_initial_cmd += "train_dmat <- xgb.DMatrix( data = data.matrix(as.data.frame(train[,use_features])), label=data.matrix(train$target_)\r\n";
+                
                 if (comboBox4.Text != "")
                 {
                     xgboost_initial_cmd += ",weight = train$'" + comboBox4.Text + "'";
@@ -3042,6 +3054,13 @@ namespace WindowsFormsApplication1
                 xgboost_initial_cmd += "\r\n";
 
 				xgboost_initial_cmd += "obs_test_step_df <- test\r\n";
+				if (numericUpDown5.Value > 0 )
+				{
+					xgboost_initial_cmd += "if (nrow(test)-" + numericUpDown5.Value.ToString()+" > 0 )\r\n";
+					xgboost_initial_cmd += "{\r\n";
+					xgboost_initial_cmd += "    obs_test_step_df <- test[1:(nrow(test)-" + numericUpDown5.Value.ToString()+"),]\r\n";
+					xgboost_initial_cmd += "}\r\n";
+				}
                 if (time_series_mode)
                 {
                     if (xgb_ts_prm_.numericUpDown20.Value > 100 || xgb_ts_prm_.checkBox20.Checked)
@@ -3079,7 +3098,7 @@ namespace WindowsFormsApplication1
                     xgboost_initial_cmd += "    y_  <- as.factor(y_)\r\n";
                     xgboost_initial_cmd += "}\r\n";
                     xgboost_initial_cmd += "if ( is.factor(y_)){\r\n";
-                    xgboost_initial_cmd += "    y_  <- as.integer(y_)\r\n";
+                    xgboost_initial_cmd += "    #y_  <- as.integer(y_)\r\n";
                     xgboost_initial_cmd += "}\r\n";
                     xgboost_initial_cmd += "if ( min(y_) > 0){\r\n";
                     xgboost_initial_cmd += "   y_ <- y_ - min(y_)\r\n";
@@ -3087,9 +3106,11 @@ namespace WindowsFormsApplication1
                 }
                 xgboost_initial_cmd += "test$target_<- y_\r\n";
 
-                xgboost_initial_cmd += "test_mx<-";
-                xgboost_initial_cmd += "sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                xgboost_initial_cmd += "test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                //xgboost_initial_cmd += "#test_mx<-";
+                //xgboost_initial_cmd += "#sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                //xgboost_initial_cmd += "#test_dmat <- xgb.DMatrix(test_mx, label = test$target_\r\n";
+                xgboost_initial_cmd += "test_dmat <- xgb.DMatrix( data = data.matrix(as.data.frame(test[,use_features])), label=data.matrix(test$target_)";
+
                 if (comboBox4.Text != "")
                 {
                     xgboost_initial_cmd += ",weight = test$'" + comboBox4.Text + "'";
@@ -3124,7 +3145,7 @@ namespace WindowsFormsApplication1
 		                xgboost_initial_cmd += "    y_  <- as.factor(y_)\r\n";
 		                xgboost_initial_cmd += "}\r\n";
 		                xgboost_initial_cmd += "if ( is.factor(y_)){\r\n";
-		                xgboost_initial_cmd += "    y_  <- as.integer(y_)\r\n";
+		                xgboost_initial_cmd += "    #y_  <- as.integer(y_)\r\n";
 		                xgboost_initial_cmd += "}\r\n";
 		                xgboost_initial_cmd += "if ( min(y_) > 0){\r\n";
 		                xgboost_initial_cmd += "   y_ <- y_ - min(y_)\r\n";
@@ -3132,9 +3153,11 @@ namespace WindowsFormsApplication1
 		            }
 		            xgboost_initial_cmd += "obs_test_step_df$target_<- y_\r\n";
 
-		            xgboost_initial_cmd += "obs_test_step_df_mx<-";
-		            xgboost_initial_cmd += "sparse.model.matrix(" + formuler + ", data = obs_test_step_df)\r\n";
-		            xgboost_initial_cmd += "obs_test_step_df_dmat <- xgb.DMatrix(obs_test_step_df_mx, label = obs_test_step_df$target_";
+		            //xgboost_initial_cmd += "#obs_test_step_df_mx<-";
+		            //xgboost_initial_cmd += "#sparse.model.matrix(" + formuler + ", data = obs_test_step_df)\r\n";
+		            //xgboost_initial_cmd += "#obs_test_step_df_dmat <- xgb.DMatrix(obs_test_step_df_mx, label = obs_test_step_df$target_\r\n";
+                    xgboost_initial_cmd += "obs_test_step_df_dmat <- xgb.DMatrix( data = data.matrix(as.data.frame(obs_test_step_df[,use_features])), label=data.matrix(obs_test_step_df$target_)";
+		            
 		            if (comboBox4.Text != "")
 		            {
 		                xgboost_initial_cmd += ",weight = obs_test_step_df$'" + comboBox4.Text + "'";
@@ -4143,20 +4166,20 @@ namespace WindowsFormsApplication1
 						xgboost_gridsearch += "	previous_na_action <- options()$na.action\r\n";
 						xgboost_gridsearch += "	options(na.action='na.pass')\r\n";
 						xgboost_gridsearch += "\r\n";
-						xgboost_gridsearch += "	tarin_min_size = min(nrow(train), max(200, as.integer(nrow(train)/5)))\r\n";
+						xgboost_gridsearch += "	tarin_min_size = min(nrow(train), max(1000, as.integer(nrow(train)/5)))\r\n";
 						xgboost_gridsearch += "	s1 = 1\r\n";
 						xgboost_gridsearch += "	s2 = tarin_min_size\r\n";
 						xgboost_gridsearch += "\r\n";
 						xgboost_gridsearch += "	\r\n";
-						xgboost_gridsearch += "	eta = c( 0.1, 0.2)\r\n";
+						xgboost_gridsearch += "	eta = c( 0.1, 0.02, 0.01)\r\n";
 						xgboost_gridsearch += "	gamma = c( 0.0 )\r\n";
 						xgboost_gridsearch += "	alphaz = c( 0.0)\r\n";
 						xgboost_gridsearch += "	lambda = c( 1.0 );\r\n";
-						xgboost_gridsearch += "	colsample_bytree = c( 0.7, 0.8, 0.9 )\r\n";
-						xgboost_gridsearch += "	subsample = c(  0.8, 0.9, 1.0 )\r\n";
-						xgboost_gridsearch += "	min_child_weight = c( 1.0, 2.0, 5.0 )\r\n";
-						xgboost_gridsearch += "	max_depth = c( 6, 10, 30, 50 )\r\n";
-						xgboost_gridsearch += "	nrounds = c(400)\r\n";
+						xgboost_gridsearch += "	colsample_bytree = c( 1.0 )\r\n";
+						xgboost_gridsearch += "	subsample = c( 1.0 )\r\n";
+						xgboost_gridsearch += "	min_child_weight = c( 1.0, 2.0, 5.0, 15, 50, 80, 100, 200 )\r\n";
+						xgboost_gridsearch += "	max_depth = c( 6, 8, 9, 10, 30 )\r\n";
+						xgboost_gridsearch += "	nrounds = c(1000)\r\n";
 						xgboost_gridsearch += "	pattern_length = length(eta)*length(gamma)*length(alphaz)*length(lambda)\r\n";
 						xgboost_gridsearch += "	pattern_length = pattern_length * length(colsample_bytree)*length(subsample)*length(min_child_weight)\r\n";
 						xgboost_gridsearch += "	pattern_length = pattern_length * length(max_depth)*length(nrounds)\r\n";
@@ -4206,8 +4229,9 @@ namespace WindowsFormsApplication1
 						ensemble_learning_train += "		    train_tmp = train\r\n";
 						ensemble_learning_train += "	}\r\n";
 						ensemble_learning_train += "	\r\n";
-						ensemble_learning_train += "	train_tmp_mx<-sparse.model.matrix("+formuler+ ", data = train_tmp)\r\n";
-						ensemble_learning_train += "	train_tmp_dmat <- xgb.DMatrix(train_tmp_mx, label = train_tmp$target_";
+						//ensemble_learning_train += "	#train_tmp_mx<-sparse.model.matrix("+formuler+ ", data = train_tmp)\r\n";
+						//ensemble_learning_train += "	#train_tmp_dmat <- xgb.DMatrix(train_tmp_mx, label = train_tmp$target_\r\n";
+                        ensemble_learning_train += "	train_tmp_dmat <- xgb.DMatrix(data = data.matrix(as.data.frame(train_tmp[,use_features])), label = data.matrix(train_tmp$target_)";
 						if (comboBox4.Text != "")
 						{
 						    ensemble_learning_train += ",weight = train_tmp$'" + comboBox4.Text + "'";
@@ -4835,12 +4859,12 @@ namespace WindowsFormsApplication1
                     }
                     if (radioButton2.Checked)
                     {
-                        cmd += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
+                        cmd += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = data.matrix(as.data.frame(train[,use_features])), train$target_, label = \"Contribution of each variable\", type = \"classification\")\r\n";
 	                    cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\")\r\n";
                     }
                     else
                     {
-                        cmd += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = train_mx, train$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
+                        cmd += "explainer <-explain_xgboost(xgboost.model_"+targetName + ", data = data.matrix(as.data.frame(train[,use_features])), train$target_, label = \"Contribution of each variable\", type = \"regression\")\r\n";
 	                    cmd += "imp_<-feature_importance(explainer, label=\"特徴量重要度\",loss_function = DALEX::loss_root_mean_square)\r\n";
                     }
                    
@@ -5313,9 +5337,10 @@ namespace WindowsFormsApplication1
                         forecast_extension += "    obs_test_step <- nrow(test)\r\n";
                         forecast_extension += "    add_ext <- 0\r\n";
                         forecast_extension += "}\r\n";
-                        forecast_extension += "test_mx<-";
-                        forecast_extension += "sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        forecast_extension += "test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        //forecast_extension += "#test_mx<-";
+                        //forecast_extension += "#sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        //forecast_extension += "#test_dmat <- xgb.DMatrix(test_mx, label = test$target_\r\n";
+                        forecast_extension += "test_dmat <- xgb.DMatrix(data = data.matrix(as.data.frame(test[,use_features])), label = data.matrix(test$target_)";
                         if (comboBox4.Text != "")
                         {
                             forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
@@ -6812,9 +6837,10 @@ namespace WindowsFormsApplication1
                         forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "         #xgboostデータ形式に再構築して\r\n";
-                        forecast_extension += "         test_mx<-";
-                        forecast_extension += "         sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        forecast_extension += "         test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        //forecast_extension += "         #test_mx<-";
+                        //forecast_extension += "         #sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        //forecast_extension += "         #test_dmat <- xgb.DMatrix(test_mx, label = test$target_\r\n";
+                        forecast_extension += "         test_dmat <- xgb.DMatrix(data = data.matrix(as.data.frame(test[,use_features])), label = data.matrix(test$target_)";
                         if (comboBox4.Text != "")
                         {
                             forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
@@ -7071,9 +7097,10 @@ forecast_extension += "	    }\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "\r\n";
                         forecast_extension += "if ( fast_predict == 1 ){\r\n";
-                        forecast_extension += "    test_mx<-";
-                        forecast_extension += "    sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        forecast_extension += "    test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        //forecast_extension += "    #test_mx<-";
+                        //forecast_extension += "    #sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        //forecast_extension += "    #test_dmat <- xgb.DMatrix(test_mx, label = test$target_\r\n";
+                        forecast_extension += "    test_dmat <- xgb.DMatrix(data = data.matrix(as.data.frame(test[,use_features])), label = data.matrix(test$target_)";
                         if (comboBox4.Text != "")
                         {
                             forecast_extension += ",weight = test$'" + comboBox4.Text + "'";
@@ -7307,7 +7334,7 @@ forecast_extension += "	    }\r\n";
                     {
                         cmd += "residual.error <- predict.y[1:nrow(test_org),1] - as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)])\r\n";
                         cmd += "rmse_<- residual.error^2\r\n";
-                        cmd += "rmse_<- sqrt(mean(rmse_[1]))\r\n";
+                        cmd += "rmse_<- sqrt(mean(rmse_))\r\n";
 
                         cmd += "se_<-sum((residual.error)^2)\r\n";
                         cmd += "st_ <- as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)]) - mean(as.numeric(test_org$'" + targetName + "'[1:nrow(test_org)]))\r\n";
@@ -7400,9 +7427,10 @@ forecast_extension += "	    }\r\n";
 
                         predict_probability += "\r\n";
                         predict_probability += "   #xgboostデータ形式に再構築して\r\n";
-                        predict_probability += "   test_mx<-";
-                        predict_probability += "   sparse.model.matrix(" + formuler + ", data = test)\r\n";
-                        predict_probability += "   test_dmat <- xgb.DMatrix(test_mx, label = test$target_";
+                        //predict_probability += "   #test_mx<-";
+                        //predict_probability += "   #sparse.model.matrix(" + formuler + ", data = test)\r\n";
+                        //predict_probability += "   #test_dmat <- xgb.DMatrix(test_mx, label = test$target_\r\n";
+                        predict_probability += "    test_dmat <- xgb.DMatrix(data = data.matrix(as.data.frame(test[,use_features])), label = data.matrix(test$target_)";
                         if (comboBox4.Text != "")
                         {
                             predict_probability += ",weight = test$'" + comboBox4.Text + "'";
@@ -8544,6 +8572,7 @@ forecast_extension += "	    }\r\n";
                 sw.Write("num_previous,"); sw.Write(xgb_ts_prm_.numericUpDown8.Value.ToString() + "\r\n");
                 sw.Write("extend,"); sw.Write(xgb_ts_prm_.numericUpDown5.Value.ToString() + "\r\n");
                 sw.Write("plot_interval,"); sw.Write(xgb_ts_prm_.numericUpDown18.Value.ToString() + "\r\n");
+                sw.Write("blank_step,"); sw.Write(numericUpDown5.Value.ToString() + "\r\n");
 
                 sw.Write("トレンド分離,");
                 if (xgb_ts_prm_.checkBox9.Checked) sw.Write("true\r\n");
@@ -8953,6 +8982,11 @@ forecast_extension += "	    }\r\n";
                     if (ss[0].IndexOf("target_weight") >= 0)
                     {
                         numericUpDown4.Value = int.Parse(ss[1].Replace("\r\n", ""));
+                        continue;
+                    }
+                    if (ss[0].IndexOf("blank_step") >= 0)
+                    {
+                        numericUpDown5.Value = int.Parse(ss[1].Replace("\r\n", ""));
                         continue;
                     }
                     if (ss[0].IndexOf("coef_weight") >= 0)
@@ -10433,7 +10467,7 @@ forecast_extension += "	    }\r\n";
             textBox9.Text = "1.0";
             textBox6.Text = "1.0";
             textBox8.Text = "1";
-            textBox7.Text = "0.8";
+            textBox7.Text = "1.0";
             numericUpDown6.Text = "6";
             numericUpDown7.Text = "3";
             textBox3.Text = "0.1";
