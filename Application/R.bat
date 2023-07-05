@@ -11,5 +11,5 @@ set MECABRC=%MECAB_PATH%\etc\mecabrc
 
 set APPDATA_DDS=%~dp0\DDS2\bin\AppData\Roaming
 
-:cd DDS2\bin
-"%R_INSTALL_PATH%"\bin\x64\Rgui.exe
+cd %~dp0\DDS2\work
+%R_INSTALL_PATH%\bin\x64\Rgui.exe

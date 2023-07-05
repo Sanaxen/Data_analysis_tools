@@ -1,4 +1,3 @@
-:call init.bat
-call ..\..\setup_ini.bat
+call init.bat
 
-"%R_INSTALL_PATH%\bin\x64\R.exe" CMD BATCH --slave --vanilla install.r
+"%RPATH%\R" CMD BATCH --slave --vanilla install.r

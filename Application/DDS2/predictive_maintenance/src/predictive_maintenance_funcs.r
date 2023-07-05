@@ -167,8 +167,16 @@ convert_time <- function(x, unit_of_record=1, from="day", to="day")
  return( as.integer(unit_of_record*x))
 }
 
+fixed_threshold_value = FALSE
 init_feature_param <- function(f2, threshold, ymax, ymin)
 {
+	if ( is.null(feature_param) && file.exists("./feature_param.csv"))
+	{
+		feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+		fixed_threshold_value = TRUE
+		return(feature_param)
+	}
+	
 	if ( is.null(feature_param))
 	{
 		feature_param <<- f2
@@ -198,6 +206,10 @@ get_feature_param <- function()
 
 set_threshold <- function(feature_name, threshold_value)
 {
+	if ( fixed_threshold_value )
+	{
+		return(feature_param)
+	}
 	feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
 
 	id = which(feature_name == feature_param["feature"])
@@ -348,39 +360,39 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 		
 		f <- NULL
 		j = smooth_window
-        if ( use_lowess )
-        {
-            if ( i == time_index )
-            {
-                z <- y
-            }else
-            {
-                #(default)f=0.75
-                z <- lowess(x[,time_index], y, f = 2.0)$y
-                #lines(x[,time_index], z, col='red')
-            }
-        }else
-        {
-            while ( (j - smooth_window+1) >= 1 && j <= nrow(x) )
-            {
-                z <- mean(y[(j - smooth_window+1):j], rm.na = T)
-
-                if ( i == time_index )
-                {
-                    z <- y[j]
-                }
-
-
-                if ( is.null(f))
-                {
-                    f <- z
-                }else
-                {
-                    f <- c(f, z)
-                }
-                j <- j + smooth_window_slide
-            }
-        }
+		if ( use_lowess )
+		{
+			if ( i == time_index )
+			{
+				z <- y
+			}else
+			{
+				#(default)f=0.75
+				z <- lowess(x[,time_index], y, f = 2.0)$y
+				#lines(x[,time_index], z, col='red')
+				
+			}
+			f <- z
+		}else
+		{
+			while ( (j - smooth_window+1) >= 1 && j <= nrow(x) )
+			{
+				z <- mean(y[(j - smooth_window+1):j], rm.na = T)
+				if ( i == time_index )
+				{
+					z <- y[j]
+				}
+				
+				if ( is.null(f))
+				{
+					f <- z
+				}else
+				{
+					f <- c(f, z)
+				}
+				j <- j + smooth_window_slide
+			}
+		}
 		if ( is.null(df3))
 		{
 			df3 <- f
@@ -1450,7 +1462,7 @@ plot_feature <- function(feature_df, rank="")
 }
 
 fit_id = 1
-plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600, feature_smooth_window=2)
+plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600, feature_smooth_window=2, break_flag = FALSE)
 {
 	threshold = get_threshold(rank)
 	ymax = get_ymax(rank)
@@ -1728,7 +1740,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 	dt <- mean(diff(gfm2$time_index))
 	print(sprintf("dt:%f", dt))
 	
-	print(sprintf("failure_time:%d", as.integer(failure_time)))
+	print(sprintf("failure_time:%d  failure_time_init:%d", as.integer(failure_time), as.integer(failure_time_init)))
 	failure_time_str = "+Infinity"
 	failure_time50p_str = "+Infinity"
 	if ( failure_time < failure_time_init )
@@ -1745,12 +1757,18 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 				from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
 	}else
 	{
-		failure_time_str = sprintf(" > %d step [%d %s]", as.integer(max_prediction_length),
-			 convert_time(failure_time*dt, unit_of_record=unit_of_record,
+		failure_time_str = sprintf(" > %d step [%d %s]", as.integer(h),
+			 convert_time(h*dt, unit_of_record=unit_of_record,
 			 from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
 		failure_time50p_str = sprintf("50%%[%d %s]", 
-			 convert_time(failure_time*dt, unit_of_record=unit_of_record,
+			 convert_time(h*dt, unit_of_record=unit_of_record,
 			 from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
+
+		if ( !break_flag )
+		{
+			print(sprintf("%s", failure_time_str))
+			return (NULL)
+		}
 	}
 	
 	
@@ -2160,6 +2178,7 @@ images_clear <- function()
 }
 
 sigin = 1
+max_prediction_length_org = 0
 predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 {
 	print("======tracking_feature_args==")
@@ -2544,11 +2563,38 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		failure_time_s = c(1:3)
 		plt_s = list()
 		
+		if ( max_prediction_length_org == 0 )
+		{
+			max_prediction_length_org = max_prediction_length;
+		}
+		print(sprintf("max_prediction_length:%d max_prediction_length_org:%d", max_prediction_length, max_prediction_length_org))
+
+		break_flag = FALSE
 		for ( k in 1:3 )
 		{
-			rank = tracking_feature_tmp[k]
-			plt1 <- plot_plot_feature_predict(feature_df, train_num=train_num, rank=rank,
-								 h=max_prediction_length, feature_smooth_window=feature_smooth_window)
+			break_flag = FALSE
+
+			for ( kk in 1:5 )
+			{
+				if (max_prediction_length > 3*max_prediction_length_org )
+				{
+					break_flag = TRUE
+				}
+				rank = tracking_feature_tmp[k]
+				plt1 <- plot_plot_feature_predict(feature_df, train_num=train_num, rank=rank,
+									 h=max_prediction_length, feature_smooth_window=feature_smooth_window, break_flag=break_flag)
+				if ( is.null(plt1))
+				{
+					max_prediction_length <<- 3*max_prediction_length
+					print(sprintf("up max_prediction_length:%d max_prediction_length_org:%d", max_prediction_length, max_prediction_length_org))
+					next
+				}else
+				{
+					break
+				}
+			}
+			max_prediction_length <<- max_prediction_length_org
+			
 			failure_time_s[k] = plt1[[3]]
 			plt_s <- c(plt_s, list(plt1[[2]]))
 			flush.console()

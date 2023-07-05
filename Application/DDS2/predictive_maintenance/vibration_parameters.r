@@ -15,6 +15,8 @@ one_input = 24*60*60
 #入力データ平滑化
 smooth_window = 0
 smooth_window_slide = 0
+#平滑化をlowessで行う
+use_lowess = T
 
 #予測に用いる最大データ長
 #max_data_len = 864000
@@ -61,7 +63,7 @@ max_prediction_length = 30*2
 
 
 #予測された現在から測定した異常発生時間
-failure_time_init = max_prediction_length*unit_of_record
+failure_time_init = 1000*max_prediction_length*unit_of_record
 failure_time = failure_time_init
 
 #出力時の時間単位
