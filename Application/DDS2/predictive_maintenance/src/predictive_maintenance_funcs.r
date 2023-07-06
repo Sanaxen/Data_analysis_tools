@@ -1453,7 +1453,7 @@ plot_feature <- function(feature_df, rank="")
 	colname = rank
 	id <- which(colname == colnames(feature_df))
 	gfm2 <- data.frame(time_index=feature_df$time_index, y=feature_df[,id])
-	plt2 <- gfm2 %>% ggplot(aes(x = time_index, y = y)) + geom_line(color=y, size =1.0)+ geom_point(size =1.0)
+	plt2 <- gfm2 %>% ggplot(aes(x = time_index, y = y)) + geom_line(color=y, linewidth =1.0)+ geom_point(size =1.0)
 		#scale_y_continuous(limits = c(0, ymax))+
 		labs(title=colname)+
 		geom_hline(aes(yintercept=threshold, linetype = "twodash",color = "red"))
@@ -1529,7 +1529,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		 length.out = nrow(fit_predict), by = step)
 		
 		tmp <- data.frame(time_index=fit_predict$time_index, y=fit_predict$y)
-		plt_tmp <- tmp %>% ggplot(aes(x = time_index, y = y)) + geom_line(size =1.0)+ 
+		plt_tmp <- tmp %>% ggplot(aes(x = time_index, y = y)) + geom_line(linewidth =1.0)+ 
 			geom_point(data = gfm2, aes(x=time_index, y=y))
 		ggsave(file = sprintf("%s%s%d.png", putpng_path, "debug/fit", fit_id), plot = plt_tmp, , dpi = 100, width = 12.5*1.2, height = 6.8*1.0)
 		fit_id <<- fit_id + 1
@@ -1775,7 +1775,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 
 		
 	plt2 <- ggplot()
-	plt2 <- plt2 + geom_line(data=gfm2,aes(x = time_index, y = y),color="blue", size =0.5)+ 
+	plt2 <- plt2 + geom_line(data=gfm2,aes(x = time_index, y = y),color="blue", linewidth =0.5)+ 
 	geom_point(data=gfm2,aes(x = time_index, y = y),size =0.5)
 	
 	print(plt2)
@@ -1818,7 +1818,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		step <- mean(dif)
 		fit_predict$time_index[(length(yo$time_index)+1):nrow(fit_predict)] <- seq(yo$time_index[length(yo$time_index)]+step,
 		 length.out = nrow(fit_predict), by = step)
-		plt2 <- plt2 +  geom_line(data=fit_predict,aes(x = time_index, y = y),color=col, size =0.5)
+		plt2 <- plt2 +  geom_line(data=fit_predict,aes(x = time_index, y = y),color=col, linewidth =0.5)
 
 		plt2 <- plt2 +
 		geom_line(data=fit_predict, mapping = aes_string(x = "time_index", y = "y")) +
@@ -2134,7 +2134,10 @@ initial_pm <- function(sigin_arg)
 
 file_division <- function(df)
 {
-	dir.create("files")
+	if ( ! file.exists("files") )
+	{
+		dir.create("files")
+	}
 	
 	FN <- list.files("./files", pattern="\\.csv$")
 	
@@ -2449,7 +2452,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		#注視したいターゲットPlot
 		id <- which(watch_name == colnames(feature_df))
 		gfm2 <- data.frame(x=feature_df_org$time_index, y=feature_df_org[,id])
-		looked_var_plt <- ggplot(data=gfm2, aes(x = x, y = y)) + geom_line(color = "#4169e1", size =1.0)+
+		looked_var_plt <- ggplot(data=gfm2, aes(x = x, y = y)) + geom_line(color = "#4169e1", linewidth =1.0)+
 			labs(title=sprintf("Looked at Variables[%s]",watch_name))
 		
 		#if ( use_spline )
@@ -2457,7 +2460,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		#	sp <- gam(y~s(x), data=gfm2)
 		#	ypred <- predict(sp,data.frame(x=gfm2$x))
 		#	spdf <- data.frame(x=gfm2$x, y=ypred)
-		#	looked_var_plt <- looked_var_plt +geom_line(data=spdf,aes(x = x, y = y), color = "red", size =1.0)
+		#	looked_var_plt <- looked_var_plt +geom_line(data=spdf,aes(x = x, y = y), color = "red", linewidth =1.0)
 		#}
 		if ( use_spline )
 		{
@@ -2465,10 +2468,10 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			#sp <- gam(y~s(x), data=data.frame(x=df2_org$time_index, y=df2_org[,idx]))
 			#ypred <- predict(sp,data.frame(x=df2_org$time_index))
 			#spdf <- data.frame(x=df2_org$time_index, y=ypred)
-			#looked_var_plt <- looked_var_plt +geom_line(data=spdf,aes(x = x, y = y), color = "#ff4500", size =1.0)
+			#looked_var_plt <- looked_var_plt +geom_line(data=spdf,aes(x = x, y = y), color = "#ff4500", linewidth =1.0)
 			
 			org_data <- data.frame(x=df2_org$time_index, y=df2_org[,idx])
-			looked_var_plt <- looked_var_plt +geom_line(data=org_data,aes(x = x, y = y), color = "#c0c0c0", size =1.0)
+			looked_var_plt <- looked_var_plt +geom_line(data=org_data,aes(x = x, y = y), color = "#c0c0c0", linewidth =1.0)
 		}
 		
 		tracking_feature_tmp <- c(1:5)
@@ -2513,6 +2516,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		print(sprintf("dynamic_threshold:%d", ifelse(dynamic_threshold==TRUE,1,0)))
 		if (dynamic_threshold && is.null(tracking_feature))
 		{
+			print(tracking_feature_tmp)
 			for ( k in 1:3 )
 			{
 				thr0 = get_threshold(tracking_feature_tmp[k])

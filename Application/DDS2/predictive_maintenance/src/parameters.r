@@ -15,7 +15,8 @@ one_input = 24*60*60
 #入力データ平滑化
 smooth_window = 0
 smooth_window_slide = 0
-use_lowess = T
+#平滑化をlowessで行う
+use_lowess = TRUE
 
 #予測に用いる最大データ長
 #max_data_len = 864000

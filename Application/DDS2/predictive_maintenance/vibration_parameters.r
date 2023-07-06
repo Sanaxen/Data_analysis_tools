@@ -67,7 +67,7 @@ failure_time_init = 1000*max_prediction_length*unit_of_record
 failure_time = failure_time_init
 
 #出力時の時間単位
-forecast_time_unit = "h"
+forecast_time_unit = "day"
 
 #異常度モデル
 m_mahalanobis <- NULL

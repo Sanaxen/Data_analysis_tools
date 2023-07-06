@@ -17,6 +17,7 @@ install.packages("R.matlab", repos = "http://cran.us.r-project.org",dependencies
 
 library(R.matlab)
 
+#https://github.com/mathworks/WindTurbineHighSpeedBearingPrognosis-Data
 get_matfile <- function()
 {
 	cmdstr='cmd /c dir '
