@@ -18,6 +18,7 @@ install.packages("forecast", repos = "http://cran.us.r-project.org",lib=install_
 install.packages("tidyverse", repos = "http://cran.us.r-project.org",lib=install_libpath)
 install.packages("tibbletime", repos = "http://cran.us.r-project.org",lib=install_libpath)
 install.packages("minpack.lm", repos = "http://cran.us.r-project.org",lib=install_libpath)
+install.packages("cowplot", repos = "http://cran.us.r-project.org",lib=install_libpath)
 
 .libPaths( org_libpath)
 

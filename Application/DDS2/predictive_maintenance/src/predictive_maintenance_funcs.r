@@ -127,7 +127,7 @@ convert_time <- function(x, unit_of_record=1, from="day", to="day")
 {
  if ( from == to )
  {
- 	return(unit_of_record*x)
+ 	return(as.integer(unit_of_record*x))
  }
  if ( from == "day" )
  {
@@ -294,6 +294,8 @@ get_data_frame<- function(file, timeStamp)
 	print(timeStamp)
 	print(sprintf("get_data_frame nrow(df):%d", nrow(df)))
 	print(sprintf("get_data_frame ncol(df):%d", ncol(df)))
+	print(str(df))
+	
 	df_ <- NULL
 	names <- NULL
 	for ( i in 1:ncol(df))
@@ -333,6 +335,13 @@ get_data_frame<- function(file, timeStamp)
 	}
 	df <- as.data.frame(df_)
 	colnames(df) <- names
+	for ( i in 1:ncol(df))
+	{
+		if ( colnames(df)[i]!=timeStamp )
+		{
+			df[,i] <- as.numeric(df[,i])
+		}
+	}
 	print(sprintf("get_data_frame ncol(df):%d", ncol(df)))	
 	return (df)
 }
@@ -557,6 +566,24 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 	d[is.na(d)] <- mean(d, na.rm = TRUE)
 	
 	#print(sprintf("lookback:%d length(d):%d", lookback, length(d)))
+	
+	rowN = 0
+	j = lookback
+	while( j <= length(d) )
+	{
+		j <- j + slide_window
+		rowN = rowN + 1
+	}
+	if ( i == time_index )
+	{
+		fff <- as.data.frame(matrix(nrow=rowN, ncol=1))
+	}else
+	{
+		fff <- as.data.frame(matrix(nrow=rowN, ncol=13))
+	}
+	row_cnt = 1
+	
+	
 	j = lookback
 	while( j <= length(d) )
 	#for ( j in lookback:length(d))
@@ -601,7 +628,10 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 							),nrow=1))
 		}
 		
-		fff <- rbind(fff, f)
+		fff[row_cnt,] <- f
+		row_cnt = row_cnt + 1
+		
+		#fff <- rbind(fff, f)
 		#print(sprintf("%d/%d %d nrow(fff):%d", i, ncol(df2), j, nrow(fff)))
 		#flush.console()
 		
@@ -642,6 +672,7 @@ feature <- function(df2, lookback=100, slide_window=1)
 	for ( i in 1:ncol(df2))
 	{
 		col_name = colnames_df2[i]
+		print(sprintf("%d %s", i, col_name))
 		ff <- feature_sub(colnames_df2[i], df2, ff, lookback=lookback, slide_window)
 	}
 	#for ( i in 1:ncol(ff))
@@ -1600,35 +1631,39 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 				fit_predict_org$u95 = fit_predict_org$y
 				for ( i in 1:length(fit_predict_org$y))
 				{
-					sd1 <- 1
-					if ( i >= length(fit_predict$y))
-					{
-						#sd1 <- sd(fit_predict_org$y[1:i])
-						sd1 = sd(residual_error)
-					}else
-					{
-						if ( i <= 3 )
-						{
-							#sd1 <- sd(fit_predict_org$y[1:3])
-							sd1 = sd(residual_error[1:3])
-						}else
-						{
-							#sd1 <- sd(fit_predict_org$y[1:i])
-							sd1 = sd(residual_error[1:min(i,length(residual_error))])
-						}
-						if ( sd1 > sd_max )
-						{
-							sd_max = sd1
-						}
-					}
+#					sd1 <- 1
+#					if ( i >= length(fit_predict$y))
+#					{
+#						#sd1 <- sd(fit_predict_org$y[1:i])
+#						sd1 = sd(residual_error)
+#					}else
+#					{
+#						if ( i <= 3 )
+#						{
+#							#sd1 <- sd(fit_predict_org$y[1:3])
+#							sd1 = sd(residual_error[1:3])
+#						}else
+#						{
+#							#sd1 <- sd(fit_predict_org$y[1:i])
+#							sd1 = sd(residual_error[1:min(i,length(residual_error))])
+#						}
+#						if ( sd1 > sd_max )
+#						{
+#							sd_max = sd1
+#						}
+#					}
+#					sd1 <- sd_max
+					
+					fd <- i
+					sd1 <- var(fit_predict_org$y[1:i])*(1+1/fd)
 					
 					q =  qt((1-0.75)/2, fd, lower.tail=F)
-					fit_predict_org$l25[i] = fit_predict_org$y[i]- q*sd1*sqrt(1/fd)
-					fit_predict_org$u75[i] = fit_predict_org$y[i]+ q*sd1*sqrt(1/fd)
+					fit_predict_org$l25[i] = fit_predict_org$y[i]- q*sqrt(sd1)
+					fit_predict_org$u75[i] = fit_predict_org$y[i]+ q*sqrt(sd1)
 
 					q =  qt((1-0.95)/2, fd, lower.tail=F)
-					fit_predict_org$l05[i] = fit_predict_org$y[i]- q*sd1*sqrt(1/fd)
-					fit_predict_org$u95[i] = fit_predict_org$y[i]+ q*sd1*sqrt(1/fd)
+					fit_predict_org$l05[i] = fit_predict_org$y[i]- q*sqrt(sd1)
+					fit_predict_org$u95[i] = fit_predict_org$y[i]+ q*sqrt(sd1)
 				}
 				fit_predict <- fit_predict_org[(nrow(fit_predict_org)-h+1):nrow(fit_predict_org),]
 			}
@@ -1916,9 +1951,9 @@ feature_summary_visualization <- function(df0, feature_param)
 
 	#前半80%を正常データとして訓練
 	mahalanobis_train <- df2[1:(nrow(df2))*0.8,]
-	m_mahalanobis <<- anomaly_detection_train(df2[colnames(mahalanobis_train)!="time_index"])
+	m_mahalanobis <<- anomaly_detection_train(mahalanobis_train[colnames(mahalanobis_train)!="time_index"])
 
-	mahalanobis_test <- anomaly_detection_test(m_mahalanobis, df2[colnames(mahalanobis_train)!="time_index"])
+	mahalanobis_test <- anomaly_detection_test(m_mahalanobis, mahalanobis_train[colnames(mahalanobis_train)!="time_index"])
 	plot(mahalanobis_test[[2]], type="l")
 
 	mahalanobis_df <- data.frame(
@@ -2232,12 +2267,30 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		timeStamp <<- timeStamp_arg
 		current_time <- df2[nrow(df2), timeStamp]
 		
+		print("####################")
+		time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp],units = "auto")
+		if ( unit_of_time == 'sec' )
+		{
+			time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp],units = "secs")
+		}
+		if ( unit_of_time == 'min' )
+		{
+			time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp],units = "mins")
+		}
+		if ( unit_of_time == 'h' )
+		{
+			time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp],units = "hours")
+		}
+		if ( unit_of_time == 'day' )
+		{
+			time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp],units = "days")
+		}
+		print(sprintf("%d current_time:%s dt:%f %s", i, current_time, time_diff, unit_of_time))
+
 		df2[,timeStamp] <- NULL
 		#print(head(df2))
 		#print(current_time)
 		
-		print("####################")
-		print(sprintf("%d current_time:%s", i, current_time))
 		
 		df2_org <- df2
 
@@ -2373,15 +2426,17 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		
 		print(colnames(df2_tmp))
 		print(str(df2_tmp))
+		flush.console()
 		
 		#異常度計算モデル作成
-		mahalanobis_train <- past[1:(nrow(past))*0.8,]
+		mahalanobis_train <- past[1:min(10000,(nrow(past))*0.8),]
 		print(sprintf("mahalanobis_train:%d", nrow(mahalanobis_train)))
 		flush.console()
-		m_mahalanobis <<- anomaly_detection_train(past[colnames(mahalanobis_train)!="time_index"])
+		m_mahalanobis <<- anomaly_detection_train(mahalanobis_train[colnames(mahalanobis_train)!="time_index"])
 		
 		print("m_mahalanobis end")
 		#print(m_mahalanobis)
+		flush.console()
 		
 		#特徴量生成
 		print("create feature start")
