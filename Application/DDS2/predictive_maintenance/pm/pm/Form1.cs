@@ -59,7 +59,7 @@ namespace pm
             }
 
             StringBuilder sb = new StringBuilder(2048);
-            IntPtr res = PathCombine(sb, exePath, "..\\..\\..\\lib");
+            IntPtr res = PathCombine(sb, exePath, "..\\..\\..\\..\\library");
             if (res == IntPtr.Zero)
             {
                 MessageBox.Show("Failed to obtain absolute path of R library.");
@@ -167,6 +167,41 @@ namespace pm
             }
         }
 
+        public void execute_bat(string script_file, bool wait = true)
+        {
+            ProcessStartInfo pInfo = new ProcessStartInfo();
+            //pInfo.FileName = textBox1.Text + "\\R.exe";
+            //pInfo.Arguments = "CMD BATCH  --vanilla " + script_file;
+
+            //pInfo.FileName = textBox1.Text + "\\Rscript.exe";
+            //pInfo.Arguments = "" + script_file;
+
+            pInfo.FileName = script_file;
+            pInfo.Arguments = "";
+
+            if (!File.Exists(pInfo.FileName))
+            {
+                MessageBox.Show(pInfo.FileName + " is not found.\nPlease confirm that " + textBox1.Text + " is specified as the file path, which is correct.");
+                return;
+            }
+            //Process p = Process.Start(pInfo);
+            Process p = new Process();
+            p.StartInfo = pInfo;
+
+            if (wait)
+            {
+                p.Start();
+                p.WaitForExit();
+            }
+            else
+            {
+                stopwatch.Start();
+                p.Exited += new EventHandler(Proc_Exited);
+                p.EnableRaisingEvents = true;
+                p.Start();
+            }
+        }
+
 
         public ListBox GetNames()
         {
@@ -178,13 +213,12 @@ namespace pm
             //string cmd1 = tft_header_ru();
 
             string cmd = "";
-            cmd += "options(encoding=\"" + encoding + "\")\r\n";
             cmd += ".libPaths(c('" + RlibPath + "',.libPaths()))\r\n";
             cmd += "dir='" + work_dir.Replace("\\", "\\\\") + "'\r\n";
             cmd += "library(data.table)\r\n";
             cmd += "setwd(dir)\r\n";
-            cmd += "df <- fread(\"" + base_name + ".csv\", na.strings=c(\"\", \"NULL\"), header = TRUE, stringsAsFactors = TRUE)\r\n";
-            cmd += "#df <- read.csv(\"" + base_name + ".csv\", header=T, stringsAsFactors = F, na.strings = c(\"\", \"NA\"))\r\n";
+            cmd += "#df <- fread(\"" + base_name + ".csv\", na.strings=c(\"\", \"NULL\"), header = TRUE, stringsAsFactors = TRUE)\r\n";
+            cmd += "df <- read.csv(\"" + base_name + ".csv\", header=T, stringsAsFactors = F, na.strings = c(\"\", \"NA\"),fileEncoding=\"" + encoding + "\")\r\n";
             cmd += "x_<-ncol(df)\r\n";
             cmd += "print(x_)\r\n";
             cmd += "for ( i in 1:x_) print(names(df)[i])\r\n";
@@ -193,8 +227,10 @@ namespace pm
 
             try
             {
-                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
                 {
+                    sw.Write("options(encoding=\"" + encoding + "\")\r\n");
+
                     sw.Write("options(width=1000)\r\n");
                     sw.Write("sink(file = \"names.txt\")\r\n");
                     sw.Write(cmd);
@@ -217,7 +253,7 @@ namespace pm
                 StreamReader sr = null;
                 try
                 {
-                    sr = new StreamReader("names.txt", Encoding.GetEncoding("SHIFT_JIS"));
+                    sr = new StreamReader("names.txt", Encoding.GetEncoding(comboBox1.Text));
                     while (sr.EndOfStream == false)
                     {
                         string line = sr.ReadLine();
@@ -333,7 +369,7 @@ namespace pm
 
             try
             {
-                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
                 {
                     sw.Write(textBox1.Text + "\n");
                 }
@@ -364,6 +400,7 @@ namespace pm
         {
 
             string cmd = "";
+            cmd += "csv_encoding = '" + comboBox1.Text + "'\r\n";
             cmd += "#平滑化でspline\r\n";
             cmd += "use_spline = " + (checkBox1.Checked?"TRUE": "FALSE") +"\r\n";
             cmd += "\r\n";
@@ -480,7 +517,8 @@ namespace pm
             string file = "..\\"+base_name0 + "_parameters.r";
             try
             {
-                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                var utf8Encoding = new System.Text.UTF8Encoding(false);
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, utf8Encoding))
                 {
                     sw.Write(cmd + "\n");
                 }
@@ -521,7 +559,7 @@ namespace pm
             string file = "..\\"+ base_name0 + "_IoT_Emulator.bat";
             try
             {
-                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
                 {
                     sw.Write(cmd + "\n");
                 }
@@ -589,7 +627,7 @@ namespace pm
             
             try
             {
-                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
                 {
                     sw.Write(cmd + "\n");
                 }
@@ -882,6 +920,131 @@ namespace pm
 
                 f.Show();
             }
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            string cmd = "";
+            cmd += "options(encoding = 'utf-8')\r\n";
+            cmd += "\r\n";
+            cmd += "curdir = getwd()\r\n";
+            cmd += ".libPaths(c('" + RlibPath + "',.libPaths()))\r\n";
+            cmd += "dir='" + work_dir.Replace("\\", "\\\\") + "'\r\n";
+            cmd += "library(data.table)\r\n";
+            cmd += "setwd(dir)\r\n";
+            cmd += "library(plotly)\r\n";
+
+            cmd += "\r\n";
+            cmd += "putpng_path= paste(curdir, '/images/', sep='')\r\n";
+            cmd += "source('../src/predictive_maintenance_funcs.r')\r\n";
+            cmd += "source('parameters.r')\r\n";
+            cmd += "source('../src/feature_summary_visualization.r')\r\n";
+            cmd += "\r\n";
+            cmd += "sigin_arg = '"+comboBox3.Text+"'\r\n";
+            cmd += "#tracking_feature_= ''\r\n";
+            cmd += "\r\n";
+            cmd += "initial_pm(sigin_arg)\r\n";
+            cmd += "abnormality_detected_data <- FALSE\r\n";
+            cmd += "#watch_name <<- paste(tracking_feature_, '..', sep='')\r\n";
+            cmd += "\r\n";
+            cmd += "sigin <<- 1.0\r\n";
+            cmd += "if ( sigin_arg == '-' )\r\n";
+            cmd += "{\r\n";
+            cmd += "	sigin <<- -1.0\r\n";
+            cmd += "}\r\n";
+            cmd += "\r\n";
+            cmd += "smooth_window <<- "+textBox5.Text +"\r\n";
+            cmd += "smooth_window_slide <<- " + textBox6.Text + "\r\n";
+            cmd += "smooth_window2 <<- " + textBox13.Text + "\r\n";
+            cmd += "smooth_window_slide2 <<- " + textBox12.Text + "\r\n";
+            cmd += "\r\n";
+            cmd += "#lookback <<- " + textBox10.Text + "\r\n";
+            cmd += "#lookback_slide <<- " + textBox11.Text + "\r\n";
+            cmd += "lookback <<- 24\r\n";
+            cmd += "lookback_slide <<- 24\r\n";
+            cmd += "#平滑化をlowessで行う\r\n";
+            cmd += "use_lowess = "+((checkBox3.Checked)?"TRUE":"FALSE")+ "\r\n";
+            cmd += "smoother_span <<- 0.5\r\n";
+            cmd += "\r\n";
+            cmd += "\r\n";
+            cmd += "timeStamp <- '" + comboBox2.Text + "'\r\n";
+            cmd += "csvfile = '"+base_name + ".csv'\r\n";
+            cmd += "plt <- feature_summary_visualization(csvfile, timeStamp)\r\n";
+            cmd += "\r\n";
+            cmd += "\r\n";
+
+            string file = "..\\"+base_name0+"_feat_visualize.r";
+            try
+            {
+                var utf8Encoding = new System.Text.UTF8Encoding(false);
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, utf8Encoding))
+                {
+                    sw.Write(cmd + "\n");
+                }
+            }
+            catch
+            {
+                status = -1;
+                if (MessageBox.Show("Cannot write in " + file, "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return;
+            }
+
+            string param_base = base_name0 + "_parameters.r";
+            string param = work_dir + "\\parameters.r";
+
+            try
+            {
+                File.Copy("..\\" + param_base, param, true);
+            }
+            catch
+            {
+                status = -1;
+                if (MessageBox.Show("Cannot copy in " + param_base, "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return;
+            }
+
+            string feat_visualize_base = base_name0 + "_feat_visualize.r";
+            string bat = "";
+            bat += "call init.bat\r\n";
+            bat += ":call ..\\..\\setup_ini.bat\r\n";
+            bat += "\r\n";
+            bat += "set  R_LIBS_USER=.\\library\r\n";
+            bat += "\r\n";
+            bat += "copy \"" + param_base + "\" work\\parameters.r /v /y\r\n";
+            bat += "\r\n";
+            bat += "cd %~dp0\r\n";
+            bat += "\r\n";
+            bat += "del /Q images\\*.png\r\n";
+            bat += "del /Q images\\debug\\*.png\r\n";
+            bat += "\r\n";
+            bat += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla "+ feat_visualize_base+"\r\n";
+
+
+            string batfile = "..\\" + base_name0 + "_feature_summary_visualization.bat";
+            try
+            {
+                using (System.IO.StreamWriter sw = new StreamWriter(batfile, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
+                {
+                    sw.Write(bat + "\n");
+                }
+            }
+            catch
+            {
+                status = -1;
+                if (MessageBox.Show("Cannot write in " + batfile, "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return;
+            }
+            System.IO.Directory.SetCurrentDirectory(base_dir);
+
+            try
+            {
+                execute_bat(base_name0 + "_feature_summary_visualization.bat");
+            }
+            catch
+            {
+
+            }
+            System.IO.Directory.SetCurrentDirectory(work_dir);
         }
     }
 }

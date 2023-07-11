@@ -1,4 +1,3 @@
-options(encoding = "sjis")
 
 ########################### program start
 args <- commandArgs(trailingOnly = T)
