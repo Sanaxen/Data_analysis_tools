@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Web.WebView2.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,12 +20,75 @@ namespace pm
         public Form2()
         {
             InitializeComponent();
+            InitializeAsync();
+            webView21.NavigationCompleted += webView21_NavigationCompleted;
+        }
+        async void InitializeAsync()
+        {
+            try
+            {
+                await webView21.EnsureCoreWebView2Async(null);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("The WebView2 runtime may not be installed.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Close();
+            }
+        }
+
+        private void webView21_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            if (webView21.CoreWebView2 != null)
+            {
+                //Web画面からVB/C＃へのホストオブジェクトにアクセスする必要がなければ
+                webView21.CoreWebView2.Settings.AreHostObjectsAllowed = false;
+
+                //Webコンテンツ(JavaScript)からVB／C＃側へのメッセージを処理する必要がなければ
+                //webView21.CoreWebView2.Settings.IsWebMessageEnabled = false;
+
+                //Web画面でJavaScriptを使用したくなければ
+                //webView21.CoreWebView2.Settings.IsScriptEnabled = false;
+
+                //alertやpromptなどのダイアログを表示したくなければ
+                webView21.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
+            }
+        }
+
+        bool loadHtml(string html)
+        {
+            if (System.IO.File.Exists(html))
+            {
+                string webpath = (work_dir+"\\"+html).Replace("\\", "/").Replace("//", "/");
+                webpath = "file:///" + webpath;
+                try
+                {
+                    webView21.Source = new Uri(webpath);
+                    if (webView21.CoreWebView2 != null)
+                    {
+                        //webView21.CoreWebView2.Navigate(webpath);
+                    }
+                    //webView21.Reload();
+                    webView21.Update();
+                    webView21.Refresh();
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
 
         string image_file = "";
         string work_dir = "";
         public Form1 form1_ = null;
 
+        public string plotly_html = "";
 
         public void SetFile( string dir, string file)
         {
@@ -32,6 +96,14 @@ namespace pm
             work_dir = dir;
             pictureBox1.Image = CreateImage(image_file);
             pictureBox1.Show();
+            if ( plotly_html != "")
+            {
+                pictureBox1.Visible = false;
+                webView21.Visible = true;
+                loadHtml(plotly_html);
+                webView21.Show();
+                checkBox1.Checked = true;
+            }
         }
 
         public System.Drawing.Image CreateImage(string filename)
@@ -85,8 +157,15 @@ namespace pm
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            timer1.Enabled = form1_.timer1.Enabled;
+            if (!timer1.Enabled)
+            {
+                timer1.Stop();
+                return;
+            }
+
             form1_.GetImages_();
-            string fileName = form1_.imageFiles[form1_.num_image];
+            string fileName = form1_.imageFiles[form1_.max_image - 1];
 
             if (System.IO.File.Exists(fileName))
             {
@@ -169,6 +248,21 @@ namespace pm
             for (int i = 0; i < imageFiles_tmp.Count; i++)
             {
                 File.Delete(imageFiles_tmp[i]);
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked && plotly_html != "")
+            {
+                pictureBox1.Visible = false;
+                webView21.Visible = true;
+                webView21.Show();
+            }else
+            {
+                pictureBox1.Visible = true;
+                webView21.Visible = false;
+                pictureBox1.Show();
             }
         }
     }

@@ -44,6 +44,21 @@ namespace pm
         public int step_image = 1;
         public int max_image = 0;
         public bool animation_stop = false;
+        public int output_idx = 0;
+
+        public string imagePictureBox1 = "";
+        public string imagePictureBox2 = "";
+        public string imagePictureBox3 = "";
+        public string imagePictureBox4 = "";
+        public string imagePictureBox5 = "";
+        public string imagePictureBox6 = "";
+
+        public string htmlPictureBox1 = "";
+        public string htmlPictureBox2 = "";
+        public string htmlPictureBox3 = "";
+        public string htmlPictureBox4 = "";
+        public string htmlPictureBox5 = "";
+        public string htmlPictureBox6 = "";
 
         public Form1()
         {
@@ -71,6 +86,7 @@ namespace pm
         }
         public static System.Drawing.Image CreateImage(string filename)
         {
+            if (filename == "") return null;
             System.IO.FileStream fs = new System.IO.FileStream(
                 filename,
                 System.IO.FileMode.Open,
@@ -78,6 +94,747 @@ namespace pm
             System.Drawing.Image img = System.Drawing.Image.FromStream(fs);
             fs.Close();
             return img;
+        }
+
+        void save()
+        {
+            string file = "pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
+            try
+            {
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                {
+                    sw.Write(output_idx.ToString() + "\n");
+                    sw.Write(listBox1.Items.Count.ToString() + "\n");
+                    for (int i = 0; i < listBox1.Items.Count; i++)
+                    {
+                        sw.Write(listBox1.Items[i].ToString() + "\n");
+                    }
+
+                    sw.Write(listBox1.SelectedItems.Count.ToString() + "\n");
+                    if (listBox1.SelectedItems.Count >= 1)
+                    {
+                        for (int i = 0; i < listBox1.SelectedItems.Count; i++)
+                        {
+                            sw.Write(listBox1.SelectedIndices[i].ToString() + "\n");
+                        }
+                    }
+
+                    sw.Write(listBox2.Items.Count.ToString() + "\n");
+                    for (int i = 0; i < listBox2.Items.Count; i++)
+                    {
+                        sw.Write(listBox2.Items[i].ToString() + "\n");
+                    }
+                    sw.Write(listBox2.SelectedItems.Count.ToString() + "\n");
+                    if (listBox2.SelectedItems.Count >= 1)
+                    {
+                        for (int i = 0; i < listBox2.SelectedItems.Count; i++)
+                        {
+                            sw.Write(listBox2.SelectedIndices[i].ToString() + "\n");
+                        }
+                    }
+
+
+                    sw.Write(listBox3.Items.Count.ToString() + "\n");
+                    for (int i = 0; i < listBox3.Items.Count; i++)
+                    {
+                        sw.Write(listBox3.Items[i].ToString() + "\n");
+                    }
+                    sw.Write(listBox3.SelectedItems.Count.ToString() + "\n");
+                    if (listBox3.SelectedItems.Count >= 1)
+                    {
+                        for (int i = 0; i < listBox3.SelectedItems.Count; i++)
+                        {
+                            sw.Write(listBox3.SelectedIndices[i].ToString() + "\n");
+                        }
+                    }
+
+
+
+                    sw.Write("textBox2," + textBox2.Text + "\n");
+                    sw.Write("textBox3," + textBox3.Text + "\n");
+                    sw.Write("textBox4," + textBox4.Text + "\n");
+                    sw.Write("textBox5," + textBox5.Text + "\n");
+                    sw.Write("textBox6," + textBox6.Text + "\n");
+                    sw.Write("textBox7," + textBox7.Text + "\n");
+                    sw.Write("textBox8," + textBox8.Text + "\n");
+                    sw.Write("textBox9," + textBox9.Text + "\n");
+                    sw.Write("textBox10," + textBox10.Text + "\n");
+                    sw.Write("textBox11," + textBox11.Text + "\n");
+                    sw.Write("textBox12," + textBox12.Text + "\n");
+                    sw.Write("textBox13," + textBox13.Text + "\n");
+                    sw.Write("textBox14," + textBox14.Text + "\n");
+                    sw.Write("textBox15," + textBox15.Text + "\n");
+                    sw.Write("textBox16," + textBox16.Text + "\n");
+                    sw.Write("textBox17," + textBox17.Text + "\n");
+                    sw.Write("textBox18," + textBox18.Text + "\n");
+                    //sw.Write("textBox19," + textBox19.Text + "\n");
+                    //sw.Write("textBox20," + textBox20.Text + "\n");
+                    //sw.Write("textBox21," + textBox21.Text + "\n");
+                    //sw.Write("textBox22," + textBox22.Text + "\n");
+                    //sw.Write("textBox23," + textBox23.Text + "\n");
+                    //sw.Write("textBox24," + textBox24.Text + "\n");
+                    //sw.Write("textBox25," + textBox25.Text + "\n");
+
+                    sw.Write("comboBox1," + comboBox1.Text + "\n");
+                    sw.Write("comboBox2," + comboBox2.Text + "\n");
+                    sw.Write("comboBox3," + comboBox3.Text + "\n");
+                    sw.Write("comboBox4," + comboBox4.Text + "\n");
+                    sw.Write("comboBox5," + comboBox5.Text + "\n");
+                    //sw.Write("comboBox6," + comboBox6.Text + "\n");
+                    //sw.Write("comboBox7," + comboBox7.Text + "\n");
+                    //sw.Write("comboBox8," + comboBox8.Text + "\n");
+                    //sw.Write("comboBox9," + comboBox9.Text + "\n");
+                    //sw.Write("comboBox10," + comboBox10.Text + "\n");
+
+                    sw.Write("numericUpDown1," + numericUpDown1.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown2," + numericUpDown2.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown3," + numericUpDown3.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown4," + numericUpDown4.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown5," + numericUpDown5.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown6," + numericUpDown6.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown7," + numericUpDown7.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown8," + numericUpDown8.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown9," + numericUpDown9.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown10," + numericUpDown10.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown11," + numericUpDown11.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown12," + numericUpDown12.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown13," + numericUpDown13.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown14," + numericUpDown14.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown15," + numericUpDown15.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown16," + numericUpDown16.Value.ToString() + "\n");
+                    //sw.Write("numericUpDown17," + numericUpDown17.Value.ToString() + "\n");
+
+                    sw.Write("checkBox1," + (checkBox1.Checked ? "TRUE" : "FALSE") + "\n");
+                    sw.Write("checkBox2," + (checkBox2.Checked ? "TRUE" : "FALSE") + "\n");
+                    sw.Write("checkBox3," + (checkBox3.Checked ? "TRUE" : "FALSE") + "\n");
+                    sw.Write("checkBox4," + (checkBox4.Checked ? "TRUE" : "FALSE") + "\n");
+                    //sw.Write("checkBox5," + (checkBox5.Checked ? "TRUE" : "FALSE") + "\n");
+                    //sw.Write("checkBox6," + (checkBox6.Checked ? "TRUE" : "FALSE") + "\n");
+                    //sw.Write("checkBox7," + (checkBox7.Checked ? "TRUE" : "FALSE") + "\n");
+                    //sw.Write("checkBox8," + (checkBox8.Checked ? "TRUE" : "FALSE") + "\n");
+                    //sw.Write("checkBox9," + (checkBox9.Checked ? "TRUE" : "FALSE") + "\n");
+                    //sw.Write("checkBox10," + (checkBox10.Checked ? "TRUE" : "FALSE") + "\n");
+                    //sw.Write("checkBox11," + (checkBox11.Checked ? "TRUE" : "FALSE") + "\n");
+
+                    sw.Write("radioButton1," + (radioButton1.Checked ? "TRUE" : "FALSE") + "\n");
+                    sw.Write("radioButton2," + (radioButton2.Checked ? "TRUE" : "FALSE") + "\n");
+                    sw.Write("radioButton3," + (radioButton3.Checked ? "TRUE" : "FALSE") + "\n");
+
+                    sw.Write("imagePictureBox1," + imagePictureBox1 + "\n");
+                    sw.Write("imagePictureBox2," + imagePictureBox2 + "\n");
+                    sw.Write("imagePictureBox3," + imagePictureBox3 + "\n");
+                    sw.Write("imagePictureBox4," + imagePictureBox4 + "\n");
+                    sw.Write("imagePictureBox5," + imagePictureBox5 + "\n");
+                    sw.Write("imagePictureBox6," + imagePictureBox6 + "\n");
+                    //sw.Write("imagePictureBox7," + imagePictureBox7 + "\n");
+                    //sw.Write("imagePictureBox8," + imagePictureBox8 + "\n");
+
+                    sw.Write("htmlPictureBox1," + htmlPictureBox1 + "\n");
+                    sw.Write("htmlPictureBox2," + htmlPictureBox2 + "\n");
+                    sw.Write("htmlPictureBox3," + htmlPictureBox3 + "\n");
+                    sw.Write("htmlPictureBox4," + htmlPictureBox4 + "\n");
+                    sw.Write("htmlPictureBox5," + htmlPictureBox5 + "\n");
+                    sw.Write("htmlPictureBox6," + htmlPictureBox6 + "\n");
+
+                    sw.Write("r_path," + textBox1.Text + "\n");
+                }
+            }
+            catch
+            {
+                status = -1;
+                if (MessageBox.Show("Cannot write in " + file, "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return;
+            }
+            try
+            {
+                File.Copy("pm_setting_" + base_name0 + ".txt", "pre_setting.txt", true);
+            }
+            catch { }
+        }
+        void load(string setting_file)
+        {
+            string file = "pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
+            if (setting_file == "")
+            {
+                if (base_name0 == "")
+                {
+                    status = -1;
+                    MessageBox.Show("input csv file !");
+                    return;
+                }
+                if (!File.Exists(file)) save();
+
+                if (!File.Exists(file))
+                {
+                    MessageBox.Show("file not found[" + file + ".txt]");
+                }
+                listBox1.Items.Clear();
+                listBox2.Items.Clear();
+                listBox3.Items.Clear();
+                //listBox4.Items.Clear();
+            }
+            else
+            {
+                file = setting_file;
+            }
+
+            string rexe1 = textBox1.Text + "\\x64\\Rscript.exe";
+            string rexe = rexe1;
+
+            bool rpath_chg = false;
+            System.IO.StreamReader sr = new System.IO.StreamReader(file, Encoding.GetEncoding("SHIFT_JIS"));
+            if (sr != null)
+            {
+                while (sr.EndOfStream == false)
+                {
+                    string s = sr.ReadLine();
+                    output_idx = int.Parse(s.Replace("\n", ""));
+
+                    s = sr.ReadLine();
+                    int n = int.Parse(s.Replace("\n", ""));
+                    for (int i = 0; i < n; i++)
+                    {
+                        s = sr.ReadLine();
+                        if (setting_file == "")
+                        {
+                            listBox1.Items.Add(s.Replace("\n", ""));
+                        }
+                    }
+                    s = sr.ReadLine();
+                    n = int.Parse(s.Replace("\n", ""));
+                    for (int i = 0; i < n; i++)
+                    {
+                        s = sr.ReadLine();
+                        int k = int.Parse(s.Replace("\n", ""));
+                        listBox1.SetSelected(k, true);
+                    }
+
+                    s = sr.ReadLine();
+                    n = int.Parse(s.Replace("\n", ""));
+                    for (int i = 0; i < n; i++)
+                    {
+                        s = sr.ReadLine();
+                        if (setting_file == "")
+                        {
+                            listBox2.Items.Add(s.Replace("\n", ""));
+                        }
+                    }
+                    s = sr.ReadLine();
+                    n = int.Parse(s.Replace("\n", ""));
+                    for (int i = 0; i < n; i++)
+                    {
+                        s = sr.ReadLine();
+                        int k = int.Parse(s.Replace("\n", ""));
+                        listBox2.SetSelected(k, true);
+                    }
+
+
+                    s = sr.ReadLine();
+                    n = int.Parse(s.Replace("\n", ""));
+                    for (int i = 0; i < n; i++)
+                    {
+                        s = sr.ReadLine();
+                        if (setting_file == "")
+                        {
+                            listBox3.Items.Add(s.Replace("\n", ""));
+                        }
+                    }
+                    s = sr.ReadLine();
+                    n = int.Parse(s.Replace("\n", ""));
+                    for (int i = 0; i < n; i++)
+                    {
+                        s = sr.ReadLine();
+                        int k = int.Parse(s.Replace("\n", ""));
+                        listBox3.SetSelected(k, true);
+                    }
+
+
+                    //s = sr.ReadLine();
+                    //n = int.Parse(s.Replace("\n", ""));
+                    //for (int i = 0; i < n; i++)
+                    //{
+                    //    s = sr.ReadLine();
+                    //    if (setting_file == "")
+                    //    {
+                    //        listBox4.Items.Add(s.Replace("\n", ""));
+                    //    }
+                    //}
+
+                    //s = sr.ReadLine();
+                    //n = int.Parse(s.Replace("\n", ""));
+                    //for (int i = 0; i < n; i++)
+                    //{
+                    //    s = sr.ReadLine();
+                    //    int k = int.Parse(s.Replace("\n", ""));
+                    //    listBox4.SetSelected(k, true);
+                    //}
+                    while (sr.EndOfStream == false)
+                    {
+                        s = sr.ReadLine();
+                        var ss = s.Split(',');
+
+
+                        if (ss[0].IndexOf("textBox11") >= 0)
+                        {
+                            textBox11.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox12") >= 0)
+                        {
+                            textBox12.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox13") >= 0)
+                        {
+                            textBox13.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox14") >= 0)
+                        {
+                            textBox14.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox15") >= 0)
+                        {
+                            textBox15.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox16") >= 0)
+                        {
+                            textBox16.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox17") >= 0)
+                        {
+                            textBox17.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox18") >= 0)
+                        {
+                            textBox18.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        //if (ss[0].IndexOf("textBox19") >= 0)
+                        //{
+                        //    textBox19.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("textBox20") >= 0)
+                        //{
+                        //    textBox20.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("textBox21") >= 0)
+                        //{
+                        //    textBox21.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("textBox22") >= 0)
+                        //{
+                        //    textBox22.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("textBox23") >= 0)
+                        //{
+                        //    textBox23.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("textBox24") >= 0)
+                        //{
+                        //    textBox24.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("textBox25") >= 0)
+                        //{
+                        //    textBox25.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        if (ss[0].IndexOf("textBox2") >= 0)
+                        {
+                            textBox2.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox3") >= 0)
+                        {
+                            textBox3.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox4") >= 0)
+                        {
+                            textBox4.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox5") >= 0)
+                        {
+                            textBox5.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox6") >= 0)
+                        {
+                            textBox6.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox7") >= 0)
+                        {
+                            textBox7.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox8") >= 0)
+                        {
+                            textBox8.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox9") >= 0)
+                        {
+                            textBox9.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox10") >= 0)
+                        {
+                            textBox10.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+
+                        //if (ss[0].IndexOf("comboBox10") >= 0)
+                        //{
+                        //    comboBox10.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        if (ss[0].IndexOf("comboBox1") >= 0)
+                        {
+                            comboBox1.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("comboBox2") >= 0)
+                        {
+                            comboBox2.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("comboBox3") >= 0)
+                        {
+                            comboBox3.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("comboBox4") >= 0)
+                        {
+                            comboBox4.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("comboBox5") >= 0)
+                        {
+                            comboBox5.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        //if (ss[0].IndexOf("comboBox6") >= 0)
+                        //{
+                        //    comboBox6.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("comboBox7") >= 0)
+                        //{
+                        //    comboBox7.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("comboBox8") >= 0)
+                        //{
+                        //    comboBox8.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("comboBox9") >= 0)
+                        //{
+                        //    comboBox9.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+
+                        //if (ss[0].IndexOf("numericUpDown10") >= 0)
+                        //{
+                        //    numericUpDown10.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown11") >= 0)
+                        //{
+                        //    numericUpDown11.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown12") >= 0)
+                        //{
+                        //    numericUpDown12.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown13") >= 0)
+                        //{
+                        //    numericUpDown13.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown14") >= 0)
+                        //{
+                        //    numericUpDown14.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown15") >= 0)
+                        //{
+                        //    numericUpDown15.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown16") >= 0)
+                        //{
+                        //    numericUpDown16.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown17") >= 0)
+                        //{
+                        //    numericUpDown17.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown18") >= 0)
+                        //{
+                        //    numericUpDown18.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown19") >= 0)
+                        //{
+                        //    numericUpDown19.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+
+
+                        if (ss[0].IndexOf("numericUpDown1") >= 0)
+                        {
+                            numericUpDown1.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        //if (ss[0].IndexOf("numericUpDown2") >= 0)
+                        //{
+                        //    numericUpDown2.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown3") >= 0)
+                        //{
+                        //    numericUpDown3.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown4") >= 0)
+                        //{
+                        //    numericUpDown4.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown5") >= 0)
+                        //{
+                        //    numericUpDown5.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown6") >= 0)
+                        //{
+                        //    numericUpDown6.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown7") >= 0)
+                        //{
+                        //    numericUpDown7.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown8") >= 0)
+                        //{
+                        //    numericUpDown8.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("numericUpDown9") >= 0)
+                        //{
+                        //    numericUpDown9.Text = ss[1].Replace("\r\n", "");
+                        //    continue;
+                        //}
+
+                        //if (ss[0].IndexOf("checkBox11") >= 0)
+                        //{
+                        //    checkBox11.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("checkBox10") >= 0)
+                        //{
+                        //    checkBox10.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                        //    continue;
+                        //}
+                        if (ss[0].IndexOf("checkBox1") >= 0)
+                        {
+                            checkBox1.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                            continue;
+                        }
+                        if (ss[0].IndexOf("checkBox2") >= 0)
+                        {
+                            checkBox2.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                            continue;
+                        }
+                        if (ss[0].IndexOf("checkBox3") >= 0)
+                        {
+                            checkBox3.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                            continue;
+                        }
+                        if (ss[0].IndexOf("checkBox4") >= 0)
+                        {
+                            checkBox4.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                            continue;
+                        }
+                        //if (ss[0].IndexOf("checkBox5") >= 0)
+                        //{
+                        //    checkBox5.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("checkBox6") >= 0)
+                        //{
+                        //    checkBox6.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("checkBox7") >= 0)
+                        //{
+                        //    checkBox7.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("checkBox8") >= 0)
+                        //{
+                        //    checkBox8.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("checkBox9") >= 0)
+                        //{
+                        //    checkBox9.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                        //    continue;
+                        //}
+
+                        if (ss[0].IndexOf("radioButton1") >= 0)
+                        {
+                            radioButton1.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                            continue;
+                        }
+                        if (ss[0].IndexOf("radioButton2") >= 0)
+                        {
+                            radioButton2.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                            continue;
+                        }
+                        if (ss[0].IndexOf("radioButton3") >= 0)
+                        {
+                            radioButton3.Checked = (ss[1].Replace("\r\n", "") == "TRUE") ? true : false;
+                            continue;
+                        }
+
+                        if (ss[0].IndexOf("imagePictureBox1") >= 0)
+                        {
+                            imagePictureBox1 = ss[1].Replace("\r\n", "");
+                            pictureBox1.Image = CreateImage(imagePictureBox1);
+                            continue;
+                        }
+                        if (ss[0].IndexOf("imagePictureBox2") >= 0)
+                        {
+                            imagePictureBox2 = ss[1].Replace("\r\n", "");
+                            pictureBox2.Image = CreateImage(imagePictureBox2);
+                            continue;
+                        }
+                        if (ss[0].IndexOf("imagePictureBox3") >= 0)
+                        {
+                            imagePictureBox3 = ss[1].Replace("\r\n", "");
+                            pictureBox3.Image = CreateImage(imagePictureBox3);
+                            continue;
+                        }
+                        if (ss[0].IndexOf("imagePictureBox4") >= 0)
+                        {
+                            imagePictureBox4 = ss[1].Replace("\r\n", "");
+                            pictureBox4.Image = CreateImage(imagePictureBox4);
+                            continue;
+                        }
+                        if (ss[0].IndexOf("imagePictureBox5") >= 0)
+                        {
+                            imagePictureBox5 = ss[1].Replace("\r\n", "");
+                            pictureBox5.Image = CreateImage(imagePictureBox5);
+                            continue;
+                        }
+                        if (ss[0].IndexOf("imagePictureBox6") >= 0)
+                        {
+                            imagePictureBox6 = ss[1].Replace("\r\n", "");
+                            pictureBox6.Image = CreateImage(imagePictureBox6);
+                            continue;
+                        }
+                        //if (ss[0].IndexOf("imagePictureBox7") >= 0)
+                        //{
+                        //    imagePictureBox7 = ss[1].Replace("\r\n", "");
+                        //    pictureBox7.Image = CreateImage(imagePictureBox7);
+                        //    continue;
+                        //}
+                        //if (ss[0].IndexOf("imagePictureBox8") >= 0)
+                        //{
+                        //    imagePictureBox8 = ss[1].Replace("\r\n", "");
+                        //    pictureBox8.Image = CreateImage(imagePictureBox7);
+                        //    continue;
+                        //}
+
+                        if (ss[0].IndexOf("htmlPictureBox1") >= 0)
+                        {
+                            htmlPictureBox1 = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("htmlPictureBox2") >= 0)
+                        {
+                            htmlPictureBox2 = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("htmlPictureBox3") >= 0)
+                        {
+                            htmlPictureBox3 = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("htmlPictureBox4") >= 0)
+                        {
+                            htmlPictureBox4 = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("htmlPictureBox5") >= 0)
+                        {
+                            htmlPictureBox5 = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("htmlPictureBox6") >= 0)
+                        {
+                            htmlPictureBox6 = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+
+
+                        if (ss[0].IndexOf("r_path") >= 0)
+                        {
+                            string path = ss[1].Replace("\r\n", "");
+                            rexe = path + "\\x64\\Rscript.exe";
+
+                            if (!File.Exists(rexe))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                rpath_chg = true;
+                            }
+                            textBox1.Text = path;
+                            continue;
+                        }
+                    }
+                }
+            }
+            if (sr != null) sr.Close();
+            if (!rpath_chg)
+            {
+                MessageBox.Show(rexe + " is not found.\nThe path of the loaded setting was ignored.");
+                if (!File.Exists(rexe))
+                {
+                    MessageBox.Show("Please reconfigure the path where 'Rscript.exe' exists.");
+                    return;
+                }
+            }
+        }
+        private void button15_Click(object sender, EventArgs e)
+        {
+            save();
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            load("");
         }
         private void UpdateInvokeRequire()
         {
@@ -536,9 +1293,23 @@ namespace pm
             if (work_dir == "") return;
 
             string cmd = "";
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(csv_dir);
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(work_dir + "\\Untreated");
+            System.IO.FileInfo[] csvfiles =
+                di.GetFiles("*.csv", System.IO.SearchOption.TopDirectoryOnly);
+            foreach (System.IO.FileInfo f in csvfiles)
+            {
+                string name = Path.GetFileNameWithoutExtension(f.FullName);
+
+                string tmp = work_dir + "\\Untreated\\" + name + ".csv";
+                if (!File.Exists(tmp))
+                {
+                    File.Delete(tmp);
+                }
+            }
+
+            di = new System.IO.DirectoryInfo(csv_dir);
             System.IO.FileInfo[] files =
-                di.GetFiles("*.csv", System.IO.SearchOption.AllDirectories);
+                di.GetFiles("*.csv", System.IO.SearchOption.TopDirectoryOnly);
 
             cmd += "set data=" + csv_dir + "\r\n";
             cmd += "set serv=" + work_dir + "\\Untreated" + "\r\n";
@@ -646,7 +1417,7 @@ namespace pm
                     string bak_file = "";
                     for (int i = 1; i < 1000; i++)
                     {
-                        bak_file = string.Format(work_dir + "\\feature_param_{1}bak({2}).csv", base_name0, exist_number);
+                        bak_file = string.Format(work_dir + "\\feature_param_{0}bak({1}).csv", base_name0, exist_number);
                         if (File.Exists(bak_file))
                         {
                             exist_number++;
@@ -708,6 +1479,7 @@ namespace pm
             if (System.IO.File.Exists(fileName))
             {
                 pictureBox1.Image = CreateImage(fileName);
+                imagePictureBox1 = fileName;
             }
             else
             {
@@ -751,6 +1523,7 @@ namespace pm
                 if (System.IO.File.Exists(fileName))
                 {
                     pictureBox1.Image = CreateImage(fileName);
+                    imagePictureBox1 = fileName;
                 }
 
                 if (sv_num == max_image)
@@ -772,6 +1545,7 @@ namespace pm
             {
                 pictureBox1.Image = CreateImage(fileName);
                 pictureBox1.Refresh();
+                imagePictureBox1 = fileName;
             }
         }
 
@@ -917,6 +1691,10 @@ namespace pm
                 Form2 f = new Form2();
                 f.form1_ = this;
                 f.SetFile(work_dir, fileName);
+                f.button9.Visible = true;
+                f.button10.Visible = true;
+                f.timer1.Enabled = true;
+                f.timer1.Start();
 
                 f.Show();
             }
@@ -969,6 +1747,7 @@ namespace pm
             cmd += "\r\n";
             cmd += "timeStamp <- '" + comboBox2.Text + "'\r\n";
             cmd += "csvfile = '"+base_name + ".csv'\r\n";
+            cmd += "base_name <<- '" + base_name + "'\r\n";
             cmd += "plt <- feature_summary_visualization(csvfile, timeStamp)\r\n";
             cmd += "\r\n";
             cmd += "\r\n";
@@ -1045,6 +1824,122 @@ namespace pm
 
             }
             System.IO.Directory.SetCurrentDirectory(work_dir);
+
+            if (File.Exists(base_name0 + "_feature_df.png"))
+            {
+                pictureBox2.Image = CreateImage(base_name0 + "_feature_df.png");
+                imagePictureBox2 = base_name0 + "_feature_df.png";
+                htmlPictureBox2 = base_name0 + "_feature_df.html";
+            }
+            if (File.Exists(base_name0 + "_monotonicity2.png"))
+            {
+                pictureBox3.Image = CreateImage(base_name0 + "_monotonicity2.png");
+                imagePictureBox3 = base_name0 + "_monotonicity2.png";
+                htmlPictureBox3 = base_name0 + "_monotonicity2.html";
+            }
+            if (File.Exists(base_name0 + "_tracking_feature.png"))
+            {
+                pictureBox4.Image = CreateImage(base_name0 + "_tracking_feature.png");
+                imagePictureBox4 = base_name0 + "_tracking_feature.png";
+                htmlPictureBox4 = base_name0 + "_feature_summary_visualization1.html";
+            }
+            if (File.Exists(base_name0 + "_tracking_feature2.png"))
+            {
+                pictureBox5.Image = CreateImage(base_name0 + "_tracking_feature2.png");
+                imagePictureBox5 = base_name0 + "_tracking_feature2.png";
+                htmlPictureBox5 = base_name0 + "_feature_summary_visualization2.html";
+            }
+            if (File.Exists(base_name0 + "_input.png"))
+            {
+                pictureBox6.Image = CreateImage(base_name0 + "_input.png");
+                imagePictureBox6 = base_name0 + "_input.png";
+                htmlPictureBox6 = base_name0 + "_input.html";
+            }
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists(imagePictureBox2))
+            {
+                Form2 f = new Form2();
+                f.form1_ = this;
+                if (htmlPictureBox2 != "")
+                {
+                    f.plotly_html = htmlPictureBox2;
+                }
+                f.SetFile(work_dir, imagePictureBox2);
+
+                f.Show();
+            }
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists(imagePictureBox3))
+            {
+                Form2 f = new Form2();
+                f.form1_ = this;
+                if (htmlPictureBox3 != "")
+                {
+                    f.plotly_html = htmlPictureBox3;
+                }
+                f.SetFile(work_dir, imagePictureBox3);
+
+                f.Show();
+            }
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists(imagePictureBox4))
+            {
+                Form2 f = new Form2();
+                f.form1_ = this;
+                if (htmlPictureBox4 != "")
+                {
+                    f.plotly_html = htmlPictureBox4;
+                }
+                f.SetFile(work_dir, imagePictureBox4);
+
+                f.Show();
+            }
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists(imagePictureBox5))
+            {
+                Form2 f = new Form2();
+                f.form1_ = this;
+                if (htmlPictureBox5 != "")
+                {
+                    f.plotly_html = htmlPictureBox5;
+                }
+                f.SetFile(work_dir, imagePictureBox5);
+
+                f.Show();
+            }
+        }
+
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists(imagePictureBox6))
+            {
+                Form2 f = new Form2();
+                f.form1_ = this;
+                if ( htmlPictureBox6 != "")
+                {
+                    f.plotly_html = htmlPictureBox6;
+                }
+                f.SetFile(work_dir, imagePictureBox6);
+
+                f.Show();
+            }
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            listBox3.Items.Clear();
         }
     }
 }

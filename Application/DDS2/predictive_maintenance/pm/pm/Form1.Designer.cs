@@ -32,18 +32,28 @@ namespace pm
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel18 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button5 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.splitter13 = new System.Windows.Forms.Splitter();
+            this.panel19 = new System.Windows.Forms.Panel();
+            this.panel20 = new System.Windows.Forms.Panel();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.panel21 = new System.Windows.Forms.Panel();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.splitter14 = new System.Windows.Forms.Splitter();
+            this.panel17 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -65,6 +75,23 @@ namespace pm
             this.splitter4 = new System.Windows.Forms.Splitter();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.panel12 = new System.Windows.Forms.Panel();
+            this.panel16 = new System.Windows.Forms.Panel();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.splitter12 = new System.Windows.Forms.Splitter();
+            this.panel15 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.splitter10 = new System.Windows.Forms.Splitter();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.panel14 = new System.Windows.Forms.Panel();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.splitter11 = new System.Windows.Forms.Splitter();
+            this.panel13 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.splitter9 = new System.Windows.Forms.Splitter();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.button14 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -129,43 +156,24 @@ namespace pm
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button6 = new System.Windows.Forms.Button();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.panel12 = new System.Windows.Forms.Panel();
-            this.panel16 = new System.Windows.Forms.Panel();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.splitter12 = new System.Windows.Forms.Splitter();
-            this.panel15 = new System.Windows.Forms.Panel();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.splitter10 = new System.Windows.Forms.Splitter();
-            this.panel11 = new System.Windows.Forms.Panel();
-            this.panel14 = new System.Windows.Forms.Panel();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.splitter11 = new System.Windows.Forms.Splitter();
-            this.panel13 = new System.Windows.Forms.Panel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.splitter9 = new System.Windows.Forms.Splitter();
-            this.panel10 = new System.Windows.Forms.Panel();
-            this.button14 = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button17 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
+            this.panel18.SuspendLayout();
+            this.panel19.SuspendLayout();
+            this.panel20.SuspendLayout();
+            this.panel21.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            this.panel17.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.panel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.tabPage5.SuspendLayout();
             this.panel12.SuspendLayout();
             this.panel16.SuspendLayout();
@@ -178,33 +186,74 @@ namespace pm
             this.panel13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel10.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button5);
-            this.panel1.Controls.Add(this.button4);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.comboBox3);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.comboBox2);
-            this.panel1.Controls.Add(this.comboBox1);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.panel18);
+            this.panel1.Controls.Add(this.splitter13);
+            this.panel1.Controls.Add(this.panel19);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1525, 102);
+            this.panel1.Size = new System.Drawing.Size(1525, 164);
             this.panel1.TabIndex = 0;
+            // 
+            // panel18
+            // 
+            this.panel18.Controls.Add(this.button2);
+            this.panel18.Controls.Add(this.comboBox3);
+            this.panel18.Controls.Add(this.button5);
+            this.panel18.Controls.Add(this.label2);
+            this.panel18.Controls.Add(this.button4);
+            this.panel18.Controls.Add(this.button3);
+            this.panel18.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel18.Location = new System.Drawing.Point(671, 0);
+            this.panel18.Name = "panel18";
+            this.panel18.Size = new System.Drawing.Size(854, 55);
+            this.panel18.TabIndex = 85;
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button2.Location = new System.Drawing.Point(149, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(213, 42);
+            this.button2.TabIndex = 80;
+            this.button2.Text = "Parameter file generation";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "+",
+            "-"});
+            this.comboBox3.Location = new System.Drawing.Point(53, 12);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(69, 23);
+            this.comboBox3.TabIndex = 78;
+            this.comboBox3.Text = "+";
+            this.toolTip1.SetToolTip(this.comboBox3, "Specify whether the abnormal trend is rising or falling with a sign");
             // 
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button5.Location = new System.Drawing.Point(1241, 24);
+            this.button5.Location = new System.Drawing.Point(665, 4);
             this.button5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(133, 42);
@@ -213,10 +262,22 @@ namespace pm
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label2.Location = new System.Drawing.Point(7, 18);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 15);
+            this.label2.TabIndex = 79;
+            this.label2.Text = "sigin";
+            this.toolTip1.SetToolTip(this.label2, "Specify whether the abnormal trend is rising or falling with a sign");
+            // 
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button4.Location = new System.Drawing.Point(1100, 24);
+            this.button4.Location = new System.Drawing.Point(524, 4);
             this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(135, 42);
@@ -228,7 +289,7 @@ namespace pm
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button3.Location = new System.Drawing.Point(955, 24);
+            this.button3.Location = new System.Drawing.Point(379, 4);
             this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(137, 42);
@@ -237,95 +298,113 @@ namespace pm
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button2
+            // splitter13
             // 
-            this.button2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button2.Location = new System.Drawing.Point(725, 24);
-            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(213, 42);
-            this.button2.TabIndex = 80;
-            this.button2.Text = "Parameter file generation";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.splitter13.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.splitter13.Location = new System.Drawing.Point(668, 0);
+            this.splitter13.Name = "splitter13";
+            this.splitter13.Size = new System.Drawing.Size(3, 164);
+            this.splitter13.TabIndex = 1;
+            this.splitter13.TabStop = false;
             // 
-            // label2
+            // panel19
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.Location = new System.Drawing.Point(583, 38);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 15);
-            this.label2.TabIndex = 79;
-            this.label2.Text = "sigin";
-            this.toolTip1.SetToolTip(this.label2, "Specify whether the abnormal trend is rising or falling with a sign");
+            this.panel19.Controls.Add(this.panel20);
+            this.panel19.Controls.Add(this.splitter14);
+            this.panel19.Controls.Add(this.panel17);
+            this.panel19.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel19.Location = new System.Drawing.Point(0, 0);
+            this.panel19.Name = "panel19";
+            this.panel19.Size = new System.Drawing.Size(668, 164);
+            this.panel19.TabIndex = 0;
             // 
-            // comboBox3
+            // panel20
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            "+",
-            "-"});
-            this.comboBox3.Location = new System.Drawing.Point(629, 32);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(69, 23);
-            this.comboBox3.TabIndex = 78;
-            this.comboBox3.Text = "+";
-            this.toolTip1.SetToolTip(this.comboBox3, "Specify whether the abnormal trend is rising or falling with a sign");
+            this.panel20.Controls.Add(this.button15);
+            this.panel20.Controls.Add(this.button16);
+            this.panel20.Controls.Add(this.panel21);
+            this.panel20.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel20.Location = new System.Drawing.Point(0, 80);
+            this.panel20.Name = "panel20";
+            this.panel20.Size = new System.Drawing.Size(668, 84);
+            this.panel20.TabIndex = 86;
             // 
-            // label1
+            // button15
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label1.Location = new System.Drawing.Point(315, 41);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
-            this.label1.TabIndex = 77;
-            this.label1.Text = "time";
-            this.toolTip1.SetToolTip(this.label1, "Column name representing observation time");
+            this.button15.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button15.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button15.Location = new System.Drawing.Point(7, 5);
+            this.button15.Margin = new System.Windows.Forms.Padding(2);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(125, 29);
+            this.button15.TabIndex = 49;
+            this.button15.Text = "setting save";
+            this.toolTip1.SetToolTip(this.button15, "Save the configuration");
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
-            // comboBox2
+            // button16
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(360, 38);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 23);
-            this.comboBox2.TabIndex = 76;
-            this.toolTip1.SetToolTip(this.comboBox2, "Column name representing observation time");
+            this.button16.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button16.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button16.Location = new System.Drawing.Point(136, 5);
+            this.button16.Margin = new System.Windows.Forms.Padding(2);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(120, 29);
+            this.button16.TabIndex = 50;
+            this.button16.Text = "setting load";
+            this.toolTip1.SetToolTip(this.button16, "Load configuration");
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
-            // comboBox1
+            // panel21
             // 
-            this.comboBox1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "sjis",
-            "utf-8"});
-            this.comboBox1.Location = new System.Drawing.Point(188, 38);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(105, 23);
-            this.comboBox1.TabIndex = 74;
-            this.comboBox1.Text = "sjis";
+            this.panel21.Controls.Add(this.pictureBox6);
+            this.panel21.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel21.Location = new System.Drawing.Point(468, 0);
+            this.panel21.Name = "panel21";
+            this.panel21.Size = new System.Drawing.Size(200, 84);
+            this.panel21.TabIndex = 0;
             // 
-            // label6
+            // pictureBox6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label6.Location = new System.Drawing.Point(108, 40);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(72, 15);
-            this.label6.TabIndex = 75;
-            this.label6.Text = "encoding";
+            this.pictureBox6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox6.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(200, 84);
+            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox6.TabIndex = 0;
+            this.pictureBox6.TabStop = false;
+            this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
+            // 
+            // splitter14
+            // 
+            this.splitter14.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.splitter14.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter14.Location = new System.Drawing.Point(0, 77);
+            this.splitter14.Name = "splitter14";
+            this.splitter14.Size = new System.Drawing.Size(668, 3);
+            this.splitter14.TabIndex = 85;
+            this.splitter14.TabStop = false;
+            // 
+            // panel17
+            // 
+            this.panel17.Controls.Add(this.button1);
+            this.panel17.Controls.Add(this.textBox1);
+            this.panel17.Controls.Add(this.label6);
+            this.panel17.Controls.Add(this.comboBox1);
+            this.panel17.Controls.Add(this.comboBox2);
+            this.panel17.Controls.Add(this.label1);
+            this.panel17.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel17.Location = new System.Drawing.Point(0, 0);
+            this.panel17.Name = "panel17";
+            this.panel17.Size = new System.Drawing.Size(668, 77);
+            this.panel17.TabIndex = 84;
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button1.Location = new System.Drawing.Point(3, 28);
+            this.button1.Location = new System.Drawing.Point(15, 32);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(99, 32);
@@ -337,17 +416,66 @@ namespace pm
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 0);
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox1.Location = new System.Drawing.Point(0, 0);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(417, 22);
+            this.textBox1.Size = new System.Drawing.Size(668, 22);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "c:\\Program Files\\R\\R-4.2.3\\bin";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label6.Location = new System.Drawing.Point(120, 44);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 15);
+            this.label6.TabIndex = 75;
+            this.label6.Text = "encoding";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "sjis",
+            "utf-8"});
+            this.comboBox1.Location = new System.Drawing.Point(200, 42);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(105, 23);
+            this.comboBox1.TabIndex = 74;
+            this.comboBox1.Text = "sjis";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(372, 42);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 23);
+            this.comboBox2.TabIndex = 76;
+            this.toolTip1.SetToolTip(this.comboBox2, "Column name representing observation time");
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label1.Location = new System.Drawing.Point(327, 45);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.TabIndex = 77;
+            this.label1.Text = "time";
+            this.toolTip1.SetToolTip(this.label1, "Column name representing observation time");
+            // 
             // splitter1
             // 
+            this.splitter1.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter1.Location = new System.Drawing.Point(0, 102);
+            this.splitter1.Location = new System.Drawing.Point(0, 164);
             this.splitter1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitter1.Name = "splitter1";
             this.splitter1.Size = new System.Drawing.Size(1525, 2);
@@ -360,10 +488,10 @@ namespace pm
             this.panel2.Controls.Add(this.splitter5);
             this.panel2.Controls.Add(this.panel5);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(0, 104);
+            this.panel2.Location = new System.Drawing.Point(0, 166);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(245, 522);
+            this.panel2.Size = new System.Drawing.Size(245, 460);
             this.panel2.TabIndex = 2;
             // 
             // listBox1
@@ -374,7 +502,7 @@ namespace pm
             this.listBox1.Location = new System.Drawing.Point(0, 73);
             this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(245, 449);
+            this.listBox1.Size = new System.Drawing.Size(245, 387);
             this.listBox1.TabIndex = 11;
             // 
             // splitter5
@@ -408,10 +536,10 @@ namespace pm
             // 
             // splitter2
             // 
-            this.splitter2.Location = new System.Drawing.Point(245, 104);
+            this.splitter2.Location = new System.Drawing.Point(245, 166);
             this.splitter2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(8, 522);
+            this.splitter2.Size = new System.Drawing.Size(8, 460);
             this.splitter2.TabIndex = 3;
             this.splitter2.TabStop = false;
             // 
@@ -421,10 +549,10 @@ namespace pm
             this.panel3.Controls.Add(this.splitter6);
             this.panel3.Controls.Add(this.panel6);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel3.Location = new System.Drawing.Point(253, 104);
+            this.panel3.Location = new System.Drawing.Point(253, 166);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(255, 522);
+            this.panel3.Size = new System.Drawing.Size(255, 460);
             this.panel3.TabIndex = 4;
             // 
             // listBox2
@@ -435,7 +563,7 @@ namespace pm
             this.listBox2.Location = new System.Drawing.Point(0, 73);
             this.listBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(255, 449);
+            this.listBox2.Size = new System.Drawing.Size(255, 387);
             this.listBox2.TabIndex = 12;
             // 
             // splitter6
@@ -481,10 +609,10 @@ namespace pm
             // 
             // splitter3
             // 
-            this.splitter3.Location = new System.Drawing.Point(508, 104);
+            this.splitter3.Location = new System.Drawing.Point(508, 166);
             this.splitter3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitter3.Name = "splitter3";
-            this.splitter3.Size = new System.Drawing.Size(8, 522);
+            this.splitter3.Size = new System.Drawing.Size(8, 460);
             this.splitter3.TabIndex = 5;
             this.splitter3.TabStop = false;
             // 
@@ -494,10 +622,10 @@ namespace pm
             this.panel4.Controls.Add(this.splitter7);
             this.panel4.Controls.Add(this.panel7);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel4.Location = new System.Drawing.Point(516, 104);
+            this.panel4.Location = new System.Drawing.Point(516, 166);
             this.panel4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(251, 522);
+            this.panel4.Size = new System.Drawing.Size(251, 460);
             this.panel4.TabIndex = 6;
             // 
             // listBox3
@@ -509,7 +637,7 @@ namespace pm
             this.listBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox3.Name = "listBox3";
             this.listBox3.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBox3.Size = new System.Drawing.Size(251, 449);
+            this.listBox3.Size = new System.Drawing.Size(251, 387);
             this.listBox3.TabIndex = 12;
             // 
             // splitter7
@@ -524,6 +652,7 @@ namespace pm
             // 
             // panel7
             // 
+            this.panel7.Controls.Add(this.button17);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -533,10 +662,10 @@ namespace pm
             // 
             // splitter4
             // 
-            this.splitter4.Location = new System.Drawing.Point(767, 104);
+            this.splitter4.Location = new System.Drawing.Point(767, 166);
             this.splitter4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitter4.Name = "splitter4";
-            this.splitter4.Size = new System.Drawing.Size(11, 522);
+            this.splitter4.Size = new System.Drawing.Size(11, 460);
             this.splitter4.TabIndex = 7;
             this.splitter4.TabStop = false;
             // 
@@ -554,12 +683,199 @@ namespace pm
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.tabControl1.Location = new System.Drawing.Point(778, 104);
+            this.tabControl1.Location = new System.Drawing.Point(778, 166);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(747, 522);
+            this.tabControl1.Size = new System.Drawing.Size(747, 460);
             this.tabControl1.TabIndex = 8;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.panel12);
+            this.tabPage5.Controls.Add(this.splitter10);
+            this.tabPage5.Controls.Add(this.panel11);
+            this.tabPage5.Controls.Add(this.splitter9);
+            this.tabPage5.Controls.Add(this.panel10);
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(739, 431);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "feature_summary";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // panel12
+            // 
+            this.panel12.Controls.Add(this.panel16);
+            this.panel12.Controls.Add(this.splitter12);
+            this.panel12.Controls.Add(this.panel15);
+            this.panel12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel12.Location = new System.Drawing.Point(371, 78);
+            this.panel12.Margin = new System.Windows.Forms.Padding(4);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(368, 353);
+            this.panel12.TabIndex = 4;
+            // 
+            // panel16
+            // 
+            this.panel16.Controls.Add(this.pictureBox5);
+            this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel16.Location = new System.Drawing.Point(0, 206);
+            this.panel16.Margin = new System.Windows.Forms.Padding(4);
+            this.panel16.Name = "panel16";
+            this.panel16.Size = new System.Drawing.Size(368, 147);
+            this.panel16.TabIndex = 2;
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox5.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox5.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(368, 147);
+            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox5.TabIndex = 1;
+            this.pictureBox5.TabStop = false;
+            this.pictureBox5.Click += new System.EventHandler(this.pictureBox5_Click);
+            // 
+            // splitter12
+            // 
+            this.splitter12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter12.Location = new System.Drawing.Point(0, 202);
+            this.splitter12.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter12.Name = "splitter12";
+            this.splitter12.Size = new System.Drawing.Size(368, 4);
+            this.splitter12.TabIndex = 1;
+            this.splitter12.TabStop = false;
+            // 
+            // panel15
+            // 
+            this.panel15.Controls.Add(this.pictureBox3);
+            this.panel15.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel15.Location = new System.Drawing.Point(0, 0);
+            this.panel15.Margin = new System.Windows.Forms.Padding(4);
+            this.panel15.Name = "panel15";
+            this.panel15.Size = new System.Drawing.Size(368, 202);
+            this.panel15.TabIndex = 0;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox3.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(368, 202);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 1;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            // 
+            // splitter10
+            // 
+            this.splitter10.Location = new System.Drawing.Point(367, 78);
+            this.splitter10.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter10.Name = "splitter10";
+            this.splitter10.Size = new System.Drawing.Size(4, 353);
+            this.splitter10.TabIndex = 3;
+            this.splitter10.TabStop = false;
+            // 
+            // panel11
+            // 
+            this.panel11.Controls.Add(this.panel14);
+            this.panel11.Controls.Add(this.splitter11);
+            this.panel11.Controls.Add(this.panel13);
+            this.panel11.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel11.Location = new System.Drawing.Point(0, 78);
+            this.panel11.Margin = new System.Windows.Forms.Padding(4);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(367, 353);
+            this.panel11.TabIndex = 2;
+            // 
+            // panel14
+            // 
+            this.panel14.Controls.Add(this.pictureBox4);
+            this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel14.Location = new System.Drawing.Point(0, 206);
+            this.panel14.Margin = new System.Windows.Forms.Padding(4);
+            this.panel14.Name = "panel14";
+            this.panel14.Size = new System.Drawing.Size(367, 147);
+            this.panel14.TabIndex = 2;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox4.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(367, 147);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox4.TabIndex = 1;
+            this.pictureBox4.TabStop = false;
+            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
+            // 
+            // splitter11
+            // 
+            this.splitter11.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter11.Location = new System.Drawing.Point(0, 202);
+            this.splitter11.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter11.Name = "splitter11";
+            this.splitter11.Size = new System.Drawing.Size(367, 4);
+            this.splitter11.TabIndex = 1;
+            this.splitter11.TabStop = false;
+            // 
+            // panel13
+            // 
+            this.panel13.Controls.Add(this.pictureBox2);
+            this.panel13.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel13.Location = new System.Drawing.Point(0, 0);
+            this.panel13.Margin = new System.Windows.Forms.Padding(4);
+            this.panel13.Name = "panel13";
+            this.panel13.Size = new System.Drawing.Size(367, 202);
+            this.panel13.TabIndex = 0;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(367, 202);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 0;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            // 
+            // splitter9
+            // 
+            this.splitter9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter9.Location = new System.Drawing.Point(0, 74);
+            this.splitter9.Margin = new System.Windows.Forms.Padding(4);
+            this.splitter9.Name = "splitter9";
+            this.splitter9.Size = new System.Drawing.Size(739, 4);
+            this.splitter9.TabIndex = 1;
+            this.splitter9.TabStop = false;
+            // 
+            // panel10
+            // 
+            this.panel10.Controls.Add(this.button14);
+            this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel10.Location = new System.Drawing.Point(0, 0);
+            this.panel10.Margin = new System.Windows.Forms.Padding(4);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(739, 74);
+            this.panel10.TabIndex = 0;
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(4, 4);
+            this.button14.Margin = new System.Windows.Forms.Padding(4);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(151, 44);
+            this.button14.TabIndex = 0;
+            this.button14.Text = "execute";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // tabPage1
             // 
@@ -586,7 +902,7 @@ namespace pm
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(739, 493);
+            this.tabPage1.Size = new System.Drawing.Size(739, 431);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "input data";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -840,7 +1156,7 @@ namespace pm
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(739, 493);
+            this.tabPage2.Size = new System.Drawing.Size(739, 431);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "After smoothing";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1057,7 +1373,7 @@ namespace pm
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(739, 493);
+            this.tabPage3.Size = new System.Drawing.Size(739, 431);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "prediction";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1200,7 +1516,7 @@ namespace pm
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(739, 493);
+            this.tabPage4.Size = new System.Drawing.Size(739, 431);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "monitoring";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1212,7 +1528,7 @@ namespace pm
             this.panel9.Location = new System.Drawing.Point(0, 148);
             this.panel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(739, 345);
+            this.panel9.Size = new System.Drawing.Size(739, 283);
             this.panel9.TabIndex = 2;
             // 
             // pictureBox1
@@ -1221,7 +1537,7 @@ namespace pm
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(739, 345);
+            this.pictureBox1.Size = new System.Drawing.Size(739, 283);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -1259,7 +1575,7 @@ namespace pm
             // 
             this.button11.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button11.Location = new System.Drawing.Point(524, 58);
-            this.button11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button11.Margin = new System.Windows.Forms.Padding(4);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(100, 39);
             this.button11.TabIndex = 10;
@@ -1271,7 +1587,7 @@ namespace pm
             // 
             this.button12.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button12.Location = new System.Drawing.Point(524, 6);
-            this.button12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button12.Margin = new System.Windows.Forms.Padding(4);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(100, 42);
             this.button12.TabIndex = 9;
@@ -1283,7 +1599,7 @@ namespace pm
             // 
             this.button9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button9.Location = new System.Drawing.Point(137, 49);
-            this.button9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button9.Margin = new System.Windows.Forms.Padding(4);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(56, 34);
             this.button9.TabIndex = 6;
@@ -1295,7 +1611,7 @@ namespace pm
             // 
             this.button10.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button10.Location = new System.Drawing.Point(73, 48);
-            this.button10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button10.Margin = new System.Windows.Forms.Padding(4);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(56, 35);
             this.button10.TabIndex = 5;
@@ -1354,191 +1670,12 @@ namespace pm
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(this.panel12);
-            this.tabPage5.Controls.Add(this.splitter10);
-            this.tabPage5.Controls.Add(this.panel11);
-            this.tabPage5.Controls.Add(this.splitter9);
-            this.tabPage5.Controls.Add(this.panel10);
-            this.tabPage5.Location = new System.Drawing.Point(4, 25);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(739, 493);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "feature_summary";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // panel12
-            // 
-            this.panel12.Controls.Add(this.panel16);
-            this.panel12.Controls.Add(this.splitter12);
-            this.panel12.Controls.Add(this.panel15);
-            this.panel12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel12.Location = new System.Drawing.Point(371, 78);
-            this.panel12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(368, 415);
-            this.panel12.TabIndex = 4;
-            // 
-            // panel16
-            // 
-            this.panel16.Controls.Add(this.pictureBox5);
-            this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel16.Location = new System.Drawing.Point(0, 206);
-            this.panel16.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel16.Name = "panel16";
-            this.panel16.Size = new System.Drawing.Size(368, 209);
-            this.panel16.TabIndex = 2;
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.Location = new System.Drawing.Point(116, 71);
-            this.pictureBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(133, 62);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox5.TabIndex = 1;
-            this.pictureBox5.TabStop = false;
-            // 
-            // splitter12
-            // 
-            this.splitter12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter12.Location = new System.Drawing.Point(0, 202);
-            this.splitter12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.splitter12.Name = "splitter12";
-            this.splitter12.Size = new System.Drawing.Size(368, 4);
-            this.splitter12.TabIndex = 1;
-            this.splitter12.TabStop = false;
-            // 
-            // panel15
-            // 
-            this.panel15.Controls.Add(this.pictureBox3);
-            this.panel15.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel15.Location = new System.Drawing.Point(0, 0);
-            this.panel15.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel15.Name = "panel15";
-            this.panel15.Size = new System.Drawing.Size(368, 202);
-            this.panel15.TabIndex = 0;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Location = new System.Drawing.Point(116, 70);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(133, 62);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 1;
-            this.pictureBox3.TabStop = false;
-            // 
-            // splitter10
-            // 
-            this.splitter10.Location = new System.Drawing.Point(367, 78);
-            this.splitter10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.splitter10.Name = "splitter10";
-            this.splitter10.Size = new System.Drawing.Size(4, 415);
-            this.splitter10.TabIndex = 3;
-            this.splitter10.TabStop = false;
-            // 
-            // panel11
-            // 
-            this.panel11.Controls.Add(this.panel14);
-            this.panel11.Controls.Add(this.splitter11);
-            this.panel11.Controls.Add(this.panel13);
-            this.panel11.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel11.Location = new System.Drawing.Point(0, 78);
-            this.panel11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(367, 415);
-            this.panel11.TabIndex = 2;
-            // 
-            // panel14
-            // 
-            this.panel14.Controls.Add(this.pictureBox4);
-            this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel14.Location = new System.Drawing.Point(0, 206);
-            this.panel14.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(367, 209);
-            this.panel14.TabIndex = 2;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Location = new System.Drawing.Point(116, 71);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(133, 62);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox4.TabIndex = 1;
-            this.pictureBox4.TabStop = false;
-            // 
-            // splitter11
-            // 
-            this.splitter11.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter11.Location = new System.Drawing.Point(0, 202);
-            this.splitter11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.splitter11.Name = "splitter11";
-            this.splitter11.Size = new System.Drawing.Size(367, 4);
-            this.splitter11.TabIndex = 1;
-            this.splitter11.TabStop = false;
-            // 
-            // panel13
-            // 
-            this.panel13.Controls.Add(this.pictureBox2);
-            this.panel13.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel13.Location = new System.Drawing.Point(0, 0);
-            this.panel13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(367, 202);
-            this.panel13.TabIndex = 0;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Location = new System.Drawing.Point(108, 79);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(133, 62);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
-            // 
-            // splitter9
-            // 
-            this.splitter9.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter9.Location = new System.Drawing.Point(0, 74);
-            this.splitter9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.splitter9.Name = "splitter9";
-            this.splitter9.Size = new System.Drawing.Size(739, 4);
-            this.splitter9.TabIndex = 1;
-            this.splitter9.TabStop = false;
-            // 
-            // panel10
-            // 
-            this.panel10.Controls.Add(this.button14);
-            this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel10.Location = new System.Drawing.Point(0, 0);
-            this.panel10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(739, 74);
-            this.panel10.TabIndex = 0;
-            // 
-            // button14
-            // 
-            this.button14.Location = new System.Drawing.Point(4, 4);
-            this.button14.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(100, 29);
-            this.button14.TabIndex = 0;
-            this.button14.Text = "button14";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
             // tabPage6
             // 
             this.tabPage6.Location = new System.Drawing.Point(4, 25);
-            this.tabPage6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage6.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(739, 493);
+            this.tabPage6.Size = new System.Drawing.Size(739, 431);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "tabPage6";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1553,6 +1690,17 @@ namespace pm
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(158, 39);
+            this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(85, 25);
+            this.button17.TabIndex = 2;
+            this.button17.Text = "clear";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // Form1
             // 
@@ -1572,7 +1720,14 @@ namespace pm
             this.Name = "Form1";
             this.Text = "pm";
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.panel18.ResumeLayout(false);
+            this.panel18.PerformLayout();
+            this.panel19.ResumeLayout(false);
+            this.panel20.ResumeLayout(false);
+            this.panel21.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            this.panel17.ResumeLayout(false);
+            this.panel17.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
@@ -1580,7 +1735,20 @@ namespace pm
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel4.ResumeLayout(false);
+            this.panel7.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.panel12.ResumeLayout(false);
+            this.panel16.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            this.panel15.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.panel11.ResumeLayout(false);
+            this.panel14.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.panel13.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.panel10.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -1596,18 +1764,6 @@ namespace pm
             this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            this.tabPage5.ResumeLayout(false);
-            this.panel12.ResumeLayout(false);
-            this.panel16.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            this.panel15.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            this.panel11.ResumeLayout(false);
-            this.panel14.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            this.panel13.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.panel10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1702,7 +1858,6 @@ namespace pm
         private System.Windows.Forms.Splitter splitter8;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Button button7;
@@ -1732,6 +1887,18 @@ namespace pm
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Panel panel18;
+        private System.Windows.Forms.Splitter splitter13;
+        private System.Windows.Forms.Panel panel19;
+        private System.Windows.Forms.Panel panel20;
+        private System.Windows.Forms.Panel panel21;
+        private System.Windows.Forms.PictureBox pictureBox6;
+        private System.Windows.Forms.Splitter splitter14;
+        private System.Windows.Forms.Panel panel17;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button button16;
+        public System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button button17;
     }
 }
 

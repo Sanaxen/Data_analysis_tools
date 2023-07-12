@@ -13,7 +13,7 @@ find_closest_factors <- function(n) {
   }
 }
 
-
+base_name <- ''
 feature_summary_visualization <- function( csvfile, timeStamp )
 {
 	print(timeStamp)
@@ -37,7 +37,11 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	p <- x %>% 
 	ggplot(aes(x = time_index, y = target))+facet_wrap( ~ key, scales = "free")+
 	geom_line(linewidth =0.4, color="#191970")
-	ggsave(filename="input.png", p, limitsize=F, width = 16*2, height = 9*2)
+	ggsave(filename=paste(base_name, "_input.png", sep=''), p, limitsize=F, width = 16*2, height = 9*2)
+
+	p <- ggplotly(p)
+	print(p)
+	htmlwidgets::saveWidget(as_widget(p), paste(base_name,"_input.html",sep=''), selfcontained = F)
 
 	mahalanobis_train <- df2[1:(nrow(df2))*0.8,]
 	m_mahalanobis <<- anomaly_detection_train(mahalanobis_train[colnames(mahalanobis_train)!="time_index"])
@@ -53,7 +57,7 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	flush.console()
 	plt_abnormality <- mahalanobis_df %>% ggplot(aes(x=time_index,y=Abnormality)) + geom_line()
 	plt_abnormality
-	ggsave(filename="abnormality.png", plt_abnormality, limitsize=F, width = 16, height = 9)
+	ggsave(filename=paste(base_name,"_abnormality.png",sep=''), plt_abnormality, limitsize=F, width = 16, height = 9)
 	
 	feature_train <- df2[(nrow(df2) - (nrow(df2))*0.9):nrow(df2),]
 	#feature_df <- feature(feature_train, lookback=lookback)
@@ -75,7 +79,11 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	ggplot(aes(x = time_index, y = target))+facet_wrap( ~ key, scales = "free")+
 	geom_line(aes(x = xx$time_index, y = xx$target), linewidth =0.2, color="#191970")+
 	geom_line(linewidth =0.4, color="#ff4500")
-	ggsave(filename="feature_df.png", p, limitsize=F, width = 16*2, height = 9*2)
+	ggsave(filename=paste(base_name,"_feature_df.png",sep=''), p, limitsize=F, width = 16*2, height = 9*2)
+
+	p <- ggplotly(p)
+	print(p)
+	htmlwidgets::saveWidget(as_widget(p), paste(base_name,"_feature_df.html",sep=''), selfcontained = F)
 
 	#Calculation of monotonicity for each feature
 	fm <- feature_monotonicity(feature_df, monotonicity_num=nrow(feature_df))
@@ -94,7 +102,7 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	xlab=sprintf("feature [total number of features:%d]", nrow(f2)-1)
 	plt0 <- f2 %>% ggplot(aes(x = reorder(feature,-monotonicity), y = monotonicity, fill = feature))+ geom_bar(stat = "identity")+ theme(legend.position = 'none')+xlab(xlab)+ theme(axis.text.x = element_blank())
 	plt0
-	ggsave(filename="monotonicity.png", plt0, limitsize=F, width = 16, height = 9)
+	ggsave(filename=paste(base_name,"_monotonicity.png",sep=''), plt0, limitsize=F, width = 16, height = 9)
 	
 	#Sort in descending order of monotonicity
 	leave_num = 25
@@ -115,12 +123,12 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	#Bar chart for each monotonicity
 	plt1 <- fm22 %>% ggplot(aes(x = reorder(feature,-monotonicity), y = monotonicity, fill = feature))+ geom_bar(stat = "identity")+xlab(sprintf("feature top %d & abnormality",leave_num))+
 	geom_text(aes(label = ifelse(monotonicity > 0.001 ,as.integer(monotonicity*1000)/1000,monotonicity)), size = 4, hjust = 0.5, vjust = 2, position = "stack") 
-	ggsave(filename="monotonicity2.png", plt1, limitsize=F, width = 16, height = 9)
+	ggsave(filename=paste(base_name,"_monotonicity2.png",sep=''), plt1, limitsize=F, width = 16, height = 9)
 	
 	plt1
 	p <- ggplotly(plt1)
 	print(p)
-	htmlwidgets::saveWidget(as_widget(p), "monotonicity2.html", selfcontained = F)
+	htmlwidgets::saveWidget(as_widget(p), paste(base_name,"_monotonicity2.html",sep=''), selfcontained = F)
 	
 	tracking_feature <<- c()
 	for ( i in 1:(leave_num) )
@@ -134,10 +142,10 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	print(tracking_feature)
 	
 	plt2 <- features_plot(tracking_feature)
-	ggsave(filename="tracking_feature.png", plt2, limitsize=F, width = 16, height = 9)
+	ggsave(filename=paste(base_name,"_tracking_feature.png",sep=''), plt2, limitsize=F, width = 16, height = 9)
 	p <- ggplotly(plt2)
 	print(p)
-	htmlwidgets::saveWidget(as_widget(p), "feature_summary_visualization1.html", selfcontained = F)
+	htmlwidgets::saveWidget(as_widget(p), paste(base_name,"_feature_summary_visualization1.html",sep=''), selfcontained = F)
 	
 	if ( is.null(tracking_feature))
 	{
@@ -190,13 +198,13 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	plt <- plot_grid(plotlist = pltlist, nrows = n[1])
 
 	print(plt)
-	ggsave(filename="tracking_feature2.png", plt, limitsize=F, width = 16, height = 9)
+	ggsave(filename=paste(base_name,"_tracking_feature2.png",sep=''), plt, limitsize=F, width = 16, height = 9)
 	n = find_closest_factors(length(pltlist))
 	if ( n[1] == 1 && length(pltlist) > 1) n = find_closest_factors(length(pltlist)+1)
 	gg_plotly <- plotly::subplot(pltlist, nrows = n[2])
 	#gg_plotly <- plotly::subplot(pltlist, nrows = length(pltlist))
 	print(gg_plotly)
-	htmlwidgets::saveWidget(as_widget(gg_plotly), "feature_summary_visualization2.html", selfcontained = F)
+	htmlwidgets::saveWidget(as_widget(gg_plotly), paste(base_name,"_feature_summary_visualization2.html",sep=''), selfcontained = F)
 	
 	return( list(plt0, plt1, plt2, plt, pltlist))
 }

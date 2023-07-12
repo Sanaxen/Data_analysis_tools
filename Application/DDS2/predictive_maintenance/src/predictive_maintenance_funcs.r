@@ -173,7 +173,7 @@ init_feature_param <- function(f2, threshold, ymax, ymin)
 	if ( is.null(feature_param) && file.exists("./feature_param.csv"))
 	{
 		feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
-		fixed_threshold_value = TRUE
+		fixed_threshold_value <<- TRUE
 		return(feature_param)
 	}
 	
@@ -198,6 +198,8 @@ get_feature_param <- function()
 {
 	if ( is.null(feature_param))
 	{
+		print("feature_param")
+		print(feature_param)
 		return(NULL)
 	}
 	feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
@@ -1662,6 +1664,11 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 					
 					fd <- i
 					sd1 <- var(fit_predict_org$y[1:i])*(1+1/fd)
+					if ( i > lookback*4 )
+					{
+						fd <- lookback*4
+						sd1 <- var(fit_predict_org$y[(i-lookback*4+1):i])*(1+1/fd)
+					}
 					
 					q =  qt((1-0.75)/2, fd, lower.tail=F)
 					fit_predict_org$l25[i] = fit_predict_org$y[i]- q*sqrt(sd1)
@@ -2602,6 +2609,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 				thr = mu+a*sd/n
 				max = max(x, na.rm = TRUE)
 				min = min(x, na.rm = TRUE)
+				print(thr0)
 				print(sprintf("%s N:%d", tracking_feature_tmp[k], n))
 				print(sprintf("mu:%.3f sd:%.3f max:%.3f a:%.3f thr:%.3f", mu, sd, max, a, thr))
 				print(sprintf("thr0:%.3f thr:%.3f", thr0, thr))
