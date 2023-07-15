@@ -13,7 +13,7 @@ find_closest_factors <- function(n) {
   }
 }
 
-base_name <- ''
+base_name <<- ''
 feature_summary_visualization <- function( csvfile, timeStamp )
 {
 	print(timeStamp)
@@ -37,7 +37,8 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	p <- x %>% 
 	ggplot(aes(x = time_index, y = target))+facet_wrap( ~ key, scales = "free")+
 	geom_line(linewidth =0.4, color="#191970")
-	ggsave(filename=paste(base_name, "_input.png", sep=''), p, limitsize=F, width = 16*2, height = 9*2)
+	#ggsave(filename=paste(base_name, "_input.png", sep=''), p, limitsize=F, width = 16*2, height = 9*2)
+	ggsave(filename=paste(base_name, "_input.png", sep=''), p, limitsize=F, width = 16*1, height = 9*1)
 
 	p <- ggplotly(p)
 	print(p)
@@ -105,7 +106,7 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 	ggsave(filename=paste(base_name,"_monotonicity.png",sep=''), plt0, limitsize=F, width = 16, height = 9)
 	
 	#Sort in descending order of monotonicity
-	leave_num = 25
+	leave_num = min(nrow(f2),25)
 	if ( sigin > 0 )
 	{
 		fm2 <- f2[order(f2$monotonicity, decreasing=T),][1:leave_num,]

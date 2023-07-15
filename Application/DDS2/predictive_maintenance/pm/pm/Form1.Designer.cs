@@ -72,6 +72,7 @@ namespace pm
             this.listBox3 = new System.Windows.Forms.ListBox();
             this.splitter7 = new System.Windows.Forms.Splitter();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.button17 = new System.Windows.Forms.Button();
             this.splitter4 = new System.Windows.Forms.Splitter();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -159,7 +160,6 @@ namespace pm
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button17 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel18.SuspendLayout();
             this.panel19.SuspendLayout();
@@ -659,6 +659,17 @@ namespace pm
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(251, 71);
             this.panel7.TabIndex = 9;
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(158, 39);
+            this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(85, 25);
+            this.button17.TabIndex = 2;
+            this.button17.Text = "clear";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // splitter4
             // 
@@ -1217,21 +1228,19 @@ namespace pm
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(164, 22);
             this.textBox15.TabIndex = 47;
-            this.textBox15.Text = "60";
-            this.toolTip1.SetToolTip(this.textBox15, "Specifies the number of points used to evaluate the monotonically increasing metr" +
-        "ic.");
+            this.textBox15.Text = "-60";
+            this.toolTip1.SetToolTip(this.textBox15, resources.GetString("textBox15.ToolTip"));
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.ForeColor = System.Drawing.Color.Blue;
+            this.label19.ForeColor = System.Drawing.Color.Gray;
             this.label19.Location = new System.Drawing.Point(13, 254);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(137, 15);
             this.label19.TabIndex = 46;
             this.label19.Text = "monotonicity_num";
-            this.toolTip1.SetToolTip(this.label19, "Specifies the number of points used to evaluate the monotonically increasing metr" +
-        "ic.");
+            this.toolTip1.SetToolTip(this.label19, resources.GetString("label19.ToolTip"));
             // 
             // textBox14
             // 
@@ -1246,7 +1255,7 @@ namespace pm
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.ForeColor = System.Drawing.Color.Blue;
+            this.label18.ForeColor = System.Drawing.Color.Gray;
             this.label18.Location = new System.Drawing.Point(13, 216);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(76, 15);
@@ -1690,17 +1699,6 @@ namespace pm
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(158, 39);
-            this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(85, 25);
-            this.button17.TabIndex = 2;
-            this.button17.Text = "clear";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // Form1
             // 

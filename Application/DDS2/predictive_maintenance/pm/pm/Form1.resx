@@ -133,10 +133,24 @@ the oldest data will be discarded and the maximum retention amount will be used.
 Please match the unit with unit_of_time. If this value is exceeded, 
 the oldest data will be discarded and the maximum retention amount will be used.</value>
   </data>
+  <data name="textBox15.ToolTip" xml:space="preserve">
+    <value>Specifies the number of points used to evaluate the monotonically increasing metric.
+Negative values indicate that all data should be used, 
+but it has the meaning of informing that the amount of data needs to be larger than the absolute value.</value>
+  </data>
+  <data name="label19.ToolTip" xml:space="preserve">
+    <value>Specifies the amount of historical data to use for monotonicity checking.
+Negative values ​​use all past data.
+ A positive value truncates past data and uses only historical data to create the forecast line.</value>
+  </data>
   <data name="textBox14.ToolTip" xml:space="preserve">
     <value>Specifies the amount of historical data to use to create the forecast line. 
 Negative values use all past data.
- A positive value truncates past data and uses only historical data to construct the forecast line</value>
+ A positive value truncates past data and uses only historical data to construct the forecast line
+
+Negative values indicate that all data should be used, 
+but it has the meaning of informing that the amount of data needs to be larger than the absolute value.
+</value>
   </data>
   <data name="label18.ToolTip" xml:space="preserve">
     <value>Specifies the amount of historical data to use to create the forecast line. 

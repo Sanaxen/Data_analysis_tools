@@ -558,7 +558,8 @@ feature_names <- c( ".", "mean", "sd", "var",
 			#"q25", "q75", 
 			"skewness", "kurtosis", "peak2peak", "RMS",
 			"CrestFactor", "ShapeFactor", "ImpulseFactor", "MarginFactor"
-			,"logEnergy"
+			,"logEnergy","spectrum","spectral_mean", "spectral_sd", "spectral_kurtosis"
+			,"spectral_skewness"
 			)
 
 
@@ -587,7 +588,7 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 		fff <- as.data.frame(matrix(nrow=rowN, ncol=1))
 	}else
 	{
-		fff <- as.data.frame(matrix(nrow=rowN, ncol=13))
+		fff <- as.data.frame(matrix(nrow=rowN, ncol=18))
 	}
 	row_cnt = 1
 	
@@ -603,6 +604,12 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 		mean <- sigin*mean(dd, na.rm = TRUE)
 		sd <- sigin*sd(dd, na.rm = TRUE)
 		var <- sigin*var(dd, na.rm = TRUE)
+		
+		spectrum <- sigin*abs(fft(dd))
+  		spectrum_mean <- mean(spectrum)
+  		spectrum_std <- sd(spectrum)
+  		spectral_skewness <- sigin*skewness(spectrum, type=2)
+  		spectral_kurtosis <- sigin*kurtosis(spectrum, type=2)
 		
 		#q <- quantile(dd, c(0.25, 0.75), type=1, na.rm = TRUE)
 		
@@ -632,7 +639,12 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 							#q, 
 							ske, kur, pe2p, RMS,
 							CrestFactor, ShapeFactor, ImpulseFactor, MarginFactor
-							, logEnergy
+							, logEnergy,
+							spectrum,
+					  		spectrum_mean,
+					  		spectrum_std,
+					  		spectral_skewness,
+					  		spectral_kurtosis
 							),nrow=1))
 		}
 		
@@ -723,7 +735,12 @@ feature <- function(df2, lookback=100, slide_window=1)
 
 monotonicity <- function(x, monotonicity_num = 20, eps = 0.0)
 {
-	x <- x[(length(x)-monotonicity_num):length(x)]
+	mm = monotonicity_num
+	if ( monotonicity_num < 0 )
+	{
+		mm = length(x)
+	}
+	x <- x[(length(x)-mm+1):length(x)]
 	n = length(x)
 	dx<- diff(x)
 	m = (length(dx[dx > eps]) - length(dx[dx < -eps]))/(n - 1)
@@ -735,7 +752,12 @@ library(mgcv)
 monotonicity2 <- function(x, monotonicity_num = 20, eps = 0.0)
 {
 
-	Y <- x[(length(x)-monotonicity_num):length(x)]
+	mm = monotonicity_num
+	if ( monotonicity_num < 0 )
+	{
+		mm = length(x)
+	}
+	Y <- x[(length(x)-mm+1):length(x)]
 	X <- c(1:length(Y))
 	sp <- gam(Y~s(X), data=data.frame(X=X, Y=Y))
 	ypred <- predict(sp,as.data.frame(X))
@@ -1664,10 +1686,10 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 					
 					fd <- i
 					sd1 <- var(fit_predict_org$y[1:i])*(1+1/fd)
-					if ( i > lookback*4 )
+					if ( i >= lookback*3 )
 					{
-						fd <- lookback*4
-						sd1 <- var(fit_predict_org$y[(i-lookback*4+1):i])*(1+1/fd)
+						fd <- lookback*3
+						sd1 <- var(fit_predict_org$y[(i-lookback*3+1):i])*(1+1/fd)
 					}
 					
 					q =  qt((1-0.75)/2, fd, lower.tail=F)
@@ -1824,7 +1846,8 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		
 	plt2 <- ggplot()
 	plt2 <- plt2 + geom_line(data=gfm2,aes(x = time_index, y = y),color="blue", linewidth =0.5)+ 
-	geom_point(data=gfm2,aes(x = time_index, y = y),size =0.5)
+	geom_point(data=gfm2,aes(x = time_index, y = y),size =0.5)+
+	geom_vline(xintercept = gfm2$time_index[nrow(gfm2)], linewidth =0.5)
 	
 	print(plt2)
 	fit_model = ""
@@ -2111,15 +2134,16 @@ features_plot <- function(tracking_feature)
 		{
 			x <- feature_df[1:nrow(feature_df),]
 		}
-		x <- reshape2::melt(x, id.vars=c("time_index"), measure.vars=colnames(x)[2:length(x)], 
+		x <- reshape2::melt(x, id.vars=c("time_index"), measure.vars=colnames(x)[colnames(x)!="time_index"], 
 						variable.name="key",value.name="target")
 		p <- x %>% 
 		  ggplot(aes(x = time_index, y = target, color=key))+
 		  geom_line()
 	}else
 	{
-		x <- feature_df[c("time_index",tracking_feature)]
-		x <- reshape2::melt(x, id.vars=c("time_index"), measure.vars=colnames(x)[2:length(x)], 
+		#x <- feature_df[c("time_index",tracking_feature)]
+		x <- feature_df[c(tracking_feature)]
+		x <- reshape2::melt(x, id.vars=c("time_index"), measure.vars=colnames(x)[colnames(x)!="time_index"], 
 						variable.name="key",value.name="target")
 		p <- x %>% 
 		  ggplot(aes(x = time_index, y = target, color=key))+
@@ -2139,7 +2163,7 @@ parameter_check <- function()
 		print(sprintf("max_data_len < abs(train_num)"))
 		return( -1 )
 	}
-	if (max_data_len <  monotonicity_num )
+	if (max_data_len <  abs(monotonicity_num) )
 	{
 		print(sprintf("max_data_len < monotonicity_num"))
 		return( -1 )
@@ -2403,9 +2427,9 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 
 		#print(sprintf("lookback*3:%d > df2_tmp:%d", lookback*3, nrow(df2_tmp)))
 		#print(sprintf("smooth_window*3:%d > df2_tmp:%d", smooth_window*3, nrow(df2_tmp)))
-		print(sprintf("max(monotonicity_num,abs(train_num)):%d > df2_tmp:%d", max(monotonicity_num,abs(train_num)), nrow(df2_tmp)))
-		#if ( lookback*3 > nrow(df2_tmp) || smooth_window*3 > nrow(df2_tmp) || max(monotonicity_num,abs(train_num)) > nrow(df2_tmp))
-		if ( max(monotonicity_num,abs(train_num)) > nrow(df2_tmp))
+		print(sprintf("max(abs(monotonicity_num),abs(train_num)):%d > df2_tmp:%d", max(abs(monotonicity_num),abs(train_num)), nrow(df2_tmp)))
+		#if ( lookback*3 > nrow(df2_tmp) || smooth_window*3 > nrow(df2_tmp) || max(abs(monotonicity_num),abs(train_num)) > nrow(df2_tmp))
+		if ( max(abs(monotonicity_num),abs(train_num)) > nrow(df2_tmp))
 		{
 			print("データがまだ足りていない")
 			#print(lookback)
@@ -2485,9 +2509,9 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		
 		
 		#各特徴量のmonotonicity算出
-		if ( nrow(feature_df) <= max(abs(train_num),monotonicity_num))
+		if ( nrow(feature_df) <= max(abs(train_num),abs(monotonicity_num)))
 		{
-			print(sprintf("nrow(feature_df):%d <= monotonicity_num:%d", nrow(feature_df),monotonicity_num) )
+			print(sprintf("nrow(feature_df):%d <= abs(monotonicity_num):%d", nrow(feature_df),abs(monotonicity_num)) )
 			print(sprintf("nrow(feature_df):%d <= abs(train_num):%d", nrow(feature_df),abs(train_num)) )
 			print("データがまだ足りていない")
 			flush.console()

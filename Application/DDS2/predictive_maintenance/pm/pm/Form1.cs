@@ -1082,6 +1082,12 @@ namespace pm
             listBox2.Items.Add("ImpulseFactor");
             listBox2.Items.Add("MarginFactor");
             listBox2.Items.Add("logEnergy");
+
+            listBox2.Items.Add("spectrum");
+            listBox2.Items.Add("spectrum_mean");
+            listBox2.Items.Add("spectrum_std");
+            listBox2.Items.Add("spectral_skewness");
+            listBox2.Items.Add("spectral_kurtosis");
             listBox2.Items.Add("mahalanobis");
 
         }
@@ -1774,6 +1780,7 @@ namespace pm
             try
             {
                 File.Copy("..\\" + param_base, param, true);
+                File.Copy(csv_dir + "\\"+base_name+".csv", base_name + ".csv", true);
             }
             catch
             {
@@ -1796,7 +1803,7 @@ namespace pm
             bat += "del /Q images\\*.png\r\n";
             bat += "del /Q images\\debug\\*.png\r\n";
             bat += "\r\n";
-            bat += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla "+ feat_visualize_base+"\r\n";
+            bat += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla \""+ feat_visualize_base+"\"\r\n";
 
 
             string batfile = "..\\" + base_name0 + "_feature_summary_visualization.bat";
