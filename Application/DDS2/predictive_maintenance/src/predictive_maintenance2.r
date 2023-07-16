@@ -25,6 +25,8 @@ putpng_path= paste(curdir, "/images/", sep="")
 source("../src/predictive_maintenance_funcs.r")
 source("parameters.r")
 
+feature_param_csv <<- paste("./", base_name, "_feature_param.csv", sep='')
+
 initial_pm(sigin_arg)
 abnormality_detected_data <- FALSE
 watch_name <<- paste(tracking_feature_, "..", sep="")
