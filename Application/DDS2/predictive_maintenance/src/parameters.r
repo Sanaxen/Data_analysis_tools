@@ -1,4 +1,5 @@
 csv_encoding = 'sjis'
+base_name = ""
 
 #•½ŠŠ‰»‚Åspline
 use_spline = FALSE

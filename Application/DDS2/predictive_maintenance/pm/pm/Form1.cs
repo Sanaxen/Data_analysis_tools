@@ -1163,6 +1163,7 @@ namespace pm
         {
 
             string cmd = "";
+            cmd += "base_name <<- '" + base_name + "'\r\n";
             cmd += "csv_encoding = '" + comboBox1.Text + "'\r\n";
             cmd += "#平滑化でspline\r\n";
             cmd += "use_spline = " + (checkBox1.Checked?"TRUE": "FALSE") +"\r\n";

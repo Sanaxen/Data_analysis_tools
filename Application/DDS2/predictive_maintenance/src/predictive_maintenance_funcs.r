@@ -167,12 +167,13 @@ convert_time <- function(x, unit_of_record=1, from="day", to="day")
  return( as.integer(unit_of_record*x))
 }
 
+feature_param_csv <<- "./feature_param.csv"
 fixed_threshold_value = FALSE
 init_feature_param <- function(f2, threshold, ymax, ymin)
 {
-	if ( is.null(feature_param) && file.exists("./feature_param.csv"))
+	if ( is.null(feature_param) && file.exists(feature_param_csv))
 	{
-		feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+		feature_param <<-  read.csv( feature_param_csv, header=T, stringsAsFactors = F, na.strings = c("", "NA"))
 		fixed_threshold_value <<- TRUE
 		return(feature_param)
 	}
@@ -190,7 +191,7 @@ init_feature_param <- function(f2, threshold, ymax, ymin)
 		feature_param <<-  cbind(feature_param, feature_param[,3]*0)
 	}
 	colnames(feature_param) <<-  c("feature", "threshold", "ymax", "ymin", "count", "a", "b", "c", "d")
-	try(write.csv(feature_param, "./feature_param.csv", row.names = F), silent = FALSE)
+	try(write.csv(feature_param, feature_param_csv, row.names = F), silent = FALSE)
 
 	return(feature_param)
 }
@@ -202,7 +203,7 @@ get_feature_param <- function()
 		print(feature_param)
 		return(NULL)
 	}
-	feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+	feature_param <<-  read.csv( feature_param_csv, header=T, stringsAsFactors = F, na.strings = c("", "NA"))
 	return (feature_param)
 }
 
@@ -212,44 +213,44 @@ set_threshold <- function(feature_name, threshold_value)
 	{
 		return(feature_param)
 	}
-	feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+	feature_param <<-  read.csv( feature_param_csv, header=T, stringsAsFactors = F, na.strings = c("", "NA"))
 
 	id = which(feature_name == feature_param["feature"])
 	feature_param["threshold"][id,] <<-  threshold_value
 
-	try(write.csv(feature_param, "./feature_param.csv", row.names = F), silent = FALSE)
+	try(write.csv(feature_param, feature_param_csv, row.names = F), silent = FALSE)
 	
 	return(feature_param)
 }
 
 set_ymax <- function(feature_name, ymax)
 {
-	feature_param <<- read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+	feature_param <<- read.csv(feature_param_csv, header=T, stringsAsFactors = F, na.strings = c("", "NA"))
 
 	id = which(feature_name == feature_param["feature"])
 	feature_param["ymax"][id,] <<-  ymax
 	
-	write.csv(feature_param, "./feature_param.csv", row.names = F)
+	write.csv(feature_param, feature_param_csv, row.names = F)
 	return(feature_param)
 }
 set_ymin <- function(feature_name, ymin)
 {
-	feature_param <<- read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+	feature_param <<- read.csv( feature_param_csv, header=T, stringsAsFactors = F, na.strings = c("", "NA"))
 
 	id = which(feature_name == feature_param["feature"])
 	feature_param["ymin"][id,] <<-  ymin
 	
-	write.csv(feature_param, "./feature_param.csv", row.names = F)
+	write.csv(feature_param, feature_param_csv, row.names = F)
 	return(feature_param)
 }
 set_count <- function(feature_name)
 {
-	feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+	feature_param <<-  read.csv( feature_param_csv, header=T, stringsAsFactors = F, na.strings = c("", "NA"))
 
 	id = which(feature_name == feature_param["feature"])
 	feature_param["count"][id,] <<-  feature_param["count"][id,]+1
 	
-	try(write.csv(feature_param, "./feature_param.csv", row.names = F), silent = FALSE)
+	try(write.csv(feature_param, feature_param_csv, row.names = F), silent = FALSE)
 	return(feature_param)
 }
 
@@ -276,7 +277,7 @@ get_param <- function(feature_name)
 }
 set_param <- function(feature_name, a, b, c, d)
 {
-	feature_param <<-  read.csv( "./feature_param.csv", header=T, stringsAsFactors = F, na.strings = c("", "NA"))
+	feature_param <<-  read.csv( feature_param_csv, header=T, stringsAsFactors = F, na.strings = c("", "NA"))
 
 	id = which(feature_name == feature_param["feature"])
 	feature_param["a"][id,] <<-  a
@@ -284,7 +285,7 @@ set_param <- function(feature_name, a, b, c, d)
 	feature_param["c"][id,] <<-  c
 	feature_param["d"][id,] <<-  d
 	
-	try(write.csv(feature_param, "./feature_param.csv", row.names = F), silent = FALSE)
+	try(write.csv(feature_param, feature_param_csv, row.names = F), silent = FALSE)
 	return(feature_param)
 }
 
@@ -2714,8 +2715,8 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		failure = data.frame(time = failure_time_s, pltid=c(1,2,3))
 		failure <- failure[order(failure$time),]
 
-		RUL <- c(RUL, failure[1,1])
-		write.csv(RUL, "./RUL.csv", row.names = F)
+		RUL <- c(RUL, min(failure[1,1],max_prediction_length*unit_of_record))
+		write.csv(RUL, paste("./", base_name, "_RUL.csv",sep=''), row.names = F)
 
 		print(failure)
 		plt_1 = plt_list[[failure$pltid[1]]]
