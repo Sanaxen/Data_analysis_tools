@@ -3,6 +3,8 @@
 args <- commandArgs(trailingOnly = T)
 #args <- c("X89", "mahalanobis", "X89.RMS", "X89.mean", "Time", "-")
 #args <- c("vibration", "mahalanobis", "vibration.kurtosis", "vibration.mean", "datetime", "+")
+#args <- c("–Œ“üŒûˆ³—Í", "mahalanobis", "–Œ“üŒûˆ³—Í.peak2peak", "–Œ“üŒûˆ³—Í.sd", "ŠÄŽ‹“úŽž", "+")
+
 print("=== args ===")
 print(args)
 print("============")
@@ -44,6 +46,10 @@ print("one_input============================")
 print(one_input)
 print("============================")
 
+if ( file.exists("./break_index_df.csv"))
+{
+	file.remove("./break_index_df.csv")
+}
 while( TRUE )
 {
 	if ( is.null(files))

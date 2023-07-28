@@ -199,8 +199,8 @@ get_feature_param <- function()
 {
 	if ( is.null(feature_param))
 	{
-		print("feature_param")
-		print(feature_param)
+		#print("feature_param")
+		#print(feature_param)
 		return(NULL)
 	}
 	feature_param <<-  read.csv( feature_param_csv, header=T, stringsAsFactors = F, na.strings = c("", "NA"))
@@ -292,6 +292,7 @@ set_param <- function(feature_name, a, b, c, d)
 
 get_data_frame<- function(file, timeStamp)
 {
+	print(sprintf("get_data_frame(%s)", file))
 	df <- read.csv( file, header=T, stringsAsFactors = F, na.strings = c("", "NA"), fileEncoding  = csv_encoding)
 	
 	print(timeStamp)
@@ -352,7 +353,7 @@ get_data_frame<- function(file, timeStamp)
 #the smoother span. 
 #This gives the proportion of points in the plot which influence the smooth at each value. 
 #Larger values give more smoothness.
-smoother_span <- 0.9
+smoother_span <- 0.05
 
 smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 {
@@ -384,7 +385,12 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 				z <- y
 			}else
 			{
-				print(sprintf("smoother_span:%f", smoother_span))
+				#print(sprintf("smoother_span:%f", smoother_span))
+				#print(sprintf("length(x):%d", length(x[,time_index])))
+				#print(x[,time_index])
+				#print(sprintf("length(y):%d", length(y)))
+				#print(y)
+				
 				#(default)f=0.75
 				z <- lowess(x[,time_index], y, f = smoother_span)$y
 				#lines(x[,time_index], z, col='red')
@@ -557,7 +563,7 @@ anomaly_detection_test <- function( model, df, method="mahalanobis", threshold=0
 
 feature_names <- c( ".", "mean", "sd", "var", 
 			#"q25", "q75", 
-			"skewness", "kurtosis", "peak2peak", "RMS",
+			"skewness", "kurtosis", "peak2peak", "RMS","range",
 			"CrestFactor", "ShapeFactor", "ImpulseFactor", "MarginFactor"
 			,"logEnergy","spectrum","spectral_mean", "spectral_sd", "spectral_kurtosis"
 			,"spectral_skewness"
@@ -589,7 +595,7 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 		fff <- as.data.frame(matrix(nrow=rowN, ncol=1))
 	}else
 	{
-		fff <- as.data.frame(matrix(nrow=rowN, ncol=18))
+		fff <- as.data.frame(matrix(nrow=rowN, ncol=19))
 	}
 	row_cnt = 1
 	
@@ -623,6 +629,7 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 		
 		abs_dd_mean = mean(abs(dd), na.rm = TRUE)
 		max_dd = max(dd)
+		range = max_dd - min(dd)
 		
 	    CrestFactor = max_dd/RMS;
 	    ShapeFactor = RMS/abs_dd_mean;
@@ -638,7 +645,7 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
     	{
 			f <- data.frame(matrix(c(y, mean,sd,var, 
 							#q, 
-							ske, kur, pe2p, RMS,
+							ske, kur, pe2p, RMS,range,
 							CrestFactor, ShapeFactor, ImpulseFactor, MarginFactor
 							, logEnergy,
 							spectrum,
@@ -814,6 +821,9 @@ gfm2_get_train_data <- function(gfm2)
 predict_forecast <- function(gfm2, h=600, rank="", train_num = 20, feature_smooth_window=2)
 {
 	y <- gfm2_get_train_data(gfm2)$y
+	print("gfm2_get_train_data(gfm2)$y")
+	#print(y)
+	#print(length(y))
 	xt <- ts(as.numeric(y), frequency = 1)
 	
 	model = NULL
@@ -999,6 +1009,7 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 		{
 			lm.fit = NULL
 		}
+
 		
 		if ( !is.null(lm.fit) && grad <= 0.0001/abs(train_num) )
 		{
@@ -1012,7 +1023,7 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 			#lines(newx$x, conf.interval[, 3], col = 'darkgreen')
 			
 			print(sprintf("x grad:%f", grad))
-			return( NULL)
+			#return( NULL)
 		}
 		
 							
@@ -1026,11 +1037,11 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
    		fit = NULL
    		
    		lockback_max = as.integer(abs(train_num))
-   		lockback_min = max(lockback_max/2, 10)
+   		lockback_min = max(lockback_max/2, 3)
    		if ( lockback_max < lockback_min )
    		{
    			print(sprintf("lockback_max < lockback_min"))
-   			return ( NULL )
+   			#return ( NULL )
    		}
     	print(sprintf("lockback_max:%d  lockback_min:%d",lockback_max,lockback_min))
   		
@@ -1044,6 +1055,13 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 		#for ( kk in lockback_max:lockback_min)
 		for ( kk in lockback_max:lockback_max)
 		{
+	   		if ( lockback_max < lockback_min )
+	   		{
+	   			print(sprintf("lockback_max < lockback_min"))
+	    		print(sprintf("lockback_max:%d  lockback_min:%d",lockback_max,lockback_min))
+	   			break
+	   		}
+			
 	   		#if ( length(y) <= kk ) break
 			xx = c((lockback_max-kk+1):length(y))
 			#xx = log(xx)/log(h)
@@ -1070,7 +1088,7 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 			for ( k in 3:length(tols))
 			{
 				tryCatch({
-					for ( kk in 1:40)
+					for ( kk in 1:100)
 					{
 						if ( sampling_num > 0 )
 						{
@@ -1102,6 +1120,13 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 							lm_pb <- runif(1,-0.001,1)
 							lm_pc <- runif(1,-0.001,1)
 							lm_pd <- runif(1,-0.001,1)
+							if ( kk > 50 )
+							{
+								lm_pa <- runif(1,-1,1)
+								lm_pb <- runif(1,-1,1)
+								lm_pc <- runif(1,-1,1)
+								lm_pd <- runif(1,-1,1)
+							}
 							pred <- function(parS, xx) parS$c + parS$a*exp(parS$b*xx + parS$d)
 							resid <- function(p, observed, xx) observed - pred(p,xx)
 							parStart <- list(a=lm_pa, b=lm_pb, c=lm_pc, d=lm_pd)
@@ -1523,8 +1548,11 @@ plot_feature <- function(feature_df, rank="")
 	return(plt2)
 }
 
+library(outliers)
 fit_id = 1
-plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600, feature_smooth_window=2, break_flag = FALSE)
+gyap_ratio = 0.075
+break_index_df <- NULL
+plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600, feature_smooth_window=2)
 {
 	threshold = get_threshold(rank)
 	ymax = get_ymax(rank)
@@ -1540,6 +1568,84 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 	#	ypred <- predict(sp,data.frame(x=gfm2$time_index))
 	#	gfm2$y <- ypred
 	#}
+
+	#print("gfm2")
+	#print(str(gfm2))
+	#print("rank")
+	#print(rank)
+	
+	break_index = NULL
+
+	
+	ymax_cur = max(gfm2$y)
+	ymin_cur = min(gfm2$y)
+	ymax = ymax_cur
+	ymin = ymin_cur
+	
+	down_cnt = 0
+	down_max_id = 0
+	down_delta_sum = 0
+	delta_mean <- abs(mean(diff(gfm2$y)))
+	delta_sd <- abs(sd(diff(gfm2$y)))
+	for ( i in 2:nrow(gfm2))
+	{
+		delta = gfm2$y[i] - gfm2$y[i-1]
+		if ( delta < 0.0 )
+		{
+			down_cnt = down_cnt + 1
+			down_delta_sum = down_delta_sum + abs(delta)
+			down_max_id = i
+		}else
+		{
+			#print(sprintf("%d %s down_delta_sum:%f ymax_cur:%f ymin:%f %f", down_cnt, rank, down_delta_sum, ymax_cur, ymin_cur,gyap_ratio*abs(ymax_cur - ymin_cur)))
+			if ( down_delta_sum > gyap_ratio*abs(ymax_cur - ymin_cur) && down_cnt >= 1)
+			{
+				break_index <- c(break_index, gfm2$time_index[down_max_id])
+			}
+			down_cnt = 0
+			down_delta_sum = 0
+			next
+		}
+	}
+
+	
+	gfm2_org <- gfm2
+	break_pos = 0
+	if ( !is.null(break_index))
+	{
+		break_pos <- which(gfm2$time_index == max(break_index))
+		if ( length(break_pos) == 0 )
+		{
+		  break_pos <- which.min(abs(gfm2$time_index - max(break_index))) 
+		}
+				
+		if (break_pos < nrow(gfm2) )
+		{
+			x <- gfm2[break_pos:nrow(gfm2),]
+			gfm2 <- x
+		}else
+		{
+			print(sprintf("break_pos:%d >= nrow(gfm2) :%d", break_pos,nrow(gfm2) ))
+			return(NULL)
+		}
+	}
+	if ( break_pos > 0 )
+	{
+		break_index_df1 <- data.frame( key=rep(rank, length(break_index)), break_pos = c(break_index))
+		if ( is.null(break_index_df))
+		{
+			break_index_df <<- break_index_df1
+		}else
+		{
+			break_index_df <<- rbind(break_index_df, break_index_df1)
+		}
+		break_index_df <<- unique(break_index_df)
+		write.csv(break_index_df, "./break_index_df.csv", row.names=F)
+	}
+	if ( nrow(gfm2) < 3 )
+	{
+		return(NULL)
+	}
 
 	pred <- predict_forecast(gfm2, h=h, train_num= abs(train_num), rank=rank, feature_smooth_window=feature_smooth_window)
 	plt1 <- predict_plot(pred, rank=rank)
@@ -1568,8 +1674,12 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		{
 			yy <- y
 		}
+		
+		
 		#fit_pred <- curve_fitting(yy, h, reference=c(pred$forecast[1:20]), rank)
 		fit_pred <- curve_fitting(yy, h, reference=NULL, rank)
+
+		#fit_pred return value -> ( list(fit_pred, fit_mode, residual_error))
 	}
 	
 	fit_predict <- NULL
@@ -1834,22 +1944,27 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		failure_time50p_str = sprintf("50%%[%d %s]", 
 			 convert_time(h*dt, unit_of_record=unit_of_record,
 			 from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
-
-		if ( !break_flag )
-		{
-			print(sprintf("%s", failure_time_str))
-			return (NULL)
-		}
 	}
 	
 	
 
 		
 	plt2 <- ggplot()
-	plt2 <- plt2 + geom_line(data=gfm2,aes(x = time_index, y = y),color="blue", linewidth =0.5)+ 
-	geom_point(data=gfm2,aes(x = time_index, y = y),size =0.5)+
-	geom_vline(xintercept = gfm2$time_index[nrow(gfm2)], linewidth =0.5)
+	plt2 <- plt2 + geom_line(data=gfm2_org,aes(x = time_index, y = y),color="blue", linewidth =0.5)+ 
+	geom_point(data=gfm2_org,aes(x = time_index, y = y),size =0.5)+
+	geom_vline(xintercept = gfm2_org$time_index[nrow(gfm2_org)], linewidth =0.5)
 	
+	#plt2 <- plt2 + geom_vline(xintercept = gfm2_org$time_index[max(break_index)], linewidth =0.5, color="red")
+	if ( !is.null(break_index))
+	{
+		for ( i in 1:length(break_index))
+		{
+			plt2 <- plt2 + geom_vline(xintercept = gfm2_org$time_index[which.min(abs(gfm2_org$time_index - break_index[i]))], linewidth =0.5, color="red")
+		}
+	}
+	#plt2 <- plt2 + geom_hline(aes(yintercept=ymin, linetype = "twodash"),color = "gray")
+	#plt2 <- plt2 + geom_hline(aes(yintercept=ymax, linetype = "twodash"),color = "gray")
+
 	print(plt2)
 	fit_model = ""
 	if ( !is.null(fit_pred[[1]]))
@@ -1890,13 +2005,19 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		step <- mean(dif)
 		fit_predict$time_index[(length(yo$time_index)+1):nrow(fit_predict)] <- seq(yo$time_index[length(yo$time_index)]+step,
 		 length.out = nrow(fit_predict), by = step)
-		plt2 <- plt2 +  geom_line(data=fit_predict,aes(x = time_index, y = y),color=col, linewidth =0.5)
+		
+		fit_predict_tmp <- fit_predict
+		if ( max_prediction_length_org != 0 && max_prediction_length > max_prediction_length_org)
+		{
+			fit_predict_tmp <- fit_predict[1:(nrow(gfm2_org)+max_prediction_length_org),]
+		}
+		plt2 <- plt2 +  geom_line(data=fit_predict_tmp,aes(x = time_index, y = y),color=col, linewidth =0.5)
 
 		plt2 <- plt2 +
-		geom_line(data=fit_predict, mapping = aes_string(x = "time_index", y = "y")) +
-		geom_line(data=fit_predict, mapping = aes_string(x = 'time_index', y = 'y'), colour=col) +
-		geom_ribbon(data=fit_predict, fill=fill_col[2], mapping = aes_string(x = 'time_index', ymin = 'l05', ymax = 'u95'), alpha = 0.3)+
-		geom_ribbon(data=fit_predict, fill=fill_col[1], mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'u75'), alpha = 0.3)
+		geom_line(data=fit_predict_tmp, mapping = aes_string(x = "time_index", y = "y")) +
+		geom_line(data=fit_predict_tmp, mapping = aes_string(x = 'time_index', y = 'y'), colour=col) +
+		geom_ribbon(data=fit_predict_tmp, fill=fill_col[2], mapping = aes_string(x = 'time_index', ymin = 'l05', ymax = 'u95'), alpha = 0.3)+
+		geom_ribbon(data=fit_predict_tmp, fill=fill_col[1], mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'u75'), alpha = 0.3)
 		
 		if ( threshold < 0 )
 		{
@@ -1944,24 +2065,30 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 	pred$h75 <- ifelse(pred$h75< ymin-abs((ymax-ymin)*0.01),ymin-abs((ymax-ymin)*0.01),pred$h75)
 	pred$h50 <- ifelse(pred$h50< ymin-abs((ymax-ymin)*0.01),ymin-abs((ymax-ymin)*0.01),pred$h50)
 	pred$h25 <- ifelse(pred$h25< ymin-abs((ymax-ymin)*0.01),ymin-abs((ymax-ymin)*0.01),pred$h25)
-		
+
+	pred_tmp <- pred
+	if ( max_prediction_length_org != 0 && max_prediction_length > max_prediction_length_org)
+	{
+		pred_tmp <- pred[1:max_prediction_length_org,]
+	}
+
 	if (!use_plophet )
 	{
 		plt2 <- plt2 +
-		geom_line(data=pred, mapping = aes_string(x = "time_index", y = "forecast")) +
-		geom_line(data=pred, mapping = aes_string(x = 'time_index', y = 'forecast'), colour='blue') +
-		geom_ribbon(data=pred, fill="#6875B1", mapping = aes_string(x = 'time_index', ymin = 'l95', ymax = 'h95'), alpha = 0.15)+
-		geom_ribbon(data=pred, fill="#A0A5C7", mapping = aes_string(x = 'time_index', ymin = 'l75', ymax = 'h75'), alpha = 0.15)+
-		geom_ribbon(data=pred, fill="#CBCCD9", mapping = aes_string(x = 'time_index', ymin = 'l50', ymax = 'h50'), alpha = 0.15)+
-		geom_ribbon(data=pred, fill="#E0E0E1", mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'h25'), alpha = 0.15)+
+		geom_line(data=pred_tmp, mapping = aes_string(x = "time_index", y = "forecast")) +
+		geom_line(data=pred_tmp, mapping = aes_string(x = 'time_index', y = 'forecast'), colour='blue') +
+		geom_ribbon(data=pred_tmp, fill="#6875B1", mapping = aes_string(x = 'time_index', ymin = 'l95', ymax = 'h95'), alpha = 0.15)+
+		geom_ribbon(data=pred_tmp, fill="#A0A5C7", mapping = aes_string(x = 'time_index', ymin = 'l75', ymax = 'h75'), alpha = 0.15)+
+		geom_ribbon(data=pred_tmp, fill="#CBCCD9", mapping = aes_string(x = 'time_index', ymin = 'l50', ymax = 'h50'), alpha = 0.15)+
+		geom_ribbon(data=pred_tmp, fill="#E0E0E1", mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'h25'), alpha = 0.15)+
 		#scale_y_continuous(limits = c(0, ymax))+
 		labs(title=sprintf("[%s] RUL:%s([%s] arima)\n%s", colname, failure_time_str, fit_model,failure_time50p_str))+
 		theme(legend.position = "none")
 	}else{
 		plt2 <- plt2 +
-		geom_line(data=pred, mapping = aes_string(x = "time_index", y = "forecast")) +
-		geom_line(data=pred, mapping = aes_string(x = 'time_index', y = 'forecast'), colour='blue') +
-		geom_ribbon(data=pred, fill="#6875B1", mapping = aes_string(x = 'time_index', ymin = 'l95', ymax = 'h95'), alpha = 0.15)+
+		geom_line(data=pred_tmp, mapping = aes_string(x = "time_index", y = "forecast")) +
+		geom_line(data=pred_tmp, mapping = aes_string(x = 'time_index', y = 'forecast'), colour='blue') +
+		geom_ribbon(data=pred_tmp, fill="#6875B1", mapping = aes_string(x = 'time_index', ymin = 'l95', ymax = 'h95'), alpha = 0.15)+
 		#scale_y_continuous(limits = c(0, ymax))+
 		labs(title=sprintf("[%s] RUL:%s([%s]prophet\n%s", colname, failure_time_str, fit_model,failure_time50p_str))+
 		theme(legend.position = "none")
@@ -2103,6 +2230,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 
 get_csvdata <- function( file, tracking_feature_ , timeStamp)
 {
+	print(sprintf("get_csvdata(%s)", file))
 	df0 <- get_data_frame(file, timeStamp)
 	#print(tracking_feature_)
 	#print("==== df0 colnames====")
@@ -2142,8 +2270,8 @@ features_plot <- function(tracking_feature)
 		  geom_line()
 	}else
 	{
-		#x <- feature_df[c("time_index",tracking_feature)]
-		x <- feature_df[c(tracking_feature)]
+		x <- feature_df[c("time_index",tracking_feature)]
+		#x <- feature_df[c(tracking_feature)]
 		x <- reshape2::melt(x, id.vars=c("time_index"), measure.vars=colnames(x)[colnames(x)!="time_index"], 
 						variable.name="key",value.name="target")
 		p <- x %>% 
@@ -2354,6 +2482,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			}
 		}
 		
+		
 		#過去データとの結合と最大長超えカット
 		if ( is.null(past))
 		{
@@ -2495,6 +2624,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			smooth(feature_df, smooth_window = smooth_window2, smooth_window_slide=smooth_window_slide2),silent=F)
 			if ( class(feature_df) == "try-error" || is.null(feature_df))
 			{
+				print("データがまだ足りていない")
 				flush.console()
 				next
 			}
@@ -2666,44 +2796,43 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		feature_param
 		
 		#各特徴量の予測結果とPlot
-		failure_time_s = c(1:3)
+		tracking_feature_Num = 3
+		failure_time_s = c(1:tracking_feature_Num)
 		plt_s = list()
 		
 		if ( max_prediction_length_org == 0 )
 		{
-			max_prediction_length_org = max_prediction_length;
+			max_prediction_length_org <<- max_prediction_length;
 		}
 		print(sprintf("max_prediction_length:%d max_prediction_length_org:%d", max_prediction_length, max_prediction_length_org))
 
 		break_flag = FALSE
-		for ( k in 1:3 )
+		for ( k in 1:tracking_feature_Num )
 		{
-			break_flag = FALSE
+			max_prediction_length <<- 10*max_prediction_length_org
 
-			for ( kk in 1:5 )
-			{
-				if (max_prediction_length > 3*max_prediction_length_org )
-				{
-					break_flag = TRUE
-				}
-				rank = tracking_feature_tmp[k]
-				plt1 <- plot_plot_feature_predict(feature_df, train_num=train_num, rank=rank,
-									 h=max_prediction_length, feature_smooth_window=feature_smooth_window, break_flag=break_flag)
-				if ( is.null(plt1))
-				{
-					max_prediction_length <<- 3*max_prediction_length
-					print(sprintf("up max_prediction_length:%d max_prediction_length_org:%d", max_prediction_length, max_prediction_length_org))
-					next
-				}else
-				{
-					break
-				}
-			}
+			rank = tracking_feature_tmp[k]
+			plt1 <- plot_plot_feature_predict(feature_df, train_num=train_num, rank=rank,
+								 h=max_prediction_length, feature_smooth_window=feature_smooth_window)
+
 			max_prediction_length <<- max_prediction_length_org
 			
-			failure_time_s[k] = plt1[[3]]
-			plt_s <- c(plt_s, list(plt1[[2]]))
+			if ( !is.null(plt1) )
+			{
+				failure_time_s[k] = plt1[[3]]
+				plt_s <- c(plt_s, list(plt1[[2]]))
+			}else
+			{
+				plt_s <- NULL
+				break
+			}
 			flush.console()
+		}
+		if ( is.null(plt_s))
+		{
+			print("plot_plot_feature_predict error skipp")
+			flush.console()
+			next
 		}
 
 
@@ -2787,3 +2916,24 @@ delete_csvfile <- function(i)
 	file.copy(paste("Untreated\\",files[i],sep=""), "Processed")
 	file.remove(paste("Untreated\\",files[i],sep=""))
 }
+
+
+appedAll_csv <- function( dir, outfile )
+{
+	curdir <- getwd()
+
+	setwd(dir)
+	getwd()
+
+	csv_list <- list.files(pattern = "*.csv")
+
+	df <- do.call(rbind, lapply(csv_list, function(x) read.csv(x, header=TRUE, stringsAsFactors = FALSE)))
+
+	try(write.csv(df, outfile, row.names = F), silent = FALSE)
+	
+	setwd(curdir)
+
+}
+#appedAll_csv(dir='./vibration_data', outfile ='vibration_data_all.csv')
+
+

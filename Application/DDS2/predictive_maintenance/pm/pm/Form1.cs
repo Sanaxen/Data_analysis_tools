@@ -167,8 +167,8 @@ namespace pm
                     sw.Write("textBox16," + textBox16.Text + "\n");
                     sw.Write("textBox17," + textBox17.Text + "\n");
                     sw.Write("textBox18," + textBox18.Text + "\n");
-                    //sw.Write("textBox19," + textBox19.Text + "\n");
-                    //sw.Write("textBox20," + textBox20.Text + "\n");
+                    sw.Write("textBox19," + textBox19.Text + "\n");
+                    sw.Write("textBox20," + textBox20.Text + "\n");
                     //sw.Write("textBox21," + textBox21.Text + "\n");
                     //sw.Write("textBox22," + textBox22.Text + "\n");
                     //sw.Write("textBox23," + textBox23.Text + "\n");
@@ -414,16 +414,16 @@ namespace pm
                             textBox18.Text = ss[1].Replace("\r\n", "");
                             continue;
                         }
-                        //if (ss[0].IndexOf("textBox19") >= 0)
-                        //{
-                        //    textBox19.Text = ss[1].Replace("\r\n", "");
-                        //    continue;
-                        //}
-                        //if (ss[0].IndexOf("textBox20") >= 0)
-                        //{
-                        //    textBox20.Text = ss[1].Replace("\r\n", "");
-                        //    continue;
-                        //}
+                        if (ss[0].IndexOf("textBox19") >= 0)
+                        {
+                            textBox19.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox20") >= 0)
+                        {
+                            textBox20.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
                         //if (ss[0].IndexOf("textBox21") >= 0)
                         //{
                         //    textBox21.Text = ss[1].Replace("\r\n", "");
@@ -1077,6 +1077,7 @@ namespace pm
             listBox2.Items.Add("kurtosis");
             listBox2.Items.Add("peak2peak");
             listBox2.Items.Add("RMS");
+            listBox2.Items.Add("range");
             listBox2.Items.Add("CrestFactor");
             listBox2.Items.Add("ShapeFactor");
             listBox2.Items.Add("ImpulseFactor");
@@ -1208,6 +1209,10 @@ namespace pm
             cmd += "smooth_window_slide2 = " + textBox12.Text + "\r\n";
             cmd += "\r\n";
             cmd += "\r\n";
+            cmd += "gyap_ratio = " + textBox19.Text + "\r\n";
+            cmd += "smoother_span = " + textBox20.Text + "\r\n";
+            cmd += "\r\n";
+            cmd += "\r\n";
             cmd += "#予測モデル訓練に使う直前の点数\r\n";
             cmd += "train_num = " + textBox14.Text + "\r\n";
             cmd += "#monotonicity計算に使う直前の点数\r\n";
@@ -1299,6 +1304,7 @@ namespace pm
         {
             if (work_dir == "") return;
 
+            button2_Click(sender, e);
             string cmd = "";
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(work_dir + "\\Untreated");
             System.IO.FileInfo[] csvfiles =
@@ -1390,8 +1396,8 @@ namespace pm
             cmd += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla %test% "
                     + " " + listBox1.Text
                     + " " + "mahalanobis"
-                    + " " + listBox1.Text + "." + listBox3.Items[listBox3.SelectedIndices[0]].ToString()
-                    + " " + listBox1.Text + "." + listBox3.Items[listBox3.SelectedIndices[1]].ToString()
+                    + " " + listBox3.Items[listBox3.SelectedIndices[0]].ToString()
+                    + " " + listBox3.Items[listBox3.SelectedIndices[1]].ToString()
                     + " " + comboBox2.Text
                     + " " + comboBox3.Text + "\r\n";
 
@@ -1679,9 +1685,9 @@ namespace pm
 
         private void button13_Click(object sender, EventArgs e)
         {
-            if ( listBox2.Text != "")
+            if ( listBox2.Text != "" && listBox1.Text != "")
             {
-                listBox3.Items.Add(listBox2.Text);
+                listBox3.Items.Add(listBox1.Text + "."+listBox2.Text);
                 listBox3.SetSelected(listBox3.Items.Count - 1, true);
             }
         }
@@ -1709,6 +1715,7 @@ namespace pm
 
         private void button14_Click(object sender, EventArgs e)
         {
+            button2_Click(sender, e);
             string cmd = "";
             cmd += "options(encoding = 'utf-8')\r\n";
             cmd += "\r\n";
@@ -1749,7 +1756,7 @@ namespace pm
             cmd += "lookback_slide <<- 24\r\n";
             cmd += "#平滑化をlowessで行う\r\n";
             cmd += "use_lowess = "+((checkBox3.Checked)?"TRUE":"FALSE")+ "\r\n";
-            cmd += "smoother_span <<- 0.5\r\n";
+            cmd += "smoother_span <<- 0.05\r\n";
             cmd += "\r\n";
             cmd += "\r\n";
             cmd += "timeStamp <- '" + comboBox2.Text + "'\r\n";
@@ -1948,6 +1955,26 @@ namespace pm
         private void button17_Click(object sender, EventArgs e)
         {
             listBox3.Items.Clear();
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
