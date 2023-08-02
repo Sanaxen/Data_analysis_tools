@@ -1304,7 +1304,6 @@ namespace pm
         {
             if (work_dir == "") return;
 
-            button2_Click(sender, e);
             string cmd = "";
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(work_dir + "\\Untreated");
             System.IO.FileInfo[] csvfiles =
@@ -1379,6 +1378,57 @@ namespace pm
 
             File.Copy("..\\" + param_base, param, true);
 
+            string args = "..\\" + base_name0 + "_args.csv";
+
+
+            ListBox arg = new ListBox();
+            for ( int i = 0; i < listBox3.SelectedIndices.Count; i++)
+            {
+                var s = listBox3.Items[listBox3.SelectedIndices[i]].ToString().Split('.');
+                bool dup = false;
+                if ( arg.Items.Count >= 1)
+                {
+                    for ( int j = 0; j < arg.Items.Count; j++)
+                    {
+                        if (arg.Items[j].ToString() == s[0])
+                        {
+                            dup = true;
+                            break;
+                        }
+                    }
+                }
+                if ( !dup ) arg.Items.Add(s[0]);
+            }
+
+            try
+            {
+                using (System.IO.StreamWriter sw = new StreamWriter(args, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
+                {
+                    sw.Write("var" + "\r\n");
+
+                    sw.Write("\"" + arg.Items.Count.ToString() + "\"" + "\r\n");
+                    for (int i = 0; i < arg.Items.Count; i++)
+                    {
+                        sw.Write("\""+arg.Items[i].ToString() + "\"" + "\r\n");
+                    }
+                    sw.Write("\"" + comboBox2.Text + "\"" + "\r\n");
+                    sw.Write("\"" + comboBox3.Text + "\"" + "\r\n");
+                    sw.Write("\"" + "mahalanobis" + "\"" + "\r\n");
+                    for (int i = 0; i < listBox3.SelectedIndices.Count; i++)
+                    {
+                        var s = listBox3.Items[listBox3.SelectedIndices[i]].ToString();
+                        sw.Write("\"" + s + "\"" + "\r\n");
+                    }
+                }
+            }
+            catch
+            {
+                status = -1;
+                if (MessageBox.Show("Cannot write in " + args, "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return;
+            }
+
+
             string cmd = "";
             cmd += "call init.bat\r\n";
             cmd += ":call ..\\..\\setup_ini.bat\r\n";
@@ -1387,6 +1437,7 @@ namespace pm
             cmd += "\r\n";
             cmd += "set test=\"./src/predictive_maintenance2.r\"\r\n";
             cmd += "copy \"" + param_base + "\" work\\parameters.r /v /y\r\n";
+            cmd += "copy \"" + base_name0 + "_args.csv" + "\" work\\args.csv /v /y\r\n";
             cmd += "\r\n";
             cmd += "cd %~dp0\r\n";
             cmd += "\r\n";
@@ -1394,12 +1445,7 @@ namespace pm
             cmd += "del /Q images\\debug\\*.png\r\n";
             cmd += "\r\n";
             cmd += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla %test% "
-                    + " " + listBox1.Text
-                    + " " + "mahalanobis"
-                    + " " + listBox3.Items[listBox3.SelectedIndices[0]].ToString()
-                    + " " + listBox3.Items[listBox3.SelectedIndices[1]].ToString()
-                    + " " + comboBox2.Text
-                    + " " + comboBox3.Text + "\r\n";
+                    + " " + "args.csv"  + "\r\n";
 
             //mahalanobis vibration.kurtosis vibration.mean datetime + \r\n";
 
@@ -1715,7 +1761,6 @@ namespace pm
 
         private void button14_Click(object sender, EventArgs e)
         {
-            button2_Click(sender, e);
             string cmd = "";
             cmd += "options(encoding = 'utf-8')\r\n";
             cmd += "\r\n";
@@ -1955,26 +2000,6 @@ namespace pm
         private void button17_Click(object sender, EventArgs e)
         {
             listBox3.Items.Clear();
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox6_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

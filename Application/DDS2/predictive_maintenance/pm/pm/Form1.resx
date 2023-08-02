@@ -123,19 +123,6 @@
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>184, 17</value>
-  </metadata>
-  <data name="textBox8.ToolTip" xml:space="preserve">
-    <value>Please specify the maximum amount of past data to be retained. 
-Please match the unit with unit_of_time. If this value is exceeded, 
-the oldest data will be discarded and the maximum retention amount will be used.</value>
-  </data>
-  <data name="label12.ToolTip" xml:space="preserve">
-    <value>Please specify the maximum amount of past data to be retained. 
-Please match the unit with unit_of_time. If this value is exceeded, 
-the oldest data will be discarded and the maximum retention amount will be used.</value>
-  </data>
   <data name="textBox15.ToolTip" xml:space="preserve">
     <value>Specifies the number of points used to evaluate the monotonically increasing metric.
 Negative values indicate that all data should be used, 
@@ -159,6 +146,19 @@ but it has the meaning of informing that the amount of data needs to be larger t
     <value>Specifies the amount of historical data to use to create the forecast line. 
 Negative values use all past data.
  A positive value truncates past data and uses only historical data to construct the forecast line</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>184, 17</value>
+  </metadata>
+  <data name="textBox8.ToolTip" xml:space="preserve">
+    <value>Please specify the maximum amount of past data to be retained. 
+Please match the unit with unit_of_time. If this value is exceeded, 
+the oldest data will be discarded and the maximum retention amount will be used.</value>
+  </data>
+  <data name="label12.ToolTip" xml:space="preserve">
+    <value>Please specify the maximum amount of past data to be retained. 
+Please match the unit with unit_of_time. If this value is exceeded, 
+the oldest data will be discarded and the maximum retention amount will be used.</value>
   </data>
   <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>297, 17</value>

@@ -1,5 +1,4 @@
 
-
 # library(patchwork)
 library(cowplot)
 
@@ -171,7 +170,22 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 		  ggplot(aes(x = time_index, y = target, color=key))+
 		  geom_line()
 	}
+	
 	plot(p)
+	for ( i in 1:ncol(feature_df))
+	{
+		if ( colnames(feature_df)[i] == 'time_index')
+		{
+			next
+		}
+		p <- feature_df %>% 
+		  ggplot(aes(x = time_index, y = feature_df[,i]))+
+		  geom_line(linewidth =1.2)+ylab(colnames(feature_df)[i])+
+		  labs(title=colnames(feature_df)[i])
+
+		ggsave(filename=sprintf("../images/%s_feature%06d.png", base_name, i), p, limitsize=F, width = 16, height = 9)
+		plot(p)
+	}
 
 
  

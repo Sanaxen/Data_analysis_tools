@@ -2383,6 +2383,7 @@ images_clear <- function()
 	file.remove(paste(putpng_path,FN,sep=""))
 }
 
+RUL <- NULL
 sigin = 1
 max_prediction_length_org = 0
 predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
@@ -2751,8 +2752,20 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			for ( k in 1:3 )
 			{
 				thr0 = get_threshold(tracking_feature_tmp[k])
+				if ( length(thr0) != 1 )
+				{
+					thr0 = 10000.0
+				}
 				ymax0 = get_ymax(tracking_feature_tmp[k])
+				if ( length(ymax0) != 1 )
+				{
+					ymax0 = -10000.0
+				}
 				ymin0 = get_ymin(tracking_feature_tmp[k])
+				if ( length(ymin0) != 1 )
+				{
+					ymin0 = 10000.0
+				}
 				
 				x <- c(feature_df[,tracking_feature_tmp[k]])
 				n <- length(x)
@@ -2842,9 +2855,9 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		#異常発生時刻が早い順にソート
 		plt_list = list(plt_s[[1]], plt_s[[2]], plt_s[[3]])
 		failure = data.frame(time = failure_time_s, pltid=c(1,2,3))
-		failure <- failure[order(failure$time),]
+		#failure <- failure[order(failure$time),]
 
-		RUL <- c(RUL, min(failure[1,1],max_prediction_length*unit_of_record))
+		RUL <<- c(RUL, failure_time_s[2])
 		write.csv(RUL, paste("./", base_name, "_RUL.csv",sep=''), row.names = F)
 
 		print(failure)

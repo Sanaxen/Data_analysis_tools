@@ -1,28 +1,39 @@
 
 ########################### program start
 args <- commandArgs(trailingOnly = T)
-#args <- c("X89", "mahalanobis", "X89.RMS", "X89.mean", "Time", "-")
-#args <- c("vibration", "mahalanobis", "vibration.kurtosis", "vibration.mean", "datetime", "+")
-#args <- c("–Œ“üŒûˆ³—Í", "mahalanobis", "–Œ“üŒûˆ³—Í.peak2peak", "–Œ“üŒûˆ³—Í.sd", "ŠÄŽ‹“úŽž", "+")
+if (length(args) == 0 )
+{
+	args <- c("predictive_maintenance_args.csv")
+}
 
 print("=== args ===")
 print(args)
 print("============")
 
-tracking_feature_ = args[1]
-print(tracking_feature_)
-tracking_feature_args =c(args[2])
-tracking_feature_args =c(tracking_feature_args, args[3])
-tracking_feature_args =c(tracking_feature_args, args[4])
-print(tracking_feature_args)
-timeStamp_arg = args[5]
-print(timeStamp_arg)
-sigin_arg = args[6]
-print(sigin_arg)
 
 curdir = getwd()
 setwd( paste(curdir, "/work", sep=""))
 putpng_path= paste(curdir, "/images/", sep="")
+
+argS <- read.csv(args[1])
+varN <- as.integer(argS[1,1])
+tracking_feature_ <<- NULL
+for ( i in 1:varN )
+{
+	tracking_feature_ <<- c(tracking_feature_, argS[1+i,1] )
+}
+print(tracking_feature_)
+timeStamp_arg = argS[varN+2,1]
+print(timeStamp_arg)
+sigin_arg = argS[varN+3,1]
+print(sigin_arg)
+tracking_feature_args <<- NULL
+for ( i in (varN+4):nrow(argS) )
+{
+	tracking_feature_args <<- c(tracking_feature_args, argS[i,1] )
+}
+print(tracking_feature_args)
+
 
 source("../src/predictive_maintenance_funcs.r")
 source("parameters.r")
