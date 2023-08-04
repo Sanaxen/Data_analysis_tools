@@ -178,9 +178,13 @@ feature_summary_visualization <- function( csvfile, timeStamp )
 		{
 			next
 		}
+		z <- lowess(feature_df$time_index, feature_df[,i], f = smoother_span)$y
+		
 		p <- feature_df %>% 
 		  ggplot(aes(x = time_index, y = feature_df[,i]))+
-		  geom_line(linewidth =1.2)+ylab(colnames(feature_df)[i])+
+		  geom_line(linewidth =1.0)+ylab(colnames(feature_df)[i])+
+		  geom_line(aes(x = time_index, y = z),linewidth =1.2, color ="red")+
+		  ylab(colnames(feature_df)[i])+
 		  labs(title=colnames(feature_df)[i])
 
 		ggsave(filename=sprintf("../images/%s_feature%06d.png", base_name, i), p, limitsize=F, width = 16, height = 9)
