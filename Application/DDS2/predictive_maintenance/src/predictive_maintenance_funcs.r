@@ -1049,6 +1049,12 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
    		yy <- NULL
 		
 
+		a_coef = c()
+		b_coef = c()
+		c_coef = c()
+		d_coef = c()
+		noise_varience = NULL
+		
 		sampling_num <<- min(0, sampling_num)
 		err_min <- 999999.0
 		best_fit <- NULL
@@ -1118,14 +1124,26 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 						{
 							lm_pa <- runif(1,-0.001,1)
 							lm_pb <- runif(1,-0.001,1)
-							lm_pc <- runif(1,-0.001,1)
+							lm_pc <- yy[1] + runif(1,-0.0001,0.0001)
 							lm_pd <- runif(1,-0.001,1)
+							if ( length(a_coef) > 1 )
+							{
+								lm_pa <- rlnorm2(1, mean = mean(a_coef), sd = sd(a_coef))
+								lm_pb <- rnorm(n =1,mean = mean(b_coef), sd = sd(b_coef))
+								lm_pd <- rnorm(n =1,mean = 0, sd = sqrt(noise_varience)) - noise_varience/2
+							}
 							if ( kk > 50 )
 							{
 								lm_pa <- runif(1,-1,1)
 								lm_pb <- runif(1,-1,1)
-								lm_pc <- runif(1,-1,1)
+								lm_pc <- yy[1] + runif(1,-0.0001,0.0001)
 								lm_pd <- runif(1,-1,1)
+								if ( length(a_coef) > 1 && kk < 80)
+								{
+									lm_pa <- rlnorm2(1, mean = mean(a_coef), sd = sd(a_coef))
+									lm_pb <- rnorm(n =1,mean = mean(b_coef), sd = sd(b_coef))
+									lm_pd <- rnorm(n =1,mean = 0, sd = sqrt(noise_varience)) - noise_varience/2
+								}
 							}
 							pred <- function(parS, xx) parS$c + parS$a*exp(parS$b*xx + parS$d)
 							resid <- function(p, observed, xx) observed - pred(p,xx)
@@ -1203,6 +1221,12 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 			yy = yy_org
 			coef = coefficients(fit)
 			fit_pred <-  coef[3] + coef[1]*exp(coef[2]*xx + fit_prm_e)
+			a_coef <- c(a_coef, coef[1])
+			b_coef <- c(b_coef, coef[2])
+			c_coef <- c(c_coef, coef[3])
+			d_coef <- c(d_coef, fit_prm_e)
+			
+			noise_varience <- var(yy_org[1:length(yy_org)] - fit_pred)
 			
 			plot(xx, yy, xlab = 'time', ylab = 'org')
 			par(new=T)
@@ -1930,7 +1954,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		{
 			failure_time = 0
 		}
-		failure_time_str = sprintf("%d step [%d %s]", as.integer(failure_time), 
+		failure_time_str = sprintf("%d step 5%%[%d %s]", as.integer(failure_time), 
 				convert_time(failure_time*dt, unit_of_record=unit_of_record,
 				from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
 		failure_time50p_str = sprintf("50%%[%d %s]",  
@@ -1938,7 +1962,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 				from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
 	}else
 	{
-		failure_time_str = sprintf(" > %d step [%d %s]", as.integer(h),
+		failure_time_str = sprintf(" > %d step 5%%[%d %s]", as.integer(h),
 			 convert_time(h*dt, unit_of_record=unit_of_record,
 			 from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
 		failure_time50p_str = sprintf("50%%[%d %s]", 
@@ -2098,7 +2122,7 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 	print(plt1)
 	print(plt2)
 
-	return( list(plt1, plt2, failure_time))
+	return( list(plt1, plt2, failure_time, failure_time50p))
 }
 
 #Data feature confirmation
@@ -2811,6 +2835,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		#各特徴量の予測結果とPlot
 		tracking_feature_Num = 3
 		failure_time_s = c(1:tracking_feature_Num)
+		failure_time50p_s = c(1:tracking_feature_Num)
 		plt_s = list()
 		
 		if ( max_prediction_length_org == 0 )
@@ -2833,6 +2858,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			if ( !is.null(plt1) )
 			{
 				failure_time_s[k] = plt1[[3]]
+				failure_time50p_s[k] = plt1[[4]]
 				plt_s <- c(plt_s, list(plt1[[2]]))
 			}else
 			{
@@ -2854,10 +2880,10 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 
 		#異常発生時刻が早い順にソート
 		plt_list = list(plt_s[[1]], plt_s[[2]], plt_s[[3]])
-		failure = data.frame(time = failure_time_s, pltid=c(1,2,3))
+		failure = data.frame(time = failure_time50p_s, pltid=c(1,2,3))
 		#failure <- failure[order(failure$time),]
 
-		RUL <<- c(RUL, failure_time_s[2])
+		RUL <<- c(RUL, failure_time50p_s[2])
 		write.csv(RUL, paste("./", base_name, "_RUL.csv",sep=''), row.names = F)
 
 		print(failure)

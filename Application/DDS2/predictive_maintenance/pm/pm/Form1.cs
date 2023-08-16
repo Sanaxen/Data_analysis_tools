@@ -1927,7 +1927,7 @@ namespace pm
                 {
                     f.plotly_html = htmlPictureBox2;
                 }
-                f.SetFile(work_dir, imagePictureBox2);
+                f.SetFile(work_dir, imagePictureBox2, false);
 
                 f.Show();
             }
@@ -1943,7 +1943,7 @@ namespace pm
                 {
                     f.plotly_html = htmlPictureBox3;
                 }
-                f.SetFile(work_dir, imagePictureBox3);
+                f.SetFile(work_dir, imagePictureBox3, false);
 
                 f.Show();
             }
@@ -1959,7 +1959,7 @@ namespace pm
                 {
                     f.plotly_html = htmlPictureBox4;
                 }
-                f.SetFile(work_dir, imagePictureBox4);
+                f.SetFile(work_dir, imagePictureBox4, false);
 
                 f.Show();
             }
@@ -1975,7 +1975,7 @@ namespace pm
                 {
                     f.plotly_html = htmlPictureBox5;
                 }
-                f.SetFile(work_dir, imagePictureBox5);
+                f.SetFile(work_dir, imagePictureBox5, false);
 
                 f.Show();
             }
@@ -1991,7 +1991,7 @@ namespace pm
                 {
                     f.plotly_html = htmlPictureBox6;
                 }
-                f.SetFile(work_dir, imagePictureBox6);
+                f.SetFile(work_dir, imagePictureBox6, false);
 
                 f.Show();
             }

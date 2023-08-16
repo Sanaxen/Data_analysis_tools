@@ -90,7 +90,7 @@ namespace pm
 
         public string plotly_html = "";
 
-        public void SetFile( string dir, string file)
+        public void SetFile( string dir, string file,  bool checkBox1Checked = true)
         {
             image_file = file;
             work_dir = dir;
@@ -102,7 +102,12 @@ namespace pm
                 webView21.Visible = true;
                 loadHtml(plotly_html);
                 webView21.Show();
-                checkBox1.Checked = true;
+                checkBox1.Checked = checkBox1Checked;
+                if (!checkBox1Checked)
+                {
+                    webView21.Visible = false;
+                    pictureBox1.Visible = true;
+                }
             }
         }
 
