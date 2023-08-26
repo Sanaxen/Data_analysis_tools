@@ -1171,7 +1171,14 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 							if ( coef[1] < 0 || coef[2] < 0) next
 							fit_pred <-  coef[3] + coef[1]*exp(coef[2]*xx_org + coef[4])
 							
-							err <- sqrt(sum((yy_org[1:length(yy_org)] - fit_pred)^2)/length(yy_org))
+							#err <- sqrt(sum((yy_org[1:length(yy_org)] - fit_pred)^2)/length(yy_org))
+							
+							w <- c(1:length(yy_org))/length(yy_org)
+							w <- ifelse( x < 0.001, 0.001, x)
+							w <- log(w)
+							w <- ( w - min(w))/(max(w) - min(w))
+							err <- sqrt(sum(((yy_org[1:length(yy_org)] - fit_pred)*w)^2)/length(yy_org))
+							
 							if ( err_min > err )
 							{
 								best_fit <- fit
@@ -1576,12 +1583,13 @@ library(outliers)
 fit_id = 1
 gyap_ratio = 0.075
 break_index_df <- NULL
-plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600, feature_smooth_window=2)
+plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=600, feature_smooth_window=2)
 {
 	threshold = get_threshold(rank)
 	ymax = get_ymax(rank)
 	ymin = get_ymin(rank)
 
+	feature_df <- feature_df_[[1]]
 	colname = rank
 	id <- which(colname == colnames(feature_df))
 	gfm2 <- data.frame(time_index=feature_df$time_index, y=feature_df[,id])
@@ -1972,7 +1980,17 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 	
 	
 
-		
+	if ( !is.null(feature_df_[[2]]) )
+	{
+		tmp <- feature_df_[[2]]
+		gfm2_org <- data.frame(time_index=tmp$time_index, y=tmp[,id])
+	}
+	delta_index <- gfm2_org$time_index[nrow(gfm2)] - gfm2_org$time_index[nrow(gfm2)-1]
+	gfm2_org[, timeStamp] <- current_time
+	gfm2_org[,timeStamp] <- as.POSIXct(gfm2_org[,timeStamp], tz='UTC')
+	x <- rev(seq(gfm2_org[,timeStamp][nrow(gfm2_org)], length.out = nrow(gfm2_org), by = -delta_time*delta_index))
+	gfm2_org[,timeStamp] <- x
+	
 	plt2 <- ggplot()
 	plt2 <- plt2 + geom_line(data=gfm2_org,aes(x = time_index, y = y),color="blue", linewidth =0.5)+ 
 	geom_point(data=gfm2_org,aes(x = time_index, y = y),size =0.5)+
@@ -2030,6 +2048,16 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		fit_predict$time_index[(length(yo$time_index)+1):nrow(fit_predict)] <- seq(yo$time_index[length(yo$time_index)]+step,
 		 length.out = nrow(fit_predict), by = step)
 		
+		delta_index <- fit_predict$time_index[nrow(fit_predict)] - fit_predict$time_index[nrow(fit_predict)-1]
+		fit_predict[, timeStamp] <- current_time
+		
+		fit_predict[,timeStamp] <- as.POSIXct(fit_predict[,timeStamp], tz='UTC')
+		x <- rev(seq(fit_predict[,timeStamp][nrow(yo)], length.out = nrow(yo), by = -delta_time*delta_index))
+		fit_predict[,timeStamp][1:nrow(yo)] <- x
+
+		x <- seq(fit_predict[,timeStamp][nrow(yo)], length.out = length(nrow(yo):nrow(fit_predict)), by = delta_time*delta_index)
+		fit_predict[nrow(yo):nrow(fit_predict),timeStamp] <- x
+		
 		fit_predict_tmp <- fit_predict
 		if ( max_prediction_length_org != 0 && max_prediction_length > max_prediction_length_org)
 		{
@@ -2042,6 +2070,61 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 		geom_line(data=fit_predict_tmp, mapping = aes_string(x = 'time_index', y = 'y'), colour=col) +
 		geom_ribbon(data=fit_predict_tmp, fill=fill_col[2], mapping = aes_string(x = 'time_index', ymin = 'l05', ymax = 'u95'), alpha = 0.3)+
 		geom_ribbon(data=fit_predict_tmp, fill=fill_col[1], mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'u75'), alpha = 0.3)
+		
+		
+		tmp <- data.frame(time_index=fit_predict_tmp$time_index, y=fit_predict_tmp$y, timeStamp=fit_predict_tmp[,timeStamp])
+		colnames(tmp)[3] <- c(timeStamp)
+		tmp <- rbind(gfm2_org,tmp)
+
+		#print(head(tmp))
+		#print(delta_index)
+		tmp2 <- NULL
+		x <- tmp$time_index[1]
+		xx <- 1
+		for ( i in 1:nrow(tmp) )
+		{
+			x <- x + delta_index
+			if ( tmp$time_index[nrow(tmp)] < x )
+			{
+				break
+			}
+			idx <- which.min(abs(tmp$time_index - x))
+			if ( idx <= xx )
+			{
+				next
+			}
+			xx <- idx
+			
+			if ( is.null(tmp2))
+			{
+				tmp2 <- data.frame(tmp$time_index[idx], tmp[,timeStamp][idx])
+			}else
+			{
+				tmp2 <- rbind(tmp2, data.frame(tmp$time_index[idx], tmp[,timeStamp][idx]))
+			}
+		}
+		tmp <- NULL
+		rm(tmp)
+		tmp <- tmp2
+		colnames(tmp) <- c( "time_index", timeStamp)
+		#print(head(tmp))
+		#print(tail(tmp))
+
+		step <- nrow(tmp)/5
+		break_pos <- c()
+		labels <- c()
+		for ( i in 1:5 )
+		{
+			break_pos <- c(break_pos, tmp$time_index[(i-1)*step+1])
+			labels <- c(labels, as.character(tmp[,timeStamp][(i-1)*step+1]))
+		}
+		tmp <- NULL
+		rm(tmp)
+		
+		plt2 <- plt2 + labs(x=sprintf("[%s] Current time:%s",timeStamp, current_time))
+		plt2 <- plt2 + scale_x_continuous(breaks = break_pos, labels = labels)
+		plt2 <- plt2 + theme(axis.text.x = element_text(angle = 0, vjust=0.0, hjust=0.5, face="bold")) 
+		#plt2 <- plt2 + theme(axis.text.x = element_text(angle = 90, vjust=0.5, hjust=0.0, face="bold")) 
 		
 		if ( threshold < 0 )
 		{
@@ -2122,6 +2205,8 @@ plot_plot_feature_predict <- function(feature_df, train_num = 20, rank="", h=600
 	print(plt1)
 	print(plt2)
 
+	gfm2_org <- NULL
+	rm(gfm2_org)
 	return( list(plt1, plt2, failure_time, failure_time50p))
 }
 
@@ -2410,6 +2495,8 @@ images_clear <- function()
 RUL <- NULL
 sigin = 1
 max_prediction_length_org = 0
+current_time <- NULL
+delta_time <- NULL
 predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 {
 	print("======tracking_feature_args==")
@@ -2458,7 +2545,9 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		}
 		
 		timeStamp <<- timeStamp_arg
-		current_time <- df2[nrow(df2), timeStamp]
+		df2[, timeStamp] <- as.POSIXct(df2[, timeStamp], tz='UTC')
+		
+		current_time <<- df2[nrow(df2), timeStamp]
 		
 		print("####################")
 		time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp],units = "auto")
@@ -2480,6 +2569,8 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		}
 		print(sprintf("%d current_time:%s dt:%f %s", i, current_time, time_diff, unit_of_time))
 
+		delta_time <<- time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp])
+		
 		df2[,timeStamp] <- NULL
 		#print(head(df2))
 		#print(current_time)
@@ -2643,8 +2734,15 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			next
 		}
 		print("create feature end")
+		
+		feature_df_none_smooth <- NULL
+		rm(feature_df_none_smooth)
 		if ( smooth_window2 > 1 )
 		{
+			if ( use_lowess )
+			{
+				feature_df_none_smooth <- feature_df
+			}
 			feature_df <- try(
 			smooth(feature_df, smooth_window = smooth_window2, smooth_window_slide=smooth_window_slide2),silent=F)
 			if ( class(feature_df) == "try-error" || is.null(feature_df))
@@ -2850,7 +2948,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			max_prediction_length <<- 10*max_prediction_length_org
 
 			rank = tracking_feature_tmp[k]
-			plt1 <- plot_plot_feature_predict(feature_df, train_num=train_num, rank=rank,
+			plt1 <- plot_plot_feature_predict(list(feature_df,feature_df_none_smooth), train_num=train_num, rank=rank,
 								 h=max_prediction_length, feature_smooth_window=feature_smooth_window)
 
 			max_prediction_length <<- max_prediction_length_org
@@ -2867,6 +2965,9 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			}
 			flush.console()
 		}
+		feature_df_none_smooth <- NULL
+		rm(feature_df_none_smooth)
+		
 		if ( is.null(plt_s))
 		{
 			print("plot_plot_feature_predict error skipp")
@@ -2912,7 +3013,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			                 c(2, 3, 4))
 			plt <- gridExtra::grid.arrange( looked_var_plt, plt_s[[1]], plt_s[[2]], plt_s[[3]], layout_matrix = layout1, top = current_time)
 		}
-		ggsave(file = paste(putpng_path, result_png, sep=""), plot = plt, dpi = 100, width = 12.5*1.2, height = 6.8*1.0)
+		ggsave(file = paste(putpng_path, result_png, sep=""), plot = plt, dpi = 130, width = 13*1.2, height = 6.8*1.0)
 		
 		print(feature_param)
 		#i = i + 1
@@ -2921,12 +3022,14 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 	#sink()
 }
 
-
+time_out <- 60*3
 get_csvfile <- function()
 {
 	cmdstr='cmd /c dir '
 	cmdstr=paste(cmdstr, "\"", getwd(), sep="")
 	cmdstr=paste(cmdstr,"\\Untreated\\*.csv\" /b /od", sep="")
+
+	start <- Sys.time()
 
 	files <- NULL
 	while( TRUE )
@@ -2944,6 +3047,13 @@ get_csvfile <- function()
 			},finally = { 
 	    	},silent = TRUE
     	)
+		end <- Sys.time()
+		diff <- as.numeric(end - start)
+		if ( diff > time_out )
+		{
+			print("time out!!")
+			return (NULL)
+		}
 	}
 	
 	return (files)

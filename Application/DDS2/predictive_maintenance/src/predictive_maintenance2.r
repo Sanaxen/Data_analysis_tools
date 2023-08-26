@@ -65,7 +65,8 @@ while( TRUE )
 {
 	if ( is.null(files))
 	{
-		next
+		#next
+		break
 	}
 	for ( i in 1:length(files))
 	{
