@@ -1326,6 +1326,7 @@ namespace pm
 
             cmd += "set data=" + csv_dir + "\r\n";
             cmd += "set serv=" + work_dir + "\\Untreated" + "\r\n";
+            cmd += "del .\\work\\all.csv\r\n";
             cmd += "del /Q \"%serv%\\*.csv\"\r\n";
 
             foreach (System.IO.FileInfo f in files)
@@ -1439,10 +1440,15 @@ namespace pm
             cmd += "set test=\"./src/predictive_maintenance2.r\"\r\n";
             cmd += "copy \"" + param_base + "\" work\\parameters.r /v /y\r\n";
             cmd += "copy \"" + base_name0 + "_args.csv" + "\" work\\args.csv /v /y\r\n";
+            if (validation)
+            {
+                cmd += "del \"./work\\" + base_name0 + "_feature_param.csv\"\r\n";
+            }
             cmd += "\r\n";
             cmd += "cd %~dp0\r\n";
             cmd += "\r\n";
             cmd += "del /Q images\\*.png\r\n";
+            cmd += "del /Q images\\*.r\r\n";
             cmd += "del /Q images\\debug\\*.png\r\n";
             cmd += "\r\n";
             cmd += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla %test% "
@@ -1760,7 +1766,7 @@ namespace pm
             }
         }
 
-        private void button14_Click(object sender, EventArgs e)
+        public void summary(object sender, EventArgs e, bool summary = true)
         {
             string cmd = "";
             cmd += "options(encoding = 'utf-8')\r\n";
@@ -1778,7 +1784,7 @@ namespace pm
             cmd += "source('parameters.r')\r\n";
             cmd += "source('../src/feature_summary_visualization.r')\r\n";
             cmd += "\r\n";
-            cmd += "sigin_arg = '"+comboBox3.Text+"'\r\n";
+            cmd += "sigin_arg = '" + comboBox3.Text + "'\r\n";
             cmd += "#tracking_feature_= ''\r\n";
             cmd += "\r\n";
             cmd += "initial_pm(sigin_arg)\r\n";
@@ -1791,7 +1797,7 @@ namespace pm
             cmd += "	sigin <<- -1.0\r\n";
             cmd += "}\r\n";
             cmd += "\r\n";
-            cmd += "smooth_window <<- "+textBox5.Text +"\r\n";
+            cmd += "smooth_window <<- " + textBox5.Text + "\r\n";
             cmd += "smooth_window_slide <<- " + textBox6.Text + "\r\n";
             cmd += "smooth_window2 <<- " + textBox13.Text + "\r\n";
             cmd += "smooth_window_slide2 <<- " + textBox12.Text + "\r\n";
@@ -1801,18 +1807,24 @@ namespace pm
             cmd += "lookback <<- 24\r\n";
             cmd += "lookback_slide <<- 24\r\n";
             cmd += "#平滑化をlowessで行う\r\n";
-            cmd += "use_lowess = "+((checkBox3.Checked)?"TRUE":"FALSE")+ "\r\n";
+            cmd += "use_lowess = " + ((checkBox3.Checked) ? "TRUE" : "FALSE") + "\r\n";
             cmd += "smoother_span <<- 0.05\r\n";
             cmd += "\r\n";
             cmd += "\r\n";
             cmd += "timeStamp <- '" + comboBox2.Text + "'\r\n";
-            cmd += "csvfile = '"+base_name + ".csv'\r\n";
+            cmd += "csvfile = '" + base_name + ".csv'\r\n";
             cmd += "base_name <<- '" + base_name + "'\r\n";
-            cmd += "plt <- feature_summary_visualization(csvfile, timeStamp)\r\n";
+            cmd += "plt <- feature_summary_visualization(csvfile, timeStamp, summary=";
+            if ( summary ) cmd += "T)\r\n";
+            else cmd += "F)\r\n";
             cmd += "\r\n";
             cmd += "\r\n";
 
-            string file = "..\\"+base_name0+"_feat_visualize.r";
+            string file = "..\\" + base_name0 + "_feat_visualize.r";
+            if (!summary)
+            {
+                file = "..\\" + base_name0 + "_feature_discovery.r";
+            }
             try
             {
                 var utf8Encoding = new System.Text.UTF8Encoding(false);
@@ -1834,7 +1846,7 @@ namespace pm
             try
             {
                 File.Copy("..\\" + param_base, param, true);
-                File.Copy(csv_dir + "\\"+base_name+".csv", base_name + ".csv", true);
+                File.Copy(csv_dir + "\\" + base_name + ".csv", base_name + ".csv", true);
             }
             catch
             {
@@ -1844,6 +1856,10 @@ namespace pm
             }
 
             string feat_visualize_base = base_name0 + "_feat_visualize.r";
+            if ( !summary)
+            {
+                feat_visualize_base = base_name0 + "_feature_discovery.r";
+            }
             string bat = "";
             bat += "call init.bat\r\n";
             bat += ":call ..\\..\\setup_ini.bat\r\n";
@@ -1855,12 +1871,17 @@ namespace pm
             bat += "cd %~dp0\r\n";
             bat += "\r\n";
             bat += "del /Q images\\*.png\r\n";
+            bat += "del /Q images\\*.r\r\n";
             bat += "del /Q images\\debug\\*.png\r\n";
             bat += "\r\n";
-            bat += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla \""+ feat_visualize_base+"\"\r\n";
+            bat += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla \"" + feat_visualize_base + "\"\r\n";
 
 
             string batfile = "..\\" + base_name0 + "_feature_summary_visualization.bat";
+            if (!summary)
+            {
+                batfile = "..\\" + base_name0 + "_feature_discovery.bat";
+            }
             try
             {
                 using (System.IO.StreamWriter sw = new StreamWriter(batfile, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
@@ -1876,46 +1897,56 @@ namespace pm
             }
             System.IO.Directory.SetCurrentDirectory(base_dir);
 
-            try
+            return;
+            if (summary)
             {
-                execute_bat(base_name0 + "_feature_summary_visualization.bat");
-            }
-            catch
-            {
+                try
+                {
+                    execute_bat(base_name0 + "_feature_summary_visualization.bat");
+                }
+                catch
+                {
 
-            }
-            System.IO.Directory.SetCurrentDirectory(work_dir);
+                }
+                System.IO.Directory.SetCurrentDirectory(work_dir);
 
-            if (File.Exists(base_name0 + "_feature_df.png"))
-            {
-                pictureBox2.Image = CreateImage(base_name0 + "_feature_df.png");
-                imagePictureBox2 = base_name0 + "_feature_df.png";
-                htmlPictureBox2 = base_name0 + "_feature_df.html";
+                if (File.Exists(base_name0 + "_feature_df.png"))
+                {
+                    pictureBox2.Image = CreateImage(base_name0 + "_feature_df.png");
+                    imagePictureBox2 = base_name0 + "_feature_df.png";
+                    htmlPictureBox2 = base_name0 + "_feature_df.html";
+                }
+                if (File.Exists(base_name0 + "_monotonicity2.png"))
+                {
+                    pictureBox3.Image = CreateImage(base_name0 + "_monotonicity2.png");
+                    imagePictureBox3 = base_name0 + "_monotonicity2.png";
+                    htmlPictureBox3 = base_name0 + "_monotonicity2.html";
+                }
+                if (File.Exists(base_name0 + "_tracking_feature.png"))
+                {
+                    pictureBox4.Image = CreateImage(base_name0 + "_tracking_feature.png");
+                    imagePictureBox4 = base_name0 + "_tracking_feature.png";
+                    htmlPictureBox4 = base_name0 + "_feature_summary_visualization1.html";
+                }
+                if (File.Exists(base_name0 + "_tracking_feature2.png"))
+                {
+                    pictureBox5.Image = CreateImage(base_name0 + "_tracking_feature2.png");
+                    imagePictureBox5 = base_name0 + "_tracking_feature2.png";
+                    htmlPictureBox5 = base_name0 + "_feature_summary_visualization2.html";
+                }
+                if (File.Exists(base_name0 + "_input.png"))
+                {
+                    pictureBox6.Image = CreateImage(base_name0 + "_input.png");
+                    imagePictureBox6 = base_name0 + "_input.png";
+                    htmlPictureBox6 = base_name0 + "_input.html";
+                }
             }
-            if (File.Exists(base_name0 + "_monotonicity2.png"))
-            {
-                pictureBox3.Image = CreateImage(base_name0 + "_monotonicity2.png");
-                imagePictureBox3 = base_name0 + "_monotonicity2.png";
-                htmlPictureBox3 = base_name0 + "_monotonicity2.html";
-            }
-            if (File.Exists(base_name0 + "_tracking_feature.png"))
-            {
-                pictureBox4.Image = CreateImage(base_name0 + "_tracking_feature.png");
-                imagePictureBox4 = base_name0 + "_tracking_feature.png";
-                htmlPictureBox4 = base_name0 + "_feature_summary_visualization1.html";
-            }
-            if (File.Exists(base_name0 + "_tracking_feature2.png"))
-            {
-                pictureBox5.Image = CreateImage(base_name0 + "_tracking_feature2.png");
-                imagePictureBox5 = base_name0 + "_tracking_feature2.png";
-                htmlPictureBox5 = base_name0 + "_feature_summary_visualization2.html";
-            }
-            if (File.Exists(base_name0 + "_input.png"))
-            {
-                pictureBox6.Image = CreateImage(base_name0 + "_input.png");
-                imagePictureBox6 = base_name0 + "_input.png";
-                htmlPictureBox6 = base_name0 + "_input.html";
-            }
+        }
+
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            summary(sender, e, true);
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
@@ -2002,5 +2033,10 @@ namespace pm
         {
             listBox3.Items.Clear();
         }
-    }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            summary(sender, e, false);
+        }
+}
 }

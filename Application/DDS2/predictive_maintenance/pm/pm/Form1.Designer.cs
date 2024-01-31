@@ -113,6 +113,10 @@ namespace pm
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.textBox20 = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.textBox19 = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.textBox16 = new System.Windows.Forms.TextBox();
@@ -160,10 +164,7 @@ namespace pm
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.textBox19 = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.textBox20 = new System.Windows.Forms.TextBox();
-            this.label26 = new System.Windows.Forms.Label();
+            this.button18 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel18.SuspendLayout();
             this.panel19.SuspendLayout();
@@ -865,6 +866,7 @@ namespace pm
             // 
             // panel10
             // 
+            this.panel10.Controls.Add(this.button18);
             this.panel10.Controls.Add(this.button14);
             this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel10.Location = new System.Drawing.Point(0, 0);
@@ -1177,6 +1179,46 @@ namespace pm
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "After smoothing";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // textBox20
+            // 
+            this.textBox20.Location = new System.Drawing.Point(108, 126);
+            this.textBox20.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox20.Name = "textBox20";
+            this.textBox20.Size = new System.Drawing.Size(83, 19);
+            this.textBox20.TabIndex = 55;
+            this.textBox20.Text = "0.05";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.ForeColor = System.Drawing.Color.Blue;
+            this.label26.Location = new System.Drawing.Point(11, 129);
+            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(93, 12);
+            this.label26.TabIndex = 54;
+            this.label26.Text = "smoother_span";
+            // 
+            // textBox19
+            // 
+            this.textBox19.Location = new System.Drawing.Point(100, 153);
+            this.textBox19.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox19.Name = "textBox19";
+            this.textBox19.Size = new System.Drawing.Size(83, 19);
+            this.textBox19.TabIndex = 53;
+            this.textBox19.Text = "0.075";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.ForeColor = System.Drawing.Color.Blue;
+            this.label25.Location = new System.Drawing.Point(11, 156);
+            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(66, 12);
+            this.label25.TabIndex = 52;
+            this.label25.Text = "gyap_ratio";
             // 
             // checkBox3
             // 
@@ -1713,45 +1755,15 @@ namespace pm
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // textBox19
+            // button18
             // 
-            this.textBox19.Location = new System.Drawing.Point(100, 153);
-            this.textBox19.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox19.Name = "textBox19";
-            this.textBox19.Size = new System.Drawing.Size(83, 19);
-            this.textBox19.TabIndex = 53;
-            this.textBox19.Text = "0.075";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.ForeColor = System.Drawing.Color.Blue;
-            this.label25.Location = new System.Drawing.Point(11, 156);
-            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(66, 12);
-            this.label25.TabIndex = 52;
-            this.label25.Text = "gyap_ratio";
-            // 
-            // textBox20
-            // 
-            this.textBox20.Location = new System.Drawing.Point(108, 126);
-            this.textBox20.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox20.Name = "textBox20";
-            this.textBox20.Size = new System.Drawing.Size(83, 19);
-            this.textBox20.TabIndex = 55;
-            this.textBox20.Text = "0.05";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.ForeColor = System.Drawing.Color.Blue;
-            this.label26.Location = new System.Drawing.Point(11, 129);
-            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(93, 12);
-            this.label26.TabIndex = 54;
-            this.label26.Text = "smoother_span";
+            this.button18.Location = new System.Drawing.Point(122, 3);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(113, 35);
+            this.button18.TabIndex = 1;
+            this.button18.Text = "Feature Discovery";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // Form1
             // 
@@ -1954,6 +1966,7 @@ namespace pm
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox textBox20;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Button button18;
     }
 }
 

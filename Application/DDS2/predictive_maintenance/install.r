@@ -21,6 +21,6 @@ install.packages("minpack.lm", repos = "http://cran.us.r-project.org",lib=instal
 install.packages("cowplot", repos = "http://cran.us.r-project.org",lib=install_libpath)
 install.packages("plotly", repos = "http://cran.us.r-project.org",lib=install_libpath)
 install.packages("outliers", repos = "http://cran.us.r-project.org",lib=install_libpath)
-
+install.packages("ggridges", repos = "http://cran.us.r-project.org",lib=install_libpath)
 .libPaths( org_libpath)
 

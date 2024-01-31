@@ -19,6 +19,11 @@ library(MASS)
 
 #install.packages("minpack.lm")
 library(minpack.lm)
+library(data.table)
+
+#install.packages("ggridges")
+library(ggridges)
+
 
 time_data_length <- function(length, length_unit="")
 {
@@ -293,18 +298,33 @@ set_param <- function(feature_name, a, b, c, d)
 get_data_frame<- function(file, timeStamp)
 {
 	print(sprintf("get_data_frame(%s)", file))
-	df <- read.csv( file, header=T, stringsAsFactors = F, na.strings = c("", "NA"), fileEncoding  = csv_encoding)
+	print(sprintf("csv_encoding=%s", csv_encoding))
+	
+	df <- NULL
+	if ( csv_encoding == "sjis" )
+	{
+		df <- read.csv( file, header=T, stringsAsFactors = F, na.strings = c("", "NA"), fileEncoding  = 'Shift_JIS')
+		if ( nrow(df) == 0 )
+		{
+			df <- fread(file, na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = TRUE)
+		}
+	}else
+	{
+		df <- fread(file, na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = TRUE)
+	}
+	df <- as.data.frame(df)
 	
 	print(timeStamp)
 	print(sprintf("get_data_frame nrow(df):%d", nrow(df)))
 	print(sprintf("get_data_frame ncol(df):%d", ncol(df)))
-	print(str(df))
+	#print(str(df))
+	#print(head(df))
 	
 	df_ <- NULL
 	names <- NULL
 	for ( i in 1:ncol(df))
 	{
-		if ( is.character(df[,i]) && colnames(df)[i]!=timeStamp)
+		if ( is.character(df[,i]) && colnames(df)[i]!=timeStamp && colnames(df)[i]!="maintenance")
 		{
 			next
 		}
@@ -321,6 +341,9 @@ get_data_frame<- function(file, timeStamp)
 			if ( colnames(df)[i]!=timeStamp )
 			{
 				df_ <- as.numeric(df[,i])
+			}else
+			{
+				df_ <- as.character(df[,i])
 			}
 			names <- c(colnames(df)[i])
 			#print(df_)
@@ -328,10 +351,12 @@ get_data_frame<- function(file, timeStamp)
 		{
 			if ( colnames(df)[i]==timeStamp )
 			{
-				df_ <- cbind(df_, df[,i])
+				#df_ <- cbind(df_, as.character(df[,i]))
+				df_ <- dplyr::bind_cols(df_, as.character(df[,i]))
 			}else
 			{
-				df_ <- cbind(df_, as.numeric(df[,i]))
+				#df_ <- cbind(df_, as.numeric(df[,i]))
+				df_ <- dplyr::bind_cols(df_, as.numeric(df[,i]))
 			}
 			names <- c(names, colnames(df)[i])
 			#print(df_)
@@ -346,7 +371,10 @@ get_data_frame<- function(file, timeStamp)
 			df[,i] <- as.numeric(df[,i])
 		}
 	}
+	print(head(df))
 	print(sprintf("get_data_frame ncol(df):%d", ncol(df)))	
+	flush.console()
+
 	return (df)
 }
 
@@ -363,14 +391,21 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 	#}
 	colname <- colnames(x)
 	time_index = which("time_index" == colname)
+	maintenance_index = which("maintenance" == colname)
+	if ( length(maintenance_index) < 1 )
+	{
+		maintenance_index = 0
+	}
+	#print("maintenance_index")
+	#print(maintenance_index)
 	
 	print("---------------------")
 	print("smooth start")
-	print(sprintf("nrow(x):%d", nrow(x)))
-	#print(sprintf("smooth_window:%d", smooth_window))
-	#print(sprintf("smooth_window_slide:%d", smooth_window_slide))
-	print(colname)
-	print(str(x))
+	print(sprintf("nrow(x):%d ncol(x):%d", nrow(x), ncol(x)))
+	print(sprintf("smooth_window:%d", smooth_window))
+	print(sprintf("smooth_window_slide:%d", smooth_window_slide))
+	#print(colname)
+	#print(str(x))
 	df3 <- NULL
 	for ( i in 1:ncol(x))
 	{
@@ -394,11 +429,19 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 				#(default)f=0.75
 				z <- lowess(x[,time_index], y, f = smoother_span)$y
 				#lines(x[,time_index], z, col='red')
-				
 			}
+	    	if ( i == maintenance_index )
+	    	{
+	    		if ( length(y[y==1]) > 0 )
+	    		{
+					z <- y
+	    		}
+	    	}
+			
 			f <- z
 		}else
 		{
+			maintenance_flg = 0
 			while ( (j - smooth_window+1) >= 1 && j <= nrow(x) )
 			{
 				z <- mean(y[(j - smooth_window+1):j], rm.na = T)
@@ -406,6 +449,23 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 				{
 					z <- y[j]
 				}
+		    	if ( i == maintenance_index )
+		    	{
+		    		z <- y[(j - smooth_window+1):j]
+		    		if ( length(z[z==1]) > 0 )
+		    		{
+						z <- c(1)
+						if ( maintenance_flg > max(5,smooth_window/4) )
+						{
+							z <- c(0)
+						}
+						maintenance_flg = maintenance_flg + 1
+		    		}else
+		    		{
+						maintenance_flg = 0
+		    			z <- c(0)
+		    		}
+		    	}
 				
 				if ( is.null(f))
 				{
@@ -414,6 +474,7 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 				{
 					f <- c(f, z)
 				}
+				
 				j <- j + smooth_window_slide
 			}
 		}
@@ -433,8 +494,8 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 		colnames(df3) <- colname
 	}
 	#print(str(df3))
-	print("colnames:df3")
-	print(str(df3))
+	#print("colnames:df3")
+	#print(str(df3))
 	print("smooth end")
 	return (df3)
 	
@@ -450,6 +511,19 @@ smooth <- function(x, smooth_window = 10, smooth_window_slide = 1)
 # unsupervised anomaly detection
 anomaly_detection_train <- function( df )
 {
+	if ( length(which("maintenance" == colnames(df))) > 0 )
+	{
+		df[,"maintenance"] <- NULL
+	}
+	if ( length(which("time_index" == colnames(df))) > 0 )
+	{
+		df[,"time_index"] <- NULL
+	}
+	if ( length(which(timeStamp == colnames(df))) > 0 )
+	{
+		df[,timeStamp] <- NULL
+	}
+
 	df[is.na(df)] <- 0
 	mu <- apply(df,2,mean)
 	sd <- apply(df,2,sd)
@@ -496,6 +570,19 @@ anomaly_detection_train <- function( df )
 
 anomaly_detection_test <- function( model, df, method="mahalanobis", threshold=0)
 {
+	if ( length(which("maintenance" == colnames(df))) > 0 )
+	{
+		df[,"maintenance"] <- NULL
+	}
+	if ( length(which("time_index" == colnames(df))) > 0 )
+	{
+		df[,"time_index"] <- NULL
+	}
+	if ( length(which(timeStamp == colnames(df))) > 0 )
+	{
+		df[,timeStamp] <- NULL
+	}
+
 	df[is.na(df)] <- 0
 	mu = model[[2]]
 	sd = model[[3]]
@@ -576,12 +663,24 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 
 	time_index = which("time_index" == colnames_df2)
 	i <- which(col_name == colnames_df2)
+	
+	maintenance_index = which("maintenance" == colnames_df2)
 
 	fff <- NULL
 	d <- df2[,i]
+	if ( length(maintenance_index) < 1 )
+	{
+		maintenance_index = 0
+	}
+	if ( i == maintenance_index )
+	{
+		d[is.na(d)] <- 0
+	}
+	
 	d[is.na(d)] <- mean(d, na.rm = TRUE)
 	
-	#print(sprintf("lookback:%d length(d):%d", lookback, length(d)))
+	print(sprintf("feature_sub lookback:%d slide_window:%d length(d):%d", lookback, slide_window, length(d)))
+	#print(head(d))
 	
 	rowN = 0
 	j = lookback
@@ -590,7 +689,8 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 		j <- j + slide_window
 		rowN = rowN + 1
 	}
-	if ( i == time_index )
+	if ( i == time_index || i == maintenance_index)
+	#if ( i == time_index )
 	{
 		fff <- as.data.frame(matrix(nrow=rowN, ncol=1))
 	}else
@@ -601,9 +701,15 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 	
 	
 	j = lookback
-	while( j <= length(d) )
+	length_d <- length(d)
+	start <- Sys.time()
+
+	maintenance_flg = 0
+	
+	while( j <= length_d )
 	#for ( j in lookback:length(d))
 	{
+		start0 <- Sys.time()
 		#print(sprintf("%d:%d", (j-lookback+1),j))
 	
 		dd <- d[(j-lookback+1):j]
@@ -638,9 +744,29 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 	    logEnergy = sigin*log(sum(dd2)+1);
 	    
     
-    	if ( i == time_index )
+    	if ( i == time_index || i == maintenance_index)
     	{
 			f <- data.frame(matrix(c(dd[length(dd)]),nrow=1))
+			#f <- data.frame(c(dd[lookback]),nrow=1)
+			
+			if ( i == maintenance_index )
+			{
+				f <- data.frame(matrix(c(0),nrow=1))
+				if ( length(dd[dd==1]) > 0 )
+				{
+					f <- data.frame(matrix(c(1),nrow=1))
+					if ( maintenance_flg > max(5,lookback/5) )
+					{
+						f <- data.frame(matrix(c(0),nrow=1))
+					}
+					maintenance_flg = maintenance_flg + 1
+				}else
+				{
+					f <- data.frame(matrix(c(0),nrow=1))
+					maintenance_flg = 0
+				}
+			}
+
     	}else
     	{
 			f <- data.frame(matrix(c(y, mean,sd,var, 
@@ -655,7 +781,6 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 					  		spectral_kurtosis
 							),nrow=1))
 		}
-		
 		fff[row_cnt,] <- f
 		row_cnt = row_cnt + 1
 		
@@ -664,21 +789,45 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 		#flush.console()
 		
 		j <- j + slide_window
+
+		end0 <- Sys.time()
+		diff0 <- as.numeric(difftime(end0, start0, units = "sec"))
+
+		if ( row_cnt %% 500 == 0 )
+		{
+			print(sprintf("feature_sub[%d]:%f sec( %f min)( %f hour)", row_cnt, diff0, diff0/60, diff0/(60*60)))
+			flush.console()
+		}
 	}
+	end <- Sys.time()
+	diff <- as.numeric(difftime(end, start, units = "sec"))
+
 	
-	if ( i == time_index )
+	if ( i == time_index || i == maintenance_index)
 	{
 		colnames(fff) <- c("time_index")
+		if ( i == maintenance_index )
+		{
+			colnames(fff) <- c("maintenance")
+		}
 	}else
 	{
 		colnames(fff) <- paste(colnames(df2)[i], feature_names, sep=".")
 	}
+
+	print(sprintf("feature_sub:%f sec( %f min)( %f hour)", diff, diff/60, diff/(60*60)))
+	flush.console()
+	
 	for ( i in 1:ncol(fff))
 	{
 		x <- fff[,i]
 		x[which(is.na(x))]<- mean(x, na.rm=TRUE)
 		fff[,i] <- x
 	}
+	#print(colnames(fff))
+	#print("-------------------------")
+	#print("")
+	#flush.console()
 
 	if ( is.null(ff)) {
 		ff <- fff
@@ -691,10 +840,19 @@ feature_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1
 
 feature <- function(df2, lookback=100, slide_window=1)
 {
+	start <- Sys.time()
 
 	colnames_df2 <- colnames(df2)
 
 	time_index = which("time_index" == colnames_df2)
+	maintenance_index = which("maintenance" == colnames_df2)
+	if ( length(maintenance_index) < 1 )
+	{
+		maintenance_index = 0
+	}
+	#print("maintenance_index")
+	#print(maintenance_index)
+	#print(colnames_df2)
 	
 	ff <- NULL
 	for ( i in 1:ncol(df2))
@@ -715,9 +873,14 @@ feature <- function(df2, lookback=100, slide_window=1)
 
 	df3 <- NULL
 	colnames_ff <- colnames(ff)
+	#print("///////////////////////////")
+	#print(colnames_ff)
+	#print(head(ff))
+	flush.console()
+	
 	for ( i in 1:ncol(ff) )
 	{
-		if ( colnames_ff[i]!= "time_index" && length( which(colnames_ff[i]==paste(colnames(df2),"..",sep=""))) == 0 )
+		if ( colnames_ff[i]!= "maintenance" && colnames_ff[i]!= "time_index" && length( which(colnames_ff[i]==paste(colnames(df2),"..",sep=""))) == 0 )
 		{
 			#print(colnames_ff[i])
 			next
@@ -734,15 +897,28 @@ feature <- function(df2, lookback=100, slide_window=1)
 	
 	colnames(df3) <- colnames(df2)
 	df3 <- as.data.frame(df3)
-	mahalanobis1 <- anomaly_detection_test(m_mahalanobis, df3[colnames(df3)!="time_index"])
+	#cat("df3")
+	#print(str(df3))
+	#flush.console()
+	
+	mahalanobis1 <- anomaly_detection_test(m_mahalanobis, df3)
 	
 	ff <- cbind(ff, data.frame(mahalanobis=mahalanobis1[[2]]))
+	
+	end <- Sys.time()
+	diff <- as.numeric(difftime(end, start, units = "sec"))
+
+	print(sprintf("feature_sub:%f sec( %f min)( %f hour)", diff, diff/60, diff/(60*60)))
+	flush.console()
 
 	return (ff)
 }
 
 monotonicity <- function(x, monotonicity_num = 20, eps = 0.0)
 {
+	#print("monotonicity_num")
+	#print(monotonicity_num)
+	
 	mm = monotonicity_num
 	if ( monotonicity_num < 0 )
 	{
@@ -780,11 +956,16 @@ monotonicity2 <- function(x, monotonicity_num = 20, eps = 0.0)
 feature_monotonicity <- function(feature_df, monotonicity_num = 20)
 {
 	time_index = which("time_index" == colnames(feature_df))
+	maintenance_flag_idx = which("maintenance" == colnames(feature_df))
+	if ( length(maintenance_flag_idx) < 1 )
+	{
+		maintenance_flag_idx <- 0
+	}
 
 	ff <- c(1:ncol(feature_df))
 	for ( i in 1:ncol(feature_df))
 	{
-		if ( i == time_index )
+		if ( i == time_index || i == maintenance_flag_idx)
 		{
 			ff[i] = 0
 		}else
@@ -991,6 +1172,22 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 	fit_mode = ""
 	fited <- NULL
 	fit_pred <- NULL
+	
+	down = 0
+	for ( i in length(y):2)
+	{
+		if ( y[i] < y[i-1] )
+		{
+			down = down + 1
+		}else
+		{
+			break
+		}
+	}
+	
+	null_model1 <- FALSE
+	null_model2 <- FALSE
+		
 	if ( TRUE )
 	{
 		x = c(1:length(y))
@@ -1057,6 +1254,7 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 		
 		sampling_num <<- min(0, sampling_num)
 		err_min <- 999999.0
+		err_min_stpnt <- 999999.0
 		best_fit <- NULL
 		#for ( kk in lockback_max:lockback_min)
 		for ( kk in lockback_max:lockback_max)
@@ -1179,6 +1377,10 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 							w <- ( w - min(w))/(max(w) - min(w))
 							err <- sqrt(sum(((yy_org[1:length(yy_org)] - fit_pred)*w)^2)/length(yy_org))
 							
+							if ( err_min_stpnt > abs(yy_org[1] - fit_pred[1]))
+							{
+								err_min_stpnt = abs(yy_org[1] - fit_pred[1])
+							}
 							if ( err_min > err )
 							{
 								best_fit <- fit
@@ -1211,6 +1413,13 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 			if ( !is.null(best_fit)) break
 		}
 		fit <- best_fit
+		
+		if ( err_min > (ymax - ymin)*0.025 && err_min_stpnt > (ymax - ymin)*0.025)
+		{
+			print(sprintf("err:%f (ymax - ymin)*0.025:%f  ymax:%f ymin:%f", err_min, (ymax - ymin)*0.025, ymax, ymin))
+			null_model1 <- TRUE
+		}
+		
 		if ( is.null(fit))
 		{
 			print("fit error")
@@ -1424,6 +1633,10 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 			}else
 			{
 				fit_mode = "exp"
+#				if ( null_model1 )
+#				{
+#					fit_mode = "exp_"
+#				}
 			}
 		}
 		
@@ -1444,13 +1657,13 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 			x = c(1:(length(y)))
 			
 			fit_pred <- coef[2]*x + coef[1]
-			err <- y[1:length(y)] - fit_pred
+			err1 <- y[1:length(y)] - fit_pred
 			if ( is.null(residual_error))
 			{
-				residual_error = c(err)
+				residual_error = c(err1)
 			}else
 			{
-				residual_error = c(residual_error, err)
+				residual_error = c(residual_error, err1)
 			}
 
 			x = c(1:(length(y)+h))
@@ -1508,6 +1721,12 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 			if ( sum(is.na(fit_pred05)) != 0 ) err = 1
 			if ( sum(is.na(fit_pred95)) != 0 ) err = 1
 
+
+			if ( err == 0 && abs(err1[1]) > (ymax - ymin)*0.05 )
+			{
+				print(sprintf("abs(err1[1]):%f (ymax - ymin)*0.05:%f  ymax:%f ymin:%f", abs(err1[1]), (ymax - ymin)*0.05, ymax, ymin))
+				null_model2 = TRUE
+			}
 			print("lm.fit")
 			if ( err == 1 )
 			{
@@ -1541,7 +1760,11 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 				fit_pred <- NULL
 			}else
 			{
-				fit_mode = "lm"
+#				fit_mode = "lm"
+#				if ( null_model2 )
+#				{
+#					fit_mode = "lm_"
+#				}
 			}
 		}
 		if ( !is.null(fit_pred) && length(x) == length(fit_pred))
@@ -1558,6 +1781,18 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 			fit_mode = ""
 		}
 	}
+	
+#	if ( down >= 4 )
+#	{
+#		if ( null_model1 || fit_mode == "exp")
+#		{
+#			fit_mode = "exp_"
+#		}
+#		if ( null_model2 || fit_mode == "lm")
+#		{
+#			fit_mode = "lm_"
+#		}
+#	}
 	
 	print(sprintf("%d/%d %.3f", fit_success, fit_tray_count, fit_success/fit_tray_count))
 	return( list(fit_pred, fit_mode, residual_error))
@@ -1592,7 +1827,21 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 	feature_df <- feature_df_[[1]]
 	colname = rank
 	id <- which(colname == colnames(feature_df))
+	
 	gfm2 <- data.frame(time_index=feature_df$time_index, y=feature_df[,id])
+	
+#/////////////////////////////////////////////////////
+	maintenance_flag_idx = which("maintenance" == colnames(feature_df))
+	if ( length(maintenance_flag_idx) < 1 )
+	{
+		maintenance_flag_idx <- 0
+	}
+	
+	if ( maintenance_flag_idx > 0 )
+	{
+		gfm2 <- data.frame(time_index=feature_df$time_index, y=feature_df[,id], maintenance=feature_df$maintenance)
+	}
+#/////////////////////////////////////////////////////
 	
 	#if ( use_spline )
 	#{
@@ -1674,6 +1923,54 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 		break_index_df <<- unique(break_index_df)
 		write.csv(break_index_df, "./break_index_df.csv", row.names=F)
 	}
+	
+#/////////////////////////////////////////////////////
+if(T)
+{
+	if ( maintenance_flag_idx > 0 )
+	{
+		#print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+		#print(maintenance_flag_idx)
+	
+		maintenance_posidx = which( gfm2$maintenance == 1 )
+		if ( length(maintenance_posidx) < 1)
+		{
+			maintenance_posidx = NULL
+		}else
+		{
+			#print(maintenance_posidx)
+		
+			kk = 0
+			for ( k in length(gfm2$maintenance):1)
+			{
+				kk = k
+				if ( gfm2$maintenance[k] == 0 ) next
+				break
+			}
+			kkk = kk
+			for ( k in kkk:1)
+			{
+				kk = k
+				if ( gfm2$maintenance[k] == 1 ) next
+				break
+			}
+			maintenance_break_pos = max(1,kk-1)
+			#cat("maintenance_break_pos")
+			#print(maintenance_break_pos)
+			#cat("nrow(gfm2)")
+			#print(nrow(gfm2))
+			#quit()
+				
+			if (maintenance_break_pos < nrow(gfm2) )
+			{
+				x <- gfm2[maintenance_break_pos:nrow(gfm2),]
+				gfm2 <- x
+			}
+		}
+	}
+}
+#/////////////////////////////////////////////////////
+	
 	if ( nrow(gfm2) < 3 )
 	{
 		return(NULL)
@@ -1750,6 +2047,7 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 		#print("gfm2")
 		#print(str(gfm2))
 		
+		a = 1.0
 		if ( fit_pred[[2]] == "exp" )
 		{
 			a = 0.9
@@ -1855,12 +2153,16 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 	
 	failure_time = failure_time_init
 	failure_time50p = failure_time_init
+	failure_time2 = failure_time_init
 	
 	
 	for ( i in 1:h )
 	{
 		if ( !is.null(fit_predict))
 		{
+			if ( is.na(fit_predict$l05[i])) break
+			if ( is.na(fit_predict$u95[i])) break
+		
 			#print(head(fit_predict))
 			if (  (fit_predict$l05[i] > fit_predict$u95[i]) && fit_predict$l05[i] > threshold )
 			{
@@ -1879,6 +2181,32 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 			}
 		}
 	}
+	if ( failure_time != failure_time_init && failure_time < h )
+	{
+		for ( i in (failure_time+1):h )
+		{
+			if ( !is.null(fit_predict))
+			{
+				if ( is.na(fit_predict$l05[i])) break
+				if ( is.na(fit_predict$u95[i])) break
+
+				#print(head(fit_predict))
+				if (  (fit_predict$l05[i] > fit_predict$u95[i]) && fit_predict$l05[i] > threshold )
+				{
+					failure_time2 = i
+				}
+				if (  (fit_predict$u95[i] > fit_predict$l05[i]) && fit_predict$u95[i] > threshold )
+				{
+					failure_time2 = i
+				}
+				if (  fit_predict$y[i] > threshold )
+				{
+					failure_time2 = i
+				}
+			}
+		}
+	}
+	
 	for ( i in 1:h )
 	{
 		if ( !is.null(fit_predict))
@@ -1952,8 +2280,12 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 	
 	dt <- mean(diff(gfm2$time_index))
 	print(sprintf("dt:%f", dt))
-	
+	print("===========================================================")
 	print(sprintf("failure_time:%d  failure_time_init:%d", as.integer(failure_time), as.integer(failure_time_init)))
+	print(sprintf("failure_time2:%d  failure_time_init:%d", as.integer(failure_time2), as.integer(failure_time_init)))
+	print(sprintf("failure_time50p:%d  failure_time_init:%d", as.integer(failure_time50p), as.integer(failure_time_init)))
+	print("===========================================================")
+
 	failure_time_str = "+Infinity"
 	failure_time50p_str = "+Infinity"
 	if ( failure_time < failure_time_init )
@@ -2007,8 +2339,46 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 	#plt2 <- plt2 + geom_hline(aes(yintercept=ymin, linetype = "twodash"),color = "gray")
 	#plt2 <- plt2 + geom_hline(aes(yintercept=ymax, linetype = "twodash"),color = "gray")
 
+#/////////////////////////////////////////////////////
+	maintenance_flag_idx = which("maintenance" == colnames(feature_df))
+	if ( length(maintenance_flag_idx) < 1 )
+	{
+		maintenance_flag_idx <- 0
+	}
+	
+	maintenance_flag = NULL
+	if ( maintenance_flag_idx > 0 )
+	{
+		maintenance_flag = feature_df$maintenance
+
+		maintenance_posidx = which( maintenance_flag == 1 )
+		if ( length(maintenance_posidx)==0)
+		{
+			maintenance_posidx = NULL
+		}
+		
+		maintenance_timeidx = NULL
+		if ( !is.null(maintenance_posidx))
+		{
+			maintenance_timeidx = feature_df$time_index[maintenance_posidx]
+		}
+		if ( !is.null(maintenance_timeidx))
+		{
+			#print(maintenance_timeidx)
+			for ( i in 1:length(maintenance_timeidx))
+			{
+				plt2 <- plt2 + geom_vline(data=maintenance_timeidx, xintercept = maintenance_timeidx[i], linewidth =1.5, color="green", alpha = 0.2)
+			}
+		}
+	}
+#/////////////////////////////////////////////////////
+
+
 	print(plt2)
 	fit_model = ""
+	fill_col <- c("#ff8c00","#ffa500")
+	col <- "#ff4500"
+
 	if ( !is.null(fit_pred[[1]]))
 	{
 		fit_model <- fit_pred[[2]]
@@ -2016,8 +2386,6 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 		print(sprintf("[%s]fit_model:%s",rank, fit_model))
 		print(head(fit_predict$y,3))
 		
-		fill_col <- c("#ff8c00","#ffa500")
-		col <- "#ff4500"
 		if ( fit_model == "x^2" )
 		{
 			fill_col <- c("#1e90ff","#87cefa")
@@ -2063,24 +2431,94 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 		{
 			fit_predict_tmp <- fit_predict[1:(nrow(gfm2_org)+max_prediction_length_org),]
 		}
-		plt2 <- plt2 +  geom_line(data=fit_predict_tmp,aes(x = time_index, y = y),color=col, linewidth =0.5)
-
-		plt2 <- plt2 +
-		geom_line(data=fit_predict_tmp, mapping = aes_string(x = "time_index", y = "y")) +
-		geom_line(data=fit_predict_tmp, mapping = aes_string(x = 'time_index', y = 'y'), colour=col) +
-		geom_ribbon(data=fit_predict_tmp, fill=fill_col[2], mapping = aes_string(x = 'time_index', ymin = 'l05', ymax = 'u95'), alpha = 0.3)+
-		geom_ribbon(data=fit_predict_tmp, fill=fill_col[1], mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'u75'), alpha = 0.3)
 		
+		if ( !(fit_model == "lm_" || fit_model == "exp_" || fit_model == ""))
+		{
+			plt2 <- plt2 +  geom_line(data=fit_predict_tmp,aes(x = time_index, y = y),color=col, linewidth =0.5)
+
+			plt2 <- plt2 +
+			geom_line(data=fit_predict_tmp, mapping = aes_string(x = "time_index", y = "y")) +
+			geom_line(data=fit_predict_tmp, mapping = aes_string(x = 'time_index', y = 'y'), colour=col) +
+			geom_ribbon(data=fit_predict_tmp, fill=fill_col[2], mapping = aes_string(x = 'time_index', ymin = 'l05', ymax = 'u95'), alpha = 0.3)+
+			geom_ribbon(data=fit_predict_tmp, fill=fill_col[1], mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'u75'), alpha = 0.3)
+		}
 		
 		tmp <- data.frame(time_index=fit_predict_tmp$time_index, y=fit_predict_tmp$y, timeStamp=fit_predict_tmp[,timeStamp])
 		colnames(tmp)[3] <- c(timeStamp)
+		if ( maintenance_flag_idx > 0 )
+		{
+			gfm2_org$maintenance <- NULL
+		}
+		
+		#print("============================")
+		#print(str(tmp))
+		#print(str(gfm2_org))
 		tmp <- rbind(gfm2_org,tmp)
 
+		#print(timeStamp)
+		#print(colnames(tmp))
 		#print(head(tmp))
+		#print(tail(tmp))
 		#print(delta_index)
 		tmp2 <- NULL
 		x <- tmp$time_index[1]
 		xx <- 1
+		
+		#print("*****************************************")
+		#print("tmp$time_index[nrow(tmp)] ")
+		#print(tmp$time_index[nrow(tmp)] )
+		#print("x")
+		#print(x)
+		#print("")
+		if ( is.na(tmp$time_index[nrow(tmp)]))
+		{
+			print(tail(tmp$time_index))
+			print(tail(tmp[timeStamp]))
+		}
+		
+		endidx = 1
+		dt <- NULL
+		if ( is.na(tmp$time_index[nrow(tmp)]))
+		{
+			for ( i in 1:nrow(tmp) )
+			{
+				if ( !is.na(tmp$time_index[i]) )
+				{
+					endid = tmp$time_index[i]
+					if ( i > 2 && is.null(dt))
+					{
+						#print(i)
+						s <- tmp[timeStamp]
+						#print(s[1,])
+						#print(s[2,])
+						#flush.console()
+
+						s <- c(s[(i-2),],s[(i-1),])
+						#print(s)
+						#flush.console()
+						s <- as.POSIXct(s, tz="UTC")
+						dt <- difftime(s[1] , s[2])
+						#print(dt)
+					}
+				}else
+				{
+					endidx = endidx + delta_index
+					tmp$time_index[i] = endidx
+
+					if ( i > 2 )
+					{
+						s <- tmp[timeStamp]
+						s <- c(s[(i-2),],s[(i-1),])
+						s <- as.POSIXct(s, tz="UTC")
+						#print("========")
+						s <- seq(s[1], length.out = 2, by = -dt)
+						#print(s)
+						tmp[i,timeStamp] <- s[2]
+					}
+				}
+			}
+		}
+		
 		for ( i in 1:nrow(tmp) )
 		{
 			x <- x + delta_index
@@ -2103,9 +2541,18 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 				tmp2 <- rbind(tmp2, data.frame(tmp$time_index[idx], tmp[,timeStamp][idx]))
 			}
 		}
-		tmp <- NULL
-		rm(tmp)
-		tmp <- tmp2
+		#print("$$$$$")
+		#print(head(tmp))
+		#print(head(tmp2))
+		if ( !is.null(tmp2))
+		{
+			tmp <- NULL
+			rm(tmp)
+			tmp <- tmp2
+		}else
+		{
+			tmp <- data.frame(time_index=tmp$time_index, timeStamp=tmp[,timeStamp])
+		}
 		colnames(tmp) <- c( "time_index", timeStamp)
 		#print(head(tmp))
 		#print(tail(tmp))
@@ -2122,9 +2569,10 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 		rm(tmp)
 		
 		plt2 <- plt2 + labs(x=sprintf("[%s] Current time:%s",timeStamp, current_time))
-		plt2 <- plt2 + scale_x_continuous(breaks = break_pos, labels = labels)
-		plt2 <- plt2 + theme(axis.text.x = element_text(angle = 0, vjust=0.0, hjust=0.5, face="bold")) 
+		#plt2 <- plt2 + scale_x_continuous(breaks = break_pos, labels = labels)
+		#plt2 <- plt2 + theme(axis.text.x = element_text(angle = 0, vjust=0.0, hjust=0.5, face="bold")) 
 		#plt2 <- plt2 + theme(axis.text.x = element_text(angle = 90, vjust=0.5, hjust=0.0, face="bold")) 
+		
 		
 		if ( threshold < 0 )
 		{
@@ -2179,35 +2627,52 @@ plot_plot_feature_predict <- function(feature_df_, train_num = 20, rank="", h=60
 		pred_tmp <- pred[1:max_prediction_length_org,]
 	}
 
+	alp = 0.15
+	if ( fit_model == "" || fit_model == "lm_" || fit_model == "exp_")
+	{
+		alp = 0.5
+	}else
+	{
+		col = 'blue'
+		fill_col <- c("#6875B1","#A0A5C7", "#CBCCD9", "#E0E0E1")
+	}
+	
 	if (!use_plophet )
 	{
 		plt2 <- plt2 +
 		geom_line(data=pred_tmp, mapping = aes_string(x = "time_index", y = "forecast")) +
-		geom_line(data=pred_tmp, mapping = aes_string(x = 'time_index', y = 'forecast'), colour='blue') +
-		geom_ribbon(data=pred_tmp, fill="#6875B1", mapping = aes_string(x = 'time_index', ymin = 'l95', ymax = 'h95'), alpha = 0.15)+
-		geom_ribbon(data=pred_tmp, fill="#A0A5C7", mapping = aes_string(x = 'time_index', ymin = 'l75', ymax = 'h75'), alpha = 0.15)+
-		geom_ribbon(data=pred_tmp, fill="#CBCCD9", mapping = aes_string(x = 'time_index', ymin = 'l50', ymax = 'h50'), alpha = 0.15)+
-		geom_ribbon(data=pred_tmp, fill="#E0E0E1", mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'h25'), alpha = 0.15)+
+		geom_line(data=pred_tmp, mapping = aes_string(x = 'time_index', y = 'forecast'), colour= col) +
+		geom_ribbon(data=pred_tmp, fill=fill_col[1], mapping = aes_string(x = 'time_index', ymin = 'l95', ymax = 'h95'), alpha = alp)+
+		geom_ribbon(data=pred_tmp, fill=fill_col[1], mapping = aes_string(x = 'time_index', ymin = 'l75', ymax = 'h75'), alpha = alp)+
+		geom_ribbon(data=pred_tmp, fill=fill_col[2], mapping = aes_string(x = 'time_index', ymin = 'l50', ymax = 'h50'), alpha = alp)+
+		geom_ribbon(data=pred_tmp, fill=fill_col[2], mapping = aes_string(x = 'time_index', ymin = 'l25', ymax = 'h25'), alpha = alp)+
 		#scale_y_continuous(limits = c(0, ymax))+
 		labs(title=sprintf("[%s] RUL:%s([%s] arima)\n%s", colname, failure_time_str, fit_model,failure_time50p_str))+
 		theme(legend.position = "none")
 	}else{
 		plt2 <- plt2 +
 		geom_line(data=pred_tmp, mapping = aes_string(x = "time_index", y = "forecast")) +
-		geom_line(data=pred_tmp, mapping = aes_string(x = 'time_index', y = 'forecast'), colour='blue') +
-		geom_ribbon(data=pred_tmp, fill="#6875B1", mapping = aes_string(x = 'time_index', ymin = 'l95', ymax = 'h95'), alpha = 0.15)+
+		geom_line(data=pred_tmp, mapping = aes_string(x = 'time_index', y = 'forecast'), colour=col) +
+		geom_ribbon(data=pred_tmp, fill=fill_col[1], mapping = aes_string(x = 'time_index', ymin = 'l95', ymax = 'h95'), alpha = alp)+
 		#scale_y_continuous(limits = c(0, ymax))+
 		labs(title=sprintf("[%s] RUL:%s([%s]prophet\n%s", colname, failure_time_str, fit_model,failure_time50p_str))+
 		theme(legend.position = "none")
 	}
 	
 	plt2 <- plt2 + geom_hline(aes(yintercept=threshold, linetype = "twodash"),color = "red")
+	#------------------------------------------------
+	if ( fit_model == "" )
+	{
+		
+		plt2 <- plt2 + labs(x=sprintf("[%s] Current time:%s",timeStamp, current_time))
+	}
+	#------------------------------------------------
 	print(plt1)
 	print(plt2)
 
 	gfm2_org <- NULL
 	rm(gfm2_org)
-	return( list(plt1, plt2, failure_time, failure_time50p))
+	return( list(plt1, plt2, failure_time, failure_time50p, failure_time2))
 }
 
 #Data feature confirmation
@@ -2346,8 +2811,16 @@ get_csvdata <- function( file, tracking_feature_ , timeStamp)
 	#print(colnames(df0))
 	#print(df0[,tracking_feature_])
 
-	df0 <- as.data.frame(df0[,c(timeStamp,tracking_feature_)])
-	colnames(df0) <- c(timeStamp,tracking_feature_)
+	maintenance_flag_idx = which("maintenance" == colnames(df0))
+	if ( length(maintenance_flag_idx) > 0 )
+	{
+		df0 <- as.data.frame(df0[,c(timeStamp,tracking_feature_, "maintenance")])
+		colnames(df0) <- c(timeStamp,tracking_feature_, "maintenance")
+	}else
+	{
+		df0 <- as.data.frame(df0[,c(timeStamp,tracking_feature_)])
+		colnames(df0) <- c(timeStamp,tracking_feature_)
+	}
 	colname = colnames(df0)
 
 	print("==== df0 ====")
@@ -2492,10 +2965,12 @@ images_clear <- function()
 	file.remove(paste(putpng_path,FN,sep=""))
 }
 
+RUL_hist <- NULL
 RUL <- NULL
 sigin = 1
 max_prediction_length_org = 0
 current_time <- NULL
+current_time_index <- 0
 delta_time <- NULL
 predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 {
@@ -2548,6 +3023,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		df2[, timeStamp] <- as.POSIXct(df2[, timeStamp], tz='UTC')
 		
 		current_time <<- df2[nrow(df2), timeStamp]
+		current_time_index <<- df2$time_index[nrow(df2)]
 		
 		print("####################")
 		time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp],units = "auto")
@@ -2625,8 +3101,10 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 
 		if ( !is.null(pre) )
 		{
-			df2 <- rbind(pre, df2)
-			df2_org <- rbind(pre_org, df2_org)
+			#df2 <- rbind(pre, df2)
+			df2 <- dplyr::bind_rows(pre, df2)
+			#df2_org <- rbind(pre_org, df2_org)
+			df2_org <- dplyr::bind_rows(pre_org, df2_org)
 			
 			print(sprintf("row bind :nrow(df2):%d", nrow(df2)))
 			#if ( nrow(df2) > max_data_len*3 + one_input )
@@ -2717,7 +3195,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		mahalanobis_train <- past[1:min(10000,(nrow(past))*0.8),]
 		print(sprintf("mahalanobis_train:%d", nrow(mahalanobis_train)))
 		flush.console()
-		m_mahalanobis <<- anomaly_detection_train(mahalanobis_train[colnames(mahalanobis_train)!="time_index"])
+		m_mahalanobis <<- anomaly_detection_train(mahalanobis_train)
 		
 		print("m_mahalanobis end")
 		#print(m_mahalanobis)
@@ -2737,6 +3215,8 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		
 		feature_df_none_smooth <- NULL
 		rm(feature_df_none_smooth)
+
+		feature_df_none_smooth <- NULL
 		if ( smooth_window2 > 1 )
 		{
 			if ( use_lowess )
@@ -2757,7 +3237,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		print(sprintf("%d/%d nrow(feature_df):%d", i, as.integer(nrow(df)/one_input),nrow(feature_df)))
 		print("feature_df")
 		print(colnames(feature_df))
-		#write.csv(feature_df, "./feature_df.csv", row.names = F)
+		try(write.csv(feature_df, "./feature_df.csv", row.names = F), silent=F)
 		
 		result_png = sprintf("result-%06d.png", index_number)
 		
@@ -2873,20 +3353,21 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			print(tracking_feature_tmp)
 			for ( k in 1:3 )
 			{
+				threshold_empty = F
 				thr0 = get_threshold(tracking_feature_tmp[k])
 				if ( length(thr0) != 1 )
 				{
-					thr0 = 10000.0
+					threshold_empty = T
 				}
 				ymax0 = get_ymax(tracking_feature_tmp[k])
 				if ( length(ymax0) != 1 )
 				{
-					ymax0 = -10000.0
+					threshold_empty = T
 				}
 				ymin0 = get_ymin(tracking_feature_tmp[k])
 				if ( length(ymin0) != 1 )
 				{
-					ymin0 = 10000.0
+					threshold_empty = T
 				}
 				
 				x <- c(feature_df[,tracking_feature_tmp[k]])
@@ -2899,10 +3380,17 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 				thr = mu+a*sd/n
 				max = max(x, na.rm = TRUE)
 				min = min(x, na.rm = TRUE)
+				if ( threshold_empty || ymin0==10000 || ymax0 == -10000)
+				{
+					ymax0 = max
+					ymin0 = min
+					thr0 = ymax0 + abs((ymax0-ymin0)*0.175)
+				}
 				print(thr0)
 				print(sprintf("%s N:%d", tracking_feature_tmp[k], n))
-				print(sprintf("mu:%.3f sd:%.3f max:%.3f a:%.3f thr:%.3f", mu, sd, max, a, thr))
+				print(sprintf("mu:%.3f sd:%.3f max:%.3f min:%.3f a:%.3f thr:%.3f", mu, sd, max, min, a, thr))
 				print(sprintf("thr0:%.3f thr:%.3f", thr0, thr))
+				print(sprintf("ymax0:%.3f ymin0:%.3f", ymax0, ymin0))
 				
 				if (tracking_feature_tmp[k] == "mahalanobis")
 				{
@@ -2917,7 +3405,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 					thr = ymax0
 					
 				}
-				if (tracking_feature_tmp[k] != "mahalanobis")
+				if (tracking_feature_tmp[k] != "mahalanobis" && (!threshold_empty))
 				{
 					if ( thr < ymax0 + abs((ymax0-ymin0)*0.175) )
 					{
@@ -2934,6 +3422,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		tracking_feature_Num = 3
 		failure_time_s = c(1:tracking_feature_Num)
 		failure_time50p_s = c(1:tracking_feature_Num)
+		failure_time2_s = c(1:tracking_feature_Num)
 		plt_s = list()
 		
 		if ( max_prediction_length_org == 0 )
@@ -2957,6 +3446,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			{
 				failure_time_s[k] = plt1[[3]]
 				failure_time50p_s[k] = plt1[[4]]
+				failure_time2_s[k] = plt1[[5]]
 				plt_s <- c(plt_s, list(plt1[[2]]))
 			}else
 			{
@@ -2984,8 +3474,144 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		failure = data.frame(time = failure_time50p_s, pltid=c(1,2,3))
 		#failure <- failure[order(failure$time),]
 
+#//////////////////////////
+		print(sprintf("#failure_time:%d  failure_time_init:%d", as.integer(failure_time_s[2]), as.integer(failure_time_init)))
+		print(sprintf("#failure_time2:%d  failure_time_init:%d", as.integer(failure_time2_s[2]), as.integer(failure_time_init)))
+		print(sprintf("#failure_time_50p:%d  failure_time_init:%d", as.integer(failure_time50p_s[2]), as.integer(failure_time_init)))
+		dt <- mean(diff(feature_df$time_index))
+
+		failure_time_set = FALSE
+		if ( failure_time50p_s[2] != failure_time_init && failure_time_s[2] != failure_time_init && failure_time2_s[2] != failure_time_init)
+		{
+			failure_time_set = TRUE
+		}
+		
+		under_maintenance = FALSE
+		if ( failure_time_set )
+		{
+			failure_time_index0 = 0
+			if ( is.null(RUL_hist) )
+			{
+				print(sprintf("dt:%f", dt))
+			
+				failure_time_index = current_time_index + failure_time50p_s[2]*dt
+				failure_time_index1 = current_time_index + failure_time_s[2]*dt
+				failure_time_index2 = current_time_index + failure_time2_s[2]*dt
+
+				RUL_hist <- data.frame(time_index = c(1:failure_time_index), hist=numeric(failure_time_index))
+				print(sprintf("current_time_index:%d  failure_time50p_s:%f failure_time_index:%f", current_time_index, failure_time50p_s[2],failure_time_index))
+			}else
+			{
+			
+				maintenance_flag_idx = which("maintenance" == colnames(feature_df))
+				if ( length(maintenance_flag_idx) < 1 )
+				{
+					maintenance_flag_idx <- 0
+				}
+					
+				if ( maintenance_flag_idx > 0 )
+				{
+					maintenance_posidx = which( feature_df$maintenance == 1 )
+					if ( length(maintenance_posidx) < 1)
+					{
+						maintenance_posidx = NULL
+					}else
+					{
+						for ( jj in 0:max(2,min(c(lookback_slide/4,smooth_window2/4))) )
+						{
+							if ( feature_df$maintenance[nrow(feature_df)-jj] == 1 ) 
+							{
+								under_maintenance = TRUE
+								break
+							}
+						}
+					}
+				}
+			
+				failure_time_index = current_time_index + failure_time50p_s[2]*dt
+				failure_time_index1 = current_time_index + failure_time_s[2]*dt
+				failure_time_index2 = current_time_index + failure_time2_s[2]*dt
+
+				e = RUL_hist$time_index[nrow(RUL_hist)]
+				print(sprintf("current_time_index:%d  failure_time50p_s:%f failure_time_index:%f failure_time_index2:%f", current_time_index, failure_time50p_s[2],failure_time_index,failure_time_index2))
+				 
+				#cat("failure_time_index")
+				#print(failure_time_index)
+				#cat("e")
+				#print(e)
+				
+				failure_time_index0 = failure_time_index
+				if ( failure_time_index0 < failure_time_index2 )
+				{
+					failure_time_index0 = failure_time_index2
+				}
+				if ( failure_time_index0 < failure_time_index1 )
+				{
+					failure_time_index0 = failure_time_index1
+				}
+				if ( e < failure_time_index0 )
+				{
+					if (failure_time_index0 > 4*current_time_index)
+					{
+						failure_time_index0 = current_time_index*4
+					}
+					ee <- c((e+1):failure_time_index0)
+
+					#cat("ee")
+					#print(ee)
+					#cat("RUL_hist")
+					#print(str(RUL_hist))
+
+					RUL_tmp <- data.frame(time_index = ee, hist=numeric(length(ee)))
+					cat("RUL_tmp")
+					print(str(RUL_tmp))
+
+					RUL_hist <- dplyr::bind_rows(RUL_hist, RUL_tmp)
+					#cat("RUL_hist")
+					#print(str(RUL_hist))
+				}
+			}
+			#cat("nrow(RUL_hist)")
+			#print(nrow(RUL_hist))
+			#cat("ncol(RUL_hist)")
+			#print(ncol(RUL_hist))
+
+			dt = 2*as.integer(dt)
+			if ( failure_time_index1 <= failure_time_index && failure_time_index <= failure_time_index0 )
+			{
+				sd = 0.3*(failure_time_index0-failure_time_index1)/2
+				if ( sd < 0.001 )
+				{
+					sd = 0.5*dt
+				}
+				print(sprintf("failure_time_index1:%f --- failure_time_index0:%f sd:%f", failure_time_index1, failure_time_index0, sd))
+				for ( j in failure_time_index1:failure_time_index0)
+				{
+					if ( j < 1 ) next
+					if ( j > nrow(RUL_hist) ) break
+					v = exp(-(((j-failure_time_index)/(2*sd))^2)/2)
+					if ( abs(v) < 1.0e-10 ) next
+					RUL_hist$hist[j] = RUL_hist$hist[j] + v
+				}
+			}else
+			{
+				for ( j in (-dt):(dt))
+				{
+					if ( failure_time_index+j < 1 ) next
+					if ( failure_time_index+j > nrow(RUL_hist) ) break
+					RUL_hist$hist[failure_time_index+j] = RUL_hist$hist[failure_time_index+j] + exp(-((j/dt)^2)/2)
+				}
+			}
+			if ( under_maintenance && !is.null(RUL_hist))
+			{
+				RUL_hist$hist[1:nrow(RUL_hist)] <- 0
+			}
+			try(write.csv(RUL_hist, paste("./", base_name, "_RUL_hist.csv",sep=''), row.names = F),, silent = FALSE)
+		}
+#//////////////////////////
+			
 		RUL <<- c(RUL, failure_time50p_s[2])
-		write.csv(RUL, paste("./", base_name, "_RUL.csv",sep=''), row.names = F)
+		try(write.csv(RUL, paste("./", base_name, "_RUL.csv",sep=''), row.names = F),, silent = FALSE)
 
 		print(failure)
 		plt_1 = plt_list[[failure$pltid[1]]]
@@ -2999,6 +3625,98 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		plt <- NULL
 		
 		looked_var_plt <- plt_s[[2]]
+		
+		tracking_name = tracking_feature_tmp[2]
+		cat("tracking_name")
+		print(tracking_name)
+		print("------------------------------------------------------------------")
+		if (!is.null(RUL_hist) && nrow(RUL_hist) > 1)
+		{
+			threshold_empty = F
+			thr0 = get_threshold(tracking_name)
+			if ( length(thr0) != 1 )
+			{
+				threshold_empty = T
+			}
+			ymax0 = get_ymax(tracking_name)
+			if ( length(ymax0) != 1 )
+			{
+				threshold_empty = T
+			}
+			ymin0 = get_ymin(tracking_name)
+			if ( length(ymin0) != 1 )
+			{
+				threshold_empty = T
+			}
+		
+			print(sprintf("max:%.3f min:%.3f thr:%.3f", ymax0, ymin0, thr0))
+			x <- c(feature_df[,tracking_name])
+			max = max(x, na.rm = TRUE)
+			min = min(x, na.rm = TRUE)
+			if ( threshold_empty || ymin0==10000 || ymax0 == -10000)
+			{
+				ymax0 = max
+				ymin0 = min
+				thr0 = ymax0 + abs((ymax0-ymin0)*0.175)
+			}
+			
+			
+			RUL_hist$hist[is.na(RUL_hist$hist)] <- 0
+			#print(max(RUL_hist$hist))
+			#print(min(RUL_hist$hist))
+			#cat("RUL_hist")
+			#print(str(RUL_hist))
+
+			dy = abs(ymax0 - ymin0)
+			dh = (max(RUL_hist$hist) - min(RUL_hist$hist))
+			print(sprintf("max:%.3f min:%.3f thr:%.3f dy:%f dh:%f", ymax0, ymin0, thr0, dy, dh))
+
+			if ( !threshold_empty && dy > 0.0001 && dh >= 1)
+			{
+				RUL_hist_tmp <- RUL_hist
+				if ( current_time_index-dt > 1 )
+				{
+					RUL_hist_tmp$hist[1:(current_time_index-dt)] <- 0
+				}
+				
+				RUL_hist_tmp$hist <- (RUL_hist_tmp$hist - min(RUL_hist$hist))/dh
+				RUL_hist_tmp$hist <- thr0 + 0.3*dy*RUL_hist_tmp$hist
+				
+				z1 <- lowess(RUL_hist_tmp$time_index, RUL_hist_tmp$hist, f = 0.001*3.0)$y
+
+
+				RUL_hist_tmp$z1 <- ifelse(z1 < thr0, thr0, z1)
+
+				#head(RUL_hist_tmp)
+
+				#looked_var_plt <- looked_var_plt + geom_line(data=RUL_hist_tmp, aes(x=time_index, y=z1), color = "#ff69b4")
+				#looked_var_plt <- looked_var_plt + geom_ribbon(data=RUL_hist_tmp, fill="#ff69b4", mapping = aes_string(x = 'time_index', ymin = thr0, ymax = z1), alpha = 0.2)
+
+				
+				looked_var_plt <- looked_var_plt + geom_line(data=RUL_hist_tmp, aes(x=time_index, y=z1), color = "#ff69b4")
+				looked_var_plt <- looked_var_plt + geom_ribbon(data=RUL_hist_tmp, fill="#ff69b4", mapping = aes_string(x = 'time_index', ymin = thr0, ymax = z1), alpha = 0.2)
+
+				z1max = which.max(RUL_hist_tmp$z1)
+				i1 = max(1,z1max - as.integer(dt/2))
+				i2 = min(length(RUL_hist_tmp$z1),z1max + as.integer(dt/2))
+				tmp <- RUL_hist_tmp[i1:i2,]
+				tmp$z1[1] <- thr0
+				tmp$z1[nrow(tmp)] <- thr0
+				tmp <- as.data.frame(tmp)
+				looked_var_plt <- looked_var_plt + geom_ribbon(data=tmp, fill="#ff69b4", mapping = aes_string(x = 'time_index', ymin = thr0, ymax = tmp$z1), alpha = 0.2)
+
+				i1 = max(1,z1max - 2*as.integer(dt/2))
+				i2 = min(length(RUL_hist_tmp$z1),z1max + 2*as.integer(dt/2))
+				tmp2 <- RUL_hist_tmp[i1:i2,]
+				tmp2$z1[1] <- thr0
+				tmp2$z1[nrow(tmp2)] <- thr0
+				tmp2 <- as.data.frame(tmp2)
+				looked_var_plt <- looked_var_plt + geom_ribbon(data=tmp2, fill="#ff69b4", mapping = aes_string(x = 'time_index', ymin = thr0, ymax = tmp2$z1), alpha = 0.2)
+				#print(looked_var_plt)
+
+			}
+		}
+		
 		if ( is.null(tracking_feature))
 		{
 			#https://id.fnshr.info/2016/10/10/gridextra/
@@ -3075,13 +3793,21 @@ appedAll_csv <- function( dir, outfile )
 	getwd()
 
 	csv_list <- list.files(pattern = "*.csv")
+	cat("csv_list")
+	print(csv_list)
 
-	df <- do.call(rbind, lapply(csv_list, function(x) read.csv(x, header=TRUE, stringsAsFactors = FALSE)))
+	df <- do.call(rbind, lapply(csv_list, function(x) read.csv(x, header=TRUE, stringsAsFactors = FALSE,fileEncoding =csv_encoding)))
+	#df <- do.call(rbind, lapply(csv_list, function(x) fread(x, na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = TRUE)))
+	
+	#df <- do.call(dplyr::bind_rows, lapply(csv_list, function(x) fread(x, na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = TRUE)))
+	df <- as.data.frame(df)
+
 
 	try(write.csv(df, outfile, row.names = F), silent = FALSE)
 	
 	setwd(curdir)
 
+	return(df)
 }
 #appedAll_csv(dir='./vibration_data', outfile ='vibration_data_all.csv')
 

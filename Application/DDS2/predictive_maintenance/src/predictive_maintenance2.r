@@ -15,7 +15,9 @@ curdir = getwd()
 setwd( paste(curdir, "/work", sep=""))
 putpng_path= paste(curdir, "/images/", sep="")
 
-argS <- read.csv(args[1])
+source("parameters.r")
+
+argS <- read.csv(args[1], fileEncoding  = csv_encoding)
 varN <- as.integer(argS[1,1])
 tracking_feature_ <<- NULL
 for ( i in 1:varN )
