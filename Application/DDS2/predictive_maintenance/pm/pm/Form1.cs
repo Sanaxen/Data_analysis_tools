@@ -60,10 +60,26 @@ namespace pm
         public string htmlPictureBox5 = "";
         public string htmlPictureBox6 = "";
 
+        public bool LanguageChangeMessageOff = false;
+
         public Form1()
         {
-            InitializeComponent();
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
             exePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            string Language = "en-US";
+            if (File.Exists(exePath + "Language.txt"))
+            {
+                using (StreamReader sr = new StreamReader(exePath + "Language.txt"))
+                {
+                    Language = sr.ReadToEnd().Replace("\n", "");
+                }
+            }
+            if (Language == "ja-JP")
+            {
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ja-JP");
+            }
+            InitializeComponent();
 
             if (File.Exists(exePath + "R_install_path.txt"))
             {
@@ -72,6 +88,10 @@ namespace pm
                     textBox1.Text = sr.ReadToEnd().Replace("\n", "");
                 }
             }
+
+            LanguageChangeMessageOff = true;
+            comboBox6.Text = Language;
+            LanguageChangeMessageOff = false;
 
             StringBuilder sb = new StringBuilder(2048);
             IntPtr res = PathCombine(sb, exePath, "..\\..\\..\\..\\library");
@@ -98,7 +118,7 @@ namespace pm
 
         void save()
         {
-            string file = "pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
+            string file = base_dir +"\\pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
             try
             {
                 using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
@@ -169,7 +189,7 @@ namespace pm
                     sw.Write("textBox18," + textBox18.Text + "\n");
                     sw.Write("textBox19," + textBox19.Text + "\n");
                     sw.Write("textBox20," + textBox20.Text + "\n");
-                    //sw.Write("textBox21," + textBox21.Text + "\n");
+                    sw.Write("textBox21," + textBox21.Text + "\n");
                     //sw.Write("textBox22," + textBox22.Text + "\n");
                     //sw.Write("textBox23," + textBox23.Text + "\n");
                     //sw.Write("textBox24," + textBox24.Text + "\n");
@@ -253,7 +273,7 @@ namespace pm
         }
         void load(string setting_file)
         {
-            string file = "pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
+            string file = base_dir+"\\pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
             if (setting_file == "")
             {
                 if (base_name0 == "")
@@ -422,6 +442,11 @@ namespace pm
                         if (ss[0].IndexOf("textBox20") >= 0)
                         {
                             textBox20.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox21") >= 0)
+                        {
+                            textBox21.Text = ss[1].Replace("\r\n", "");
                             continue;
                         }
                         //if (ss[0].IndexOf("textBox21") >= 0)
@@ -1085,8 +1110,8 @@ namespace pm
             listBox2.Items.Add("logEnergy");
 
             listBox2.Items.Add("spectrum");
-            listBox2.Items.Add("spectrum_mean");
-            listBox2.Items.Add("spectrum_std");
+            listBox2.Items.Add("spectral_mean");
+            listBox2.Items.Add("spectral_std");
             listBox2.Items.Add("spectral_skewness");
             listBox2.Items.Add("spectral_kurtosis");
             listBox2.Items.Add("mahalanobis");
@@ -1180,7 +1205,7 @@ namespace pm
             cmd += "one_input = " + textBox4.Text +"\r\n";
             cmd += "#585936\r\n";
             cmd += "\r\n";
-            cmd += "#input data smoothing\r\n";
+            cmd += "#input data smoothing(sampling)\r\n";
             cmd += "smooth_window = " + textBox5.Text + "\r\n";
             cmd += "smooth_window_slide = " + textBox6.Text + "\r\n";
             cmd += "#lowess smoothing\r\n";
@@ -1221,6 +1246,13 @@ namespace pm
             cmd += "\r\n";
             cmd += "#default threshold\r\n";
             cmd += "threshold = " + textBox16.Text + "\r\n";
+            if (textBox21.Text == "")
+            {
+                cmd += "#threshold_target = 0\r\n";
+            }else
+            {
+                cmd += "threshold_target = " + textBox21.Text + "\r\n";
+            }
             cmd += "\r\n";
             cmd += "#plot用Ymax\r\n";
             cmd += "ymax = -10000\r\n";
@@ -1284,7 +1316,7 @@ namespace pm
             cmd += "time_out <- 60*2\r\n";
             cmd += "save.image('./predictive_maintenance.RData')\r\n";
 
-            string file = "..\\"+base_name0 + "_parameters.r";
+            string file = base_dir+"\\" +base_name0 + "_parameters.r";
             try
             {
                 var utf8Encoding = new System.Text.UTF8Encoding(false);
@@ -1341,7 +1373,7 @@ namespace pm
             }
             cmd += "copy /B \"%data%\\*.csv\" %serv% /v /y\r\n";
 
-            string file = "..\\"+ base_name0 + "_IoT_Emulator.bat";
+            string file = base_dir+"\\" + base_name0 + "_IoT_Emulator.bat";
             try
             {
                 using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
@@ -1378,9 +1410,9 @@ namespace pm
             string param_base = base_name0 + "_parameters.r";
             string param = work_dir + "\\parameters.r";
 
-            File.Copy("..\\" + param_base, param, true);
+            File.Copy(base_dir+"\\" + param_base, param, true);
 
-            string args = "..\\" + base_name0 + "_args.csv";
+            string args = base_dir+"\\" + base_name0 + "_args.csv";
 
 
             ListBox arg = new ListBox();
@@ -1456,10 +1488,10 @@ namespace pm
 
             //mahalanobis vibration.kurtosis vibration.mean datetime + \r\n";
 
-            string file = "..\\" + base_name0 + "_test.bat";
+            string file = base_dir+"\\" + base_name0 + "_test.bat";
             if (!validation)
             {
-                file = "..\\" + base_name0 + "_execute.bat";
+                file = base_dir+"\\" + base_name0 + "_execute.bat";
             }
             
             try
@@ -1802,10 +1834,10 @@ namespace pm
             cmd += "smooth_window2 <<- " + textBox13.Text + "\r\n";
             cmd += "smooth_window_slide2 <<- " + textBox12.Text + "\r\n";
             cmd += "\r\n";
-            cmd += "#lookback <<- " + textBox10.Text + "\r\n";
-            cmd += "#lookback_slide <<- " + textBox11.Text + "\r\n";
-            cmd += "lookback <<- 24\r\n";
-            cmd += "lookback_slide <<- 24\r\n";
+            cmd += "lookback <<- " + textBox10.Text + "\r\n";
+            cmd += "lookback_slide <<- " + textBox11.Text + "\r\n";
+            cmd += "#lookback <<- 24\r\n";
+            cmd += "#lookback_slide <<- 24\r\n";
             cmd += "#平滑化をlowessで行う\r\n";
             cmd += "use_lowess = " + ((checkBox3.Checked) ? "TRUE" : "FALSE") + "\r\n";
             cmd += "smoother_span <<- 0.05\r\n";
@@ -1820,10 +1852,10 @@ namespace pm
             cmd += "\r\n";
             cmd += "\r\n";
 
-            string file = "..\\" + base_name0 + "_feat_visualize.r";
+            string file = base_dir +"\\" + base_name0 + "_feat_visualize.r";
             if (!summary)
             {
-                file = "..\\" + base_name0 + "_feature_discovery.r";
+                file = base_dir +"\\" + base_name0 + "_feature_discovery.r";
             }
             try
             {
@@ -1845,7 +1877,7 @@ namespace pm
 
             try
             {
-                File.Copy("..\\" + param_base, param, true);
+                File.Copy(base_dir +"\\" + param_base, param, true);
                 File.Copy(csv_dir + "\\" + base_name + ".csv", base_name + ".csv", true);
             }
             catch
@@ -1877,10 +1909,10 @@ namespace pm
             bat += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla \"" + feat_visualize_base + "\"\r\n";
 
 
-            string batfile = "..\\" + base_name0 + "_feature_summary_visualization.bat";
+            string batfile = base_dir+"\\" + base_name0 + "_feature_summary_visualization.bat";
             if (!summary)
             {
-                batfile = "..\\" + base_name0 + "_feature_discovery.bat";
+                batfile = base_dir+"\\" + base_name0 + "_feature_discovery.bat";
             }
             try
             {
@@ -2038,5 +2070,38 @@ namespace pm
         {
             summary(sender, e, false);
         }
-}
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            save();
+            button2_Click(sender, e);
+            button3_Click(sender, e);
+            button4_Click(sender, e);
+            button5_Click(sender, e);
+            button14_Click(sender, e);
+            button18_Click(sender, e);
+        }
+
+        private void comboBox6_TextChanged(object sender, EventArgs e)
+        {
+
+                
+            string Language = comboBox6.Text;
+
+            using (StreamWriter sw = new StreamWriter(exePath + "Language.txt"))
+            {
+                sw.Write(comboBox6.Text);
+            }
+            if (Language == "ja-JP")
+            {
+                if (!LanguageChangeMessageOff) MessageBox.Show("設定は次回の起動から有効になります");
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(comboBox6.Text);
+            }
+            if (Language == "en-US")
+            {
+                if (!LanguageChangeMessageOff)MessageBox.Show("Settings will take effect from the next startup");
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(comboBox6.Text);
+            }
+        }
+    }
 }

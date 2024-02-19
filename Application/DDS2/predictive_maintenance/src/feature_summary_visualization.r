@@ -12,181 +12,7 @@ find_closest_factors <- function(n) {
   }
 }
 
-moving_average_sub <- function(col_name, df2, ff = NULL, lookback=100, slide_window = 1)
-{
-	colnames_df2 <- colnames(df2)
 
-	time_index = which(timeStamp == colnames_df2)
-	i <- which(col_name == colnames_df2)
-
-	maintenance_index = which("maintenance" == colnames_df2)
-
-	fff <- NULL
-	d <- df2[,i]
-	if ( i == maintenance_index )
-	{
-		d[is.na(d)] <- 0
-	}
-	if ( i == time_index )
-	{
-		d[is.na(d)] <- mean(d, na.rm = TRUE)
-	}
-	print("moving_average_sub")
-	print(head(d))
-	flush.console()
-	
-	#print(sprintf("lookback:%d length(d):%d", lookback, length(d)))
-	
-	rowN = 0
-	j = lookback
-	while( j <= length(d) )
-	{
-		j <- j + slide_window
-		rowN = rowN + 1
-	}
-	fff <- as.data.frame(matrix(nrow=rowN, ncol=1))
-
-	row_cnt = 1
-	
-	start <- Sys.time()
-
-	diff0_sum <- 0
-	j = lookback
-	
-	length_d <- length(d)
-	while( j <= length_d )
-	#for ( j in lookback:length(d))
-	{
-		start0 <- Sys.time()
-
-		#print(sprintf("%d:%d", (j-lookback+1),j))
-	
-		dd <- d[(j-lookback+1):j]
-    
-    	if ( i == maintenance_index )
-    	{
-    		if ( length(dd[dd==1]) )
-    		{
-				f <- data.frame(c(1),nrow=1)
-    		}else
-    		{
-				f <- data.frame(c(0),nrow=1)
-    		}
-    	}
-    	if ( i == time_index )
-    	{
-			f <- data.frame(c(dd[lookback]),nrow=1)
-			f <- as.character(f[,1])
-    	}else
-    	{
-			mean <- mean(dd, na.rm = TRUE)
-			f <- data.frame(matrix(c(mean),nrow=1))
-		}
-		
-		fff[row_cnt,] <- f
-		row_cnt = row_cnt + 1
-		
-
-		end0 <- Sys.time()
-		diff0 <- as.numeric(difftime(end0, start0, units = "sec"))
-
-		diff0_sum <- diff0_sum + diff0
-
-		if ( row_cnt %% 500 == 0 )
-		{
-			cat(sprintf("reduce noise %s %d %d/%d %f%s", col_name, row_cnt, row_cnt, rowN, 100*row_cnt/rowN, "% "))
-
-			#print(sprintf("Time:%f sec", diff0_sum))
-			t <- (diff0_sum/(row_cnt-1))*(rowN-row_cnt)
-			if ( 1 < t/ (60*60*24) )
-			{
-				cat(sprintf("Time to finish:%f day", t/(60*60*24)))
-				t <- 0
-			}
-			if ( 1 < t/( 60*60) )
-			{
-				cat(sprintf("Time to finish:%f hour", t/(60*60)))
-				t <- 0
-			}
-			if ( 1 < t / 60 )
-			{
-				cat(sprintf("Time to finish:%f min", t/60))
-				t <- 0
-			}
-			if ( t > 0 )
-			{
-				cat(sprintf("Time to finish:%f sec", t))
-			}
-			cat("\n")
-			flush.console()
-		}
-		
-		j <- j + slide_window
-	}
-	end <- Sys.time()
-	diff <- as.numeric(difftime(end, start, units = "sec"))
-
-	print(sprintf("%s Time:%f", col_name, diff))
-	print(head(fff))
-	flush.console()
-	
-	colnames(fff) <- c(col_name)
-	
-	for ( i in 1:ncol(fff))
-	{
-		x <- fff[,i]
-		if ( i != time_index && i != maintenance_index)
-		{
-			x[which(is.na(x))]<- mean(x, na.rm=TRUE)
-			fff[,i] <- x
-		}
-	}
-
-	if ( is.null(ff)) {
-		ff <- fff
-	}else {
-		#ff <- cbind(ff, fff)
-		ff <- dplyr::bind_cols(ff, fff)
-	}
-	print("moving_average_sub")
-	print(head(fff))
-	flush.console()
-	
-	return(ff)
-}
-
-moving_average <- function(df2, lookback=100, slide_window=100)
-{
-	start <- Sys.time()
-
-	colnames_df2 <- colnames(df2)
-
-	
-	ff <- NULL
-	for ( i in 1:ncol(df2))
-	{
-		col_name = colnames_df2[i]
-		#print(sprintf("%d %s %d/%d", i, col_name, i, ncol(df2)))
-		#flush.console()
-		ff <- moving_average_sub(colnames_df2[i], df2, ff, lookback=lookback, slide_window)
-	}
-
-	print("moving_average")
-	print(head(ff))
-	
-	colnames(ff) <- colnames_df2
-	df3 <- as.data.frame(ff)
-
-	end <- Sys.time()
-	diff <- as.numeric(difftime(end, start, units = "sec"))
-
-	print(sprintf("moving_average Time:%f sec( %f min)( %f hour)", diff, diff/60, diff/(60*60)))
-
-	print("-moving_average-")
-	print(head(df3))
-	
-	return (df3)
-}
 freeram <- function(...) invisible(gc(...))
 
 
@@ -236,10 +62,11 @@ maintenance_interval <- function(df, start_idx=1)
 	return( list(st, ed))
 }
 
-sigin <<- 1
 base_name <<- ''
 feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 {
+	sigin <<- 1
+
 	feature_summary_visualization_start <- Sys.time()
 
 	print(getwd())
@@ -316,22 +143,32 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 		}
 	}
 	
-	maxrows <- 200000
-	if ( nrow(df) > maxrows*100 )
+	#if (  length(maintenance_index) < 1 && nrow(df) > 30000)
+	#{
+	#	df <- df[1:as.integer(nrow(df)/3),]
+	#	df <- as.data.frame(df)
+	#}
+	maxrows <- 10000
+	if ( nrow(df) > maxrows*50 )
 	{
-		w <- as.integer(nrow(df)/maxrows)
+		w <- as.integer(nrow(df)/(maxrows))
 		cat("w")
 		print(w)
 		flush.console()
 
+		sampling=TRUE
 		if ( w >= 5 )
 		{
 			smooth_window <<- as.integer(w)
-			smooth_window_slide <<- smooth_window
+			smooth_window_slide <<-  max(1,as.integer(smooth_window/20))
 			print(sprintf("moving_average smooth_window=%d smooth_window_slide=%d", smooth_window, smooth_window_slide))
 			flush.console()
-			df <- moving_average(df, lookback=smooth_window, slide_window=smooth_window_slide)
+			N=nrow(df)
+			df <- moving_average(sampling, df, lookback=smooth_window, slide_window=smooth_window_slide)
 			
+			n <- window_moving_size(N, smooth_window, smooth_window_slide)
+			print(sprintf("N:%d -> nrow(df):%d n:%d", N, nrow(df), n))
+
 			csvfile2 <<- 'all2.csv'
 			try(write.csv(df, csvfile2, row.names = F), silent = FALSE)
 			print(sprintf("nrow:%d ncol:%d\n", nrow(df), ncol(df)))
@@ -407,12 +244,13 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 	#print(sprintf("%d/%d nrow(feature_df):%d", i, as.integer(nrow(df)/one_input),nrow(feature_df)))
 
 	lookback_max = nrow(df2)/10
-	lookback_list = c( 3840, 1920, 960, 600, 480, 240, 120, 60, 48, 24, 12)
+	lookback_list = c(  19200, 9600, 4800, 3840, 2400, 1920, 960, 600, 480, 300, 240, 120, 60, 48, 24, 12)
 	#lookback_list = c( 24)
 	cat("lookback_list")
 	print(lookback_list)
 	flush.console()
 
+	plt_list <- c(1:length(lookback_list))
 	xxxx <- NULL
 	for ( iii in 1:length(lookback_list))
 	{
@@ -429,9 +267,19 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 		#	print(sprintf("lookback_max:%d lookback:%d", lookback_max, lookback))
 		#	next
 		#}
-		if ( nrow(df2) < lookback*3 )
+		N=nrow(df2)
+		n <- window_moving_size(N, lookback, lookback_slide)
+		n <- window_moving_size(n, smooth_window2, smooth_window_slide2)
+
+		if ( n < 120 )
 		{
-			print(sprintf("nrow:%d lookback*5:%d", nrow(df2), lookback*5))
+			print(sprintf("nrow:%d -> %d", N, n))
+			flush.console()
+			next
+		}
+		if ( nrow(df2) < lookback*2 )
+		{
+			print(sprintf("nrow:%d lookback*2:%d", nrow(df2), lookback*2))
 			flush.console()
 			next
 		}
@@ -612,7 +460,8 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 			maintenance_flag_df <- df2[,maintenance_flag_idx]
 			maintenance_flag_time_index <- df2$time_index[df2[,maintenance_flag_idx]==1]
 		}
-		
+		cat("maintenance_flag_idx")
+		print(maintenance_flag_idx)
 		
 		smoother_span_list = c( 0.05 )
 		for ( kkk in 1:length(smoother_span_list))
@@ -663,30 +512,60 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				{
 					monotonicity_value <- monotonicity(feature_df[,i], length(feature_df[,i]), eps = 0.0)
 				}
+				monotonicity_value_sigin = 0
+				if ( monotonicity_value1 < 0 )
+				{
+					monotonicity_value_sigin = -1*sigin
+				}else
+				{
+					monotonicity_value_sigin = 1*sigin
+				}
+								
+				z <- lowess(feature_df$time_index,  feature_df[,i], f = smoother_span_list[kkk])$y
 				
-				z <- lowess(feature_df$time_index, feature_df[,i], f = smoother_span_list[kkk])$y
+				ylable <- sprintf("%s window=%d_slide=%d_smooth_window=%d_smooth_window_slide=%d_smooth_window2=%d_smooth_window_slide2=%d_smoother_span:%f", colnames(feature_df)[i], lookback, lookback_slide,smooth_window, smooth_window_slide, smooth_window2, smooth_window_slide2,smoother_span_list[kkk])
+
+				cat("colnames(feature_df)[i]")
+				print(colnames(feature_df)[i])
+				col <- strsplit(colnames(feature_df)[i], "[.]")
+				col <- col[[1]][1]
 				
-				ylable <- sprintf("%s window=%d_slide=%d_smooth_window2=%d_smooth_window_slide2=%d_smoother_span:%f", colnames(feature_df)[i], lookback, lookback_slide, smooth_window2, smooth_window_slide2,smoother_span_list[kkk])
-
-				p <- feature_df %>% 
-				  ggplot(aes(x = time_index, y = feature_df[,i]))+
-				  geom_line(linewidth =1.0)+ylab(ylable)+
-				  geom_line(aes(x = time_index, y = z),linewidth =1.2, color ="red")
-
+				#cat("col")
+				#print(col)
+				flush.console()
+				p1 <- NULL
+				p2 <- NULL
+				if ( col == "mahalanobis")
+				{
+					p1 <- feature_df %>% 
+					  ggplot(aes(x = time_index, y = feature_df[,i]*monotonicity_value_sigin))+
+					  geom_line(linewidth =1.0)+ylab(colnames(feature_df)[i])+
+					  geom_line(aes(x = time_index, y = z*monotonicity_value_sigin),linewidth =1.2, color ="red")
+				}else
+				{
+					p1 <- feature_df %>% 
+					  ggplot(aes(x = time_index, y = feature_df[,i]*monotonicity_value_sigin))+
+					  geom_line(linewidth =1.0)+
+					  geom_line(aes(x = time_index, y = z*monotonicity_value_sigin),linewidth =1.2, color ="red")
+					  
+					p2 <- df2 %>% 
+					  ggplot(aes(x = time_index, y = df2[,col]))+
+					  geom_line(linewidth =1.0, color ="gray")+ ggtitle(colnames(feature_df)[i])
+				}
 			
 				if ( length(maintenance_flag_time_index) >= 1 )
 				{
 					for ( s in 1:length(maintenance_flag_time_index))
 					{
-						p <- p + geom_vline(xintercept =  maintenance_flag_time_index[s],linewidth =1.0, color ="#191970")
+						p1 <- p1 + geom_vline(xintercept =  maintenance_flag_time_index[s],linewidth =1.0, color ="#191970")
 					}
 				}
 
-				p <- p + ylab(colnames(feature_df)[i])+ labs(title=ylable)
+				p1 <- p1 + ylab(colnames(feature_df)[i])+ ggtitle(ylable)
 				
-				p <- p + annotate("text",x=mean(range(feature_df$time_index)),y=-Inf,label=sprintf("monotonicity_value:%f",monotonicity_value),vjust=-.4)
+				p1 <- p1 + annotate("text",x=mean(range(feature_df$time_index)),y=-Inf,label=sprintf("monotonicity_value:%f",monotonicity_value),vjust=-.4)
 
-				print(p)
+				print(p1)
 				
 				num = 0
 				if ( is.null(xxxx))
@@ -701,17 +580,12 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				filename <- sprintf("../images/%s.png", base)
 				filename_r <- sprintf("../images/%s.r", base)
 
+				if (!is.null(p2))
+				{
+					p <- gridExtra::grid.arrange(p1, p2, nrow = 2)
+				}
 				ggsave(filename=filename, p, limitsize=F, width = 16, height = 9)
 				plot(p)
-
-				monotonicity_value_sigin = 0
-				if ( monotonicity_value < 0 )
-				{
-					monotonicity_value_sigin = -1*sigin
-				}else
-				{
-					monotonicity_value_sigin = 1*sigin
-				}
 				
 				sink(filename_r)
 				cat(sprintf("lookback = %d\n", lookback))
@@ -741,6 +615,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 					filename_r			= c(base)
 				)
 
+				plt_list[num+1] <- p
 				if ( is.null(xxxx))
 				{
 					xxxx <- rowm
@@ -755,6 +630,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 	}
 	xxxx <- xxxx[order((xxxx$monotonicity), decreasing=T),]
 	write.csv(xxxx, '../images/feature_summarys.csv', row.names = F, fileEncoding = "CP932")
+	
 
 	if ( summary )
 	{

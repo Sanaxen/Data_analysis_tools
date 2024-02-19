@@ -32,6 +32,7 @@ namespace pm
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button19 = new System.Windows.Forms.Button();
             this.panel18 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
@@ -48,6 +49,7 @@ namespace pm
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.splitter14 = new System.Windows.Forms.Splitter();
             this.panel17 = new System.Windows.Forms.Panel();
+            this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -92,6 +94,7 @@ namespace pm
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.splitter9 = new System.Windows.Forms.Splitter();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.button18 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox8 = new System.Windows.Forms.TextBox();
@@ -113,6 +116,9 @@ namespace pm
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label28 = new System.Windows.Forms.Label();
+            this.textBox21 = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
             this.textBox20 = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.textBox19 = new System.Windows.Forms.TextBox();
@@ -164,7 +170,6 @@ namespace pm
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button18 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel18.SuspendLayout();
             this.panel19.SuspendLayout();
@@ -205,687 +210,528 @@ namespace pm
             // 
             // panel1
             // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.button19);
             this.panel1.Controls.Add(this.panel18);
             this.panel1.Controls.Add(this.splitter13);
             this.panel1.Controls.Add(this.panel19);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1144, 131);
-            this.panel1.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.panel1, resources.GetString("panel1.ToolTip"));
+            // 
+            // button19
+            // 
+            resources.ApplyResources(this.button19, "button19");
+            this.button19.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.button19.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button19.Name = "button19";
+            this.toolTip1.SetToolTip(this.button19, resources.GetString("button19.ToolTip"));
+            this.button19.UseVisualStyleBackColor = false;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // panel18
             // 
+            resources.ApplyResources(this.panel18, "panel18");
             this.panel18.Controls.Add(this.button2);
             this.panel18.Controls.Add(this.comboBox3);
             this.panel18.Controls.Add(this.button5);
             this.panel18.Controls.Add(this.label2);
             this.panel18.Controls.Add(this.button4);
             this.panel18.Controls.Add(this.button3);
-            this.panel18.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel18.Location = new System.Drawing.Point(503, 0);
-            this.panel18.Margin = new System.Windows.Forms.Padding(2);
             this.panel18.Name = "panel18";
-            this.panel18.Size = new System.Drawing.Size(641, 44);
-            this.panel18.TabIndex = 85;
+            this.toolTip1.SetToolTip(this.panel18, resources.GetString("panel18.ToolTip"));
             // 
             // button2
             // 
-            this.button2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button2.Location = new System.Drawing.Point(112, 3);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button2, "button2");
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(160, 34);
-            this.button2.TabIndex = 80;
-            this.button2.Text = "Parameter file generation";
+            this.toolTip1.SetToolTip(this.button2, resources.GetString("button2.ToolTip"));
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // comboBox3
             // 
+            resources.ApplyResources(this.comboBox3, "comboBox3");
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
-            "+",
-            "-"});
-            this.comboBox3.Location = new System.Drawing.Point(40, 10);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(2);
+            resources.GetString("comboBox3.Items"),
+            resources.GetString("comboBox3.Items1")});
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(53, 20);
-            this.comboBox3.TabIndex = 78;
-            this.comboBox3.Text = "+";
-            this.toolTip1.SetToolTip(this.comboBox3, "Specify whether the abnormal trend is rising or falling with a sign");
+            this.toolTip1.SetToolTip(this.comboBox3, resources.GetString("comboBox3.ToolTip"));
             // 
             // button5
             // 
-            this.button5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button5.Location = new System.Drawing.Point(499, 3);
-            this.button5.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button5, "button5");
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(100, 34);
-            this.button5.TabIndex = 83;
-            this.button5.Text = "Start monitoring";
+            this.toolTip1.SetToolTip(this.button5, resources.GetString("button5.ToolTip"));
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.Location = new System.Drawing.Point(5, 14);
+            resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 12);
-            this.label2.TabIndex = 79;
-            this.label2.Text = "sigin";
-            this.toolTip1.SetToolTip(this.label2, "Specify whether the abnormal trend is rising or falling with a sign");
+            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // button4
             // 
-            this.button4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button4.Location = new System.Drawing.Point(393, 3);
-            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button4, "button4");
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(101, 34);
-            this.button4.TabIndex = 82;
-            this.button4.Text = "Validation start";
+            this.toolTip1.SetToolTip(this.button4, resources.GetString("button4.ToolTip"));
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button3.Location = new System.Drawing.Point(284, 3);
-            this.button3.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button3, "button3");
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(103, 34);
-            this.button3.TabIndex = 81;
-            this.button3.Text = "IoT_Emulator";
+            this.toolTip1.SetToolTip(this.button3, resources.GetString("button3.ToolTip"));
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // splitter13
             // 
+            resources.ApplyResources(this.splitter13, "splitter13");
             this.splitter13.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.splitter13.Location = new System.Drawing.Point(501, 0);
-            this.splitter13.Margin = new System.Windows.Forms.Padding(2);
             this.splitter13.Name = "splitter13";
-            this.splitter13.Size = new System.Drawing.Size(2, 131);
-            this.splitter13.TabIndex = 1;
             this.splitter13.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter13, resources.GetString("splitter13.ToolTip"));
             // 
             // panel19
             // 
+            resources.ApplyResources(this.panel19, "panel19");
             this.panel19.Controls.Add(this.panel20);
             this.panel19.Controls.Add(this.splitter14);
             this.panel19.Controls.Add(this.panel17);
-            this.panel19.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel19.Location = new System.Drawing.Point(0, 0);
-            this.panel19.Margin = new System.Windows.Forms.Padding(2);
             this.panel19.Name = "panel19";
-            this.panel19.Size = new System.Drawing.Size(501, 131);
-            this.panel19.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.panel19, resources.GetString("panel19.ToolTip"));
             // 
             // panel20
             // 
+            resources.ApplyResources(this.panel20, "panel20");
             this.panel20.Controls.Add(this.button15);
             this.panel20.Controls.Add(this.button16);
             this.panel20.Controls.Add(this.panel21);
-            this.panel20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel20.Location = new System.Drawing.Point(0, 64);
-            this.panel20.Margin = new System.Windows.Forms.Padding(2);
             this.panel20.Name = "panel20";
-            this.panel20.Size = new System.Drawing.Size(501, 67);
-            this.panel20.TabIndex = 86;
+            this.toolTip1.SetToolTip(this.panel20, resources.GetString("panel20.ToolTip"));
             // 
             // button15
             // 
-            this.button15.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button15.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button15.Location = new System.Drawing.Point(5, 4);
-            this.button15.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button15, "button15");
             this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(94, 23);
-            this.button15.TabIndex = 49;
-            this.button15.Text = "setting save";
-            this.toolTip1.SetToolTip(this.button15, "Save the configuration");
+            this.toolTip1.SetToolTip(this.button15, resources.GetString("button15.ToolTip"));
             this.button15.UseVisualStyleBackColor = true;
             this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // button16
             // 
-            this.button16.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button16.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button16.Location = new System.Drawing.Point(102, 4);
-            this.button16.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button16, "button16");
             this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(90, 23);
-            this.button16.TabIndex = 50;
-            this.button16.Text = "setting load";
-            this.toolTip1.SetToolTip(this.button16, "Load configuration");
+            this.toolTip1.SetToolTip(this.button16, resources.GetString("button16.ToolTip"));
             this.button16.UseVisualStyleBackColor = true;
             this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // panel21
             // 
+            resources.ApplyResources(this.panel21, "panel21");
             this.panel21.Controls.Add(this.pictureBox6);
-            this.panel21.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel21.Location = new System.Drawing.Point(351, 0);
-            this.panel21.Margin = new System.Windows.Forms.Padding(2);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(150, 67);
-            this.panel21.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.panel21, resources.GetString("panel21.ToolTip"));
             // 
             // pictureBox6
             // 
-            this.pictureBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox6.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox6.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.pictureBox6, "pictureBox6");
             this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(150, 67);
-            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox6.TabIndex = 0;
             this.pictureBox6.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox6, resources.GetString("pictureBox6.ToolTip"));
             this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
             // 
             // splitter14
             // 
+            resources.ApplyResources(this.splitter14, "splitter14");
             this.splitter14.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.splitter14.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter14.Location = new System.Drawing.Point(0, 62);
-            this.splitter14.Margin = new System.Windows.Forms.Padding(2);
             this.splitter14.Name = "splitter14";
-            this.splitter14.Size = new System.Drawing.Size(501, 2);
-            this.splitter14.TabIndex = 85;
             this.splitter14.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter14, resources.GetString("splitter14.ToolTip"));
             // 
             // panel17
             // 
+            resources.ApplyResources(this.panel17, "panel17");
+            this.panel17.Controls.Add(this.comboBox6);
             this.panel17.Controls.Add(this.button1);
             this.panel17.Controls.Add(this.textBox1);
             this.panel17.Controls.Add(this.label6);
             this.panel17.Controls.Add(this.comboBox1);
             this.panel17.Controls.Add(this.comboBox2);
             this.panel17.Controls.Add(this.label1);
-            this.panel17.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel17.Location = new System.Drawing.Point(0, 0);
-            this.panel17.Margin = new System.Windows.Forms.Padding(2);
             this.panel17.Name = "panel17";
-            this.panel17.Size = new System.Drawing.Size(501, 62);
-            this.panel17.TabIndex = 84;
+            this.toolTip1.SetToolTip(this.panel17, resources.GetString("panel17.ToolTip"));
+            // 
+            // comboBox6
+            // 
+            resources.ApplyResources(this.comboBox6, "comboBox6");
+            this.comboBox6.FormattingEnabled = true;
+            this.comboBox6.Items.AddRange(new object[] {
+            resources.GetString("comboBox6.Items"),
+            resources.GetString("comboBox6.Items1")});
+            this.comboBox6.Name = "comboBox6";
+            this.toolTip1.SetToolTip(this.comboBox6, resources.GetString("comboBox6.ToolTip"));
+            this.comboBox6.TextChanged += new System.EventHandler(this.comboBox6_TextChanged);
             // 
             // button1
             // 
-            this.button1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button1.Location = new System.Drawing.Point(11, 26);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button1, "button1");
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(74, 26);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "csv";
-            this.toolTip1.SetToolTip(this.button1, "Select one observation data.\r\nAll csv in that data directory will be targeted.");
+            this.toolTip1.SetToolTip(this.button1, resources.GetString("button1.ToolTip"));
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox1.Location = new System.Drawing.Point(0, 0);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox1, "textBox1");
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(501, 19);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "c:\\Program Files\\R\\R-4.2.3\\bin";
+            this.toolTip1.SetToolTip(this.textBox1, resources.GetString("textBox1.ToolTip"));
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label6.Location = new System.Drawing.Point(90, 35);
+            resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(58, 12);
-            this.label6.TabIndex = 75;
-            this.label6.Text = "encoding";
+            this.toolTip1.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
             // 
             // comboBox1
             // 
-            this.comboBox1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            resources.ApplyResources(this.comboBox1, "comboBox1");
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "sjis",
-            "utf-8"});
-            this.comboBox1.Location = new System.Drawing.Point(150, 34);
+            resources.GetString("comboBox1.Items"),
+            resources.GetString("comboBox1.Items1")});
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(80, 20);
-            this.comboBox1.TabIndex = 74;
-            this.comboBox1.Text = "sjis";
+            this.toolTip1.SetToolTip(this.comboBox1, resources.GetString("comboBox1.ToolTip"));
             // 
             // comboBox2
             // 
+            resources.ApplyResources(this.comboBox2, "comboBox2");
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(279, 34);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(92, 20);
-            this.comboBox2.TabIndex = 76;
-            this.toolTip1.SetToolTip(this.comboBox2, "Column name representing observation time");
+            this.toolTip1.SetToolTip(this.comboBox2, resources.GetString("comboBox2.ToolTip"));
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label1.Location = new System.Drawing.Point(245, 36);
+            resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 12);
-            this.label1.TabIndex = 77;
-            this.label1.Text = "time";
-            this.toolTip1.SetToolTip(this.label1, "Column name representing observation time");
+            this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // splitter1
             // 
+            resources.ApplyResources(this.splitter1, "splitter1");
             this.splitter1.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter1.Location = new System.Drawing.Point(0, 131);
-            this.splitter1.Margin = new System.Windows.Forms.Padding(2);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(1144, 2);
-            this.splitter1.TabIndex = 1;
             this.splitter1.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter1, resources.GetString("splitter1.ToolTip"));
             // 
             // panel2
             // 
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.listBox1);
             this.panel2.Controls.Add(this.splitter5);
             this.panel2.Controls.Add(this.panel5);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(0, 133);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(184, 368);
-            this.panel2.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.panel2, resources.GetString("panel2.ToolTip"));
             // 
             // listBox1
             // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.listBox1, "listBox1");
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(0, 59);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(184, 309);
-            this.listBox1.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.listBox1, resources.GetString("listBox1.ToolTip"));
             // 
             // splitter5
             // 
-            this.splitter5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter5.Location = new System.Drawing.Point(0, 57);
-            this.splitter5.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.splitter5, "splitter5");
             this.splitter5.Name = "splitter5";
-            this.splitter5.Size = new System.Drawing.Size(184, 2);
-            this.splitter5.TabIndex = 11;
             this.splitter5.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter5, resources.GetString("splitter5.ToolTip"));
             // 
             // panel5
             // 
+            resources.ApplyResources(this.panel5, "panel5");
             this.panel5.Controls.Add(this.label3);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel5.Location = new System.Drawing.Point(0, 0);
-            this.panel5.Margin = new System.Windows.Forms.Padding(2);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(184, 57);
-            this.panel5.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.panel5, resources.GetString("panel5.ToolTip"));
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 3);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "tracking_feature_";
+            this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // splitter2
             // 
-            this.splitter2.Location = new System.Drawing.Point(184, 133);
-            this.splitter2.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.splitter2, "splitter2");
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(6, 368);
-            this.splitter2.TabIndex = 3;
             this.splitter2.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter2, resources.GetString("splitter2.ToolTip"));
             // 
             // panel3
             // 
+            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Controls.Add(this.listBox2);
             this.panel3.Controls.Add(this.splitter6);
             this.panel3.Controls.Add(this.panel6);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel3.Location = new System.Drawing.Point(190, 133);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(191, 368);
-            this.panel3.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.panel3, resources.GetString("panel3.ToolTip"));
             // 
             // listBox2
             // 
-            this.listBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.listBox2, "listBox2");
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 12;
-            this.listBox2.Location = new System.Drawing.Point(0, 59);
-            this.listBox2.Margin = new System.Windows.Forms.Padding(2);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(191, 309);
-            this.listBox2.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.listBox2, resources.GetString("listBox2.ToolTip"));
             // 
             // splitter6
             // 
-            this.splitter6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter6.Location = new System.Drawing.Point(0, 57);
-            this.splitter6.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.splitter6, "splitter6");
             this.splitter6.Name = "splitter6";
-            this.splitter6.Size = new System.Drawing.Size(191, 2);
-            this.splitter6.TabIndex = 10;
             this.splitter6.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter6, resources.GetString("splitter6.ToolTip"));
             // 
             // panel6
             // 
+            resources.ApplyResources(this.panel6, "panel6");
             this.panel6.Controls.Add(this.button13);
             this.panel6.Controls.Add(this.label23);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel6.Location = new System.Drawing.Point(0, 0);
-            this.panel6.Margin = new System.Windows.Forms.Padding(2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(191, 57);
-            this.panel6.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.panel6, resources.GetString("panel6.ToolTip"));
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(123, 32);
-            this.button13.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button13, "button13");
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(64, 20);
-            this.button13.TabIndex = 1;
-            this.button13.Text = "add";
+            this.toolTip1.SetToolTip(this.button13, resources.GetString("button13.ToolTip"));
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // label23
             // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(4, 3);
-            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            resources.ApplyResources(this.label23, "label23");
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(149, 12);
-            this.label23.TabIndex = 0;
-            this.label23.Text = "statistic features to monitor";
+            this.toolTip1.SetToolTip(this.label23, resources.GetString("label23.ToolTip"));
             // 
             // splitter3
             // 
-            this.splitter3.Location = new System.Drawing.Point(381, 133);
-            this.splitter3.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.splitter3, "splitter3");
             this.splitter3.Name = "splitter3";
-            this.splitter3.Size = new System.Drawing.Size(6, 368);
-            this.splitter3.TabIndex = 5;
             this.splitter3.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter3, resources.GetString("splitter3.ToolTip"));
             // 
             // panel4
             // 
+            resources.ApplyResources(this.panel4, "panel4");
             this.panel4.Controls.Add(this.listBox3);
             this.panel4.Controls.Add(this.splitter7);
             this.panel4.Controls.Add(this.panel7);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel4.Location = new System.Drawing.Point(387, 133);
-            this.panel4.Margin = new System.Windows.Forms.Padding(2);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(188, 368);
-            this.panel4.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.panel4, resources.GetString("panel4.ToolTip"));
             // 
             // listBox3
             // 
-            this.listBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.listBox3, "listBox3");
             this.listBox3.FormattingEnabled = true;
-            this.listBox3.ItemHeight = 12;
-            this.listBox3.Location = new System.Drawing.Point(0, 59);
-            this.listBox3.Margin = new System.Windows.Forms.Padding(2);
             this.listBox3.Name = "listBox3";
             this.listBox3.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBox3.Size = new System.Drawing.Size(188, 309);
-            this.listBox3.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.listBox3, resources.GetString("listBox3.ToolTip"));
             // 
             // splitter7
             // 
-            this.splitter7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter7.Location = new System.Drawing.Point(0, 57);
-            this.splitter7.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.splitter7, "splitter7");
             this.splitter7.Name = "splitter7";
-            this.splitter7.Size = new System.Drawing.Size(188, 2);
-            this.splitter7.TabIndex = 10;
             this.splitter7.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter7, resources.GetString("splitter7.ToolTip"));
             // 
             // panel7
             // 
+            resources.ApplyResources(this.panel7, "panel7");
             this.panel7.Controls.Add(this.button17);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Margin = new System.Windows.Forms.Padding(2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(188, 57);
-            this.panel7.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.panel7, resources.GetString("panel7.ToolTip"));
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(118, 31);
-            this.button17.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button17, "button17");
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(64, 20);
-            this.button17.TabIndex = 2;
-            this.button17.Text = "clear";
+            this.toolTip1.SetToolTip(this.button17, resources.GetString("button17.ToolTip"));
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // splitter4
             // 
-            this.splitter4.Location = new System.Drawing.Point(575, 133);
-            this.splitter4.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.splitter4, "splitter4");
             this.splitter4.Name = "splitter4";
-            this.splitter4.Size = new System.Drawing.Size(8, 368);
-            this.splitter4.TabIndex = 7;
             this.splitter4.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter4, resources.GetString("splitter4.ToolTip"));
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            resources.ApplyResources(this.openFileDialog1, "openFileDialog1");
             // 
             // tabControl1
             // 
+            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.tabControl1.Location = new System.Drawing.Point(583, 133);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(561, 368);
-            this.tabControl1.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.tabControl1, resources.GetString("tabControl1.ToolTip"));
             // 
             // tabPage5
             // 
+            resources.ApplyResources(this.tabPage5, "tabPage5");
             this.tabPage5.Controls.Add(this.panel12);
             this.tabPage5.Controls.Add(this.splitter10);
             this.tabPage5.Controls.Add(this.panel11);
             this.tabPage5.Controls.Add(this.splitter9);
             this.tabPage5.Controls.Add(this.panel10);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(553, 342);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "feature_summary";
+            this.toolTip1.SetToolTip(this.tabPage5, resources.GetString("tabPage5.ToolTip"));
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // panel12
             // 
+            resources.ApplyResources(this.panel12, "panel12");
             this.panel12.Controls.Add(this.panel16);
             this.panel12.Controls.Add(this.splitter12);
             this.panel12.Controls.Add(this.panel15);
-            this.panel12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel12.Location = new System.Drawing.Point(278, 62);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(275, 280);
-            this.panel12.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.panel12, resources.GetString("panel12.ToolTip"));
             // 
             // panel16
             // 
+            resources.ApplyResources(this.panel16, "panel16");
             this.panel16.Controls.Add(this.pictureBox5);
-            this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel16.Location = new System.Drawing.Point(0, 165);
             this.panel16.Name = "panel16";
-            this.panel16.Size = new System.Drawing.Size(275, 115);
-            this.panel16.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.panel16, resources.GetString("panel16.ToolTip"));
             // 
             // pictureBox5
             // 
-            this.pictureBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox5.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.pictureBox5, "pictureBox5");
             this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(275, 115);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox5.TabIndex = 1;
             this.pictureBox5.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox5, resources.GetString("pictureBox5.ToolTip"));
             this.pictureBox5.Click += new System.EventHandler(this.pictureBox5_Click);
             // 
             // splitter12
             // 
-            this.splitter12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter12.Location = new System.Drawing.Point(0, 162);
+            resources.ApplyResources(this.splitter12, "splitter12");
             this.splitter12.Name = "splitter12";
-            this.splitter12.Size = new System.Drawing.Size(275, 3);
-            this.splitter12.TabIndex = 1;
             this.splitter12.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter12, resources.GetString("splitter12.ToolTip"));
             // 
             // panel15
             // 
+            resources.ApplyResources(this.panel15, "panel15");
             this.panel15.Controls.Add(this.pictureBox3);
-            this.panel15.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel15.Location = new System.Drawing.Point(0, 0);
             this.panel15.Name = "panel15";
-            this.panel15.Size = new System.Drawing.Size(275, 162);
-            this.panel15.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.panel15, resources.GetString("panel15.ToolTip"));
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox3.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.pictureBox3, "pictureBox3");
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(275, 162);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 1;
             this.pictureBox3.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox3, resources.GetString("pictureBox3.ToolTip"));
             this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // splitter10
             // 
-            this.splitter10.Location = new System.Drawing.Point(275, 62);
+            resources.ApplyResources(this.splitter10, "splitter10");
             this.splitter10.Name = "splitter10";
-            this.splitter10.Size = new System.Drawing.Size(3, 280);
-            this.splitter10.TabIndex = 3;
             this.splitter10.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter10, resources.GetString("splitter10.ToolTip"));
             // 
             // panel11
             // 
+            resources.ApplyResources(this.panel11, "panel11");
             this.panel11.Controls.Add(this.panel14);
             this.panel11.Controls.Add(this.splitter11);
             this.panel11.Controls.Add(this.panel13);
-            this.panel11.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel11.Location = new System.Drawing.Point(0, 62);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(275, 280);
-            this.panel11.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.panel11, resources.GetString("panel11.ToolTip"));
             // 
             // panel14
             // 
+            resources.ApplyResources(this.panel14, "panel14");
             this.panel14.Controls.Add(this.pictureBox4);
-            this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel14.Location = new System.Drawing.Point(0, 165);
             this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(275, 115);
-            this.panel14.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.panel14, resources.GetString("panel14.ToolTip"));
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox4.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.pictureBox4, "pictureBox4");
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(275, 115);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox4.TabIndex = 1;
             this.pictureBox4.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox4, resources.GetString("pictureBox4.ToolTip"));
             this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // splitter11
             // 
-            this.splitter11.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter11.Location = new System.Drawing.Point(0, 162);
+            resources.ApplyResources(this.splitter11, "splitter11");
             this.splitter11.Name = "splitter11";
-            this.splitter11.Size = new System.Drawing.Size(275, 3);
-            this.splitter11.TabIndex = 1;
             this.splitter11.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter11, resources.GetString("splitter11.ToolTip"));
             // 
             // panel13
             // 
+            resources.ApplyResources(this.panel13, "panel13");
             this.panel13.Controls.Add(this.pictureBox2);
-            this.panel13.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel13.Location = new System.Drawing.Point(0, 0);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(275, 162);
-            this.panel13.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.panel13, resources.GetString("panel13.ToolTip"));
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.pictureBox2, "pictureBox2");
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(275, 162);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox2, resources.GetString("pictureBox2.ToolTip"));
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // splitter9
             // 
-            this.splitter9.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter9.Location = new System.Drawing.Point(0, 59);
+            resources.ApplyResources(this.splitter9, "splitter9");
             this.splitter9.Name = "splitter9";
-            this.splitter9.Size = new System.Drawing.Size(553, 3);
-            this.splitter9.TabIndex = 1;
             this.splitter9.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter9, resources.GetString("splitter9.ToolTip"));
             // 
             // panel10
             // 
+            resources.ApplyResources(this.panel10, "panel10");
             this.panel10.Controls.Add(this.button18);
             this.panel10.Controls.Add(this.button14);
-            this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel10.Location = new System.Drawing.Point(0, 0);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(553, 59);
-            this.panel10.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.panel10, resources.GetString("panel10.ToolTip"));
+            // 
+            // button18
+            // 
+            resources.ApplyResources(this.button18, "button18");
+            this.button18.Name = "button18";
+            this.toolTip1.SetToolTip(this.button18, resources.GetString("button18.ToolTip"));
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // button14
             // 
-            this.button14.Location = new System.Drawing.Point(3, 3);
+            resources.ApplyResources(this.button14, "button14");
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(113, 35);
-            this.button14.TabIndex = 0;
-            this.button14.Text = "execute";
+            this.toolTip1.SetToolTip(this.button14, resources.GetString("button14.ToolTip"));
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // tabPage1
             // 
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.textBox8);
             this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.textBox7);
@@ -904,250 +750,150 @@ namespace pm
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.comboBox4);
             this.tabPage1.Controls.Add(this.checkBox1);
-            this.tabPage1.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage1.Size = new System.Drawing.Size(553, 342);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "input data";
+            this.toolTip1.SetToolTip(this.tabPage1, resources.GetString("tabPage1.ToolTip"));
             this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(358, 91);
-            this.textBox8.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox8, "textBox8");
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(124, 19);
-            this.textBox8.TabIndex = 17;
-            this.textBox8.Text = "3*30*24*60*60";
             this.toolTip1.SetToolTip(this.textBox8, resources.GetString("textBox8.ToolTip"));
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
+            resources.ApplyResources(this.label12, "label12");
             this.label12.ForeColor = System.Drawing.Color.Blue;
-            this.label12.Location = new System.Drawing.Point(233, 94);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(125, 12);
-            this.label12.TabIndex = 16;
-            this.label12.Text = "max_retained_length";
             this.toolTip1.SetToolTip(this.label12, resources.GetString("label12.ToolTip"));
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(99, 91);
-            this.textBox7.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox7, "textBox7");
             this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(124, 19);
-            this.textBox7.TabIndex = 15;
-            this.textBox7.Text = "11*30*24*60*60";
-            this.toolTip1.SetToolTip(this.textBox7, "Specify the maximum amount of historical data required for forecasting. Please ma" +
-        "tch the unit with unit_of_time.");
+            this.toolTip1.SetToolTip(this.textBox7, resources.GetString("textBox7.ToolTip"));
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
+            resources.ApplyResources(this.label11, "label11");
             this.label11.ForeColor = System.Drawing.Color.Blue;
-            this.label11.Location = new System.Drawing.Point(6, 94);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(95, 12);
-            this.label11.TabIndex = 14;
-            this.label11.Text = "max_train_span";
-            this.toolTip1.SetToolTip(this.label11, "Specify the maximum amount of historical data required for forecasting. Please ma" +
-        "tch the unit with unit_of_time.");
+            this.toolTip1.SetToolTip(this.label11, resources.GetString("label11.ToolTip"));
             // 
             // checkBox2
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(8, 138);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.checkBox2, "checkBox2");
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(91, 16);
-            this.checkBox2.TabIndex = 13;
-            this.checkBox2.Text = "use_lowess";
-            this.toolTip1.SetToolTip(this.checkBox2, "smooths the input data using lowess regression");
+            this.toolTip1.SetToolTip(this.checkBox2, resources.GetString("checkBox2.ToolTip"));
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // textBox6
             // 
-            this.textBox6.ForeColor = System.Drawing.Color.Silver;
-            this.textBox6.Location = new System.Drawing.Point(376, 156);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox6, "textBox6");
+            this.textBox6.ForeColor = System.Drawing.Color.Blue;
             this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(124, 19);
-            this.textBox6.TabIndex = 12;
-            this.textBox6.Text = "0";
-            this.toolTip1.SetToolTip(this.textBox6, "Smooth the input data to reduce the data.\r\nWhen using the moving average, specify" +
-        " the window size and amount of movement of the window.\r\nSpecify use_spline to fi" +
-        "t a spline curve and smooth it.");
+            this.toolTip1.SetToolTip(this.textBox6, resources.GetString("textBox6.ToolTip"));
             // 
             // textBox5
             // 
-            this.textBox5.ForeColor = System.Drawing.Color.Silver;
-            this.textBox5.Location = new System.Drawing.Point(104, 156);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox5, "textBox5");
+            this.textBox5.ForeColor = System.Drawing.Color.Blue;
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(124, 19);
-            this.textBox5.TabIndex = 11;
-            this.textBox5.Text = "0";
-            this.toolTip1.SetToolTip(this.textBox5, "Smooth the input data to reduce the data.\r\nWhen using the moving average, specify" +
-        " the window size and amount of movement of the window.\r\nSpecify use_spline to fi" +
-        "t a spline curve and smooth it.");
+            this.toolTip1.SetToolTip(this.textBox5, resources.GetString("textBox5.ToolTip"));
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.Silver;
-            this.label10.Location = new System.Drawing.Point(242, 158);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.ForeColor = System.Drawing.Color.Blue;
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(130, 12);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "smooth_window_slide";
-            this.toolTip1.SetToolTip(this.label10, "Smooth the input data to reduce the data.\r\nWhen using the moving average, specify" +
-        " the window size and amount of movement of the window.\r\nSpecify use_spline to fi" +
-        "t a spline curve and smooth it.");
+            this.toolTip1.SetToolTip(this.label10, resources.GetString("label10.ToolTip"));
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.ForeColor = System.Drawing.Color.Silver;
-            this.label9.Location = new System.Drawing.Point(6, 158);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.ForeColor = System.Drawing.Color.Blue;
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(96, 12);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "smooth_window";
-            this.toolTip1.SetToolTip(this.label9, "Smooth the input data to reduce the data.\r\nWhen using the moving average, specify" +
-        " the window size and amount of movement of the window.\r\nSpecify use_spline to fi" +
-        "t a spline curve and smooth it.");
+            this.toolTip1.SetToolTip(this.label9, resources.GetString("label9.ToolTip"));
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(82, 60);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox4, "textBox4");
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(140, 19);
-            this.textBox4.TabIndex = 8;
-            this.textBox4.Text = "24*60*60";
-            this.toolTip1.SetToolTip(this.textBox4, "Specify the amount of observations per piece of data sent in terms of time. Pleas" +
-        "e match the unit with unit_of_time.");
+            this.toolTip1.SetToolTip(this.textBox4, resources.GetString("textBox4.ToolTip"));
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
+            resources.ApplyResources(this.label8, "label8");
             this.label8.ForeColor = System.Drawing.Color.Blue;
-            this.label8.Location = new System.Drawing.Point(4, 62);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(61, 12);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "one_input";
-            this.toolTip1.SetToolTip(this.label8, "Specify the amount of observations per piece of data sent in terms of time. Pleas" +
-        "e match the unit with unit_of_time.");
+            this.toolTip1.SetToolTip(this.label8, resources.GetString("label8.ToolTip"));
             // 
             // textBox3
             // 
+            resources.ApplyResources(this.textBox3, "textBox3");
             this.textBox3.ForeColor = System.Drawing.Color.Silver;
-            this.textBox3.Location = new System.Drawing.Point(152, 183);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(2);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(124, 19);
-            this.textBox3.TabIndex = 6;
-            this.textBox3.Text = "0";
+            this.toolTip1.SetToolTip(this.textBox3, resources.GetString("textBox3.ToolTip"));
             this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
+            resources.ApplyResources(this.label7, "label7");
             this.label7.ForeColor = System.Drawing.Color.Silver;
-            this.label7.Location = new System.Drawing.Point(6, 186);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(144, 12);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "feature_smooth_window";
+            this.toolTip1.SetToolTip(this.label7, resources.GetString("label7.ToolTip"));
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(338, 24);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox2, "textBox2");
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(144, 19);
-            this.textBox2.TabIndex = 4;
-            this.textBox2.Text = "(1/585936)*60*60*24";
-            this.toolTip1.SetToolTip(this.textBox2, "Time interval for each line of input data. Please specify in units of time (unit_" +
-        "of_time).");
+            this.toolTip1.SetToolTip(this.textBox2, resources.GetString("textBox2.ToolTip"));
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
+            resources.ApplyResources(this.label5, "label5");
             this.label5.ForeColor = System.Drawing.Color.Blue;
-            this.label5.Location = new System.Drawing.Point(237, 26);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(88, 12);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "unit_of_record";
-            this.toolTip1.SetToolTip(this.label5, "Time interval for each line of input data. Please specify in units of time (unit_" +
-        "of_time).");
+            this.toolTip1.SetToolTip(this.label5, resources.GetString("label5.ToolTip"));
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
+            resources.ApplyResources(this.label4, "label4");
             this.label4.ForeColor = System.Drawing.Color.Blue;
-            this.label4.Location = new System.Drawing.Point(4, 27);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(76, 12);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "unit_of_time";
-            this.toolTip1.SetToolTip(this.label4, "unit of observation time of input data");
+            this.toolTip1.SetToolTip(this.label4, resources.GetString("label4.ToolTip"));
             // 
             // comboBox4
             // 
+            resources.ApplyResources(this.comboBox4, "comboBox4");
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Items.AddRange(new object[] {
-            "ms",
-            "sec",
-            "min",
-            "h",
-            "day",
-            "month"});
-            this.comboBox4.Location = new System.Drawing.Point(82, 25);
-            this.comboBox4.Margin = new System.Windows.Forms.Padding(2);
+            resources.GetString("comboBox4.Items"),
+            resources.GetString("comboBox4.Items1"),
+            resources.GetString("comboBox4.Items2"),
+            resources.GetString("comboBox4.Items3"),
+            resources.GetString("comboBox4.Items4"),
+            resources.GetString("comboBox4.Items5")});
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(140, 20);
-            this.comboBox4.TabIndex = 1;
-            this.comboBox4.Text = "sec";
-            this.toolTip1.SetToolTip(this.comboBox4, "unit of observation time of input data");
+            this.toolTip1.SetToolTip(this.comboBox4, resources.GetString("comboBox4.ToolTip"));
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
+            resources.ApplyResources(this.checkBox1, "checkBox1");
             this.checkBox1.ForeColor = System.Drawing.Color.Silver;
-            this.checkBox1.Location = new System.Drawing.Point(100, 138);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(86, 16);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "use_spline";
-            this.toolTip1.SetToolTip(this.checkBox1, "Smooth the input data to reduce the data.\r\nWhen using the moving average, specify" +
-        " the window size and amount of movement of the window.\r\nSpecify use_spline to fi" +
-        "t a spline curve and smooth it.");
+            this.toolTip1.SetToolTip(this.checkBox1, resources.GetString("checkBox1.ToolTip"));
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // tabPage2
             // 
+            resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Controls.Add(this.label28);
+            this.tabPage2.Controls.Add(this.textBox21);
+            this.tabPage2.Controls.Add(this.label27);
             this.tabPage2.Controls.Add(this.textBox20);
             this.tabPage2.Controls.Add(this.label26);
             this.tabPage2.Controls.Add(this.textBox19);
@@ -1170,264 +916,179 @@ namespace pm
             this.tabPage2.Controls.Add(this.label14);
             this.tabPage2.Controls.Add(this.textBox9);
             this.tabPage2.Controls.Add(this.label13);
-            this.tabPage2.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(553, 342);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "After smoothing";
+            this.toolTip1.SetToolTip(this.tabPage2, resources.GetString("tabPage2.ToolTip"));
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label28
+            // 
+            resources.ApplyResources(this.label28, "label28");
+            this.label28.Name = "label28";
+            this.toolTip1.SetToolTip(this.label28, resources.GetString("label28.ToolTip"));
+            // 
+            // textBox21
+            // 
+            resources.ApplyResources(this.textBox21, "textBox21");
+            this.textBox21.Name = "textBox21";
+            this.toolTip1.SetToolTip(this.textBox21, resources.GetString("textBox21.ToolTip"));
+            // 
+            // label27
+            // 
+            resources.ApplyResources(this.label27, "label27");
+            this.label27.ForeColor = System.Drawing.Color.Gray;
+            this.label27.Name = "label27";
+            this.toolTip1.SetToolTip(this.label27, resources.GetString("label27.ToolTip"));
             // 
             // textBox20
             // 
-            this.textBox20.Location = new System.Drawing.Point(108, 126);
-            this.textBox20.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox20, "textBox20");
             this.textBox20.Name = "textBox20";
-            this.textBox20.Size = new System.Drawing.Size(83, 19);
-            this.textBox20.TabIndex = 55;
-            this.textBox20.Text = "0.05";
+            this.toolTip1.SetToolTip(this.textBox20, resources.GetString("textBox20.ToolTip"));
             // 
             // label26
             // 
-            this.label26.AutoSize = true;
+            resources.ApplyResources(this.label26, "label26");
             this.label26.ForeColor = System.Drawing.Color.Blue;
-            this.label26.Location = new System.Drawing.Point(11, 129);
-            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(93, 12);
-            this.label26.TabIndex = 54;
-            this.label26.Text = "smoother_span";
+            this.toolTip1.SetToolTip(this.label26, resources.GetString("label26.ToolTip"));
             // 
             // textBox19
             // 
-            this.textBox19.Location = new System.Drawing.Point(100, 153);
-            this.textBox19.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox19, "textBox19");
             this.textBox19.Name = "textBox19";
-            this.textBox19.Size = new System.Drawing.Size(83, 19);
-            this.textBox19.TabIndex = 53;
-            this.textBox19.Text = "0.075";
+            this.toolTip1.SetToolTip(this.textBox19, resources.GetString("textBox19.ToolTip"));
             // 
             // label25
             // 
-            this.label25.AutoSize = true;
+            resources.ApplyResources(this.label25, "label25");
             this.label25.ForeColor = System.Drawing.Color.Blue;
-            this.label25.Location = new System.Drawing.Point(11, 156);
-            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(66, 12);
-            this.label25.TabIndex = 52;
-            this.label25.Text = "gyap_ratio";
+            this.toolTip1.SetToolTip(this.label25, resources.GetString("label25.ToolTip"));
             // 
             // checkBox3
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Checked = true;
-            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(12, 94);
-            this.checkBox3.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.checkBox3, "checkBox3");
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(91, 16);
-            this.checkBox3.TabIndex = 51;
-            this.checkBox3.Text = "use_lowess";
-            this.toolTip1.SetToolTip(this.checkBox3, "smooths the input data using lowess regression");
+            this.toolTip1.SetToolTip(this.checkBox3, resources.GetString("checkBox3.ToolTip"));
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
             // checkBox4
             // 
-            this.checkBox4.AutoSize = true;
+            resources.ApplyResources(this.checkBox4, "checkBox4");
             this.checkBox4.ForeColor = System.Drawing.Color.Silver;
-            this.checkBox4.Location = new System.Drawing.Point(107, 94);
-            this.checkBox4.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(86, 16);
-            this.checkBox4.TabIndex = 50;
-            this.checkBox4.Text = "use_spline";
-            this.toolTip1.SetToolTip(this.checkBox4, "Smooth the input data to reduce the data.\r\nWhen using the moving average, specify" +
-        " the window size and amount of movement of the window.\r\nSpecify use_spline to fi" +
-        "t a spline curve and smooth it.");
+            this.toolTip1.SetToolTip(this.checkBox4, resources.GetString("checkBox4.ToolTip"));
             this.checkBox4.UseVisualStyleBackColor = true;
             this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
             // textBox16
             // 
-            this.textBox16.Location = new System.Drawing.Point(69, 265);
-            this.textBox16.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox16, "textBox16");
             this.textBox16.Name = "textBox16";
-            this.textBox16.Size = new System.Drawing.Size(124, 19);
-            this.textBox16.TabIndex = 49;
-            this.textBox16.Text = "-1000";
+            this.toolTip1.SetToolTip(this.textBox16, resources.GetString("textBox16.ToolTip"));
             // 
             // label20
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(5, 267);
-            this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            resources.ApplyResources(this.label20, "label20");
+            this.label20.ForeColor = System.Drawing.Color.Gray;
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(61, 12);
-            this.label20.TabIndex = 48;
-            this.label20.Text = "threshold";
+            this.toolTip1.SetToolTip(this.label20, resources.GetString("label20.ToolTip"));
             // 
             // textBox15
             // 
-            this.textBox15.Location = new System.Drawing.Point(115, 232);
-            this.textBox15.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox15, "textBox15");
             this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(124, 19);
-            this.textBox15.TabIndex = 47;
-            this.textBox15.Text = "-60";
             this.toolTip1.SetToolTip(this.textBox15, resources.GetString("textBox15.ToolTip"));
             // 
             // label19
             // 
-            this.label19.AutoSize = true;
+            resources.ApplyResources(this.label19, "label19");
             this.label19.ForeColor = System.Drawing.Color.Gray;
-            this.label19.Location = new System.Drawing.Point(5, 234);
-            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(111, 12);
-            this.label19.TabIndex = 46;
-            this.label19.Text = "monotonicity_num";
             this.toolTip1.SetToolTip(this.label19, resources.GetString("label19.ToolTip"));
             // 
             // textBox14
             // 
-            this.textBox14.Location = new System.Drawing.Point(71, 201);
-            this.textBox14.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox14, "textBox14");
             this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(124, 19);
-            this.textBox14.TabIndex = 45;
-            this.textBox14.Text = "-60";
             this.toolTip1.SetToolTip(this.textBox14, resources.GetString("textBox14.ToolTip"));
             // 
             // label18
             // 
-            this.label18.AutoSize = true;
+            resources.ApplyResources(this.label18, "label18");
             this.label18.ForeColor = System.Drawing.Color.Gray;
-            this.label18.Location = new System.Drawing.Point(5, 204);
-            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(62, 12);
-            this.label18.TabIndex = 44;
-            this.label18.Text = "train_num";
             this.toolTip1.SetToolTip(this.label18, resources.GetString("label18.ToolTip"));
             // 
             // textBox12
             // 
-            this.textBox12.Location = new System.Drawing.Point(383, 64);
-            this.textBox12.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox12, "textBox12");
             this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(124, 19);
-            this.textBox12.TabIndex = 43;
-            this.textBox12.Text = "1";
-            this.toolTip1.SetToolTip(this.textBox12, "Specifies the amount to move the window size when creating data whose feature is " +
-        "the basic statistic of the input data");
+            this.toolTip1.SetToolTip(this.textBox12, resources.GetString("textBox12.ToolTip"));
             // 
             // textBox13
             // 
-            this.textBox13.Location = new System.Drawing.Point(115, 63);
-            this.textBox13.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox13, "textBox13");
             this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(124, 19);
-            this.textBox13.TabIndex = 42;
-            this.textBox13.Text = "12";
+            this.toolTip1.SetToolTip(this.textBox13, resources.GetString("textBox13.ToolTip"));
             // 
             // label16
             // 
-            this.label16.AutoSize = true;
+            resources.ApplyResources(this.label16, "label16");
             this.label16.ForeColor = System.Drawing.Color.Blue;
-            this.label16.Location = new System.Drawing.Point(245, 66);
-            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(137, 12);
-            this.label16.TabIndex = 41;
-            this.label16.Text = "smooth_window_slide2";
-            this.toolTip1.SetToolTip(this.label16, "Specifies the amount to move the window size when creating data whose feature is " +
-        "the basic statistic of the input data");
+            this.toolTip1.SetToolTip(this.label16, resources.GetString("label16.ToolTip"));
             // 
             // label17
             // 
-            this.label17.AutoSize = true;
+            resources.ApplyResources(this.label17, "label17");
             this.label17.ForeColor = System.Drawing.Color.Blue;
-            this.label17.Location = new System.Drawing.Point(9, 66);
-            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(103, 12);
-            this.label17.TabIndex = 40;
-            this.label17.Text = "smooth_window2";
+            this.toolTip1.SetToolTip(this.label17, resources.GetString("label17.ToolTip"));
             // 
             // textBox11
             // 
-            this.textBox11.Location = new System.Drawing.Point(323, 37);
-            this.textBox11.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox11, "textBox11");
             this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(124, 19);
-            this.textBox11.TabIndex = 39;
-            this.textBox11.Text = "24*60*60";
+            this.toolTip1.SetToolTip(this.textBox11, resources.GetString("textBox11.ToolTip"));
             // 
             // label15
             // 
-            this.label15.AutoSize = true;
+            resources.ApplyResources(this.label15, "label15");
             this.label15.ForeColor = System.Drawing.Color.Blue;
-            this.label15.Location = new System.Drawing.Point(226, 40);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(92, 12);
-            this.label15.TabIndex = 38;
-            this.label15.Text = "lookback_slide";
+            this.toolTip1.SetToolTip(this.label15, resources.GetString("label15.ToolTip"));
             // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(79, 34);
-            this.textBox10.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox10, "textBox10");
             this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(124, 19);
-            this.textBox10.TabIndex = 37;
-            this.textBox10.Text = "24*60*60";
-            this.toolTip1.SetToolTip(this.textBox10, "Specify the window size when creating data whose features are the basic statistic" +
-        "s of the input data");
+            this.toolTip1.SetToolTip(this.textBox10, resources.GetString("textBox10.ToolTip"));
             // 
             // label14
             // 
-            this.label14.AutoSize = true;
+            resources.ApplyResources(this.label14, "label14");
             this.label14.ForeColor = System.Drawing.Color.Blue;
-            this.label14.Location = new System.Drawing.Point(9, 37);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(58, 12);
-            this.label14.TabIndex = 36;
-            this.label14.Text = "lookback";
-            this.toolTip1.SetToolTip(this.label14, "Specify the window size when creating data whose features are the basic statistic" +
-        "s of the input data");
+            this.toolTip1.SetToolTip(this.label14, resources.GetString("label14.ToolTip"));
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(100, 9);
-            this.textBox9.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox9, "textBox9");
             this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(124, 19);
-            this.textBox9.TabIndex = 35;
-            this.textBox9.Text = "30";
-            this.toolTip1.SetToolTip(this.textBox9, "Attempts to fit by sampling the specified amount without referencing all of the h" +
-        "istorical data when creating the forecast line.");
+            this.toolTip1.SetToolTip(this.textBox9, resources.GetString("textBox9.ToolTip"));
             // 
             // label13
             // 
-            this.label13.AutoSize = true;
+            resources.ApplyResources(this.label13, "label13");
             this.label13.ForeColor = System.Drawing.Color.Blue;
-            this.label13.Location = new System.Drawing.Point(11, 13);
-            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(87, 12);
-            this.label13.TabIndex = 34;
-            this.label13.Text = "sampling_num";
-            this.toolTip1.SetToolTip(this.label13, "Attempts to fit by sampling the specified amount without referencing all of the h" +
-        "istorical data when creating the forecast line.");
+            this.toolTip1.SetToolTip(this.label13, resources.GetString("label13.ToolTip"));
             // 
             // tabPage3
             // 
+            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Controls.Add(this.label24);
             this.tabPage3.Controls.Add(this.comboBox5);
@@ -1435,195 +1096,134 @@ namespace pm
             this.tabPage3.Controls.Add(this.label22);
             this.tabPage3.Controls.Add(this.textBox17);
             this.tabPage3.Controls.Add(this.label21);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(553, 342);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "prediction";
+            this.toolTip1.SetToolTip(this.tabPage3, resources.GetString("tabPage3.ToolTip"));
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.radioButton4);
             this.groupBox1.Controls.Add(this.radioButton3);
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Location = new System.Drawing.Point(14, 78);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(407, 46);
-            this.groupBox1.TabIndex = 24;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "prediction model";
+            this.toolTip1.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
             // 
             // radioButton4
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(274, 17);
-            this.radioButton4.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.radioButton4, "radioButton4");
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(93, 16);
-            this.radioButton4.TabIndex = 3;
-            this.radioButton4.Text = "use_plophet";
+            this.toolTip1.SetToolTip(this.radioButton4, resources.GetString("radioButton4.ToolTip"));
             this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // radioButton3
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(200, 17);
-            this.radioButton3.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.radioButton3, "radioButton3");
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(68, 16);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.Text = "use_ets";
+            this.toolTip1.SetToolTip(this.radioButton3, resources.GetString("radioButton3.ToolTip"));
             this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // radioButton2
             // 
-            this.radioButton2.AutoSize = true;
+            resources.ApplyResources(this.radioButton2, "radioButton2");
             this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(118, 17);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(82, 16);
-            this.radioButton2.TabIndex = 1;
             this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "use_arima";
+            this.toolTip1.SetToolTip(this.radioButton2, resources.GetString("radioButton2.ToolTip"));
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(6, 17);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.radioButton1, "radioButton1");
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(113, 16);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.Text = "use_auto_arima";
+            this.toolTip1.SetToolTip(this.radioButton1, resources.GetString("radioButton1.ToolTip"));
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // label24
             // 
-            this.label24.AutoSize = true;
+            resources.ApplyResources(this.label24, "label24");
             this.label24.ForeColor = System.Drawing.Color.Blue;
-            this.label24.Location = new System.Drawing.Point(11, 42);
-            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(114, 12);
-            this.label24.TabIndex = 23;
-            this.label24.Text = "forecast_time_unit";
+            this.toolTip1.SetToolTip(this.label24, resources.GetString("label24.ToolTip"));
             // 
             // comboBox5
             // 
+            resources.ApplyResources(this.comboBox5, "comboBox5");
             this.comboBox5.FormattingEnabled = true;
             this.comboBox5.Items.AddRange(new object[] {
-            "ms",
-            "sec",
-            "min",
-            "h",
-            "day",
-            "month"});
-            this.comboBox5.Location = new System.Drawing.Point(130, 39);
-            this.comboBox5.Margin = new System.Windows.Forms.Padding(2);
+            resources.GetString("comboBox5.Items"),
+            resources.GetString("comboBox5.Items1"),
+            resources.GetString("comboBox5.Items2"),
+            resources.GetString("comboBox5.Items3"),
+            resources.GetString("comboBox5.Items4"),
+            resources.GetString("comboBox5.Items5")});
             this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(140, 20);
-            this.comboBox5.TabIndex = 22;
-            this.comboBox5.Text = "day";
+            this.toolTip1.SetToolTip(this.comboBox5, resources.GetString("comboBox5.ToolTip"));
             // 
             // textBox18
             // 
+            resources.ApplyResources(this.textBox18, "textBox18");
             this.textBox18.ForeColor = System.Drawing.Color.Silver;
-            this.textBox18.Location = new System.Drawing.Point(124, 176);
-            this.textBox18.Margin = new System.Windows.Forms.Padding(2);
             this.textBox18.Name = "textBox18";
-            this.textBox18.Size = new System.Drawing.Size(286, 19);
-            this.textBox18.TabIndex = 19;
-            this.textBox18.Text = "max_prediction_length*unit_of_record";
+            this.toolTip1.SetToolTip(this.textBox18, resources.GetString("textBox18.ToolTip"));
             // 
             // label22
             // 
-            this.label22.AutoSize = true;
+            resources.ApplyResources(this.label22, "label22");
             this.label22.ForeColor = System.Drawing.Color.Silver;
-            this.label22.Location = new System.Drawing.Point(12, 178);
-            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(100, 12);
-            this.label22.TabIndex = 18;
-            this.label22.Text = "failure_time_init";
+            this.toolTip1.SetToolTip(this.label22, resources.GetString("label22.ToolTip"));
             // 
             // textBox17
             // 
-            this.textBox17.Location = new System.Drawing.Point(146, 7);
-            this.textBox17.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.textBox17, "textBox17");
             this.textBox17.Name = "textBox17";
-            this.textBox17.Size = new System.Drawing.Size(124, 19);
-            this.textBox17.TabIndex = 17;
-            this.textBox17.Text = "30*2";
-            this.toolTip1.SetToolTip(this.textBox17, "Specifies the number of points to predict the future from the last observed point" +
-        ".");
+            this.toolTip1.SetToolTip(this.textBox17, resources.GetString("textBox17.ToolTip"));
             // 
             // label21
             // 
-            this.label21.AutoSize = true;
+            resources.ApplyResources(this.label21, "label21");
             this.label21.ForeColor = System.Drawing.Color.Blue;
-            this.label21.Location = new System.Drawing.Point(11, 10);
-            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(136, 12);
-            this.label21.TabIndex = 16;
-            this.label21.Text = "max_prediction_length";
-            this.toolTip1.SetToolTip(this.label21, "Specifies the number of points to predict the future from the last observed point" +
-        ".");
+            this.toolTip1.SetToolTip(this.label21, resources.GetString("label21.ToolTip"));
             // 
             // tabPage4
             // 
+            resources.ApplyResources(this.tabPage4, "tabPage4");
             this.tabPage4.Controls.Add(this.panel9);
             this.tabPage4.Controls.Add(this.splitter8);
             this.tabPage4.Controls.Add(this.panel8);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(553, 342);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "monitoring";
+            this.toolTip1.SetToolTip(this.tabPage4, resources.GetString("tabPage4.ToolTip"));
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // panel9
             // 
+            resources.ApplyResources(this.panel9, "panel9");
             this.panel9.Controls.Add(this.pictureBox1);
-            this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel9.Location = new System.Drawing.Point(0, 119);
-            this.panel9.Margin = new System.Windows.Forms.Padding(2);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(553, 223);
-            this.panel9.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.panel9, resources.GetString("panel9.ToolTip"));
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(553, 223);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // splitter8
             // 
-            this.splitter8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter8.Location = new System.Drawing.Point(0, 117);
-            this.splitter8.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.splitter8, "splitter8");
             this.splitter8.Name = "splitter8";
-            this.splitter8.Size = new System.Drawing.Size(553, 2);
-            this.splitter8.TabIndex = 1;
             this.splitter8.TabStop = false;
+            this.toolTip1.SetToolTip(this.splitter8, resources.GetString("splitter8.ToolTip"));
             // 
             // panel8
             // 
+            resources.ApplyResources(this.panel8, "panel8");
             this.panel8.Controls.Add(this.button11);
             this.panel8.Controls.Add(this.button12);
             this.panel8.Controls.Add(this.button9);
@@ -1633,115 +1233,83 @@ namespace pm
             this.panel8.Controls.Add(this.numericUpDown1);
             this.panel8.Controls.Add(this.trackBar1);
             this.panel8.Controls.Add(this.button6);
-            this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel8.Location = new System.Drawing.Point(0, 0);
-            this.panel8.Margin = new System.Windows.Forms.Padding(2);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(553, 117);
-            this.panel8.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.panel8, resources.GetString("panel8.ToolTip"));
             // 
             // button11
             // 
-            this.button11.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button11.Location = new System.Drawing.Point(393, 46);
+            resources.ApplyResources(this.button11, "button11");
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(75, 31);
-            this.button11.TabIndex = 10;
-            this.button11.Text = "stop";
+            this.toolTip1.SetToolTip(this.button11, resources.GetString("button11.ToolTip"));
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button12
             // 
-            this.button12.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button12.Location = new System.Drawing.Point(393, 5);
+            resources.ApplyResources(this.button12, "button12");
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(75, 34);
-            this.button12.TabIndex = 9;
-            this.button12.Text = "animation";
+            this.toolTip1.SetToolTip(this.button12, resources.GetString("button12.ToolTip"));
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // button9
             // 
-            this.button9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button9.Location = new System.Drawing.Point(103, 39);
+            resources.ApplyResources(this.button9, "button9");
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(42, 27);
-            this.button9.TabIndex = 6;
-            this.button9.Text = "->";
+            this.toolTip1.SetToolTip(this.button9, resources.GetString("button9.ToolTip"));
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button10
             // 
-            this.button10.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button10.Location = new System.Drawing.Point(55, 38);
+            resources.ApplyResources(this.button10, "button10");
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(42, 28);
-            this.button10.TabIndex = 5;
-            this.button10.Text = "<-";
+            this.toolTip1.SetToolTip(this.button10, resources.GetString("button10.ToolTip"));
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(158, 39);
-            this.button8.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button8, "button8");
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(56, 27);
-            this.button8.TabIndex = 4;
-            this.button8.Text = "end";
+            this.toolTip1.SetToolTip(this.button8, resources.GetString("button8.ToolTip"));
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(1, 38);
-            this.button7.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button7, "button7");
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(49, 28);
-            this.button7.TabIndex = 3;
-            this.button7.Text = "top";
+            this.toolTip1.SetToolTip(this.button7, resources.GetString("button7.ToolTip"));
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(473, 5);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.numericUpDown1, "numericUpDown1");
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(76, 19);
-            this.numericUpDown1.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.numericUpDown1, resources.GetString("numericUpDown1.ToolTip"));
             // 
             // trackBar1
             // 
-            this.trackBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.trackBar1.Location = new System.Drawing.Point(0, 72);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.trackBar1, "trackBar1");
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(553, 45);
-            this.trackBar1.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.trackBar1, resources.GetString("trackBar1.ToolTip"));
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(2, 2);
-            this.button6.Margin = new System.Windows.Forms.Padding(2);
+            resources.ApplyResources(this.button6, "button6");
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(164, 30);
-            this.button6.TabIndex = 0;
-            this.button6.Text = "start";
+            this.toolTip1.SetToolTip(this.button6, resources.GetString("button6.ToolTip"));
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // tabPage6
             // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            resources.ApplyResources(this.tabPage6, "tabPage6");
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(553, 342);
-            this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "tabPage6";
+            this.toolTip1.SetToolTip(this.tabPage6, resources.GetString("tabPage6.ToolTip"));
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // toolTip1
@@ -1755,21 +1323,10 @@ namespace pm
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // button18
-            // 
-            this.button18.Location = new System.Drawing.Point(122, 3);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(113, 35);
-            this.button18.TabIndex = 1;
-            this.button18.Text = "Feature Discovery";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1144, 501);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.splitter4);
             this.Controls.Add(this.panel4);
@@ -1779,9 +1336,8 @@ namespace pm
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "pm";
+            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.panel1.ResumeLayout(false);
             this.panel18.ResumeLayout(false);
             this.panel18.PerformLayout();
@@ -1967,6 +1523,11 @@ namespace pm
         private System.Windows.Forms.TextBox textBox20;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox textBox21;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.ComboBox comboBox6;
     }
 }
 
