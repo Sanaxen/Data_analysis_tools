@@ -118,7 +118,8 @@ namespace pm
 
         void save()
         {
-            string file = base_dir +"\\pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
+            string file = csv_dir + "\\pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
+            
             try
             {
                 using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
@@ -273,7 +274,8 @@ namespace pm
         }
         void load(string setting_file)
         {
-            string file = base_dir+"\\pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
+            string file = csv_dir + "\\pm_setting_" + base_name0 + string.Format("{0}", output_idx) + ".txt";
+
             if (setting_file == "")
             {
                 if (base_name0 == "")
@@ -1374,6 +1376,61 @@ namespace pm
             cmd += "copy /B \"%data%\\*.csv\" %serv% /v /y\r\n";
 
             string file = base_dir+"\\" + base_name0 + "_IoT_Emulator.bat";
+            try
+            {
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
+                {
+                    sw.Write(cmd + "\n");
+                }
+            }
+            catch
+            {
+                status = -1;
+                if (MessageBox.Show("Cannot write in " + file, "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return;
+            }
+
+            cmd = "";
+            cmd += ".libPaths(c('" + RlibPath + "',.libPaths()))\r\n";
+            cmd += "library(data.table)\r\n";
+            cmd += "source('./src/csv_division.r')\r\n";
+            cmd += "file = \"";
+            cmd += csv_file.Replace("\\", "/");
+            cmd += "\"\r\n";
+            cmd += "size =" + textBox4.Text +"\r\n";
+            cmd += "csv_division(file, size)\r\n";
+
+
+            file = base_dir + "\\" + base_name0 + "_Emulator.r";
+            try
+            {
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
+                {
+                    sw.Write(cmd + "\n");
+                }
+            }
+            catch
+            {
+                status = -1;
+                if (MessageBox.Show("Cannot write in " + file, "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    return;
+            }
+
+            cmd = "";
+            cmd += "call init.bat\r\n";
+            cmd += ":call ..\\..\\setup_ini.bat\r\n";
+            cmd += "\r\n";
+            cmd += "set  R_LIBS_USER=.\\library\r\n";
+            cmd += "\r\n";
+            cmd += "\r\n";
+            cmd += "cd %~dp0\r\n";
+            cmd += "\r\n";
+            cmd += "\r\n";
+            cmd += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla "+ "\"" + file + "\"\r\n";
+
+
+            file = base_dir + "\\" + base_name0 + "_Emulator.bat";
+
             try
             {
                 using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding(comboBox1.Text)))
