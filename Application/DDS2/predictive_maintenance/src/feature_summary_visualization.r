@@ -511,6 +511,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				}else
 				{
 					monotonicity_value <- monotonicity(feature_df[,i], length(feature_df[,i]), eps = 0.0)
+					monotonicity_value1 = monotonicity_value
 				}
 				monotonicity_value_sigin = 0
 				if ( monotonicity_value1 < 0 )
@@ -548,9 +549,9 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 					  geom_line(linewidth =1.0)+
 					  geom_line(aes(x = time_index, y = z*monotonicity_value_sigin),linewidth =1.2, color ="red")
 					  
-					p2 <- df2 %>% 
-					  ggplot(aes(x = time_index, y = df2[,col]))+
-					  geom_line(linewidth =1.0, color ="gray")+ ggtitle(colnames(feature_df)[i])
+					#p2 <- df2 %>% 
+					#  ggplot(aes(x = time_index, y = df2[,col]))+
+					#  geom_line(linewidth =1.0, color ="gray")+ ggtitle(colnames(feature_df)[i])
 				}
 			
 				if ( length(maintenance_flag_time_index) >= 1 )
@@ -583,6 +584,9 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				if (!is.null(p2))
 				{
 					p <- gridExtra::grid.arrange(p1, p2, nrow = 2)
+				}else
+				{
+					p <- p1
 				}
 				ggsave(filename=filename, p, limitsize=F, width = 16, height = 9)
 				plot(p)

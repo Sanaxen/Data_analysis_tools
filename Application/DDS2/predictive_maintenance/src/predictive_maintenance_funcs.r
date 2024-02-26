@@ -682,14 +682,16 @@ moving_average_sub <- function(sampling=TRUE, col_name, df2, ff = NULL, lookback
 	
 		dd <- d[(j-lookback+1):j]
     
+    	f <- NULL
     	if ( i == maintenance_index )
     	{
     		f <- ifelse(length(dd[dd==1]) > 0,  data.frame(c(1),nrow=1), data.frame(c(0),nrow=1))
     	}
     	if ( i == time_index )
     	{
-    		f <- ifelse(exist_timeStamp, as.character(f[,1]), data.frame(c(dd[lookback]),nrow=1))
-    	}else
+    		f <- ifelse(exist_timeStamp, as.character(dd[lookback]), data.frame(c(dd[lookback]),nrow=1))
+    	}
+    	if ( is.null(f))
     	{
     		mean <- ifelse(sampling, dd[sample(1:length(dd), size = 1)], mean(dd, na.rm = TRUE))
 			f <- data.frame(matrix(c(mean),nrow=1))
