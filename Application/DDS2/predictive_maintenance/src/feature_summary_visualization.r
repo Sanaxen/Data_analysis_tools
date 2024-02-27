@@ -554,12 +554,15 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 					#  geom_line(linewidth =1.0, color ="gray")+ ggtitle(colnames(feature_df)[i])
 				}
 			
-				if ( length(maintenance_flag_time_index) >= 1 )
+				if ( length(maintenance_flag_time_index) >= 1 && maintenance_flag_time_index > 0)
 				{
 					for ( s in 1:length(maintenance_flag_time_index))
 					{
 						p1 <- p1 + geom_vline(xintercept =  maintenance_flag_time_index[s],linewidth =1.0, color ="#191970")
 					}
+				}else
+				{
+						p1 <- p1 + geom_vline(xintercept =  feature_df$time_index[nrow(feature_df)-1],linewidth =1.0, color ="#191970")
 				}
 
 				p1 <- p1 + ylab(colnames(feature_df)[i])+ ggtitle(ylable)
