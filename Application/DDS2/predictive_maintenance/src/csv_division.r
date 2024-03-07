@@ -1,5 +1,5 @@
 curdir = getwd()
-.libPaths(c('C:/Users/neutral3d/Desktop/predictive_maintenance/app/dds2/library',.libPaths()))
+.libPaths(c('library',.libPaths()))
 library(data.table)
 
 
@@ -97,9 +97,4 @@ csv_division <- function(csv, size)
 	return(1)
 }
 
-
-#file = "aisin3/aisin3.csv"
-#size = 3000
-
-#csv_division(file, size)
 
