@@ -1958,6 +1958,8 @@ namespace pm
             bat += "copy \"" + param_base + "\" work\\parameters.r /v /y\r\n";
             bat += "\r\n";
             bat += "cd %~dp0\r\n";
+            bat += "set curdir=%~dp0\r\n";
+            bat += "cd %curdir%\r\n";
             bat += "\r\n";
             bat += "del /Q images\\*.png\r\n";
             bat += "del /Q images\\*.r\r\n";
@@ -1965,6 +1967,14 @@ namespace pm
             bat += "\r\n";
             bat += "\"%R_INSTALL_PATH%\\bin\\x64\\Rscript.exe\" --vanilla \"" + feat_visualize_base + "\"\r\n";
 
+            if (!summary)
+            {
+                bat += "\r\n";
+                bat += "cd bin\r\n";
+                bat += "yolov3bat.exe ..\\images\r\n";
+                bat += "yolov3_feature_discovery.exe ..\\images\r\n";
+                bat += "cd %curdir%\r\n";
+            }
 
             string batfile = base_dir+"\\" + base_name0 + "_feature_summary_visualization.bat";
             if (!summary)
