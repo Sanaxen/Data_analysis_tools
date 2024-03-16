@@ -1,5 +1,5 @@
 curdir = getwd()
-.libPaths(c('library',.libPaths()))
+.libPaths(c('C:/Users/neutral3d/Desktop/predictive_maintenance/app/dds2/library',.libPaths()))
 library(data.table)
 
 
@@ -83,8 +83,13 @@ csv_division <- function(csv, size)
 		cat("timeout /T %sleep%\n")
 		
 		#print(sprintf("%d->%d nrow:%d", ((i-1)*one_input+1), (i*one_input), nrow(df2)))
-		write.csv(df2, file, row.names = F)
-		
+		if ( csv_encoding == "sjis" )
+		{
+			write.csv(df2, file, row.names = F, fileEncoding  = 'Shift_JIS')
+		}else
+		{
+			write.csv(df2, file, row.names = F, fileEncoding  = 'cp932')
+		}
 		s = e + 1
 		if ( e == nrow(df))
 		{
@@ -97,4 +102,9 @@ csv_division <- function(csv, size)
 	return(1)
 }
 
+
+#file = "aisin3/aisin3.csv"
+#size = 3000
+
+#csv_division(file, size)
 

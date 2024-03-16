@@ -257,7 +257,8 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 		start <- Sys.time()
 
 		lookback <<- lookback_list[iii]
-		lookback_slide <<- as.integer(lookback/4)
+		#lookback_slide <<- as.integer(lookback/4)
+		lookback_slide <<- as.integer(lookback*0.16)
 		
 	
 		print(sprintf("%d lookback:%d lookback_slide:%d", iii, lookback, lookback_slide))
@@ -593,6 +594,8 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				}
 				ggsave(filename=filename, p, limitsize=F, width = 16, height = 9)
 				plot(p)
+	
+				threshold_target = max(feature_df[,i]*monotonicity_value_sigin)-0.05*(max(feature_df[,i]*monotonicity_value_sigin)-min(feature_df[,i]*monotonicity_value_sigin))
 				
 				sink(filename_r)
 				cat(sprintf("lookback = %d\n", lookback))
@@ -603,6 +606,8 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				cat(sprintf("smooth_window_slide2 = %d\n", smooth_window_slide2))
 				cat(sprintf("smoother_span = %f\n", smoother_span_list[kkk]))
 				cat(sprintf("sigin = %s\n", monotonicity_value_sigin))
+				
+				cat(sprintf("threshold_target = %f\n", threshold_target))
 				sink()
 				
 				rowm <- data.frame(

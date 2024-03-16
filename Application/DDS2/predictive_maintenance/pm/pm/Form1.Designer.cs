@@ -43,6 +43,7 @@ namespace pm
             this.splitter13 = new System.Windows.Forms.Splitter();
             this.panel19 = new System.Windows.Forms.Panel();
             this.panel20 = new System.Windows.Forms.Panel();
+            this.button20 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.panel21 = new System.Windows.Forms.Panel();
@@ -308,11 +309,20 @@ namespace pm
             // panel20
             // 
             resources.ApplyResources(this.panel20, "panel20");
+            this.panel20.Controls.Add(this.button20);
             this.panel20.Controls.Add(this.button15);
             this.panel20.Controls.Add(this.button16);
             this.panel20.Controls.Add(this.panel21);
             this.panel20.Name = "panel20";
             this.toolTip1.SetToolTip(this.panel20, resources.GetString("panel20.ToolTip"));
+            // 
+            // button20
+            // 
+            resources.ApplyResources(this.button20, "button20");
+            this.button20.Name = "button20";
+            this.toolTip1.SetToolTip(this.button20, resources.GetString("button20.ToolTip"));
+            this.button20.UseVisualStyleBackColor = true;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
             // button15
             // 
@@ -1528,6 +1538,7 @@ namespace pm
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.Button button20;
     }
 }
 

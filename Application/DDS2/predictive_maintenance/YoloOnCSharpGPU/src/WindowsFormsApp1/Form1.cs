@@ -125,6 +125,7 @@ namespace WindowsFormsApp1
             listBox1.Items.Clear();
             listBox2.Items.Clear();
             listBox3.Items.Clear();
+            listBox4.Items.Clear();
             int n = 0;
             int N = csv2.Count;
             trackBar1.Maximum = N;
@@ -160,6 +161,7 @@ namespace WindowsFormsApp1
                 string fileName = csv2[k].filename_r;
                 double Confidence = csv2[k].Confidence;
                 double monotonicity = csv2[k].monotonicity;
+                double ymax = csv2[k].max;
                 if (Math.Abs(csv2[k].monotonicity) < 0.2) continue;
 
                 for (int i = 0; i < csv.Count; i++)
@@ -170,6 +172,7 @@ namespace WindowsFormsApp1
                         listBox1.Items.Add(path+"\\"+fileName.Replace("\"","") + ".png");
                         listBox2.Items.Add(Confidence.ToString()+"% : " +csv2[k].Type);
                         listBox3.Items.Add("monotonicity:"+monotonicity.ToString());
+                        listBox4.Items.Add("ymax:" + ymax.ToString());
                         pictureBox1.Image = CreateImage(path + "\\" + fileName.Replace("\"", "")+".png");
 
                         string t = path + "\\" + fileName.Replace("\"", "")+".r";
@@ -180,6 +183,7 @@ namespace WindowsFormsApp1
                         textBox1.Text = "#"+tmp[1] + "\r\n";
                         textBox1.Text += "#" + Confidence.ToString() + "% : " + csv2[k].Type + "\r\n";
                         textBox1.Text += "#monotonicity:" + monotonicity.ToString() + "\r\n\r\n"; ;
+                        textBox1.Text += "#ymax:" + ymax.ToString() + "\r\n\r\n"; ;
                         using (StreamReader sr = new StreamReader(t))
                         {
                             textBox1.Text += sr.ReadToEnd();
@@ -209,6 +213,7 @@ namespace WindowsFormsApp1
                 textBox1.Text = "#" + tmp[1] + "\r\n";
                 textBox1.Text += "#" + listBox2.Items[trackBar1.Value].ToString() + "\r\n";
                 textBox1.Text += "#" + listBox3.Items[trackBar1.Value].ToString() + "\r\n\r\n";
+                textBox1.Text += "#" + listBox4.Items[trackBar1.Value].ToString() + "\r\n\r\n";
                 using (StreamReader sr = new StreamReader(t))
                 {
                     textBox1.Text += sr.ReadToEnd();
@@ -227,6 +232,85 @@ namespace WindowsFormsApp1
         {
             trackBar1.Value = Math.Min(trackBar1.Maximum, trackBar1.Value + 1);
             trackBar1_Scroll(sender, e);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (trackBar1.Value < listBox1.Items.Count)
+            {
+                string filePath = listBox1.Items[trackBar1.Value].ToString();
+                pictureBox1.Image = CreateImage(filePath);
+                pictureBox1.Refresh();
+
+                string t = System.IO.Path.ChangeExtension(filePath, ".r");
+
+                string[] delimiter = { " = " };
+
+                string file = "feature_discovery_output.txt";
+                using (System.IO.StreamWriter sw = new StreamWriter(file, false, System.Text.Encoding.GetEncoding("shift_jis")))
+                {
+                    string[] delimiter2 = { "_feature" };
+                    string[] tmp2 = filePath.Replace(".png", "").Split(delimiter2, StringSplitOptions.RemoveEmptyEntries);
+                    sw.Write(tmp2[1].Replace("(", "").Replace(")", "")+"\n");
+
+                    using (StreamReader sr = new StreamReader(t))
+                    {
+                        while (true)
+                        {
+                            string line = sr.ReadLine();
+                            if (line == null) break;
+
+                            if (line.Contains("lookback = "))
+                            {
+                                string[] tmp = line.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                sw.Write("textBox10," + tmp[1].Replace("\r\n", "") + "\n");
+                            }
+                            if (line.Contains("lookback_slide = "))
+                            {
+                                string[] tmp = line.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                sw.Write("textBox11," + tmp[1].Replace("\r\n", "") + "\n");
+                            }
+                            if (line.Contains("smooth_window = "))
+                            {
+                                string[] tmp = line.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                sw.Write("textBox5," + tmp[1].Replace("\r\n", "") + "\n");
+                            }
+                            if (line.Contains("smooth_window_slide = "))
+                            {
+                                string[] tmp = line.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                sw.Write("textBox6," + tmp[1].Replace("\r\n", "") + "\n");
+                            }
+                            if (line.Contains("smooth_window2 = "))
+                            {
+                                string[] tmp = line.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                sw.Write("textBox13," + tmp[1].Replace("\r\n", "") + "\n");
+                            }
+                            if (line.Contains("smooth_window_slide2 = "))
+                            {
+                                string[] tmp = line.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                sw.Write("textBox12," + tmp[1].Replace("\r\n", "") + "\n");
+                            }
+                            if (line.Contains("threshold_target = "))
+                            {
+                                string[] tmp = line.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                sw.Write("textBox21," + tmp[1].Replace("\r\n", "") + "\n");
+                            }
+                            // .Text
+                            if (line.Contains("sigin = "))
+                            {
+                                string[] tmp = line.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                if (int.Parse(tmp[1].Replace("\r\n", "")) > 0)
+                                {
+                                    sw.Write("comboBox3,+\n");
+                                } else
+                                {
+                                    sw.Write("comboBox3,-\n");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

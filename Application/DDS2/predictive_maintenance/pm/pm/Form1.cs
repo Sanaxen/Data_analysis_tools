@@ -1450,6 +1450,14 @@ namespace pm
         {
             if (listBox3.SelectedIndices.Count < 2)
             {
+                if ( comboBox6.Text == "ja-JP")
+                {
+                    MessageBox.Show("追跡する特徴量を２個追加してください.");
+                }else
+                {
+                    MessageBox.Show("Please add two features to track.");
+
+                }
                 status = -1;
                 return;
             }
@@ -1971,8 +1979,11 @@ namespace pm
             {
                 bat += "\r\n";
                 bat += "cd bin\r\n";
+                bat += "del feature_discovery_output.txt\r\n";
                 bat += "yolov3bat.exe ..\\images\r\n";
                 bat += "yolov3_feature_discovery.exe ..\\images\r\n";
+                bat += "\r\n";
+                bat += "copy feature_discovery_output.txt " + "\"" + csv_dir + "\" /v /y\r\n";
                 bat += "cd %curdir%\r\n";
             }
 
@@ -2169,6 +2180,99 @@ namespace pm
                 if (!LanguageChangeMessageOff)MessageBox.Show("Settings will take effect from the next startup");
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(comboBox6.Text);
             }
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            load_feature_discovery_output("");
+        }
+        private void load_feature_discovery_output(string setting_file)
+        {
+            //
+            string file = csv_dir+"\\feature_discovery_output.txt";
+
+            if (setting_file == "")
+            {
+                if (base_name0 == "")
+                {
+                    status = -1;
+                    MessageBox.Show("input csv file !");
+                    return;
+                }
+                if (!File.Exists(file)) save();
+
+                if (!File.Exists(file))
+                {
+                    MessageBox.Show("file not found[" + file + ".txt]");
+                }
+                listBox3.Items.Clear();
+            }
+            else
+            {
+                file = setting_file;
+            }
+
+
+            System.IO.StreamReader sr = new System.IO.StreamReader(file, Encoding.GetEncoding("SHIFT_JIS"));
+            if (sr != null)
+            {
+                while (sr.EndOfStream == false)
+                {
+                    string s = sr.ReadLine();
+
+                    listBox3.Items.Add(s.Replace("\n", ""));
+                    listBox3.SetSelected(0, true);
+
+                    while (sr.EndOfStream == false)
+                    {
+                        s = sr.ReadLine();
+                        var ss = s.Split(',');
+
+
+                        if (ss[0].IndexOf("textBox5") >= 0)
+                        {
+                            textBox5.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox6") >= 0)
+                        {
+                            textBox6.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox10") >= 0)
+                        {
+                            textBox10.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox11") >= 0)
+                        {
+                            textBox11.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox12") >= 0)
+                        {
+                            textBox12.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox13") >= 0)
+                        {
+                            textBox13.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("textBox21") >= 0)
+                        {
+                            textBox21.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                        if (ss[0].IndexOf("comboBox3") >= 0)
+                        {
+                            comboBox3.Text = ss[1].Replace("\r\n", "");
+                            continue;
+                        }
+                    }
+                }
+            }
+            if (sr != null) sr.Close();
         }
     }
 }
