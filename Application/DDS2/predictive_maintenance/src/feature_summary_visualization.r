@@ -160,7 +160,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 		if ( w >= 5 )
 		{
 			smooth_window <<- as.integer(w)
-			smooth_window_slide <<-  max(1,as.integer(smooth_window/20))
+			smooth_window_slide <<-  max(1,as.integer(smooth_window/25))
 			print(sprintf("moving_average smooth_window=%d smooth_window_slide=%d", smooth_window, smooth_window_slide))
 			flush.console()
 			N=nrow(df)
@@ -257,8 +257,8 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 		start <- Sys.time()
 
 		lookback <<- lookback_list[iii]
-		#lookback_slide <<- as.integer(lookback/4)
-		lookback_slide <<- as.integer(lookback*0.16)
+		lookback_slide <<- as.integer(lookback/4)
+		#lookback_slide <<- as.integer(lookback*0.16)
 		
 	
 		print(sprintf("%d lookback:%d lookback_slide:%d", iii, lookback, lookback_slide))
