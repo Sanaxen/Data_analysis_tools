@@ -117,8 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tabPage6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>553, 342</value>
+  <data name="label18.ToolTip" xml:space="preserve">
+    <value>Specifies the amount of historical data to use to create the forecast line. 
+Negative values use all past data.
+ A positive value truncates past data and uses only historical data to construct the forecast line
+Negative and positive values ​​mean absolute value and minimum number of points required.</value>
   </data>
 </root>

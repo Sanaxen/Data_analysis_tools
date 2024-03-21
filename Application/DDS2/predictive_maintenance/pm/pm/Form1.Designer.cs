@@ -95,6 +95,7 @@ namespace pm
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.splitter9 = new System.Windows.Forms.Splitter();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.button21 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -718,10 +719,19 @@ namespace pm
             // panel10
             // 
             resources.ApplyResources(this.panel10, "panel10");
+            this.panel10.Controls.Add(this.button21);
             this.panel10.Controls.Add(this.button18);
             this.panel10.Controls.Add(this.button14);
             this.panel10.Name = "panel10";
             this.toolTip1.SetToolTip(this.panel10, resources.GetString("panel10.ToolTip"));
+            // 
+            // button21
+            // 
+            resources.ApplyResources(this.button21, "button21");
+            this.button21.Name = "button21";
+            this.toolTip1.SetToolTip(this.button21, resources.GetString("button21.ToolTip"));
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
             // 
             // button18
             // 
@@ -1539,6 +1549,7 @@ namespace pm
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.ComboBox comboBox6;
         private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Button button21;
     }
 }
 

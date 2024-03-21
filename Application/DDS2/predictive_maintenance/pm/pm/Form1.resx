@@ -139,6 +139,9 @@
   <data name="&gt;&gt;label22.Name" xml:space="preserve">
     <value>label22</value>
   </data>
+  <data name="&gt;&gt;button20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="groupBox1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -179,8 +182,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;splitter4.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;button15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 156</value>
   </data>
   <data name="&gt;&gt;label23.Name" xml:space="preserve">
     <value>label23</value>
@@ -218,6 +221,9 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="panel5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
+  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
   <data name="button12.Location" type="System.Drawing.Point, System.Drawing">
     <value>393, 5</value>
   </data>
@@ -240,6 +246,9 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="button6.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="tabPage5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>553, 342</value>
+  </data>
   <data name="panel18.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -261,11 +270,17 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;radioButton2.Name" xml:space="preserve">
     <value>radioButton2</value>
   </data>
+  <data name="textBox19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 19</value>
+  </data>
   <data name="&gt;&gt;numericUpDown1.Name" xml:space="preserve">
     <value>numericUpDown1</value>
   </data>
   <data name="&gt;&gt;splitter13.Type" xml:space="preserve">
     <value>System.Windows.Forms.Splitter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="splitter11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 162</value>
   </data>
   <data name="&gt;&gt;textBox19.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -276,9 +291,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="label2.Text" xml:space="preserve">
     <value>sigin</value>
   </data>
-  <data name="&gt;&gt;textBox20.Name" xml:space="preserve">
-    <value>textBox20</value>
-  </data>
   <data name="&gt;&gt;textBox21.Parent" xml:space="preserve">
     <value>tabPage2</value>
   </data>
@@ -288,8 +300,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;textBox21.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="textBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>338, 24</value>
   </data>
   <data name="&gt;&gt;radioButton3.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -300,8 +312,11 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="tabPage2.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;button13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label28.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitter8.Name" xml:space="preserve">
+    <value>splitter8</value>
   </data>
   <data name="&gt;&gt;label20.Parent" xml:space="preserve">
     <value>tabPage2</value>
@@ -317,9 +332,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   </data>
   <data name="&gt;&gt;textBox9.Name" xml:space="preserve">
     <value>textBox9</value>
-  </data>
-  <data name="textBox11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
   </data>
   <data name="&gt;&gt;comboBox3.Parent" xml:space="preserve">
     <value>panel18</value>
@@ -351,6 +363,9 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;label21.Parent" xml:space="preserve">
     <value>tabPage3</value>
   </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
   <data name="checkBox1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -378,14 +393,14 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;checkBox4.Parent" xml:space="preserve">
     <value>tabPage2</value>
   </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
   <data name="tabPage1.Text" xml:space="preserve">
     <value>input data</value>
   </data>
   <data name="&gt;&gt;panel2.Name" xml:space="preserve">
     <value>panel2</value>
-  </data>
-  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 12</value>
   </data>
   <data name="label17.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -414,8 +429,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;textBox5.Parent" xml:space="preserve">
     <value>tabPage1</value>
   </data>
-  <data name="checkBox3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="textBox16.Text" xml:space="preserve">
+    <value>-1000</value>
   </data>
   <data name="&gt;&gt;textBox18.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -513,14 +528,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="button4.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
   <data name="numericUpDown1.Location" type="System.Drawing.Point, System.Drawing">
     <value>473, 5</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>407, 46</value>
   </data>
   <data name="&gt;&gt;label23.Parent" xml:space="preserve">
     <value>panel6</value>
@@ -552,9 +561,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="panel11.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>
   </data>
-  <data name="textBox16.Text" xml:space="preserve">
-    <value>-1000</value>
-  </data>
   <data name="&gt;&gt;textBox7.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -572,6 +578,12 @@ but it has the meaning of informing that the amount of data needs to be larger t
   </data>
   <data name="&gt;&gt;panel10.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="&gt;&gt;button6.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="textBox9.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="&gt;&gt;label28.Parent" xml:space="preserve">
     <value>tabPage2</value>
@@ -612,8 +624,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;button20.Parent" xml:space="preserve">
     <value>panel20</value>
   </data>
-  <data name="&gt;&gt;button14.Parent" xml:space="preserve">
-    <value>panel10</value>
+  <data name="textBox10.ToolTip" xml:space="preserve">
+    <value>Specify the window size when creating data whose features are the basic statistics of the input data</value>
   </data>
   <data name="checkBox4.ToolTip" xml:space="preserve">
     <value>Smooth the input data to reduce the data.
@@ -647,9 +659,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="button14.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="panel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 57</value>
-  </data>
   <data name="&gt;&gt;button19.Name" xml:space="preserve">
     <value>button19</value>
   </data>
@@ -668,6 +677,9 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="label8.Text" xml:space="preserve">
     <value>one_input</value>
   </data>
+  <data name="label10.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
@@ -676,9 +688,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   </data>
   <data name="&gt;&gt;tabPage3.Parent" xml:space="preserve">
     <value>tabControl1</value>
-  </data>
-  <data name="radioButton4.Text" xml:space="preserve">
-    <value>use_plophet</value>
   </data>
   <data name="label7.ToolTip" xml:space="preserve">
     <value />
@@ -698,6 +707,9 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;pictureBox6.Name" xml:space="preserve">
     <value>pictureBox6</value>
   </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 12</value>
+  </data>
   <data name="splitter12.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -716,8 +728,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;panel9.Parent" xml:space="preserve">
     <value>tabPage4</value>
   </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 12</value>
+  <data name="&gt;&gt;panel14.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -725,8 +737,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;pictureBox4.Parent" xml:space="preserve">
     <value>panel14</value>
   </data>
-  <data name="&gt;&gt;button7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;pictureBox5.Name" xml:space="preserve">
+    <value>pictureBox5</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value />
@@ -758,6 +770,9 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="splitter4.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
+  <data name="label23.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="button13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
@@ -767,8 +782,11 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
     <value>panel13</value>
   </data>
-  <data name="label21.ToolTip" xml:space="preserve">
-    <value>Specifies the number of points to predict the future from the last observed point.</value>
+  <data name="tabPage5.Text" xml:space="preserve">
+    <value>feature_summary</value>
+  </data>
+  <data name="&gt;&gt;label17.Name" xml:space="preserve">
+    <value>label17</value>
   </data>
   <data name="textBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -797,8 +815,14 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
     <value>panel9</value>
+  </data>
+  <data name="listBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 59</value>
   </data>
   <data name="textBox3.ToolTip" xml:space="preserve">
     <value />
@@ -812,8 +836,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="radioButton4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="panel21.Location" type="System.Drawing.Point, System.Drawing">
-    <value>351, 0</value>
+  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
+    <value>pictureBox1</value>
   </data>
   <data name="listBox2.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -872,14 +896,14 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="&gt;&gt;panel4.Name" xml:space="preserve">
     <value>panel4</value>
-  </data>
-  <data name="textBox13.TabIndex" type="System.Int32, mscorlib">
-    <value>42</value>
   </data>
   <data name="textBox3.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -905,8 +929,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tabPage5.Text" xml:space="preserve">
-    <value>feature_summary</value>
+  <data name="panel17.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="tabPage3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -923,14 +947,11 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;label26.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="comboBox2.ToolTip" xml:space="preserve">
+    <value>Column name representing observation time</value>
+  </data>
   <data name="&gt;&gt;panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="radioButton1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 17</value>
-  </data>
-  <data name="textBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>338, 24</value>
   </data>
   <data name="&gt;&gt;splitter3.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -938,8 +959,11 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 12</value>
+  <data name="&gt;&gt;panel8.Name" xml:space="preserve">
+    <value>panel8</value>
+  </data>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
   </data>
   <data name="checkBox3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -971,9 +995,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="&gt;&gt;comboBox1.Parent" xml:space="preserve">
-    <value>panel17</value>
-  </data>
   <data name="button17.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -1001,11 +1022,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel9.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 119</value>
   </data>
-  <data name="&gt;&gt;textBox15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="panel13.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;radioButton2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="textBox18.Text" xml:space="preserve">
     <value>max_prediction_length*unit_of_record</value>
@@ -1073,13 +1091,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel2.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="textBox10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 34</value>
-  </data>
-  <data name="textBox15.ToolTip" xml:space="preserve">
-    <value>Specifies the number of points used to evaluate the monotonically increasing metric.
-Negative values indicate that all data should be used, 
-but it has the meaning of informing that the amount of data needs to be larger than the absolute value.</value>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value>Specify whether the abnormal trend is rising or falling with a sign</value>
   </data>
   <data name="label13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1120,8 +1133,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="pictureBox3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="panel17.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;button7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tabPage3.Name" xml:space="preserve">
     <value>tabPage3</value>
@@ -1144,6 +1157,9 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="label12.Text" xml:space="preserve">
     <value>max_retained_length</value>
   </data>
+  <data name="comboBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>130, 39</value>
+  </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
     <value>245, 66</value>
   </data>
@@ -1153,11 +1169,14 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="panel17.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="&gt;&gt;button3.Name" xml:space="preserve">
-    <value>button3</value>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>407, 46</value>
   </data>
   <data name="comboBox3.Items1" xml:space="preserve">
     <value>-</value>
+  </data>
+  <data name="tabPage4.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="textBox6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1168,14 +1187,17 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;label11.Parent" xml:space="preserve">
     <value>tabPage1</value>
   </data>
-  <data name="textBox8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>358, 91</value>
+  <data name="textBox10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 34</value>
   </data>
   <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;tabPage6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="pictureBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;checkBox4.Name" xml:space="preserve">
+    <value>checkBox4</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 186</value>
@@ -1191,9 +1213,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   </data>
   <data name="&gt;&gt;pictureBox6.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="panel21.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;button18.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1240,11 +1259,17 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;label17.Parent" xml:space="preserve">
     <value>tabPage2</value>
   </data>
+  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 234</value>
+  </data>
   <data name="&gt;&gt;comboBox3.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 368</value>
+  </data>
+  <data name="listBox1.ItemHeight" type="System.Int32, mscorlib">
+    <value>12</value>
   </data>
   <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
     <value>tabPage1</value>
@@ -1264,8 +1289,11 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;splitter6.Type" xml:space="preserve">
     <value>System.Windows.Forms.Splitter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="textBox9.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
+  <data name="&gt;&gt;comboBox6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label21.ToolTip" xml:space="preserve">
+    <value>Specifies the number of points to predict the future from the last observed point.</value>
   </data>
   <data name="button18.Location" type="System.Drawing.Point, System.Drawing">
     <value>122, 3</value>
@@ -1282,8 +1310,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="panel12.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 280</value>
   </data>
-  <data name="button6.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="splitter13.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="button10.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 28</value>
@@ -1317,9 +1345,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   </data>
   <data name="&gt;&gt;panel3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 12</value>
   </data>
   <data name="&gt;&gt;splitter10.Name" xml:space="preserve">
     <value>splitter10</value>
@@ -1357,8 +1382,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;button9.Name" xml:space="preserve">
     <value>button9</value>
   </data>
-  <data name="pictureBox3.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="textBox8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>358, 91</value>
   </data>
   <data name="label20.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1387,11 +1412,11 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;panel10.Name" xml:space="preserve">
     <value>panel10</value>
   </data>
-  <data name="&gt;&gt;button20.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+  <data name="&gt;&gt;label17.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
+    <value>tabPage2</value>
   </data>
   <data name="tabPage2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1417,8 +1442,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;panel11.Name" xml:space="preserve">
     <value>panel11</value>
   </data>
-  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
+  <data name="button15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 4</value>
   </data>
   <data name="button18.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 35</value>
@@ -1438,9 +1463,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="radioButton4.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="splitter5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
   <data name="&gt;&gt;button4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -1453,14 +1475,17 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="label1.Text" xml:space="preserve">
     <value>time</value>
   </data>
-  <data name="textBox5.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 12</value>
   </data>
   <data name="panel16.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="textBox5.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 19</value>
+  </data>
+  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
   </data>
   <data name="&gt;&gt;label14.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1483,9 +1508,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;panel17.Name" xml:space="preserve">
     <value>panel17</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="textBox15.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 232</value>
   </data>
@@ -1504,8 +1526,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="button11.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 31</value>
   </data>
-  <data name="&gt;&gt;button6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="splitter4.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="radioButton1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1522,6 +1544,9 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;panel7.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="textBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
   <data name="label16.TabIndex" type="System.Int32, mscorlib">
     <value>41</value>
   </data>
@@ -1531,14 +1556,14 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="panel20.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="splitter4.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;textBox20.Name" xml:space="preserve">
+    <value>textBox20</value>
   </data>
   <data name="&gt;&gt;splitter1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="textBox10.ToolTip" xml:space="preserve">
-    <value>Specify the window size when creating data whose features are the basic statistics of the input data</value>
+  <data name="button20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 23</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -1557,6 +1582,9 @@ but it has the meaning of informing that the amount of data needs to be larger t
   </data>
   <data name="label25.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 12</value>
+  </data>
+  <data name="button21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 37</value>
   </data>
   <data name="&gt;&gt;button19.Parent" xml:space="preserve">
     <value>panel1</value>
@@ -1585,9 +1613,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;panel12.Name" xml:space="preserve">
     <value>panel12</value>
   </data>
-  <data name="textBox21.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="label7.Text" xml:space="preserve">
     <value>feature_smooth_window</value>
   </data>
@@ -1595,7 +1620,7 @@ but it has the meaning of informing that the amount of data needs to be larger t
     <value>panel20</value>
   </data>
   <data name="&gt;&gt;button18.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="tabPage5.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1666,8 +1691,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="button5.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 34</value>
   </data>
-  <data name="&gt;&gt;button2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="panel7.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;panel18.Name" xml:space="preserve">
     <value>panel18</value>
@@ -1681,9 +1706,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="label26.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="button18.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -1694,13 +1716,10 @@ but it has the meaning of informing that the amount of data needs to be larger t
     <value>panel8</value>
   </data>
   <data name="&gt;&gt;button14.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="pictureBox3.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="button16.Font" type="System.Drawing.Font, System.Drawing">
-    <value>MS UI Gothic, 9pt, style=Bold</value>
   </data>
   <data name="label22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1726,12 +1745,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="comboBox3.Items" xml:space="preserve">
     <value>+</value>
   </data>
-  <data name="comboBox4.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="textBox15.Text" xml:space="preserve">
-    <value>-60</value>
-  </data>
   <data name="&gt;&gt;splitter9.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
@@ -1740,9 +1753,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   </data>
   <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
     <value>tabPage2</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="button3.Location" type="System.Drawing.Point, System.Drawing">
     <value>284, 3</value>
@@ -1756,8 +1766,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="panel3.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;label17.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label19.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
   </data>
   <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>553, 223</value>
@@ -1789,8 +1799,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="panel13.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="groupBox1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="textBox13.TabIndex" type="System.Int32, mscorlib">
+    <value>42</value>
   </data>
   <data name="&gt;&gt;textBox3.ZOrder" xml:space="preserve">
     <value>11</value>
@@ -1806,6 +1816,9 @@ but it has the meaning of informing that the amount of data needs to be larger t
   </data>
   <data name="radioButton2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
+  </data>
+  <data name="button4.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>87, 12</value>
@@ -1837,9 +1850,6 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="splitter13.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="panel1.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -1864,8 +1874,8 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="panel21.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
+  <data name="&gt;&gt;tabPage6.Name" xml:space="preserve">
+    <value>tabPage6</value>
   </data>
   <data name="&gt;&gt;textBox11.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1873,11 +1883,11 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="radioButton3.Location" type="System.Drawing.Point, System.Drawing">
     <value>200, 17</value>
   </data>
-  <data name="splitter2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
   <data name="textBox18.Location" type="System.Drawing.Point, System.Drawing">
     <value>124, 176</value>
+  </data>
+  <data name="button21.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MS UI Gothic, 8.25pt, style=Bold</value>
   </data>
   <data name="textBox7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1894,14 +1904,14 @@ but it has the meaning of informing that the amount of data needs to be larger t
   <data name="&gt;&gt;tabPage4.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="textBox18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, 19</value>
+  <data name="textBox3.Text" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="pictureBox1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>22</value>
+  <data name="&gt;&gt;label13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="splitter14.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 62</value>
@@ -1952,8 +1962,8 @@ the oldest data will be discarded and the maximum retention amount will be used.
   <data name="button4.Location" type="System.Drawing.Point, System.Drawing">
     <value>393, 3</value>
   </data>
-  <data name="&gt;&gt;label18.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="comboBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 20</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
     <value>smooth_window_slide</value>
@@ -1979,20 +1989,17 @@ the oldest data will be discarded and the maximum retention amount will be used.
   <data name="button6.Location" type="System.Drawing.Point, System.Drawing">
     <value>2, 2</value>
   </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 12</value>
+  </data>
   <data name="&gt;&gt;label19.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 368</value>
   </data>
   <data name="panel18.Size" type="System.Drawing.Size, System.Drawing">
     <value>641, 44</value>
   </data>
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;panel14.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;pictureBox5.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -2036,6 +2043,9 @@ the oldest data will be discarded and the maximum retention amount will be used.
   <data name="label23.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 3</value>
   </data>
+  <data name="panel10.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
@@ -2047,9 +2057,6 @@ the oldest data will be discarded and the maximum retention amount will be used.
   </data>
   <data name="&gt;&gt;panel14.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="textBox15.TabIndex" type="System.Int32, mscorlib">
-    <value>47</value>
   </data>
   <data name="label18.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
@@ -2068,8 +2075,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;panel20.Parent" xml:space="preserve">
     <value>panel19</value>
   </data>
-  <data name="button4.TabIndex" type="System.Int32, mscorlib">
-    <value>82</value>
+  <data name="button6.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="button1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2091,8 +2098,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
 When using the moving average, specify the window size and amount of movement of the window.
 Specify use_spline to fit a spline curve and smooth it.</value>
   </data>
-  <data name="&gt;&gt;splitter8.Name" xml:space="preserve">
-    <value>splitter8</value>
+  <data name="radioButton4.Text" xml:space="preserve">
+    <value>use_plophet</value>
   </data>
   <data name="&gt;&gt;panel15.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2124,9 +2131,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitter1.Name" xml:space="preserve">
-    <value>splitter1</value>
-  </data>
   <data name="&gt;&gt;panel12.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -2157,14 +2161,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel20.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label19.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="&gt;&gt;checkBox4.Name" xml:space="preserve">
-    <value>checkBox4</value>
-  </data>
-  <data name="tabPage3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="&gt;&gt;button6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label17.ZOrder" xml:space="preserve">
     <value>18</value>
@@ -2184,8 +2182,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="button19.TabIndex" type="System.Int32, mscorlib">
     <value>86</value>
   </data>
-  <data name="textBox4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
+  <data name="&gt;&gt;splitter1.Name" xml:space="preserve">
+    <value>splitter1</value>
   </data>
   <data name="textBox16.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 19</value>
@@ -2214,9 +2212,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="textBox11.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="textBox8.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
   <data name="&gt;&gt;button10.Parent" xml:space="preserve">
     <value>panel8</value>
   </data>
@@ -2244,14 +2239,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;comboBox6.Name" xml:space="preserve">
     <value>comboBox6</value>
   </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>panel17</value>
-  </data>
   <data name="&gt;&gt;panel19.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitter14.Parent" xml:space="preserve">
-    <value>panel19</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>184, 368</value>
@@ -2286,6 +2275,11 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="button17.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
+  <data name="textBox6.ToolTip" xml:space="preserve">
+    <value>Smooth the input data to reduce the data.
+When using the moving average, specify the window size and amount of movement of the window.
+Specify use_spline to fit a spline curve and smooth it.</value>
+  </data>
   <data name="&gt;&gt;splitter5.Name" xml:space="preserve">
     <value>splitter5</value>
   </data>
@@ -2298,11 +2292,17 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="textBox11.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 19</value>
   </data>
-  <data name="button15.TabIndex" type="System.Int32, mscorlib">
-    <value>49</value>
+  <data name="&gt;&gt;button15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="panel10.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
+  </data>
+  <data name="panel12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>278, 62</value>
+  </data>
+  <data name="label22.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;radioButton1.Parent" xml:space="preserve">
     <value>groupBox1</value>
@@ -2313,11 +2313,11 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="panel11.ToolTip" xml:space="preserve">
-    <value />
+  <data name="comboBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 14</value>
+  <data name="&gt;&gt;button14.Parent" xml:space="preserve">
+    <value>panel10</value>
   </data>
   <data name="&gt;&gt;panel6.Parent" xml:space="preserve">
     <value>panel3</value>
@@ -2330,6 +2330,11 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   </data>
   <data name="&gt;&gt;panel4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="textBox15.ToolTip" xml:space="preserve">
+    <value>Specifies the number of points used to evaluate the monotonically increasing metric.
+Negative values indicate that all data should be used, 
+but it has the meaning of informing that the amount of data needs to be larger than the absolute value.</value>
   </data>
   <data name="&gt;&gt;splitter1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Splitter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2379,9 +2384,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;textBox3.Name" xml:space="preserve">
     <value>textBox3</value>
   </data>
-  <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="tabPage6.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
@@ -2400,8 +2402,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel21.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="textBox3.Text" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
   <data name="button16.Text" xml:space="preserve">
     <value>setting load</value>
@@ -2412,8 +2414,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;splitter9.Name" xml:space="preserve">
     <value>splitter9</value>
   </data>
-  <data name="listBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 59</value>
+  <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 12</value>
   </data>
   <data name="textBox19.ToolTip" xml:space="preserve">
     <value />
@@ -2477,11 +2479,17 @@ the oldest data will be discarded and the maximum retention amount will be used.
   <data name="textBox2.ToolTip" xml:space="preserve">
     <value>Time interval for each line of input data. Please specify in units of time (unit_of_time).</value>
   </data>
+  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
   <data name="splitter7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
   <data name="&gt;&gt;button7.Parent" xml:space="preserve">
     <value>panel8</value>
+  </data>
+  <data name="button18.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;button17.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2494,8 +2502,8 @@ the oldest data will be discarded and the maximum retention amount will be used.
 Negative values use all past data.
  A positive value truncates past data and uses only historical data to construct the forecast line</value>
   </data>
-  <data name="splitter11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 162</value>
+  <data name="&gt;&gt;radioButton3.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <data name="radioButton4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2505,9 +2513,6 @@ Negative values use all past data.
   </data>
   <data name="&gt;&gt;textBox10.ZOrder" xml:space="preserve">
     <value>21</value>
-  </data>
-  <data name="button3.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
     <value>tabControl1</value>
@@ -2524,6 +2529,9 @@ Negative values use all past data.
   <data name="button3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
+  <data name="&gt;&gt;button21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;pictureBox5.Parent" xml:space="preserve">
     <value>panel16</value>
   </data>
@@ -2538,6 +2546,9 @@ Negative values use all past data.
   </data>
   <data name="panel18.TabIndex" type="System.Int32, mscorlib">
     <value>85</value>
+  </data>
+  <data name="&gt;&gt;textBox19.Name" xml:space="preserve">
+    <value>textBox19</value>
   </data>
   <data name="&gt;&gt;button14.Name" xml:space="preserve">
     <value>button14</value>
@@ -2560,8 +2571,8 @@ Negative values use all past data.
   <data name="button2.Font" type="System.Drawing.Font, System.Drawing">
     <value>MS UI Gothic, 9pt, style=Bold</value>
   </data>
-  <data name="textBox19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 19</value>
+  <data name="textBox11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="&gt;&gt;textBox16.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -2575,16 +2586,14 @@ Negative values use all past data.
   <data name="textBox8.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 19</value>
   </data>
-  <data name="textBox6.ToolTip" xml:space="preserve">
-    <value>Smooth the input data to reduce the data.
-When using the moving average, specify the window size and amount of movement of the window.
-Specify use_spline to fit a spline curve and smooth it.</value>
+  <data name="splitter2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+  <data name="label26.TabIndex" type="System.Int32, mscorlib">
+    <value>54</value>
   </data>
   <data name="panel9.Size" type="System.Drawing.Size, System.Drawing">
     <value>553, 223</value>
@@ -2606,9 +2615,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   </data>
   <data name="groupBox1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
-  </data>
-  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 12</value>
   </data>
   <data name="tabPage6.ToolTip" xml:space="preserve">
     <value />
@@ -2673,6 +2679,9 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel17.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
+  <data name="label20.Text" xml:space="preserve">
+    <value>threshold</value>
+  </data>
   <data name="panel19.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
@@ -2706,9 +2715,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="label27.Text" xml:space="preserve">
     <value>threshold</value>
   </data>
-  <data name="&gt;&gt;radioButton2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="pictureBox6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
@@ -2720,9 +2726,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   </data>
   <data name="&gt;&gt;textBox7.Name" xml:space="preserve">
     <value>textBox7</value>
-  </data>
-  <data name="listBox3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
   </data>
   <data name="tabPage4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2742,14 +2745,11 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="splitter2.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;panel8.Name" xml:space="preserve">
-    <value>panel8</value>
-  </data>
   <data name="splitter8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="&gt;&gt;comboBox6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="textBox18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>286, 19</value>
   </data>
   <data name="pictureBox1.ToolTip" xml:space="preserve">
     <value />
@@ -2769,14 +2769,17 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;tabPage5.Name" xml:space="preserve">
     <value>tabPage5</value>
   </data>
-  <data name="&gt;&gt;panel9.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;label18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="textBox5.Location" type="System.Drawing.Point, System.Drawing">
     <value>104, 156</value>
   </data>
   <data name="pictureBox5.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;button21.Parent" xml:space="preserve">
+    <value>panel10</value>
   </data>
   <data name="textBox19.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2798,8 +2801,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="&gt;&gt;tabPage6.Name" xml:space="preserve">
-    <value>tabPage6</value>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 14</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>unit_of_time</value>
@@ -2813,9 +2816,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="label23.Text" xml:space="preserve">
     <value>statistic features to monitor</value>
   </data>
-  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 37</value>
-  </data>
   <data name="splitter11.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -2828,6 +2828,9 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;radioButton3.Name" xml:space="preserve">
     <value>radioButton3</value>
   </data>
+  <data name="button21.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
   <data name="&gt;&gt;radioButton1.Name" xml:space="preserve">
     <value>radioButton1</value>
   </data>
@@ -2839,9 +2842,6 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   </data>
   <data name="pictureBox5.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;pictureBox5.Name" xml:space="preserve">
-    <value>pictureBox5</value>
   </data>
   <data name="&gt;&gt;tabPage5.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2858,23 +2858,23 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;listBox3.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="label5.ToolTip" xml:space="preserve">
     <value>Time interval for each line of input data. Please specify in units of time (unit_of_time).</value>
+  </data>
+  <data name="splitter8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="listBox2.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
-    <value>tabControl1</value>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 12</value>
   </data>
   <data name="&gt;&gt;panel13.Parent" xml:space="preserve">
     <value>panel11</value>
   </data>
-  <data name="&gt;&gt;splitter10.Parent" xml:space="preserve">
-    <value>tabPage5</value>
+  <data name="textBox7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 19</value>
   </data>
   <data name="&gt;&gt;splitter13.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -2963,8 +2963,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;button5.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;panel11.Parent" xml:space="preserve">
-    <value>tabPage5</value>
+  <data name="panel21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>351, 0</value>
   </data>
   <data name="&gt;&gt;tabPage5.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -2984,11 +2984,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="comboBox5.Items3" xml:space="preserve">
     <value>h</value>
   </data>
-  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;button6.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="listBox3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="label4.ToolTip" xml:space="preserve">
     <value>unit of observation time of input data</value>
@@ -3002,11 +2999,11 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;comboBox5.Name" xml:space="preserve">
     <value>comboBox5</value>
   </data>
+  <data name="&gt;&gt;button21.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="numericUpDown1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value>Specify whether the abnormal trend is rising or falling with a sign</value>
   </data>
   <data name="checkBox2.ToolTip" xml:space="preserve">
     <value>smooths the input data using lowess regression</value>
@@ -3037,6 +3034,9 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   </data>
   <data name="textBox18.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;button3.Name" xml:space="preserve">
+    <value>button3</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
     <value>max_train_span</value>
@@ -3077,8 +3077,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="button19.Location" type="System.Drawing.Point, System.Drawing">
     <value>508, 49</value>
   </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="panel21.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="splitter8.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -3086,8 +3086,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="listBox3.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 59</value>
   </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 12</value>
+  <data name="&gt;&gt;splitter14.Parent" xml:space="preserve">
+    <value>panel19</value>
   </data>
   <data name="&gt;&gt;comboBox2.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -3185,6 +3185,9 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;numericUpDown1.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;splitter11.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="label16.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
   </data>
@@ -3209,17 +3212,20 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="label27.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 303</value>
   </data>
-  <data name="label27.TabIndex" type="System.Int32, mscorlib">
-    <value>56</value>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="label23.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;label25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;openFileDialog1.Name" xml:space="preserve">
     <value>openFileDialog1</value>
   </data>
   <data name="&gt;&gt;comboBox3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBox12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;textBox13.Name" xml:space="preserve">
     <value>textBox13</value>
@@ -3275,14 +3281,14 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="splitter4.Location" type="System.Drawing.Point, System.Drawing">
     <value>575, 133</value>
   </data>
-  <data name="splitter8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="textBox1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="panel15.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;button18.Parent" xml:space="preserve">
-    <value>panel10</value>
+  <data name="&gt;&gt;panel9.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="button16.ToolTip" xml:space="preserve">
     <value>Load configuration</value>
@@ -3290,8 +3296,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="comboBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>130, 39</value>
+  <data name="button3.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="panel15.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 162</value>
@@ -3338,8 +3344,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;textBox12.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="&gt;&gt;splitter13.Name" xml:space="preserve">
-    <value>splitter13</value>
+  <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;numericUpDown1.Parent" xml:space="preserve">
     <value>panel8</value>
@@ -3362,6 +3368,9 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="comboBox6.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="textBox14.Text" xml:space="preserve">
+    <value>-60</value>
+  </data>
   <data name="panel5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
@@ -3380,11 +3389,14 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="pictureBox5.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;textBox19.Name" xml:space="preserve">
-    <value>textBox19</value>
+  <data name="&gt;&gt;panel11.Parent" xml:space="preserve">
+    <value>tabPage5</value>
   </data>
   <data name="panel16.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;button21.Name" xml:space="preserve">
+    <value>button21</value>
   </data>
   <data name="&gt;&gt;label26.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -3419,8 +3431,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;label11.Name" xml:space="preserve">
     <value>label11</value>
   </data>
-  <data name="comboBox2.ToolTip" xml:space="preserve">
-    <value>Column name representing observation time</value>
+  <data name="button21.Text" xml:space="preserve">
+    <value>load images</value>
   </data>
   <data name="button19.ToolTip" xml:space="preserve">
     <value />
@@ -3455,8 +3467,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="comboBox5.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label25.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 156</value>
+  <data name="textBox15.TabIndex" type="System.Int32, mscorlib">
+    <value>47</value>
   </data>
   <data name="button19.Text" xml:space="preserve">
     <value>Full batch output</value>
@@ -3473,8 +3485,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;tabPage4.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>15</value>
+  <data name="&gt;&gt;comboBox1.Parent" xml:space="preserve">
+    <value>panel17</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 12</value>
@@ -3482,8 +3494,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="textBox17.ToolTip" xml:space="preserve">
     <value>Specifies the number of points to predict the future from the last observed point.</value>
   </data>
-  <data name="panel10.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;button18.Parent" xml:space="preserve">
+    <value>panel10</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
     <value>233, 94</value>
@@ -3500,11 +3512,14 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
   </data>
-  <data name="&gt;&gt;label17.Name" xml:space="preserve">
-    <value>label17</value>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
-    <value>panel3</value>
+  <data name="label21.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="splitter11.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -3524,8 +3539,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;panel16.Name" xml:space="preserve">
     <value>panel16</value>
   </data>
-  <data name="textBox13.ToolTip" xml:space="preserve">
-    <value />
+  <data name="tabPage3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="button7.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -3560,11 +3575,14 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel7.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 57</value>
   </data>
-  <data name="pictureBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;button2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="button20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>215, 23</value>
+  <data name="button16.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MS UI Gothic, 9pt, style=Bold</value>
+  </data>
+  <data name="panel19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
   <data name="&gt;&gt;panel7.Name" xml:space="preserve">
     <value>panel7</value>
@@ -3590,8 +3608,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;label12.Name" xml:space="preserve">
     <value>label12</value>
   </data>
-  <data name="label22.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="button18.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="panel12.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -3605,11 +3623,14 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="&gt;&gt;label8.Parent" xml:space="preserve">
     <value>tabPage1</value>
   </data>
+  <data name="pictureBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
   <data name="splitter8.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 117</value>
   </data>
-  <data name="&gt;&gt;splitter11.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 368</value>
   </data>
   <data name="panel7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -3623,8 +3644,8 @@ Specify use_spline to fit a spline curve and smooth it.</value>
   <data name="panel21.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 67</value>
   </data>
-  <data name="&gt;&gt;label28.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="button15.TabIndex" type="System.Int32, mscorlib">
+    <value>49</value>
   </data>
   <data name="label26.Text" xml:space="preserve">
     <value>smoother_span</value>
@@ -3640,8 +3661,8 @@ Negative values ​​use all past data.
   <data name="&gt;&gt;label13.Name" xml:space="preserve">
     <value>label13</value>
   </data>
-  <data name="label26.TabIndex" type="System.Int32, mscorlib">
-    <value>54</value>
+  <data name="textBox8.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
   </data>
   <data name="radioButton3.Text" xml:space="preserve">
     <value>use_ets</value>
@@ -3685,6 +3706,9 @@ Negative values ​​use all past data.
   <data name="&gt;&gt;label19.Name" xml:space="preserve">
     <value>label19</value>
   </data>
+  <data name="groupBox1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="tabPage3.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -3715,6 +3739,9 @@ Negative values ​​use all past data.
   <data name="pictureBox4.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 115</value>
   </data>
+  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
+    <value>panel3</value>
+  </data>
   <data name="splitter13.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
@@ -3724,14 +3751,20 @@ Negative values ​​use all past data.
   <data name="button5.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="textBox4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
   <data name="panel4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="textBox7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 19</value>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>tracking_feature_</value>
+  </data>
+  <data name="button21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 19</value>
   </data>
   <data name="label26.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -3787,17 +3820,14 @@ Negative values ​​use all past data.
   <data name="button20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;label13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="button4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
   <data name="panel14.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="button18.ToolTip" xml:space="preserve">
-    <value />
+  <data name="textBox15.Text" xml:space="preserve">
+    <value>-60</value>
   </data>
   <data name="panel17.Size" type="System.Drawing.Size, System.Drawing">
     <value>501, 62</value>
@@ -3811,11 +3841,8 @@ Negative values ​​use all past data.
   <data name="&gt;&gt;textBox4.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;label25.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tabPage5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>553, 342</value>
+  <data name="&gt;&gt;button15.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;listBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -3823,8 +3850,8 @@ Negative values ​​use all past data.
   <data name="radioButton2.Location" type="System.Drawing.Point, System.Drawing">
     <value>118, 17</value>
   </data>
-  <data name="panel12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>278, 62</value>
+  <data name="label12.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
   </data>
   <data name="checkBox4.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 16</value>
@@ -3886,20 +3913,20 @@ Negative values ​​use all past data.
   <data name="splitter6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
+  <data name="&gt;&gt;textBox6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="panel8.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tabPage4.ToolTip" xml:space="preserve">
+  <data name="textBox21.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="&gt;&gt;button7.Name" xml:space="preserve">
     <value>button7</value>
   </data>
-  <data name="button15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 4</value>
+  <data name="panel13.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;button11.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -4001,23 +4028,17 @@ Negative values ​​use all past data.
   <data name="&gt;&gt;button5.Parent" xml:space="preserve">
     <value>panel18</value>
   </data>
-  <data name="comboBox6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 20</value>
-  </data>
   <data name="button14.Text" xml:space="preserve">
     <value>execute</value>
   </data>
   <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="label12.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="textBox1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="tabPage5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;splitter13.Name" xml:space="preserve">
+    <value>splitter13</value>
   </data>
   <data name="comboBox5.Items2" xml:space="preserve">
     <value>min</value>
@@ -4043,17 +4064,14 @@ Negative values ​​use all past data.
   <data name="comboBox5.Text" xml:space="preserve">
     <value>day</value>
   </data>
+  <data name="panel11.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="textBox12.ToolTip" xml:space="preserve">
     <value>Specifies the amount to move the window size when creating data whose feature is the basic statistic of the input data</value>
   </data>
-  <data name="panel19.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
   <data name="label22.Text" xml:space="preserve">
     <value>failure_time_init</value>
-  </data>
-  <data name="panel7.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="&gt;&gt;splitter7.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -4078,9 +4096,6 @@ Negative values ​​use all past data.
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>90, 35</value>
-  </data>
-  <data name="&gt;&gt;button15.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="textBox20.Text" xml:space="preserve">
     <value>0.05</value>
@@ -4108,9 +4123,6 @@ Negative values ​​use all past data.
   </data>
   <data name="textBox9.ToolTip" xml:space="preserve">
     <value>Attempts to fit by sampling the specified amount without referencing all of the historical data when creating the forecast line.</value>
-  </data>
-  <data name="&gt;&gt;textBox6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 133</value>
@@ -4148,9 +4160,6 @@ Negative values ​​use all past data.
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label27.Name" xml:space="preserve">
-    <value>label27</value>
-  </data>
   <data name="button8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
@@ -4161,6 +4170,9 @@ Negative values ​​use all past data.
     <value>1144, 2</value>
   </data>
   <data name="label17.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textBox13.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="button10.Font" type="System.Drawing.Font, System.Drawing">
@@ -4193,6 +4205,9 @@ Negative values ​​use all past data.
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 12</value>
   </data>
+  <data name="&gt;&gt;splitter10.Parent" xml:space="preserve">
+    <value>tabPage5</value>
+  </data>
   <data name="&gt;&gt;label24.Name" xml:space="preserve">
     <value>label24</value>
   </data>
@@ -4201,6 +4216,9 @@ Negative values ​​use all past data.
   </data>
   <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
     <value>553, 342</value>
+  </data>
+  <data name="&gt;&gt;tabPage6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="comboBox6.Text" xml:space="preserve">
     <value>en-US</value>
@@ -4223,9 +4241,6 @@ Negative values ​​use all past data.
   <data name="tabPage1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
-    <value>pictureBox1</value>
-  </data>
   <data name="&gt;&gt;label25.Name" xml:space="preserve">
     <value>label25</value>
   </data>
@@ -4238,8 +4253,8 @@ Negative values ​​use all past data.
   <data name="label24.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="listBox1.ItemHeight" type="System.Int32, mscorlib">
-    <value>12</value>
+  <data name="splitter5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="&gt;&gt;comboBox4.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -4250,6 +4265,9 @@ Negative values ​​use all past data.
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 12</value>
   </data>
+  <data name="label27.TabIndex" type="System.Int32, mscorlib">
+    <value>56</value>
+  </data>
   <data name="textBox9.Text" xml:space="preserve">
     <value>30</value>
   </data>
@@ -4258,6 +4276,9 @@ Negative values ​​use all past data.
   </data>
   <data name="button4.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 34</value>
+  </data>
+  <data name="checkBox3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="button20.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -4283,8 +4304,8 @@ Negative values ​​use all past data.
   <data name="&gt;&gt;textBox11.Name" xml:space="preserve">
     <value>textBox11</value>
   </data>
-  <data name="label21.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="button13.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 20</value>
@@ -4304,8 +4325,14 @@ Negative values ​​use all past data.
   <data name="listBox3.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="&gt;&gt;textBox15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="button15.Font" type="System.Drawing.Font, System.Drawing">
     <value>MS UI Gothic, 9pt, style=Bold</value>
+  </data>
+  <data name="&gt;&gt;button13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="checkBox3.ToolTip" xml:space="preserve">
     <value>smooths the input data using lowess regression</value>
@@ -4325,11 +4352,11 @@ Negative values ​​use all past data.
   <data name="&gt;&gt;label20.Name" xml:space="preserve">
     <value>label20</value>
   </data>
-  <data name="&gt;&gt;radioButton3.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
   <data name="splitter6.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 2</value>
+  </data>
+  <data name="button21.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;label19.Parent" xml:space="preserve">
     <value>tabPage2</value>
@@ -4392,11 +4419,14 @@ All csv in that data directory will be targeted.</value>
   <data name="textBox21.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
+  <data name="&gt;&gt;checkBox2.Parent" xml:space="preserve">
+    <value>tabPage1</value>
+  </data>
   <data name="&gt;&gt;comboBox1.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 234</value>
+  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 12</value>
   </data>
   <data name="&gt;&gt;panel11.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -4425,11 +4455,11 @@ All csv in that data directory will be targeted.</value>
   <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
     <value>MS UI Gothic, 9pt, style=Bold</value>
   </data>
-  <data name="&gt;&gt;textBox12.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label27.Name" xml:space="preserve">
+    <value>label27</value>
   </data>
-  <data name="&gt;&gt;checkBox2.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 37</value>
   </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>tabPage1</value>
@@ -4440,11 +4470,11 @@ All csv in that data directory will be targeted.</value>
   <data name="&gt;&gt;splitter1.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="label10.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>panel17</value>
   </data>
-  <data name="textBox14.Text" xml:space="preserve">
-    <value>-60</value>
+  <data name="panel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 57</value>
   </data>
   <data name="tabPage4.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -4458,8 +4488,8 @@ All csv in that data directory will be targeted.</value>
   <data name="button19.Font" type="System.Drawing.Font, System.Drawing">
     <value>MS UI Gothic, 9pt, style=Bold</value>
   </data>
-  <data name="label20.Text" xml:space="preserve">
-    <value>threshold</value>
+  <data name="radioButton1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 17</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

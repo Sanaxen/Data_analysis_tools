@@ -2222,6 +2222,12 @@ namespace pm
 
                     listBox3.Items.Add(s.Replace("\n", ""));
                     listBox3.SetSelected(0, true);
+                    
+                    s = sr.ReadLine();
+
+                    listBox3.Items.Add(s.Replace("\n", ""));
+                    listBox3.SetSelected(1, true);
+
 
                     while (sr.EndOfStream == false)
                     {
@@ -2273,6 +2279,52 @@ namespace pm
                 }
             }
             if (sr != null) sr.Close();
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            System.IO.Directory.SetCurrentDirectory(base_dir);
+
+            try
+            {
+                //execute_bat(base_name0 + "_feature_summary_visualization.bat");
+            }
+            catch
+            {
+
+            }
+            System.IO.Directory.SetCurrentDirectory(work_dir);
+
+            if (File.Exists(base_name0 + "_feature_df.png"))
+            {
+                pictureBox2.Image = CreateImage(base_name0 + "_feature_df.png");
+                imagePictureBox2 = base_name0 + "_feature_df.png";
+                htmlPictureBox2 = base_name0 + "_feature_df.html";
+            }
+            if (File.Exists(base_name0 + "_monotonicity2.png"))
+            {
+                pictureBox3.Image = CreateImage(base_name0 + "_monotonicity2.png");
+                imagePictureBox3 = base_name0 + "_monotonicity2.png";
+                htmlPictureBox3 = base_name0 + "_monotonicity2.html";
+            }
+            if (File.Exists(base_name0 + "_tracking_feature.png"))
+            {
+                pictureBox4.Image = CreateImage(base_name0 + "_tracking_feature.png");
+                imagePictureBox4 = base_name0 + "_tracking_feature.png";
+                htmlPictureBox4 = base_name0 + "_feature_summary_visualization1.html";
+            }
+            if (File.Exists(base_name0 + "_tracking_feature2.png"))
+            {
+                pictureBox5.Image = CreateImage(base_name0 + "_tracking_feature2.png");
+                imagePictureBox5 = base_name0 + "_tracking_feature2.png";
+                htmlPictureBox5 = base_name0 + "_feature_summary_visualization2.html";
+            }
+            if (File.Exists(base_name0 + "_input.png"))
+            {
+                pictureBox6.Image = CreateImage(base_name0 + "_input.png");
+                imagePictureBox6 = base_name0 + "_input.png";
+                htmlPictureBox6 = base_name0 + "_input.html";
+            }
         }
     }
 }

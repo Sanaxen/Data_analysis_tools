@@ -363,6 +363,7 @@ get_data_frame<- function(file, timeStamp)
 				df[is.na(x),i] <- 0
 			}
 			df_ <- df[,i]
+
 			if ( colnames(df)[i]!=timeStamp )
 			{
 				df_ <- as.numeric(df[,i])
@@ -3090,6 +3091,7 @@ if(T)
 		pred_tmp <- pred[1:max_prediction_length_org,]
 	}
 
+
 	alp = 0.15
 	if ( fit_model == "" || fit_model == "lm_" || fit_model == "exp_")
 	{
@@ -3445,6 +3447,7 @@ max_prediction_length_org = 0
 current_time <- NULL
 current_time_index <- 0
 delta_time <- NULL
+startup_data_frame <- TRUE
 predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 {
 	print("======tracking_feature_args==")
@@ -3484,7 +3487,6 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		{
 			df2 <- as.data.frame(df2)
 		}
-		
 		if ( is.null(df2) || nrow(df2) < 1 || ncol(df2) < 1)
 		{
 			tryCatch({
@@ -3500,7 +3502,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		{
 			next
 		}
-		
+
 		
 		timeStamp <<- timeStamp_arg
 		df2[, timeStamp] <- as.POSIXct(df2[, timeStamp], tz='UTC')
@@ -3529,6 +3531,40 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		print(sprintf("%d current_time:%s dt:%f %s", i, current_time, time_diff, unit_of_time))
 
 		delta_time <<- time_diff <- difftime(current_time , df2[(nrow(df2)-1), timeStamp])
+		
+		#
+		#if ( startup_data_frame )
+		if ( FALSE )
+		{
+			startup_data_frame = FALSE
+			
+			df2_length = nrow(df2)
+			n <- window_moving_size(nrow(df2), smooth_window, smooth_window_slide)
+			n <- window_moving_size(n, lookback, lookback_slide)
+			n <- window_moving_size(n, smooth_window2, smooth_window_slide2)
+			#print(n)
+			#print(head(df2))
+			#print(delta_time)
+			#while( n < max(abs(train_num),abs(monotonicity_num)))
+			for( kk in 1:(3*lookback+smooth_window2+smooth_window))
+			{
+				#print(df2[1, timeStamp])
+				x <- seq(df2[1, timeStamp], length.out = 2, by=-delta_time)
+				#print(x)
+				#print("")
+				df2 <- bind_rows(df2[1,], df2)
+				df2[1,timeStamp] <- x[2]
+				#print(head(df2))
+				n <- window_moving_size(nrow(df2), smooth_window, smooth_window_slide)
+				n <- window_moving_size(n, lookback, lookback_slide)
+				n <- window_moving_size(n, smooth_window2, smooth_window_slide2)
+				print(sprintf("df2_org:%d new df2:%d n:%d", df2_length, nrow(df2), n))
+			}
+			dummy_length = nrow(df2) - df2_length
+			max_train_span = max_train_span + dummy_length
+			try(write.csv(df2, "./df2.csv", row.names = F), silent=F)
+		}
+		
 		
 		df2_bak <- df2
 		df2[,timeStamp] <- NULL
@@ -4016,7 +4052,7 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 
 
 		failure_time_set = FALSE
-		if ( failure_time50p_s[2] != failure_time_init && failure_time_s[2] != failure_time_init)
+		if ( failure_time50p_s[2] != failure_time_init && failure_time_s[2] != failure_time_init  && failure_time2_s[2] != failure_time_init)
 		{
 			if ( failure_time_s[2] < failure_time50p_s[2] && failure_time50p_s[2] < failure_time2_s[2] )
 			{
@@ -4269,7 +4305,6 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 				RUL_hist_tmp$hist <- thr0 + 0.3*dy*RUL_hist_tmp$hist
 				
 				z1 <- lowess(RUL_hist_tmp$time_index, RUL_hist_tmp$hist, f = 0.001*3.0)$y
-
 
 				RUL_hist_tmp$z1 <- ifelse(z1 < thr0, thr0, z1)
 				
