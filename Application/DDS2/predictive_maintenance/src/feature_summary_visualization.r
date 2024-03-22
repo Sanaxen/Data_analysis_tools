@@ -273,7 +273,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 		n <- window_moving_size(N, lookback, lookback_slide)
 		n <- window_moving_size(n, smooth_window2, smooth_window_slide2)
 
-		if ( n < 120 )
+		if ( n < 5 )
 		{
 			print(sprintf("nrow:%d -> %d", N, n))
 			flush.console()

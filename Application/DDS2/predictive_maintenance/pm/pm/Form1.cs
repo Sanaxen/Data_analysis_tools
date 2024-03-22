@@ -746,37 +746,56 @@ namespace pm
                         if (ss[0].IndexOf("imagePictureBox1") >= 0)
                         {
                             imagePictureBox1 = ss[1].Replace("\r\n", "");
-                            pictureBox1.Image = CreateImage(imagePictureBox1);
+                            if (File.Exists(imagePictureBox1))
+                            {
+                                pictureBox1.Image = CreateImage(imagePictureBox1);
+                            }
+
                             continue;
                         }
                         if (ss[0].IndexOf("imagePictureBox2") >= 0)
                         {
                             imagePictureBox2 = ss[1].Replace("\r\n", "");
-                            pictureBox2.Image = CreateImage(imagePictureBox2);
+                            if (File.Exists(imagePictureBox2))
+                            {
+                                pictureBox2.Image = CreateImage(imagePictureBox2);
+                            }
                             continue;
                         }
                         if (ss[0].IndexOf("imagePictureBox3") >= 0)
                         {
                             imagePictureBox3 = ss[1].Replace("\r\n", "");
-                            pictureBox3.Image = CreateImage(imagePictureBox3);
+                            if (File.Exists(imagePictureBox3))
+                            {
+                                pictureBox3.Image = CreateImage(imagePictureBox3);
+                            }
                             continue;
                         }
                         if (ss[0].IndexOf("imagePictureBox4") >= 0)
                         {
                             imagePictureBox4 = ss[1].Replace("\r\n", "");
-                            pictureBox4.Image = CreateImage(imagePictureBox4);
+                            if (File.Exists(imagePictureBox4))
+                            {
+                                pictureBox4.Image = CreateImage(imagePictureBox4);
+                            }
                             continue;
                         }
                         if (ss[0].IndexOf("imagePictureBox5") >= 0)
                         {
                             imagePictureBox5 = ss[1].Replace("\r\n", "");
-                            pictureBox5.Image = CreateImage(imagePictureBox5);
+                            if (File.Exists(imagePictureBox5))
+                            {
+                                pictureBox5.Image = CreateImage(imagePictureBox5);
+                            }
                             continue;
                         }
                         if (ss[0].IndexOf("imagePictureBox6") >= 0)
                         {
                             imagePictureBox6 = ss[1].Replace("\r\n", "");
-                            pictureBox6.Image = CreateImage(imagePictureBox6);
+                            if (File.Exists(imagePictureBox6))
+                            {
+                                pictureBox6.Image = CreateImage(imagePictureBox6);
+                            }
                             continue;
                         }
                         //if (ss[0].IndexOf("imagePictureBox7") >= 0)
@@ -1444,6 +1463,17 @@ namespace pm
                 if (MessageBox.Show("Cannot write in " + file, "", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
                     return;
             }
+            if (checkBox5.Checked)
+            {
+                try
+                {
+                    execute_bat(file);
+                }
+                catch
+                {
+
+                }
+            }
         }
 
         void monitoring_validation( bool validation = true)
@@ -1592,6 +1622,21 @@ namespace pm
                     }
                     File.Copy(work_dir + "\\feature_param.csv", bak_file, true);
                     File.Delete(work_dir + "\\feature_param.csv");
+                }
+            }
+
+            if ( checkBox5.Checked)
+            {
+                button2_Click(null, null);
+                button3_Click(null, null);
+
+                try
+                {
+                    execute_bat(file);
+                }
+                catch
+                {
+
                 }
             }
         }
@@ -2007,12 +2052,13 @@ namespace pm
             }
             System.IO.Directory.SetCurrentDirectory(base_dir);
 
-            return;
-            if (summary)
+            if (checkBox5.Checked)
             {
+                button2_Click(null, null);
+                button3_Click(null, null);
                 try
                 {
-                    execute_bat(base_name0 + "_feature_summary_visualization.bat");
+                    execute_bat(batfile);
                 }
                 catch
                 {
@@ -2020,35 +2066,9 @@ namespace pm
                 }
                 System.IO.Directory.SetCurrentDirectory(work_dir);
 
-                if (File.Exists(base_name0 + "_feature_df.png"))
+                if (summary)
                 {
-                    pictureBox2.Image = CreateImage(base_name0 + "_feature_df.png");
-                    imagePictureBox2 = base_name0 + "_feature_df.png";
-                    htmlPictureBox2 = base_name0 + "_feature_df.html";
-                }
-                if (File.Exists(base_name0 + "_monotonicity2.png"))
-                {
-                    pictureBox3.Image = CreateImage(base_name0 + "_monotonicity2.png");
-                    imagePictureBox3 = base_name0 + "_monotonicity2.png";
-                    htmlPictureBox3 = base_name0 + "_monotonicity2.html";
-                }
-                if (File.Exists(base_name0 + "_tracking_feature.png"))
-                {
-                    pictureBox4.Image = CreateImage(base_name0 + "_tracking_feature.png");
-                    imagePictureBox4 = base_name0 + "_tracking_feature.png";
-                    htmlPictureBox4 = base_name0 + "_feature_summary_visualization1.html";
-                }
-                if (File.Exists(base_name0 + "_tracking_feature2.png"))
-                {
-                    pictureBox5.Image = CreateImage(base_name0 + "_tracking_feature2.png");
-                    imagePictureBox5 = base_name0 + "_tracking_feature2.png";
-                    htmlPictureBox5 = base_name0 + "_feature_summary_visualization2.html";
-                }
-                if (File.Exists(base_name0 + "_input.png"))
-                {
-                    pictureBox6.Image = CreateImage(base_name0 + "_input.png");
-                    imagePictureBox6 = base_name0 + "_input.png";
-                    htmlPictureBox6 = base_name0 + "_input.html";
+                    button21_Click(sender, e);
                 }
             }
         }
@@ -2285,14 +2305,6 @@ namespace pm
         {
             System.IO.Directory.SetCurrentDirectory(base_dir);
 
-            try
-            {
-                //execute_bat(base_name0 + "_feature_summary_visualization.bat");
-            }
-            catch
-            {
-
-            }
             System.IO.Directory.SetCurrentDirectory(work_dir);
 
             if (File.Exists(base_name0 + "_feature_df.png"))
