@@ -1792,6 +1792,7 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 							lm_pb <- runif(1,-0.001,1)
 							lm_pc <- yy[1] + runif(1,-0.0001,0.0001)
 							lm_pd <- runif(1,-0.001,1)
+							
 							if ( length(a_coef) > 1 )
 							{
 								lm_pa <- rlnorm2(1, mean = mean(a_coef), sd = sd(a_coef))
@@ -1811,6 +1812,8 @@ curve_fitting <- function(y, h, reference=NULL, rank="")
 									lm_pd <- rnorm(n =1,mean = 0, sd = sqrt(noise_varience)) - noise_varience/2
 								}
 							}
+							lm_pc = yy_org[1]- lm_pa*exp(lm_pb*xx_org[1] + lm_pd)
+
 							pred <- function(parS, xx) parS$c + parS$a*exp(parS$b*xx + parS$d)
 							resid <- function(p, observed, xx) observed - pred(p,xx)
 							parStart <- list(a=lm_pa, b=lm_pb, c=lm_pc, d=lm_pd)

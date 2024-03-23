@@ -1465,6 +1465,7 @@ namespace pm
             }
             if (checkBox5.Checked)
             {
+                System.IO.Directory.SetCurrentDirectory(base_dir);
                 try
                 {
                     execute_bat(file);
@@ -1627,6 +1628,7 @@ namespace pm
 
             if ( checkBox5.Checked)
             {
+                System.IO.Directory.SetCurrentDirectory(base_dir);
                 button2_Click(null, null);
                 button3_Click(null, null);
 
@@ -2171,6 +2173,9 @@ namespace pm
 
         private void button19_Click(object sender, EventArgs e)
         {
+            bool x = checkBox5.Checked;
+
+            checkBox5.Checked = false;
             save();
             button2_Click(sender, e);
             button3_Click(sender, e);
@@ -2178,6 +2183,7 @@ namespace pm
             button5_Click(sender, e);
             button14_Click(sender, e);
             button18_Click(sender, e);
+            checkBox5.Checked = x;
         }
 
         private void comboBox6_TextChanged(object sender, EventArgs e)
