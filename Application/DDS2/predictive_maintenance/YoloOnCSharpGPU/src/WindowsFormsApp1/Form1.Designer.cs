@@ -31,12 +31,24 @@ namespace WindowsFormsApp1
         {
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
+            this.listBox4 = new System.Windows.Forms.ListBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.listBox3 = new System.Windows.Forms.ListBox();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.splitter2 = new System.Windows.Forms.Splitter();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.splitter4 = new System.Windows.Forms.Splitter();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.splitter3 = new System.Windows.Forms.Splitter();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel6 = new System.Windows.Forms.Panel();
@@ -46,12 +58,16 @@ namespace WindowsFormsApp1
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.button4 = new System.Windows.Forms.Button();
-            this.listBox4 = new System.Windows.Forms.ListBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel5.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -71,6 +87,8 @@ namespace WindowsFormsApp1
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button6);
+            this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.listBox4);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.listBox3);
@@ -83,11 +101,41 @@ namespace WindowsFormsApp1
             this.panel1.Size = new System.Drawing.Size(1148, 47);
             this.panel1.TabIndex = 1;
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(855, 21);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(126, 23);
+            this.button5.TabIndex = 6;
+            this.button5.Text = "select";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // listBox4
+            // 
+            this.listBox4.FormattingEnabled = true;
+            this.listBox4.ItemHeight = 12;
+            this.listBox4.Location = new System.Drawing.Point(263, 0);
+            this.listBox4.Name = "listBox4";
+            this.listBox4.Size = new System.Drawing.Size(135, 16);
+            this.listBox4.TabIndex = 5;
+            this.listBox4.Visible = false;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(116, 12);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(126, 23);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "Confirm and reflect";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // listBox3
             // 
             this.listBox3.FormattingEnabled = true;
             this.listBox3.ItemHeight = 12;
-            this.listBox3.Location = new System.Drawing.Point(699, 12);
+            this.listBox3.Location = new System.Drawing.Point(421, 0);
             this.listBox3.Name = "listBox3";
             this.listBox3.Size = new System.Drawing.Size(135, 16);
             this.listBox3.TabIndex = 3;
@@ -97,7 +145,7 @@ namespace WindowsFormsApp1
             // 
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 12;
-            this.listBox2.Location = new System.Drawing.Point(849, 12);
+            this.listBox2.Location = new System.Drawing.Point(571, 0);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(135, 16);
             this.listBox2.TabIndex = 2;
@@ -107,7 +155,7 @@ namespace WindowsFormsApp1
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(990, 12);
+            this.listBox1.Location = new System.Drawing.Point(712, 0);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(135, 16);
             this.listBox1.TabIndex = 1;
@@ -135,12 +183,104 @@ namespace WindowsFormsApp1
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.splitter2);
+            this.panel5.Controls.Add(this.panel8);
             this.panel5.Controls.Add(this.textBox1);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(553, 498);
             this.panel5.TabIndex = 2;
+            // 
+            // splitter2
+            // 
+            this.splitter2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.splitter2.Location = new System.Drawing.Point(392, 0);
+            this.splitter2.Name = "splitter2";
+            this.splitter2.Size = new System.Drawing.Size(3, 498);
+            this.splitter2.TabIndex = 2;
+            this.splitter2.TabStop = false;
+            // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.toolStrip1);
+            this.panel8.Controls.Add(this.panel10);
+            this.panel8.Controls.Add(this.splitter4);
+            this.panel8.Controls.Add(this.panel9);
+            this.panel8.Controls.Add(this.splitter3);
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel8.Location = new System.Drawing.Point(395, 0);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(158, 498);
+            this.panel8.TabIndex = 1;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Location = new System.Drawing.Point(0, 243);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(158, 25);
+            this.toolStrip1.TabIndex = 4;
+            this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
+            // 
+            // panel10
+            // 
+            this.panel10.Controls.Add(this.pictureBox3);
+            this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel10.Location = new System.Drawing.Point(0, 123);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(158, 120);
+            this.panel10.TabIndex = 3;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(155, 117);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 3;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox3_MouseClick);
+            this.pictureBox3.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox3_MouseDoubleClick);
+            // 
+            // splitter4
+            // 
+            this.splitter4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter4.Location = new System.Drawing.Point(0, 120);
+            this.splitter4.Name = "splitter4";
+            this.splitter4.Size = new System.Drawing.Size(158, 3);
+            this.splitter4.TabIndex = 2;
+            this.splitter4.TabStop = false;
+            // 
+            // panel9
+            // 
+            this.panel9.Controls.Add(this.pictureBox2);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel9.Location = new System.Drawing.Point(0, 0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(158, 120);
+            this.panel9.TabIndex = 0;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(158, 120);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox2_MouseClick);
+            this.pictureBox2.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox2_MouseDoubleClick);
+            // 
+            // splitter3
+            // 
+            this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitter3.Location = new System.Drawing.Point(0, 262);
+            this.splitter3.Name = "splitter3";
+            this.splitter3.Size = new System.Drawing.Size(158, 236);
+            this.splitter3.TabIndex = 1;
+            this.splitter3.TabStop = false;
             // 
             // textBox1
             // 
@@ -233,25 +373,15 @@ namespace WindowsFormsApp1
             this.trackBar1.TabIndex = 0;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
-            // button4
+            // button6
             // 
-            this.button4.Location = new System.Drawing.Point(116, 12);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(126, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Confirm and reflect";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // listBox4
-            // 
-            this.listBox4.FormattingEnabled = true;
-            this.listBox4.ItemHeight = 12;
-            this.listBox4.Location = new System.Drawing.Point(541, 12);
-            this.listBox4.Name = "listBox4";
-            this.listBox4.Size = new System.Drawing.Size(135, 16);
-            this.listBox4.TabIndex = 5;
-            this.listBox4.Visible = false;
+            this.button6.Location = new System.Drawing.Point(595, 22);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(123, 23);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "view tableLayout";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 
@@ -267,6 +397,12 @@ namespace WindowsFormsApp1
             this.panel7.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            this.panel10.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.panel9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -291,13 +427,24 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.ListBox listBox3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ListBox listBox4;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Splitter splitter2;
+        private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Splitter splitter4;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Splitter splitter3;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.Button button6;
+        public System.Windows.Forms.TrackBar trackBar1;
     }
 }
 

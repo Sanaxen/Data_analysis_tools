@@ -17,6 +17,13 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         string path = ".";
+        string image1 = "";
+        string image2 = "";
+        int image1_pos = 0;
+        int image2_pos = 0;
+
+        yolov3_feature_discovery.Form2 form2 = null;
+
         struct Employee
         {
             public int id;
@@ -45,13 +52,14 @@ namespace WindowsFormsApp1
             if (cmds.Length > 1)
             {
                 path = cmds[1];
-            }else
+            }
+            else
             {
                 path = "..\\images";
             }
             bool s1 = File.Exists(path + "\\feature_summarys_best.csv");
             bool s2 = File.Exists(path + "\\feature_summarys.csv");
-            if ( s1 && s2 )
+            if (s1 && s2)
             {
                 button1_Click(null, null);
             }
@@ -90,7 +98,7 @@ namespace WindowsFormsApp1
                     Confidence = 0.0,
                     Type = ""
                 };
-                if ( best )
+                if (best)
                 {
                     employee.Confidence = double.Parse(values[14]);
                     employee.Type = values[15];
@@ -101,7 +109,7 @@ namespace WindowsFormsApp1
             return employees;
         }
 
-        public static System.Drawing.Image CreateImage(string filename)
+        public  System.Drawing.Image CreateImage(string filename)
         {
             System.IO.FileStream fs = new System.IO.FileStream(
                 filename,
@@ -136,7 +144,7 @@ namespace WindowsFormsApp1
                 if (csv2[k].Confidence < p) continue;
                 n++;
             }
-            if ( n == 0)
+            if (n == 0)
             {
                 p = 0.7;
                 for (int k = 0; k < N; k++)
@@ -169,18 +177,18 @@ namespace WindowsFormsApp1
                     string s = csv[i].filename_r;
                     if (s == fileName)
                     {
-                        listBox1.Items.Add(path+"\\"+fileName.Replace("\"","") + ".png");
-                        listBox2.Items.Add(Confidence.ToString()+"% : " +csv2[k].Type);
-                        listBox3.Items.Add("monotonicity:"+monotonicity.ToString());
+                        listBox1.Items.Add(path + "\\" + fileName.Replace("\"", "") + ".png");
+                        listBox2.Items.Add(Confidence.ToString() + "% : " + csv2[k].Type);
+                        listBox3.Items.Add("monotonicity:" + monotonicity.ToString());
                         listBox4.Items.Add("ymax:" + ymax.ToString());
-                        pictureBox1.Image = CreateImage(path + "\\" + fileName.Replace("\"", "")+".png");
+                        pictureBox1.Image = CreateImage(path + "\\" + fileName.Replace("\"", "") + ".png");
 
-                        string t = path + "\\" + fileName.Replace("\"", "")+".r";
+                        string t = path + "\\" + fileName.Replace("\"", "") + ".r";
 
                         string[] delimiter = { "_feature" };
                         string[] tmp = fileName.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
-                        textBox1.Text = "#"+tmp[1] + "\r\n";
+                        textBox1.Text = "#" + tmp[1] + "\r\n";
                         textBox1.Text += "#" + Confidence.ToString() + "% : " + csv2[k].Type + "\r\n";
                         textBox1.Text += "#monotonicity:" + monotonicity.ToString() + "\r\n\r\n"; ;
                         textBox1.Text += "#ymax:" + ymax.ToString() + "\r\n\r\n"; ;
@@ -197,7 +205,7 @@ namespace WindowsFormsApp1
             trackBar1_Scroll(null, null);
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
+        public void trackBar1_Scroll(object sender, EventArgs e)
         {
             if (trackBar1.Value < listBox1.Items.Count)
             {
@@ -208,7 +216,7 @@ namespace WindowsFormsApp1
                 string t = System.IO.Path.ChangeExtension(filePath, ".r");
 
                 string[] delimiter = { "_feature" };
-                string[] tmp = filePath.Replace(".png","").Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                string[] tmp = filePath.Replace(".png", "").Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
                 textBox1.Text = "#" + tmp[1] + "\r\n";
                 textBox1.Text += "#" + listBox2.Items[trackBar1.Value].ToString() + "\r\n";
@@ -238,6 +246,12 @@ namespace WindowsFormsApp1
         {
             if (trackBar1.Value < listBox1.Items.Count)
             {
+                if (image1 == "")
+                {
+                    MessageBox.Show("Please select one.");
+                    return;
+                }
+                trackBar1.Value = image1_pos;
                 string filePath = listBox1.Items[trackBar1.Value].ToString();
                 pictureBox1.Image = CreateImage(filePath);
                 pictureBox1.Refresh();
@@ -251,8 +265,27 @@ namespace WindowsFormsApp1
                 {
                     string[] delimiter2 = { "_feature" };
                     string[] tmp2 = filePath.Replace(".png", "").Split(delimiter2, StringSplitOptions.RemoveEmptyEntries);
-                    sw.Write(tmp2[1].Replace("(", "").Replace(")", "")+"\n");
+                    //sw.Write(tmp2[1].Replace("(", "").Replace(")", "")+"\n");
 
+                    if (image1 != "")
+                    {
+                        tmp2 = image1.Replace(".png", "").Split(delimiter2, StringSplitOptions.RemoveEmptyEntries);
+
+                        string s = tmp2[1].Replace("(", "").Replace(")", "");
+                        sw.Write(s+ "\n");
+                    }
+                    if (image2 != "")
+                    {
+                        tmp2 = image2.Replace(".png", "").Split(delimiter2, StringSplitOptions.RemoveEmptyEntries);
+                        sw.Write(tmp2[1].Replace("(", "").Replace(")", "") + "\n");
+                    }else
+                    {
+                        tmp2 = image1.Replace(".png", "").Split(delimiter2, StringSplitOptions.RemoveEmptyEntries);
+                        string s = tmp2[1].Replace("(", "").Replace(")", "");
+                        string[] delimiter3 = { "." };
+                        s = s.Split(delimiter3, StringSplitOptions.RemoveEmptyEntries)[0];
+                        sw.Write(s + "..\n");
+                    }
                     using (StreamReader sr = new StreamReader(t))
                     {
                         while (true)
@@ -302,7 +335,8 @@ namespace WindowsFormsApp1
                                 if (int.Parse(tmp[1].Replace("\r\n", "")) > 0)
                                 {
                                     sw.Write("comboBox3,+\n");
-                                } else
+                                }
+                                else
                                 {
                                     sw.Write("comboBox3,-\n");
                                 }
@@ -311,6 +345,96 @@ namespace WindowsFormsApp1
                     }
                 }
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (image2 == "" && image1 == "")
+            {
+                if (trackBar1.Value < listBox1.Items.Count)
+                {
+                    string filePath = listBox1.Items[trackBar1.Value].ToString();
+                    pictureBox2.Image = CreateImage(filePath);
+                    pictureBox2.Refresh();
+                    image1 = filePath;
+                    image1_pos = trackBar1.Value;
+                }
+            }
+            else
+            {
+                if (image1 != "" && image2 == "")
+                {
+                    if (trackBar1.Value < listBox1.Items.Count)
+                    {
+                        string filePath = listBox1.Items[trackBar1.Value].ToString();
+                        pictureBox3.Image = CreateImage(filePath);
+                        pictureBox3.Refresh();
+                        image2 = filePath;
+                        image2_pos = trackBar1.Value;
+                    }
+                }
+            }
+        }
+
+        private void pictureBox2_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            pictureBox2.Image = null;
+            pictureBox2.Refresh();
+            image1 = "";
+            if ( image2 != "")
+            {
+                pictureBox2.Image = pictureBox3.Image;
+                pictureBox2.Refresh();
+                image1 = image2;
+                image1_pos = image2_pos;
+                trackBar1.Value = image1_pos;
+                trackBar1_Scroll(sender, e);
+
+                pictureBox3.Image = null;
+                pictureBox3.Refresh();
+                image2 = "";
+                image2_pos = 0;
+            }
+        }
+
+        private void pictureBox3_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            pictureBox3.Image = null;
+            pictureBox3.Refresh();
+            image2 = "";
+            image2_pos = 0;
+        }
+
+        private void pictureBox2_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (image1 != "")
+            {
+                trackBar1.Value = image1_pos;
+                trackBar1_Scroll(sender, e);
+            }
+        }
+
+        private void pictureBox3_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (image2 != "")
+            {
+                trackBar1.Value = image2_pos;
+                trackBar1_Scroll(sender, e);
+            }
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            form2 = new yolov3_feature_discovery.Form2();
+            form2.listBox1 = listBox1;
+            form2.form1 = this;
+
+            form2.View();
         }
     }
 }
