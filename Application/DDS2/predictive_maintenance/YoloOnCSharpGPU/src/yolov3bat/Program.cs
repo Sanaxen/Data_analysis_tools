@@ -124,13 +124,13 @@ namespace yolov3bat
 
                     foreach (var i in items)
                     {
-                        if (i.Type == "green" && i.Confidence > 0.7)
+                        if ((i.Type == "green" ||i.Type == "yellow") && i.Confidence > 0.6)
                         {
                             if (maxConfidence < i.Confidence)
                             {
                                 //maxConfidence = i.Confidence;
 
-                                Console.WriteLine(fileName);
+                                Console.WriteLine(i.Confidence.ToString() + " 1 "+fileName);
                                 Console.WriteLine(i.Confidence);
                                 Console.WriteLine(i.Type);
 
@@ -139,12 +139,13 @@ namespace yolov3bat
                                 best_Type.Push(i.Type);
                             }
                         }
-                        if (i.Type == "yellow" && i.Confidence > 0.7)
+                        if ((i.Type == "green" ||i.Type == "yellow") && i.Confidence > 0.5)
                         {
                             if (maxConfidence < i.Confidence)
                             {
                                 //maxConfidence = i.Confidence;
 
+                                Console.WriteLine(i.Confidence.ToString() + " 2 "+fileName);
                                 Console.WriteLine(i.Confidence);
                                 Console.WriteLine(i.Type);
 
@@ -153,12 +154,13 @@ namespace yolov3bat
                                 best_Type2.Push(i.Type);
                             }
                         }
-                        if ((i.Type == "green" ||i.Type == "yellow") && i.Confidence > 0.6)
+                        if ((i.Type == "green" ||i.Type == "yellow") && i.Confidence > 0.25)
                         {
                             if (maxConfidence < i.Confidence)
                             {
                                 //maxConfidence = i.Confidence;
 
+                                Console.WriteLine(i.Confidence.ToString() + " 3 "+fileName);
                                 Console.WriteLine(i.Confidence);
                                 Console.WriteLine(i.Type);
 
@@ -176,13 +178,13 @@ namespace yolov3bat
             {
                 Console.WriteLine(fileName);
             }
-            if ( best.Count == 0 && best2.Count > 0)
+            if ( best.Count < 3 && best2.Count > 0)
             {
                 best = best2;
                 best_Confidence = best_Confidence2;
                 best_Type = best_Type2;
             }
-            if (best.Count == 0 && best3.Count > 0)
+            if (best.Count < 3 && best3.Count > 0)
             {
                 best = best3;
                 best_Confidence = best_Confidence3;
