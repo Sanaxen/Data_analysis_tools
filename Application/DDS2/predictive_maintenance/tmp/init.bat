@@ -1,4 +1,4 @@
-set drive=d:
+set drive=c:
 
 set R_INSTALL_PATH=%drive%\Program Files\R\R-4.2.3
 set R_LIBS_USER=%~dp0\lib
