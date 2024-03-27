@@ -62,7 +62,7 @@ namespace yolov3_feature_discovery
             // 画像を配置
             for (int row = 0; row < N; row++)
             {
-                for (int col = 0; col < 5; col++)
+                for (int col = 0; col < N; col++)
                 {
                     string filePath = listBox1.Items[j].ToString();
                     var img = form1.CreateImage(filePath);

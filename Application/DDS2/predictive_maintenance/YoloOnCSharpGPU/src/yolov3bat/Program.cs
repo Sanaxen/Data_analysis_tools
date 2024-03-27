@@ -84,8 +84,10 @@ namespace yolov3bat
                 }
             }
             Console.WriteLine(n);
-            csv2.Sort((a, b) => Math.Sign(b.Confidence - a.Confidence));
+            //csv2.Sort((a, b) => Math.Sign(b.Confidence - a.Confidence));
             //csv2.Sort((a, b) => Math.Sign(b.monotonicity - a.monotonicity));
+            //csv2.Sort((a, b) => Math.Sign(((b.Type=="green")?1:0 )- ((a.Type=="green")?1:0)));
+            csv2.Sort((a, b) => Math.Sign(b.monotonicity+((b.Type=="green") ? 1 : 0)- a.monotonicity-((a.Type=="green") ? 1 : 0)));
             save_csv(path + "\\feature_summarys_best.csv", csv2);
         }
 
@@ -178,13 +180,13 @@ namespace yolov3bat
             {
                 Console.WriteLine(fileName);
             }
-            if ( best.Count < 3 && best2.Count > 0)
+            if ( best.Count < 4 && best2.Count > 0)
             {
                 best = best2;
                 best_Confidence = best_Confidence2;
                 best_Type = best_Type2;
             }
-            if (best.Count < 3 && best3.Count > 0)
+            if (best.Count < 4 && best3.Count > 0)
             {
                 best = best3;
                 best_Confidence = best_Confidence3;
