@@ -1634,7 +1634,7 @@ namespace pm
 
                 try
                 {
-                    execute_bat(file);
+                    execute_bat(file, false);
                 }
                 catch
                 {
@@ -2027,8 +2027,10 @@ namespace pm
                 bat += "\r\n";
                 bat += "cd bin\r\n";
                 bat += "del feature_discovery_output.txt\r\n";
-                bat += "yolov3bat.exe ..\\images\r\n";
-                bat += "yolov3_feature_discovery.exe ..\\images\r\n";
+                bat += ":yolov3bat.exe "+ "\""+"%curdir%images\"\r\n";
+                bat += "yolov3bat_el.exe " + "\"" + "%curdir%images\"\r\n";
+                bat += ":yolov3_feature_discovery.exe "+ "\"" + "%curdir%images\"\r\n";
+                bat += "yolov3_feature_discovery_el.exe " + "\"" + "%curdir%images\"\r\n";
                 bat += "\r\n";
                 bat += "copy feature_discovery_output.txt " + "\"" + csv_dir + "\" /v /y\r\n";
                 bat += "cd %curdir%\r\n";
@@ -2229,7 +2231,7 @@ namespace pm
 
                 if (!File.Exists(file))
                 {
-                    MessageBox.Show("file not found[" + file + ".txt]");
+                    MessageBox.Show("file not found[" + file +"]");
                 }
                 listBox3.Items.Clear();
             }
