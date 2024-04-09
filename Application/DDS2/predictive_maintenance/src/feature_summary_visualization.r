@@ -270,15 +270,15 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 		#	next
 		#}
 		N=nrow(df2)
-		n <- window_moving_size(N, lookback, lookback_slide)
-		n <- window_moving_size(n, smooth_window2, smooth_window_slide2)
+		#n <- window_moving_size(N, lookback, lookback_slide)
+		#n <- window_moving_size(n, smooth_window2, smooth_window_slide2)
 
-		if ( n < 5 )
-		{
-			print(sprintf("nrow:%d -> %d", N, n))
-			flush.console()
-			next
-		}
+		#if ( n < 5 )
+		#{
+		#	print(sprintf("nrow:%d -> %d", N, n))
+		#	flush.console()
+		#	#next
+		#}
 		if ( nrow(df2) < lookback*2 )
 		{
 			print(sprintf("nrow:%d lookback*2:%d", nrow(df2), lookback*2))

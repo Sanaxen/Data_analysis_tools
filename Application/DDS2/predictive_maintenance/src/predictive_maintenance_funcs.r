@@ -3597,7 +3597,20 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 			}
 		}
 		
+		df2[is.na(df2)] <- 0
 		
+		for ( k in 1:ncol(df2))
+		{
+			if ( colnames(df2)[k] == "time_index")
+			{
+				next
+			}
+			if ( colnames(df2)[k] == "maintenance")
+			{
+				next
+			}
+			df2[,k] <- as.numeric(df2[,k])
+		}
 		#過去データとの結合と最大長超えカット
 		if ( is.null(past))
 		{
@@ -3625,9 +3638,31 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 
 		if ( !is.null(pre) )
 		{
+			#print(str(pre))
+			#print("=====")
+			#print(str(df2))
+		
 			#df2 <- rbind(pre, df2)
 			df2 <- dplyr::bind_rows(pre, df2)
 			#df2_org <- rbind(pre_org, df2_org)
+			for ( k in 1:ncol(pre_org))
+			{
+				if ( colnames(pre_org)[k] == "time_index")
+				{
+					next
+				}
+				if ( colnames(pre_org)[k] == "maintenance")
+				{
+					next
+				}
+				pre_org[,k] <- as.numeric(pre_org[,k])
+				df2_org[,k] <- as.numeric(df2_org[,k])
+			}
+			
+			#print(str(pre_org))
+			#print("=====")
+			#print(str(df2_org))
+			
 			df2_org <- dplyr::bind_rows(pre_org, df2_org)
 			
 			print(sprintf("row bind :nrow(df2):%d", nrow(df2)))
@@ -3665,9 +3700,9 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 		if ( n < max(abs(train_num),abs(monotonicity_num)))
 		{
 			print(sprintf("n:%d max(abs(train_num),abs(monotonicity_num)):%d",n, max(abs(train_num),abs(monotonicity_num))))
-			print("#データがまだ足りていない")
+			#print("#データがまだ足りていない")
 			flush.console()
-			next
+			#next
 		}
 		
 		#if ( nrow(df2) - smooth_window <  max_data_len*3 )
