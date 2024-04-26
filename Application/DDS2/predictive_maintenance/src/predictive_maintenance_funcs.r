@@ -333,7 +333,8 @@ get_data_frame<- function(file, timeStamp)
 		}
 	}
 	df <- as.data.frame(df)
-	
+	colnames(df) <- gsub("\\.", "_", colnames(df))
+
 	print(timeStamp)
 	print(sprintf("get_data_frame nrow(df):%d", nrow(df)))
 	print(sprintf("get_data_frame ncol(df):%d", ncol(df)))

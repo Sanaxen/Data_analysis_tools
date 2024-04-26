@@ -29,6 +29,9 @@ read_csv_file <- function( csv, csv_encoding= "sjis")
 		}
 	}
 	df <- as.data.frame(df)
+	print(colnames(df))
+	colnames(df) <- gsub("\\.", "_", colnames(df))
+	print(colnames(df))
 
 	print(head(df))
 	print(sprintf("get_data_frame ncol(df):%d", ncol(df)))	
@@ -39,6 +42,8 @@ read_csv_file <- function( csv, csv_encoding= "sjis")
 
 csv_division <- function(csv, size)
 {
+	csv_encoding= "sjis"
+
 	if ( ! file.exists("files") )
 	{
 		dir.create("files")
@@ -55,7 +60,7 @@ csv_division <- function(csv, size)
 		file.remove(paste("./files/",FN,sep=""))
 	}
 	
-	df <- read_csv_file(csv)
+	df <- read_csv_file(csv, csv_encoding=csv_encoding)
 	
 	sink("./files/Emulate.bat")
 	cat("set cpy=cpoy-path-name\n")
