@@ -40,6 +40,7 @@ namespace WindowsFormsApp1
             public double min;
             public string image;
             public string filename_r;
+            public double rmse12;
             public double Confidence;
             public string Type;
         }
@@ -95,6 +96,7 @@ namespace WindowsFormsApp1
                     min = double.Parse(values[11]),
                     image = values[12],
                     filename_r = values[13],
+                    rmse12 = double.Parse(values[14]),
                     Confidence = 0.0,
                     Type = ""
                 };
@@ -139,27 +141,31 @@ namespace WindowsFormsApp1
             trackBar1.Maximum = N;
 
             double p = 0.8;
-            for (int k = 0; k < N; k++)
+
+            if (false)
             {
-                if (csv2[k].Confidence < p) continue;
-                n++;
-            }
-            if (n == 0)
-            {
-                p = 0.7;
                 for (int k = 0; k < N; k++)
                 {
                     if (csv2[k].Confidence < p) continue;
                     n++;
                 }
-            }
-            if (n == 0)
-            {
-                p = 0.6;
-                for (int k = 0; k < N; k++)
+                if (n == 0)
                 {
-                    if (csv2[k].Confidence < p) continue;
-                    n++;
+                    p = 0.7;
+                    for (int k = 0; k < N; k++)
+                    {
+                        if (csv2[k].Confidence < p) continue;
+                        n++;
+                    }
+                }
+                if (n == 0)
+                {
+                    p = 0.6;
+                    for (int k = 0; k < N; k++)
+                    {
+                        if (csv2[k].Confidence < p) continue;
+                        n++;
+                    }
                 }
             }
 
@@ -171,6 +177,7 @@ namespace WindowsFormsApp1
                 double monotonicity = csv2[k].monotonicity;
                 double ymax = csv2[k].max;
                 if (Math.Abs(csv2[k].monotonicity) < 0.2) continue;
+                if (csv2[k].rmse12 >= 999999.0) break;
 
                 for (int i = 0; i < csv.Count; i++)
                 {

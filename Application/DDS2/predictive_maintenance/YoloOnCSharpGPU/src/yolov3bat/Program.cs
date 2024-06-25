@@ -27,6 +27,7 @@ namespace yolov3bat
         public double min;
         public string image;
         public string filename_r;
+        public double rmse12;
         public double Confidence;
         public string Type;
     }
@@ -56,38 +57,60 @@ namespace yolov3bat
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            var best = ProcessDirectory(path);
             List<Employee> csv = ReadCsvFile(path + "\\feature_summarys.csv");
 
             List<Employee> csv2 = new List<Employee>();
             int n = 0;
-            int N = best.Item1.Count;
-            for (int k = 0; k < N; k++)
+
+            if (false)
             {
-                string fileName = best.Item1.Pop();
-                double Confidence = best.Item2.Pop();
-                string Type = best.Item3.Pop();
-                string t = System.IO.Path.GetFileNameWithoutExtension(Path.GetFileName(fileName));
-                for  (int i = 0; i < csv.Count; i++)
+                var best = ProcessDirectory(path);
+
+                int N = best.Item1.Count;
+                for (int k = 0; k < N; k++)
                 {
-                    string s = csv[i].filename_r;
-                    if ( s == "\""+t +"\"")
+                    string fileName = best.Item1.Pop();
+                    double Confidence = best.Item2.Pop();
+                    string Type = best.Item3.Pop();
+                    string t = System.IO.Path.GetFileNameWithoutExtension(Path.GetFileName(fileName));
+                    for (int i = 0; i < csv.Count; i++)
                     {
-                        n++;
-                        Employee tmp = csv[i];
-                        tmp.Confidence = Confidence;
-                        tmp.Type = Type;
-                        csv[i] = tmp;
-                        csv2.Add(tmp);
-                        break;
+                        string s = csv[i].filename_r;
+                        if (s == "\""+t +"\"")
+                        {
+                            n++;
+                            Employee tmp = csv[i];
+                            tmp.Confidence = Confidence;
+                            tmp.Type = Type;
+                            csv[i] = tmp;
+                            csv2.Add(tmp);
+                            break;
+                        }
                     }
                 }
+                Console.WriteLine(n);
+                //csv2.Sort((a, b) => Math.Sign(b.Confidence - a.Confidence));
+                //csv2.Sort((a, b) => Math.Sign(b.monotonicity - a.monotonicity));
+                //csv2.Sort((a, b) => Math.Sign(((b.Type=="green")?1:0 )- ((a.Type=="green")?1:0)));
+                csv2.Sort((a, b) => Math.Sign(b.monotonicity+((b.Type=="green") ? 1 : 0)- a.monotonicity-((a.Type=="green") ? 1 : 0)));
             }
-            Console.WriteLine(n);
-            //csv2.Sort((a, b) => Math.Sign(b.Confidence - a.Confidence));
-            //csv2.Sort((a, b) => Math.Sign(b.monotonicity - a.monotonicity));
-            //csv2.Sort((a, b) => Math.Sign(((b.Type=="green")?1:0 )- ((a.Type=="green")?1:0)));
-            csv2.Sort((a, b) => Math.Sign(b.monotonicity+((b.Type=="green") ? 1 : 0)- a.monotonicity-((a.Type=="green") ? 1 : 0)));
+            else
+            {
+                for (int i = 0; i < csv.Count; i++)
+                {
+                    string s = csv[i].filename_r;
+                    Employee tmp = csv[i];
+                    if (tmp.rmse12 >= 999999.0) break;
+                    tmp.Confidence = 0;
+                    tmp.Type = "green";
+                    csv[i] = tmp;
+                    csv2.Add(tmp);
+                    n++;
+                    if (n == 20) break;
+                }
+                Console.WriteLine(n);
+                csv2.Sort((a, b) => Math.Sign(a.rmse12 - b.rmse12));
+             }
             save_csv(path + "\\feature_summarys_best.csv", csv2);
         }
 
@@ -225,6 +248,7 @@ namespace yolov3bat
                     min = double.Parse(values[11]),
                     image = values[12],
                     filename_r = values[13],
+                    rmse12 = double.Parse(values[14]),
                     Confidence = 0.0,
                     Type = ""
                 };
@@ -241,7 +265,7 @@ namespace yolov3bat
                 writer.WriteLine("id,monotonicity,feature," +
                    "lookback,lookback_slide,smooth_window,smooth_window_slide," +
                    "smooth_window2,smooth_window_slide2," +
-                   "sigin,max,min,image,filename_r,Confidence, Type");
+                   "sigin,max,min,image,filename_r,rmse12,Confidence, Type");
 
                 foreach (var employee in employees)
                 {
@@ -249,6 +273,7 @@ namespace yolov3bat
                         $"{employee.lookback},{employee.lookback_slide},{employee.smooth_window},{employee.smooth_window_slide}," +
                         $"{employee.smooth_window2},{employee.smooth_window_slide2}," +
                         $"{employee.sigin},{employee.max},{employee.min},{employee.image},{employee.filename_r},"+
+                        $"{employee.rmse12},"+
                         $"{employee.Confidence},"+
                         $"{employee.Type}");
                 }

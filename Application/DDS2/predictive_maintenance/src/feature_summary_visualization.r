@@ -13,6 +13,60 @@ find_closest_factors <- function(n) {
   }
 }
 
+#滑らかさ
+calculate_roughness <- function(y) {
+  diff_y <- diff(y, differences = 2)
+  roughness <- sum(diff_y^2)
+  return(roughness)
+}
+# 変曲点の検出
+detect_inflection_points <- function(x, y) {
+  # 1次導関数の計算
+  dy <- diff(y) / diff(x)
+  # 2次導関数の計算
+  ddy <- diff(dy) / diff(x[-1])
+  # 符号が変わる点を検出
+  inflection_points <- which(diff(sign(ddy)) != 0) + 1
+  return(inflection_points)
+}
+# ピーク（ローカル最大値）の検出
+find_peaks <- function(y) {
+  peaks <- c()
+  for (i in 2:(length(y) - 1)) {
+    if (y[i] > y[i - 1] && y[i] > y[i + 1]) {
+      peaks <- c(peaks, i)
+    }
+  }
+  return(peaks)
+}
+
+# トラフ（ローカル最小値）の検出
+find_troughs <- function(y) {
+  troughs <- c()
+  for (i in 2:(length(y) - 1)) {
+    if (y[i] < y[i - 1] && y[i] < y[i + 1]) {
+      troughs <- c(troughs, i)
+    }
+  }
+  return(troughs)
+}
+peaks_count <- function(x, y)
+{
+	# LOESSを用いたデータの平滑化
+	span <- 0.3  # スパンパラメータの設定
+	loess_model <- loess(y ~ x, span = span)
+
+	# 平滑化されたデータの予測値を取得
+	y_smooth <- predict(loess_model, x)
+	
+	peaks <- find_peaks(y_smooth)
+	troughs <- find_troughs(y_smooth)
+
+	num_peaks <- length(peaks)
+	num_troughs <- length(troughs)
+
+	return( c(num_peaks,num_troughs))
+}
 
 freeram <- function(...) invisible(gc(...))
 
@@ -245,7 +299,8 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 	#print(sprintf("%d/%d nrow(feature_df):%d", i, as.integer(nrow(df)/one_input),nrow(feature_df)))
 
 	lookback_max = nrow(df2)/10
-	lookback_list = c(  19200, 9600, 4800, 3840, 2400, 1920, 960, 600, 480, 300, 240, 120, 60, 48, 24, 12)
+	lookback_list = c(  19200, 9600, 4800, 3840, 2400, 1920, 960, 600, 480, 300, 240, 120, 60, 48, 24, 12, 8)
+	#lookback_list = c(   120)
 	#lookback_list = c( 24)
 	cat("lookback_list")
 	print(lookback_list)
@@ -477,6 +532,20 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				}
 				
 				monotonicity_value = 0
+				rmse1 = 999999.0
+				rmse2 = 999999.0
+				delta_abc1 = 2
+				delta_abc2 = 2
+				delta_abc = 2
+				r_squared1 = 2
+				r_squared2 = 2
+				fvalue_p1 = 0
+				fvalue_p2 = 0
+				aic1 = 999999.0
+				aic2 = 999999.0
+				high_freq_magnitude1 = 999999
+				high_freq_magnitude2 = 999999
+				peaks_num = 999999
 				if ( maintenance_flag_idx > 0 )
 				{
 					idx <- which(feature_df$maintenance == 1)
@@ -484,10 +553,43 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 					{
 						monotonicity_value1 = 0
 						monotonicity_value2 = 0
+						rmse1 = 999999.0
+						rmse2 = 999999.0
+						
 						tmp <- feature_df[1:idx[1],]
 						if ( nrow(tmp) > 2 )
 						{
 							monotonicity_value1 <- monotonicity(tmp[,i], nrow(tmp), eps = 0.0)
+							tmpdf <- data.frame(x=c(1:nrow(tmp)),y=(tmp[,i]-min(tmp[,i]))/(max(tmp[,i])-min(tmp[,i])))
+							tmpdf <- na.omit(tmpdf)
+							if ( nrow(tmpdf) > 2 )
+							{
+								lm1 <- try(lm(y ~ x, data=tmpdf, na.action=na.exclude), silent = FALSE)
+								if (class(lm1) == "try-error") {
+									lm1 <- NULL
+							  	}
+								if ( !is.null(lm1) && coef(lm1)[2] * monotonicity_value1 > 0 && abs(monotonicity_value1) > 0.1 && abs(coef(lm1)[2]) > 0.0001)
+								{
+									f_statistic <- summary(lm1)$fstatistic
+									fvalue_p1 <- pf(f_statistic[1], f_statistic[2], f_statistic[3], lower.tail = FALSE)
+									r_squared1 <- summary(lm1)$r.squared
+									#sse <- sum((lm1$residuals)^2)
+									#rmse1 <- sse
+									rmse1 <- sqrt(mean((tmpdf$y -  predict(lm1, tmpdf))^2))
+									aic1 = AIC(lm1)
+									
+									#magnitude <- Mod(fft(tmpdf$y))
+									#high_freq_magnitude1 <- mean(magnitude[(length(magnitude) / 2):length(magnitude)])
+									high_freq_magnitude1 <- calculate_roughness(tmpdf$y)
+									
+									peaks <- peaks_count(tmpdf$x,tmpdf$y)
+									peaks_num <- peaks[1]+peaks[2]
+								}
+							}
+						  	#print(rmse1)
+							#flush.console()
+							#delta_abc1 = abs(max(tmpdf$y)-min(tmpdf$y))
+							delta_abc1 = abs(max(tmp[,i])-min(tmp[,i]))
 						}
 						
 
@@ -495,6 +597,54 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 						if ( nrow(tmp) > 2 )
 						{
 							monotonicity_value2 <- monotonicity(tmp[,i], nrow(tmp), eps = 0.0)
+
+							tmpdf <- data.frame(x=c(1:nrow(tmp)),y=(tmp[,i]-min(tmp[,i]))/(max(tmp[,i])-min(tmp[,i])))
+							tmpdf <- na.omit(tmpdf)
+							if ( nrow(tmpdf) > 2 )
+							{
+								lm2 <- try(lm(y ~ x, data=tmpdf, na.action=na.exclude), silent = FALSE) 
+								if (class(lm2) == "try-error") {
+									lm2 <- NULL
+							  	}
+							  	if ( monotonicity_value1 > 0 )
+							  	{
+									if ( !is.null(lm2) && coef(lm2)[2] < 0 && abs(monotonicity_value2) > 0.1 && abs(coef(lm2)[2]) > 0.0001)
+									{
+										f_statistic <- summary(lm2)$fstatistic
+										fvalue_p2 <- pf(f_statistic[1], f_statistic[2], f_statistic[3], lower.tail = FALSE)
+										r_squared2 <- summary(lm2)$r.squared
+										#sse <- sum((lm2$residuals)^2)
+										#rmse2 <- sse
+										rmse2 <- sqrt(mean((tmpdf$y -  predict(lm2, tmpdf))^2))
+										aic2 = AIC(lm2)
+
+										#magnitude <- Mod(fft(tmpdf$y))
+										#high_freq_magnitude2 <- mean(magnitude[(length(magnitude) / 2):length(magnitude)])
+										high_freq_magnitude2 <- calculate_roughness(tmpdf$y)
+									}
+								}else
+								{
+									if ( !is.null(lm2) && coef(lm2)[2] > 0 && abs(monotonicity_value2) > 0.1 && abs(coef(lm2)[2]) > 0.0001)
+									{
+										f_statistic <- summary(lm2)$fstatistic
+										fvalue_p2 <- pf(f_statistic[1], f_statistic[2], f_statistic[3], lower.tail = FALSE)
+										r_squared2 <- summary(lm2)$r.squared
+										#sse <- sum((lm2$residuals)^2)
+										#rmse2 <- sse
+										rmse2 <- sqrt(mean((tmpdf$y -  predict(lm2, tmpdf))^2))
+										aic2 = AIC(lm2)
+
+										#magnitude <- Mod(fft(tmpdf$y))
+										#high_freq_magnitude2 <- mean(magnitude[(length(magnitude) / 2):length(magnitude)])
+										high_freq_magnitude2 <- calculate_roughness(tmpdf$y)
+									}
+								}
+							  	#print(rmse2)
+								#flush.console()
+								#quit()
+								#delta_abc2 = abs(max(tmpdf$y)-min(tmpdf$y))
+								delta_abc2 = abs(max(tmp[,i])-min(tmp[,i]))
+							}
 						}
 						
 						if ( monotonicity_value1 == 0 || monotonicity_value2 == 0 )
@@ -515,7 +665,49 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				{
 					monotonicity_value <- monotonicity(feature_df[,i], length(feature_df[,i]), eps = 0.0)
 					monotonicity_value1 = monotonicity_value
+					tmpdf <- data.frame(x=c(1:nrow(feature_df)),y=(feature_df[,i]-min(feature_df[,i]))/(max(feature_df[,i])-min(feature_df[,i])))
+					tmpdf <- na.omit(tmpdf)
+					if ( nrow(tmpdf) > 2 )
+					{
+						lm1 <- try(lm(y ~ x, data=tmpdf, na.action=na.exclude), silent = FALSE) 
+						if (class(lm1) == "try-error") {
+							lm1 <- NULL
+					  	}
+						if ( !is.null(lm) && coef(lm1)[2] * monotonicity_value1 > 0  && abs(monotonicity_value1) > 0.1 && abs(coef(lm1)[2]) > 0.0001)
+						{
+							f_statistic <- summary(lm1)$fstatistic
+							fvalue_p1 <- pf(f_statistic[1], f_statistic[2], f_statistic[3], lower.tail = FALSE)
+							r_squared1 <- summary(lm1)$r.squared
+							#sse <- sum((lm1$residuals)^2)
+							#rmse1 <- sse
+							rmse1 <- sqrt(mean((tmpdf$y -  predict(lm1, tmpdf))^2))
+							rmse2 <- 0
+							aic1 = AIC(lm1)
+							aic2 = 0
+
+							#magnitude <- Mod(fft(tmpdf$y))
+							#high_freq_magnitude1 <- mean(magnitude[(length(magnitude) / 2):length(magnitude)])
+							high_freq_magnitude1 <- calculate_roughness(tmpdf$y)
+							
+							peaks <- peaks_count(tmpdf$x,tmpdf$y)
+							peaks_num <- peaks[1]+peaks[2]
+							
+						}
+						#delta_abc1 = abs(max(tmpdf$y)-min(tmpdf$y))
+						delta_abc1 = abs(max(feature_df[,i])-min(feature_df[,i]))
+						delta_abc2 = 0
+					}
 				}
+				if ( delta_abc2 > delta_abc1 && delta_abc2 > 0.0000001)
+				{
+					delta_abc = delta_abc1/delta_abc2
+				}
+				if ( delta_abc1 > delta_abc2 && delta_abc1 > 0.0000001)
+				{
+					delta_abc = delta_abc2/delta_abc1
+				}
+				delta_abc = (1 - delta_abc)*0.1
+
 				monotonicity_value_sigin = 0
 				if ( monotonicity_value1 < 0 )
 				{
@@ -610,6 +802,20 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 				cat(sprintf("sigin = %s\n", monotonicity_value_sigin))
 				
 				cat(sprintf("threshold_target = %f\n", threshold_target))
+				cat(sprintf("RMSE12 = %f\n", rmse1+rmse2 + 10*delta_abc + 10*high_freq_magnitude1+high_freq_magnitude2))
+				cat(sprintf("RMSE1 = %f\n", rmse1))+
+				cat(sprintf("RMSE2 = %f\n", rmse2))
+				cat(sprintf("delta_abc = %f\n", delta_abc))
+				cat(sprintf("r_squared1 = %f\n", r_squared1))
+				cat(sprintf("r_squared2 = %f\n", r_squared2))
+				cat(sprintf("fvalue_p1 = %f\n", fvalue_p1))
+				cat(sprintf("fvalue_p2 = %f\n", fvalue_p2))
+				cat(sprintf("AIC1 = %f\n", aic1))
+				cat(sprintf("AIC2 = %f\n", aic2))
+				cat(sprintf("high_freq_magnitude1  = %f\n", high_freq_magnitude1))
+				cat(sprintf("high_freq_magnitude2  = %f\n", high_freq_magnitude2))
+				cat(sprintf("peaks_num  = %f\n", peaks_num))
+				
 				sink()
 				
 				rowm <- data.frame(
@@ -626,7 +832,8 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 					max					= max((feature_df)[i]),
 					min					= min((feature_df)[i]),
 					image				= sprintf("=HYPERLINK(\"%s.png\")", base),
-					filename_r			= c(base)
+					filename_r			= c(base),
+					rmse12				= c(rmse1+rmse2 + 10*delta_abc + 10*high_freq_magnitude1+high_freq_magnitude2)
 				)
 
 				plt_list[num+1] <- p
@@ -642,7 +849,8 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 		}
 		if ( summary ) break
 	}
-	xxxx <- xxxx[order((xxxx$monotonicity), decreasing=T),]
+	xxxx <- xxxx[order((xxxx$rmse12), decreasing=F),]
+	#xxxx <- xxxx[order((xxxx$monotonicity), decreasing=T),]
 	write.csv(xxxx, '../images/feature_summarys.csv', row.names = F, fileEncoding = "CP932")
 	
 
