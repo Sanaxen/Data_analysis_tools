@@ -13,23 +13,23 @@ find_closest_factors <- function(n) {
   }
 }
 
-#滑らかさ
+#Smoothness
 calculate_roughness <- function(y) {
   diff_y <- diff(y, differences = 2)
   roughness <- sum(diff_y^2)
   return(roughness)
 }
-# 変曲点の検出
+#  Detect inflection points
 detect_inflection_points <- function(x, y) {
-  # 1次導関数の計算
+  # Calculation of first derivatives
   dy <- diff(y) / diff(x)
-  # 2次導関数の計算
+  # Calculating second derivatives
   ddy <- diff(dy) / diff(x[-1])
-  # 符号が変わる点を検出
+  # Detects points where the sign changes
   inflection_points <- which(diff(sign(ddy)) != 0) + 1
   return(inflection_points)
 }
-# ピーク（ローカル最大値）の検出
+# Peak (local maximum) detection
 find_peaks <- function(y) {
   peaks <- c()
   for (i in 2:(length(y) - 1)) {
@@ -40,7 +40,7 @@ find_peaks <- function(y) {
   return(peaks)
 }
 
-# トラフ（ローカル最小値）の検出
+# Trough (local minimum) detection
 find_troughs <- function(y) {
   troughs <- c()
   for (i in 2:(length(y) - 1)) {
@@ -52,11 +52,11 @@ find_troughs <- function(y) {
 }
 peaks_count <- function(x, y)
 {
-	# LOESSを用いたデータの平滑化
-	span <- 0.3  # スパンパラメータの設定
+	# Data smoothing using LOESS
+	span <- 0.3  # Set span parameters
 	loess_model <- loess(y ~ x, span = span)
 
-	# 平滑化されたデータの予測値を取得
+	# Get predicted value of smoothed data
 	y_smooth <- predict(loess_model, x)
 	
 	peaks <- find_peaks(y_smooth)
@@ -76,7 +76,7 @@ maintenance_interval <- function(df, start_idx=1)
 	ss = start_idx
 	if ( df$maintenance[start_idx] == 1 )
 	{
-		#連続した1をスキップ
+		#Skip consecutive 1s.
 		for ( sss in start_idx:nrow(df))
 		{
 			ss = sss
@@ -87,7 +87,7 @@ maintenance_interval <- function(df, start_idx=1)
 	print(sprintf("skipp maintenance==1 -> %d\n", ss))
 	
 	s = ss
-	#連続した0をスキップ
+	#Skip consecutive zeros
 	for ( sss in s:nrow(df))
 	{
 		ss = sss
@@ -97,7 +97,7 @@ maintenance_interval <- function(df, start_idx=1)
 	print(sprintf("skipp maintenance==0 -> %d\n", ss))
 
 	st = ss
-	#連続した1をスキップ
+	#Skip consecutive 1s.
 	for ( sss in st:nrow(df))
 	{
 		ss = sss
@@ -160,7 +160,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 			st = 1
 			if ( df$maintenance[st] == 1 )
 			{
-				#連続した1をスキップ
+				#Skip consecutive 1s.
 				for ( sss in st:nrow(df))
 				{
 					ss = sss
@@ -253,7 +253,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 	df2[,timeStamp] <- NULL
 	df2$time_index <- c(1:(nrow(df2)))
 	
-	#デバック用データ削減
+	#Data reduction for debugging
 	#df2 <- df2[,c("time_index", "maintenance","xxxx")]
 	#df2 <- as.data.frame(df2)
 
@@ -688,6 +688,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 							#magnitude <- Mod(fft(tmpdf$y))
 							#high_freq_magnitude1 <- mean(magnitude[(length(magnitude) / 2):length(magnitude)])
 							high_freq_magnitude1 <- calculate_roughness(tmpdf$y)
+							high_freq_magnitude2 <- 0
 							
 							peaks <- peaks_count(tmpdf$x,tmpdf$y)
 							peaks_num <- peaks[1]+peaks[2]
