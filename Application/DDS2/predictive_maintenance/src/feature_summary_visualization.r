@@ -129,14 +129,20 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 	
 	if ( file.exists('all.csv'))
 	{
-		df <- fread('all.csv', na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = TRUE)
+		df <- fread('all.csv', na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = F)
 		df <- as.data.frame(df)
 	}else
 	{
 		df <- appedAll_csv(dir='./Untreated', outfile = csvfile)
 	}
+	# Fill in missing values in numerical columns with average values
+	df_filled <- df %>%
+	  mutate(across(where(is.numeric), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+	df <- df_filled
+
 	print(sprintf("nrow:%d ncol:%d\n", nrow(df), ncol(df)))
 	print(head(df))
+	print(str(df))
 	flush.console()
 	
 	print(timeStamp)
@@ -195,6 +201,7 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 			write.csv(df, './all.csv', row.names = F)
 			print(head(df))
 			print(nrow(df))
+			print(str(df))
 		}
 	}
 	
@@ -708,7 +715,11 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 					delta_abc = delta_abc2/delta_abc1
 				}
 				delta_abc = (1 - delta_abc)*0.1
-
+				if ( delta_abc < 0 )
+				{
+					delta_abc = 999999.0
+				}
+				
 				monotonicity_value_sigin = 0
 				if ( monotonicity_value1 < 0 )
 				{

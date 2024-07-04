@@ -320,18 +320,22 @@ get_data_frame<- function(file, timeStamp)
 		,silent=F)
 		if ( class(df) == "try-error" || is.null(df) || nrow(df) == 0)
 		{
-			df <- fread(file, na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = TRUE)
+			df <- fread(file, na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = F)
 		}
 	}else
 	{
 		df <- try(
-			fread(file, na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = TRUE)
+			fread(file, na.strings=c("", "NULL"), header = TRUE, stringsAsFactors = F)
 		,silent=F)
 		if ( class(df) == "try-error" || is.null(df)  || nrow(df) == 0)
 		{
 			df <- read.csv( file, header=T, stringsAsFactors = F, na.strings = c("", "NA"), fileEncoding  = 'Shift_JIS')
 		}
 	}
+	df <- df %>%
+	  mutate(across(where(is.numeric), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+
+	print(str(df))
 	df <- as.data.frame(df)
 	colnames(df) <- gsub("\\.", "_", colnames(df))
 
