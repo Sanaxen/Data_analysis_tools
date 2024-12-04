@@ -107,7 +107,7 @@ maintenance_interval <- function(df, start_idx=1)
 	print(sprintf("skipp maintenance==1 -> %d\n", ss))
 
 	st = start_idx
-	ed = ss + as.integer((ss - st)/10)
+	ed = ss + as.integer((ss - st)/4)
 	if ( ed > nrow(df))
 	{
 		ed = nrow(df)

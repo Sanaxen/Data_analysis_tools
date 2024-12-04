@@ -342,7 +342,7 @@ get_data_frame<- function(file, timeStamp)
 	print(timeStamp)
 	print(sprintf("get_data_frame nrow(df):%d", nrow(df)))
 	print(sprintf("get_data_frame ncol(df):%d", ncol(df)))
-	#print(str(df))
+	print(str(df))
 	#print(head(df))
 	
 	df_ <- NULL
@@ -351,7 +351,8 @@ get_data_frame<- function(file, timeStamp)
 	{
 		if ( is.character(df[,i]) && colnames(df)[i]!=timeStamp && colnames(df)[i]!="maintenance")
 		{
-			next
+			df[,i] <- as.numeric(df[,i])
+			#next
 		}
 		if ( !is.character(df[,i]))
 		{
@@ -2762,10 +2763,10 @@ if(T)
 				from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
 	}else
 	{
-		failure_time_str = sprintf(" > %d step 5%%[%d %s]", as.integer(h),
+		failure_time_str = sprintf(" > %d step 5%%[> %d %s]", as.integer(h),
 			 convert_time(h*dt, unit_of_record=unit_of_record,
 			 from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
-		failure_time50p_str = sprintf("50%%[%d %s]", 
+		failure_time50p_str = sprintf("50%%[> %d %s]", 
 			 convert_time(h*dt, unit_of_record=unit_of_record,
 			 from=unit_of_time,to=forecast_time_unit), forecast_time_unit)
 	}
@@ -4411,16 +4412,36 @@ predictin <- function(df, tracking_feature_args, timeStamp_arg, sigin_arg)
 				}
 				
 				z1max = which.max(RUL_hist_tmp$z1)
+				timeStamp_ = RUL_hist$TimeStamp[z1max]
+				#print(sprintf("timeStamp_:%s", timeStamp_))
+				if ( T )
+				{
+					x <- rev(seq(current_time_index, length.out = nrow(feature_df), by=-delta_index))
+					x <- seq(x[1], length.out = nrow(feature_df)+ failure_time50p_s[2], by = delta_index)
+
+					tmp2 <- data.frame(time_index=x)
+					tmp2$TimeStamp <- as.POSIXct(tmp2$time_index, tz="UTC", origin="2024-01-01")
+
+					cur_row = nrow(feature_df)
+					tmp2$TimeStamp[cur_row:nrow(tmp2)] <- seq(current_time, length.out = length(cur_row:nrow(tmp2)), by = delta_time*delta_index)
+					tmp2$TimeStamp[1:cur_row] <- rev(seq(current_time, length.out = length(1:cur_row), by = -delta_time*delta_index))
+					
+					#print(tmp2$TimeStamp)
+					#print(nrow(tmp2))
+					timeStamp_ = tmp2$TimeStamp[nrow(tmp2)]
+					#print(sprintf("#timeStamp_:%s", timeStamp_))
+				}
+				
 				sum <- sum(RUL_hist_tmp$z1[1:nrow(RUL_hist_tmp)])
 				prob <- c()
-				text = sprintf("%s (%.2f%%)", RUL_hist$TimeStamp[z1max], 100*0.0001)
+				text = sprintf("%s (%.2f%%)", timeStamp_, 100*0.0001)
 				if ( abs(sum) > 0.0001)
 				{
 					prob <- RUL_hist_tmp$z1[1:nrow(RUL_hist_tmp)]/sum
 					prob <- cumsum(prob[1:z1max])
 					
 					probMax <- prob[length(prob)] + (1/(1 + 0.25*failure_time50p_s[2])^2)
-					text = sprintf("%s (%.2f%%)", RUL_hist$TimeStamp[z1max], 100*min(0.999,probMax))
+					text = sprintf("%s (%.2f%%)", timeStamp_, 100*min(0.999,probMax))
 				}else
 				{
 					text = ""
