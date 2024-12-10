@@ -589,7 +589,10 @@ feature_summary_visualization <- function( csvfile, timeStamp , summary=FALSE)
 									#high_freq_magnitude1 <- mean(magnitude[(length(magnitude) / 2):length(magnitude)])
 									high_freq_magnitude1 <- calculate_roughness(tmpdf$y)
 									
-									peaks <- peaks_count(tmpdf$x,tmpdf$y)
+									peaks <- try(peaks_count(tmpdf$x,tmpdf$y), silent = FALSE)
+									if (class(peaks) == "try-error") {
+										peaks <- c(0,0)
+								  	}
 									peaks_num <- peaks[1]+peaks[2]
 								}
 							}
