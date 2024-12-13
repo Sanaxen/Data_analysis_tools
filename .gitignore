@@ -1,0 +1,12 @@
+
+README.md.bak
+src/Form1.cs.bak
+*.bak
+Application/DDS2/backend.txt
+Application/DDS2/bin/deep_ar_path.txt
+Application/DDS2/bin/gnuplot_path.txt
+Application/DDS2/bin/gpu_version/gnuplot_path.txt
+Application/DDS2/bin/gpu_version/graphviz_path.txt
+Application/DDS2/bin/graphviz_path.txt
+Application/DDS2/bin/prophet_option.txt
+Application/DDS2/bin/pytorch_cuda_version.txt

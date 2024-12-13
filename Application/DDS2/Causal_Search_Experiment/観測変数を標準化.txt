@@ -1,0 +1,2 @@
+http://www.ar.sanken.osaka-u.ac.jp/~sshimizu/papers/JJSS08.pdf
+観測変数を標準化しておくことも, 尺度不変になりよいと思われる.

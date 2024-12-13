@@ -1,0 +1,31 @@
+下記のリンクから自分のRのバージョンに合ったRtoolsのインストーラをダウンロードしてください。
+https://cran.r-project.org/bin/windows/Rtools/
+
+PATHの設定のチェックボックスを入れ。
+
+#R
+#stanのインストール、公式サイト
+install.packages("rstan", repos = "https://cloud.r-project.org/",dependencies=TRUE)
+install.packages("prophet")
+
+
+#R
+library(prophet)
+
+playoffs <- data_frame(
+  holiday = 'playoff',
+  ds = as.Date(c('2008-01-13', '2009-01-03', '2010-01-16',
+                 '2010-01-24', '2010-02-07', '2011-01-08',
+                 '2013-01-12', '2014-01-12', '2014-01-19',
+                 '2014-02-02', '2015-01-11', '2016-01-17',
+                 '2016-01-24', '2016-02-07')),
+  lower_window = 0,
+  upper_window = 1
+)
+superbowls <- data_frame(
+  holiday = 'superbowl',
+  ds = as.Date(c('2010-02-07', '2014-02-02', '2016-02-07')),
+  lower_window = 0,
+  upper_window = 1
+)
+holidays <- bind_rows(playoffs, superbowls)

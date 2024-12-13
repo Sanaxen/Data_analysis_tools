@@ -1,0 +1,8 @@
+set R="D:\Program Files\R\R-4.1.2\bin\R.exe"
+
+%R% -q -e "install.packages(c('data.table', 'jsonlite'),repos = 'http://cran.us.r-project.org',dependencies=TRUE)"
+
+:https://github.com/dmlc/xgboost/releases
+:https://github.com/dmlc/xgboost/releases/download/v1.5.1/xgboost_r_gpu_win64_afb9dfd4210e8b8db8fe03380f83b404b1721443.tar.gz
+
+%R% CMD INSTALL ./xgboost_r_gpu_win64_afb9dfd4210e8b8db8fe03380f83b404b1721443.tar.gz

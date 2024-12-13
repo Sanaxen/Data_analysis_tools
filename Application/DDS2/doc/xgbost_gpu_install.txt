@@ -1,0 +1,17 @@
+set xgboost_r_gpu_win64_TAR_GZ_PATH=AAAAAAAAAAAAAAAAA
+
+call ..\..\setup_ini.bat
+
+set RTOOLS_PATH=%RTOOL_PATH%
+set RPATH=%R_INSTALL_PATH%
+
+set R="%RPATH%\bin\R.exe"
+
+cd %xgboost_r_gpu_win64_TAR_GZ_PATH%
+
+set PATH=%RPATH%\bin\x64;%PATH%
+
+%R% -q -e "install.packages(c('data.table', 'jsonlite'), repos = 'http://cran.us.r-project.org')"
+
+set PATH=%RTOOLS_PATH%\usr\bin;%PATH%
+%R% CMD INSTALL %xgboost_r_gpu_win64_TAR_GZ_PATH%
