@@ -1,3 +1,0 @@
-https://github.com/mathworks/WindTurbineHighSpeedBearingPrognosis-Data
-https://www.kaggle.com/datasets/luishpinto/wind-turbine-high-speed-bearing-prognosis-data
-
