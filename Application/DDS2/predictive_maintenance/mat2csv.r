@@ -143,7 +143,7 @@ for ( i in 1:length(files))
 	{
 		s = "rd"
 	}
-	write.csv(df, paste( sprintf("../vibration_data/%02d%s-day-vibration-", i, s), 
+	write.csv(df, paste( sprintf("../dataset/vibration_data/%02d%s-day-vibration-", i, s), 
 		gsub("-","_",gsub(":","_",start0)), ".csv",sep=""), row.names=F)
 	
 	start <- datetime[n]+step
